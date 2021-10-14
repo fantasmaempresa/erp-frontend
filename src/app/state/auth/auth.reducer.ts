@@ -9,7 +9,7 @@ export const initialState: AuthState = adapter.getInitialState();
 
 const AuthReducer = createReducer(
   initialState,
-  on(Login, (state) => {
+  on(Login, (state): AuthState => {
     return {
       ...state,
     };

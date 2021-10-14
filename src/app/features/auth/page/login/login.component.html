@@ -1,0 +1,42 @@
+<div class="col-md-6 mx-auto login-box">
+  <h2 class="text-center">User Registration</h2>
+  <hr />
+  <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" (blur)="logValidationErrors()">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Email: </mat-label>
+      <input
+        matInput
+        placeholder="example@email.com"
+        type="text"
+        formControlName="email"
+        (blur)="logValidationErrors()"
+      />
+      <mat-error *ngIf="formErrors.email">{{ formErrors.email }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Password: </mat-label>
+      <input matInput type="password" formControlName="password" (blur)="logValidationErrors()" />
+      <mat-error *ngIf="formErrors.password">{{ formErrors.password }}</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Confirm password: </mat-label>
+      <input
+        matInput
+        type="password"
+        formControlName="confirmPassword"
+        (blur)="logValidationErrors()"
+      />
+      <mat-error *ngIf="formErrors.confirmPassword">{{ formErrors.confirmPassword }}</mat-error>
+    </mat-form-field>
+
+    <div class="row">
+      <div class="col-md-12">
+        <button mat-flat-button color="primary" type="submit" [disabled]="isLoading">
+          Submit
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
