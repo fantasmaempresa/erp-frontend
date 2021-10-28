@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { FormValidationService } from '../../../../shared/services/form-validation.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { validationMessages } from '../../../../core/constants/validationMessages';
@@ -9,6 +9,8 @@ import { validationMessages } from '../../../../core/constants/validationMessage
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  @HostBinding('class') classes = 'flex-fill justify-content-center row';
+
   constructor(private formValidationService: FormValidationService) {}
 
   signUpForm!: FormGroup;
