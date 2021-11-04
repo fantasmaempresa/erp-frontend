@@ -1,0 +1,21 @@
+@import '~src/assets/styles/abstracts/variables';
+
+:host {
+  min-height: 100vh;
+  width: 100vw;
+  display: grid;
+  grid-template-rows: 15rem repeat(3, 1fr) 8rem;
+  grid-template-columns: $sidebarContainer repeat(2, 1fr);
+  background-color: var(--color-primary-bg);
+
+  grid-template-areas:
+    'header header header'
+    'sidebar main main'
+    'sidebar main main'
+    'sidebar main main'
+    'sidebar footer footer';
+}
+
+.header {
+  grid-area: header;
+}

@@ -1,0 +1,73 @@
+@mixin clearfix {
+  &::after {
+    content: '';
+    display: table;
+    clear: both;
+  }
+}
+
+// @mixin background-gradient-font {
+//   & {
+//     background-image: linear-gradient(
+//       to right,
+//       $color-primary-light,
+//       $color-primary-dark
+//     );
+//     background-clip: content-box;
+//     -webkit-background-clip: text;
+//     color: transparent;
+//   }
+// }
+
+@mixin absCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@mixin font-scale($typoScale: minor-third) {
+  $currentScale: map-get($typoScales, $typoScale);
+  $scale: $defaultFontSize / pow($currentScale, 3);
+  $currentValue: $scale;
+  & {
+    @for $i from 1 to 10 {
+      --text-#{$i}#{'00'}: #{$currentValue};
+      $currentValue: $currentScale * $currentValue;
+    }
+  }
+}
+
+/*=============================================
+=            MEDIA QUERY MANAGER            =
+=============================================*/
+/*
+0-600px: Phone
+600px-900px: Tablet portrait
+900px-1200px: Tablet landscape
+[1200px-1800px]: is where our normal style apply
+1800px +: Big desktop
+
+
+Order: Base + typograpy > general layout + grid > page layout > components
+*/
+/* $breakpoint argument choices
+-phone
+-tabPort
+-tabLand
+-bigDesktop
+*/
+@mixin respond($size: phone, $type: max) {
+  $breakpoint: map-get($breakpoints, $size);
+  @if $type == max {
+    @media (max-width: $breakpoint) {
+      @content;
+    }
+  } @else {
+    @media (min-width: $breakpoint) {
+      @content;
+    }
+  }
+}
+
+/*=====  End of MEDIA QUERY MANAGER  ======*/

@@ -11,9 +11,17 @@ import { CoreModule } from './core/core.module';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { SharedModule } from './shared/shared.module';
+import { ContentLayoutComponent } from './layout/content-layout/content-layout.component';
+import { HeaderComponent } from './layout/header/header.component';
 
 @NgModule({
-  declarations: [AppComponent, AuthLayoutComponent, FooterComponent],
+  declarations: [
+    AppComponent,
+    AuthLayoutComponent,
+    ContentLayoutComponent,
+    FooterComponent,
+    HeaderComponent,
+  ],
   imports: [
     BrowserModule,
     CoreModule,
@@ -25,5 +33,6 @@ import { SharedModule } from './shared/shared.module';
   ],
   providers: [],
   bootstrap: [AppComponent],
+  exports: [FooterComponent, HeaderComponent],
 })
 export class AppModule {}

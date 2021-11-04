@@ -1,0 +1,35 @@
+<header class="header">
+  <div class="header__logo">
+    <a href="">
+      <img src="assets/images/logo.svg" alt="Logo Code" class="header__logo-img" />
+    </a>
+  </div>
+
+  <!--  <div class="header__item">-->
+  <!--    <div class="search-input">-->
+  <!--      <input class="search-input__field" type="search" placeholder=" " id="search" />-->
+  <!--      <label class="search-input__label" for="search">-->
+  <!--        <i class="fas fa-search search-input__label-icon"></i>-->
+  <!--        <span class="search-input__label-text">Search...</span>-->
+  <!--      </label>-->
+  <!--    </div>-->
+  <!--    <div class="mega-menu">-->
+  <!--      <span class="mega-menu__text">Mega Menu</span>-->
+  <!--      <i class="fas fa-chevron-down mega-menu__icon"></i>-->
+  <!--    </div>-->
+  <!--  </div>-->
+
+  <div class="header__profile">
+    <div class="header__profile-container">
+      <button mat-button [matMenuTriggerFor]="profileMenu">
+        <img src="assets/images/profile_picture.jpg" alt="" class="profile-img" />
+        <span class="header__profile-label">Patrick</span>
+        <span class="material-icons">expand_more</span>
+      </button>
+      <mat-menu #profileMenu="matMenu" xPosition="before">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+    </div>
+  </div>
+</header>

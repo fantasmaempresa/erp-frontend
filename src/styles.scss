@@ -1,23 +1,30 @@
-html {
-  position: relative;
-  height: 100%;
-  min-height: 100%;
-}
+@import '~src/assets/styles/abstracts/variables';
+@import '~src/assets/styles/abstracts/functions';
+@import '~src/assets/styles/abstracts/mixins';
 
-body {
-  margin: 0;
-  height: 100%;
-}
+@import '~src/assets/styles/base/base';
+@import '~src/assets/styles/base/typograpgy';
 
-*,
-::after,
-::before {
-  box-sizing: border-box;
+@import '~src/assets/styles/components/profile-img';
+
+:root {
+  @each $color, $shades in $colors {
+    @each $shade, $value in $shades {
+      --color-#{$color}-#{$shade}: #{$value};
+    }
+  }
+
+  @include font-scale;
 }
 
 a {
   text-decoration: none;
   outline: 0;
+}
+
+img {
+  height: 10rem;
+  width: 10rem;
 }
 
 .w-100 {

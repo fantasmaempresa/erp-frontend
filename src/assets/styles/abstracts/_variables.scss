@@ -1,0 +1,58 @@
+/*
+COLORS:
+*/
+$colors: (
+  primary: (
+    //100: hsl(213, 100%, 90%),
+    //200: hsl(213, 100%, 80%),
+    //300: hsl(213, 100%, 70%),
+    //400: hsl(213, 100%, 60%),
+    //500: hsl(213, 100%, 50%),
+    //600: hsl(228, 57%, 45%),
+    //700: hsl(228, 100%, 36%),
+    //800: hsl(228, 57%, 25%),
+    //900: hsl(228, 57%, 15%),
+    header: hsl(228, 57%, 36%),
+    sidebar: hsl(215, 30%, 17%),
+    bg: hsl(215, 34%, 14%),
+    footer: hsl(215, 27%, 21%),
+  ),
+  secondary: (
+    100: hsl(0, 0%, 95%),
+    200: hsl(0, 0%, 75%),
+    300: hsl(0, 0%, 65%),
+    400: hsl(0, 0%, 50%),
+    500: hsl(0, 0%, 45%),
+    600: hsl(0, 0%, 35%),
+    700: hsl(0, 0%, 25%),
+    800: hsl(0, 0%, 15%),
+    900: hsl(0, 0%, 5%),
+  ),
+);
+
+//Font
+$defaultFontSize: 1.6rem; //para 16 pixeles
+
+//sizes-layouts
+$sidebarContainer: 30rem;
+
+$typoScales: (
+  minor-third: 1.2,
+  major-third: 1.25,
+  perfect-fourth: 1.333,
+  perfect-fifth: 1.5,
+  golden-ratio: 1.618,
+);
+
+/*=============================================
+=            breakpoints            =
+=============================================*/
+
+$breakpoints: (
+  phone: 37.5em,
+  tabPort: 56.25em,
+  tabLand: 75em,
+  bigDesktop: 112.5em,
+);
+
+/*=====  End of breakpoints  ======*/
