@@ -17,6 +17,10 @@
   @include font-scale;
 }
 
+//* {
+//  outline: 1px solid red;
+//}
+
 a {
   text-decoration: none;
   outline: 0;
@@ -25,6 +29,10 @@ a {
 img {
   height: 10rem;
   width: 10rem;
+}
+
+ul {
+  padding-inline-start: 0;
 }
 
 .w-100 {

@@ -2,20 +2,34 @@
 
 :host {
   min-height: 100vh;
-  width: 100vw;
   display: grid;
-  grid-template-rows: 15rem repeat(3, 1fr) 8rem;
+  grid-template-rows: 15rem minmax(0, 1fr);
   grid-template-columns: $sidebarContainer repeat(2, 1fr);
   background-color: var(--color-primary-bg);
 
   grid-template-areas:
     'header header header'
-    'sidebar main main'
-    'sidebar main main'
-    'sidebar main main'
-    'sidebar footer footer';
+    'sidebar main main';
 }
 
 .header {
   grid-area: header;
+}
+
+.sidebar {
+  grid-area: sidebar;
+}
+
+.footer {
+}
+
+.main {
+  grid-area: main;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) 8rem;
+}
+
+.page-content {
+  margin-top: 1.6rem;
+  padding: 82px 24px 60px;
 }
