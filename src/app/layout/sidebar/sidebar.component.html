@@ -14,20 +14,49 @@
       <div class="sidebar-menu">
         <span class="sidebar-menu__title">Menu</span>
         <ul class="sidebar-menu__body">
+          <li class="menu__dropdown">
+            <a class="menu__dropdown-link" (click)="dropdown($event)">
+              <span class="menu__dropdown-label">Email</span>
+              <span class="material-icons menu__dropdown-icon"> expand_more </span>
+              <ul class="menu__dropdown-container">
+                <a href="#" class="menu__dropdown-back">
+                  <i class="fas fa-arrow-left menu__dropdown-back-label-icon"></i>
+                  <span class="menu__dropdown-back-label"> Regresar </span>
+                </a>
+                <li class="menu__item">
+                  <a href="#" class="menu__link">
+                    <i class="fa fa-envelope-open menu__icon"></i>
+                    <span class="menu__label">Bandeja de Entrada</span>
+                  </a>
+                </li>
+                <li class="menu__item">
+                  <a href="#" class="menu__link">
+                    <i class="fa fa-reply menu__icon"></i>
+                    <span class="menu__label">Reenviar</span>
+                  </a>
+                </li>
+              </ul>
+            </a>
+          </li>
           <li class="menu__item">
-            <a href="#" class="menu__link">
+            <a
+              routerLink="/dashboard"
+              routerLinkActive="menu__link--active"
+              class="menu__link"
+              (click)="activeMenu($event)"
+            >
               <i class="fa fa-home menu__icon"></i>
               <span class="menu__label">Home</span>
             </a>
           </li>
           <li class="menu__item">
-            <a href="#" class="menu__link">
+            <a href="#" class="menu__link" (click)="activeMenu($event)">
               <i class="fa fa-bell menu__icon"></i>
               <span class="menu__label">Alertas</span>
             </a>
           </li>
           <li class="menu__item">
-            <a href="#" class="menu__link">
+            <a href="#" class="menu__link" (click)="activeMenu($event)">
               <i class="fa fa-map menu__icon"></i>
               <span class="menu__label">Mapas</span>
             </a>
@@ -38,19 +67,19 @@
         <span class="sidebar-menu__title">Componentes</span>
         <ul class="sidebar-menu__body">
           <li class="menu__item">
-            <a href="#" class="menu__link">
+            <a href="#" class="menu__link" (click)="activeMenu($event)">
               <i class="fa fa-home menu__icon"></i>
               <span class="menu__label">Home</span>
             </a>
           </li>
           <li class="menu__item">
-            <a href="#" class="menu__link">
+            <a href="#" class="menu__link" (click)="activeMenu($event)">
               <i class="fa fa-bell menu__icon"></i>
               <span class="menu__label">Alertas</span>
             </a>
           </li>
           <li class="menu__item">
-            <a href="#" class="menu__link">
+            <a href="#" class="menu__link" (click)="activeMenu($event)">
               <i class="fa fa-map menu__icon"></i>
               <span class="menu__label">Mapas</span>
             </a>
