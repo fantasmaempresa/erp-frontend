@@ -16,6 +16,12 @@ const routes: Routes = [
     loadChildren: () =>
       import('./features/dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
+  {
+    path: 'clients',
+    component: ContentLayoutComponent,
+    loadChildren: () =>
+      import('./features/dashboard/dashboard.module').then((m) => m.DashboardModule),
+  },
   { path: '**', redirectTo: '/auth/login', pathMatch: 'full' },
 ];
 
