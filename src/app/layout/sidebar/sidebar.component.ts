@@ -6,6 +6,8 @@ import { AfterViewInit, Component, ElementRef, OnInit, Renderer2 } from '@angula
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements OnInit, AfterViewInit {
+  source = '';
+
   linkMenus!: NodeListOf<Element>;
 
   dropdowns!: NodeListOf<Element>;
@@ -32,7 +34,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     this.renderer.addClass(event.target, 'menu__link--active');
   }
 
-  dropdown() {
+  dropdown(source: string) {
+    this.source = source;
     this.linkMenus.forEach((menu) => {
       this.renderer.removeClass(menu, 'menu__dropdown-link--active');
     });
