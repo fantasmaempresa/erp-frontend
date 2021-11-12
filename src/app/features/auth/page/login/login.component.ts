@@ -2,6 +2,7 @@ import { Component, HostBinding, OnInit } from '@angular/core';
 import { FormValidationService } from '../../../../shared/services/form-validation.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { validationMessages } from '../../../../core/constants/validationMessages';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -11,9 +12,11 @@ import { validationMessages } from '../../../../core/constants/validationMessage
 export class LoginComponent implements OnInit {
   @HostBinding('class') classes = 'flex-fill justify-content-center row';
 
-  constructor(private formValidationService: FormValidationService) {}
+  constructor(private formValidationService: FormValidationService, private router: Router) {}
 
   signUpForm!: FormGroup;
+
+  hidePassword = true;
 
   isLoading = false;
 
@@ -47,9 +50,9 @@ export class LoginComponent implements OnInit {
     this.signUpForm.markAllAsTouched();
     this.logValidationErrors();
     this.isLoading = true;
-    setTimeout(() => {
+    setTimeout(async () => {
       this.isLoading = false;
+      await this.router.navigate(['/dashboard']);
     }, 3000);
-    console.log(this.signUpForm.value);
   }
 }

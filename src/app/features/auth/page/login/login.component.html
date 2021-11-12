@@ -27,11 +27,14 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Contraseña</mat-label>
             <input
+              [type]="hidePassword ? 'password' : 'text'"
               matInput
-              type="password"
               formControlName="password"
               (blur)="logValidationErrors()"
             />
+            <mat-icon (click)="hidePassword = !hidePassword" matSuffix>{{
+              hidePassword ? 'visibility_off' : 'visibility'
+            }}</mat-icon>
             <mat-error *ngIf="formErrors.password">{{ formErrors.password }}</mat-error>
           </mat-form-field>
 
