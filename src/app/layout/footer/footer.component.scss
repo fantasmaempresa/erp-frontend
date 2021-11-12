@@ -7,4 +7,12 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  &__company {
+    width: 40px;
+  }
+
+  &__developby {
+    font-size: var(--text-300);
+  }
 }
