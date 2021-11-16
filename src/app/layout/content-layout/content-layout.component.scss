@@ -26,10 +26,32 @@
 .main {
   grid-area: main;
   display: grid;
-  grid-template-rows: minmax(0, 1fr) 8rem;
+  grid-template-rows: 6rem minmax(0, 1fr) 8rem;
 }
 
 .page-content {
-  margin-top: 1.6rem;
-  padding: 82px 24px 60px;
+  margin-top: -4.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0 24px 0;
+}
+
+.header-container {
+  position: relative;
+  margin-top: -6rem;
+  height: 6rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 5rem;
+  align-items: center;
+
+  &__title {
+    font-size: var(--text-600);
+    font-weight: 400;
+    margin-bottom: 0;
+  }
+
+  &__breadcrum {
+    font-size: var(--text-400);
+    font-weight: 150;
+  }
 }

@@ -2,6 +2,14 @@
 <app-sidebar></app-sidebar>
 
 <div class="main">
+  <div class="header-container">
+    <h4 class="header-container__title">Home</h4>
+
+    <xng-breadcrumb [separator]="iconTemplate"></xng-breadcrumb>
+    <ng-template #iconTemplate>
+      <mat-icon>chevron_right</mat-icon>
+    </ng-template>
+  </div>
   <div class="page-content">
     <router-outlet></router-outlet>
   </div>
