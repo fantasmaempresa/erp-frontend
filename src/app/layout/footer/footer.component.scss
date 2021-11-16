@@ -1,6 +1,6 @@
 .footer {
   //grid-area: footer;
-  background: var(--color-primary-footer);
+  background: var(--color-primary-header);
   padding: 0 2rem;
   height: 100%;
 
@@ -9,7 +9,7 @@
   align-items: center;
 
   &__company {
-    width: 40px;
+    width: 3rem;
   }
 
   &__developby {

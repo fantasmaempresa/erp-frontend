@@ -18,7 +18,8 @@
   flex-direction: column;
   align-items: center;
   padding: 4rem 1rem 2rem;
-  box-shadow: 8px 8px 16px 8px rgba(0, 0, 0, 0.125);
+  box-shadow: 8px 0 16px 8px rgb(0 0 0 / 30%);
+  color: #dfc356;
 
   &-header {
     width: 100%;
@@ -101,7 +102,7 @@
       width: 100%;
       border-radius: 0.5rem;
       transform: scaleX(0);
-      background: var(--color-primary-header);
+      background: var(--color-primary-bg);
       transition: 360ms all ease-in-out;
       transform-origin: left;
       z-index: 2;
