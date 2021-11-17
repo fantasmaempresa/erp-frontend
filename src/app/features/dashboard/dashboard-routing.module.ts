@@ -6,7 +6,6 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    data: { breadcrumb: 'Dashboard' },
   },
 ];
 

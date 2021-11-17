@@ -5,9 +5,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { BreadcrumbModule } from 'xng-breadcrumb';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 
 @NgModule({
-  declarations: [SpinnerComponent],
+  declarations: [SpinnerComponent, PageNotFoundComponent],
   imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, BreadcrumbModule],
   exports: [
     CommonModule,

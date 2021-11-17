@@ -1,0 +1,20 @@
+.header-container {
+  position: relative;
+  margin-top: -6rem;
+  height: 6rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 5rem;
+  align-items: center;
+
+  &__title {
+    font-size: var(--text-600);
+    font-weight: 400;
+    margin-bottom: 0;
+  }
+
+  &__breadcrum {
+    font-size: var(--text-400);
+    font-weight: 150;
+  }
+}

@@ -6,7 +6,6 @@ const routes: Routes = [
   {
     path: '',
     component: ListClientsComponent,
-    data: { breadcrumb: 'Clientes' },
     children: [{ path: 'add', component: ListClientsComponent, data: { breadcrumb: 'Agregar' } }],
   },
 ];

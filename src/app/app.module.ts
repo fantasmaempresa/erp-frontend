@@ -14,6 +14,7 @@ import { SharedModule } from './shared/shared.module';
 import { ContentLayoutComponent } from './layout/content-layout/content-layout.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
+import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { SidebarComponent } from './layout/sidebar/sidebar.component';
     FooterComponent,
     HeaderComponent,
     SidebarComponent,
+    BreadcrumbComponent,
   ],
   imports: [
     BrowserModule,
