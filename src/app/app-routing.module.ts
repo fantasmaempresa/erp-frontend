@@ -10,6 +10,11 @@ const routes: Routes = [
     component: ContentLayoutComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
+      {
         path: 'dashboard',
         loadChildren: () =>
           import('./features/dashboard/dashboard.module').then((m) => m.DashboardModule),
