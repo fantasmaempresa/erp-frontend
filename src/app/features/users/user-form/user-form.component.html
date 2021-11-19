@@ -1,1 +1,23 @@
-<p>user-form works!</p>
+<div class="container">
+  <form class="d-flex flex-md-column align-items-center">
+    <mat-form-field appearance="fill" class="input--form">
+      <mat-label>Nombre</mat-label>
+      <input matInput />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="input--form">
+      <mat-label>Correo</mat-label>
+      <input matInput placeholder="ejemplo@ejemplo.com" />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="input--form">
+      <mat-label>password</mat-label>
+      <input matInput type="password" />
+    </mat-form-field>
+
+    <div class="action-container">
+      <button class="btn btn--primary">Guardar Registro</button>
+      <button class="btn btn--secondary">Cancelar</button>
+    </div>
+  </form>
+</div>
