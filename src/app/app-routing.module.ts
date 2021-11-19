@@ -16,10 +16,30 @@ const routes: Routes = [
         data: { breadcrumb: 'Dashboard' },
       },
       {
+        path: 'users',
+        loadChildren: () => import('./features/users/users.module').then((m) => m.UsersModule),
+        data: { breadcrumb: 'Usuarios' },
+      },
+      {
+        path: 'roles',
+        loadChildren: () => import('./features/roles/roles.module').then((m) => m.RolesModule),
+        data: { breadcrumb: 'Roles' },
+      },
+      {
         path: 'clients',
         loadChildren: () =>
           import('./features/clients/clients.module').then((m) => m.ClientsModule),
         data: { breadcrumb: 'Clientes' },
+      },
+      {
+        path: 'staff',
+        loadChildren: () => import('./features/staff/staff.module').then((m) => m.StaffModule),
+        data: { breadcrumb: 'Personal' },
+      },
+      {
+        path: 'areas',
+        loadChildren: () => import('./features/areas/areas.module').then((m) => m.AreasModule),
+        data: { breadcrumb: 'Áreas' },
       },
       {
         path: '**',
