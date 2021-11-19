@@ -14,6 +14,36 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
   dropdownIsVisible = false;
 
+  menus = [
+    {
+      menuName: 'Menu',
+      submenus: [
+        { label: 'Home', route: '/dashboard', icon: 'home' },
+        { label: 'Usuarios', route: '/clients', icon: 'person' },
+        { label: 'Roles', route: '/clients', icon: 'verified_user' },
+        { label: 'Clientes', route: '/clients', icon: 'people' },
+        { label: 'Personal', route: '/clients', icon: 'people' },
+        { label: 'Áreas', route: '/clients', icon: 'people' },
+        {
+          label: 'Proyectos',
+          icon: 'rule_folder',
+          dropdowns: [
+            { label: 'Bandeja de Entrada', route: '/clients', icon: 'mail' },
+            { label: 'Reenviar', route: 'profile', icon: 'reply' },
+          ],
+        },
+        {
+          label: 'Tramites',
+          icon: 'rule_folder',
+          dropdowns: [
+            { label: 'Bandeja de Entrada', route: '/clients', icon: 'mail' },
+            { label: 'Reenviar', route: 'profile', icon: 'reply' },
+          ],
+        },
+      ],
+    },
+  ];
+
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
   ngOnInit(): void {
