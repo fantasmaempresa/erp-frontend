@@ -6,9 +6,19 @@ import { PageNotFoundComponent } from './shared/components/page-not-found/page-n
 
 const routes: Routes = [
   {
+    path: 'auth',
+    component: AuthLayoutComponent,
+    loadChildren: () => import('./features/auth/auth.module').then((m) => m.AuthModule),
+  },
+  {
     path: '',
     component: ContentLayoutComponent,
     children: [
+      {
+        path: '',
+        redirectTo: 'dashboard',
+        pathMatch: 'full',
+      },
       {
         path: 'dashboard',
         loadChildren: () =>
@@ -52,11 +62,6 @@ const routes: Routes = [
         data: { breadcrumb: { skip: true, alias: 'pageNotFound' } },
       },
     ],
-  },
-  {
-    path: 'auth',
-    component: AuthLayoutComponent,
-    loadChildren: () => import('./features/auth/auth.module').then((m) => m.AuthModule),
   },
 ];
 

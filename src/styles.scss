@@ -92,7 +92,6 @@ ul {
   color: var(--color-secondary-200) !important;
 }
 
-
 .input--form {
   width: 66.66%;
   margin-bottom: 1rem;
@@ -100,7 +99,6 @@ ul {
   &:first-child {
     margin-top: 2.5rem;
   }
-
 }
 
 .action-container {
@@ -133,7 +131,7 @@ ul {
     border: 2px solid var(--primary-color);
   }
 
-  &:hover{
+  &:hover {
     filter: brightness(115%);
     transform: scale(1.02);
   }
