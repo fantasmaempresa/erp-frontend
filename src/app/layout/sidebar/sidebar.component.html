@@ -2,63 +2,63 @@
   <nav class="sidebar">
     <div class="sidebar-header">
       <img
-        src="assets/images/profile_picture.jpg"
         alt=""
         class="profile-img profile-img--sidebar-header"
+        src="assets/images/profile_picture.jpg"
       />
       <h3 class="sidebar-header__profile-name">Patrick Becker</h3>
       <span class="sidebar-header__profile-place">UI/UX Designer</span>
     </div>
 
-    <div class="sidebar-body">
+    <div class="sidebar-body" *ngFor="let menu of menus">
       <div class="sidebar-menu">
-        <span class="sidebar-menu__title">Menu</span>
+        <span class="sidebar-menu__title">{{ menu.menuName }}</span>
         <ul class="sidebar-menu__body">
-          <li class="menu__item">
-            <a [routerLink]="'/dashboard'" routerLinkActive="menu__link--active" class="menu__link">
-              <span class="material-icons menu__icon">home</span>
-              <span class="menu__label">Home</span>
-            </a>
-          </li>
-          <li class="menu__item">
-            <a [routerLink]="'/clients'" routerLinkActive="menu__link--active" class="menu__link">
-              <i class="material-icons menu__icon">people</i>
-              <span class="menu__label">Clientes</span>
-            </a>
-          </li>
-          <li class="menu__dropdown">
-            <a
-              class="menu__dropdown-link"
-              [class.menu__dropdown-link--active]="dropdownIsVisible"
-              (click)="dropdown('Proyectos')"
-            >
-              <span class="material-icons menu__icon">rule_folder</span>
-              <span class="menu__dropdown-label menu__label">Proyectos</span>
-              <span class="material-icons menu__dropdown-icon">expand_more</span>
-              <div class="menu__dropdown-container sidebar-body">
-                <div class="d-flex align-items-center">
-                  <button class="menu__dropdown-back" (click)="dropdownIsVisible = true">
-                    <i class="material-icons menu__dropdown-back-label-icon">arrow_back</i>
-                  </button>
-                  <span class="menu__dropdown-back-label"> {{ source }} </span>
+          <ng-container *ngFor="let submenu of menu.submenus">
+            <li class="menu__dropdown" *ngIf="submenu.dropdowns; else menuItem">
+              <a
+                (click)="dropdown(submenu)"
+                [class.menu__dropdown-link--active]="submenu.isOpen"
+                class="menu__dropdown-link"
+              >
+                <span class="material-icons menu__icon">{{ submenu.icon }}</span>
+                <span class="menu__dropdown-label menu__label">{{ submenu.label }}</span>
+                <span class="material-icons menu__dropdown-icon">expand_more</span>
+                <div
+                  class="menu__dropdown-container sidebar-body"
+                  (click)="stopPropagation($event)"
+                >
+                  <div class="d-flex align-items-center">
+                    <button (click)="closeSubmenu(submenu)" class="menu__dropdown-back">
+                      <i class="material-icons menu__dropdown-back-label-icon">arrow_back</i>
+                    </button>
+                    <span class="menu__dropdown-back-label"> {{ submenu.label }} </span>
+                  </div>
+                  <ul>
+                    <li *ngFor="let dropdown of submenu.dropdowns" class="menu__item">
+                      <a [routerLink]="dropdown.route" class="menu__link">
+                        <span class="material-icons menu__icon">{{ dropdown.icon }}</span>
+                        <span class="menu__label">{{ dropdown.label }}</span>
+                      </a>
+                    </li>
+                  </ul>
                 </div>
-                <ul>
-                  <li class="menu__item">
-                    <a [routerLink]="'/clients'" class="menu__link">
-                      <span class="material-icons menu__icon">mail</span>
-                      <span class="menu__label">Bandeja de Entrada</span>
-                    </a>
-                  </li>
-                  <li class="menu__item">
-                    <a [routerLink]="'error'" class="menu__link">
-                      <i class="fa fa-reply menu__icon"></i>
-                      <span class="menu__label">Reenviar</span>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </a>
-          </li>
+              </a>
+            </li>
+
+            <ng-template #menuItem>
+              <li class="menu__item">
+                <a
+                  [routerLink]="submenu.route"
+                  class="menu__link"
+                  routerLinkActive="menu__link--active"
+                >
+                  <span class="material-icons menu__icon">{{ submenu.icon }}</span>
+                  <span class="menu__label">{{ submenu.label }}</span>
+                </a>
+              </li>
+            </ng-template>
+          </ng-container>
         </ul>
       </div>
     </div>
