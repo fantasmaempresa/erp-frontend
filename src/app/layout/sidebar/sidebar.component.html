@@ -36,7 +36,11 @@
                   </div>
                   <ul>
                     <li *ngFor="let dropdown of submenu.dropdowns" class="menu__item">
-                      <a [routerLink]="dropdown.route" class="menu__link">
+                      <a
+                        [routerLink]="dropdown.route"
+                        routerLinkActive="menu__link--active"
+                        class="menu__link"
+                      >
                         <span class="material-icons menu__icon">{{ dropdown.icon }}</span>
                         <span class="menu__label">{{ dropdown.label }}</span>
                       </a>
