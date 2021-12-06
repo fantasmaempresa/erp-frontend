@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
+import { ActivatedRoute, Router } from '@angular/router';
 
 export interface PeriodicElement {
   name: string;
@@ -32,7 +33,9 @@ export class UserListComponent {
 
   dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
 
-  selection = new SelectionModel<PeriodicElement>(true, []);
+  selection = new SelectionModel<PeriodicElement>(false, []);
+
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -57,5 +60,13 @@ export class UserListComponent {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
+
+  deleteUser() {
+    console.log(this.selection.selected);
+  }
+
+  async goToNewUser() {
+    await this.router.navigate(['../new'], { relativeTo: this.route });
   }
 }

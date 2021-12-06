@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChildrenRouteLayoutComponent } from '../../layout/children-route-layout/children-route-layout.component';
-import { UserListComponent } from './user-list/user-list.component';
-import { UserFormComponent } from './user-form/user-form.component';
+import { UserListComponent } from './page/user-list/user-list.component';
+import { UserFormComponent } from './page/user-form/user-form.component';
 
 const routes: Routes = [
   {
