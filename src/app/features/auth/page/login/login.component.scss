@@ -10,8 +10,9 @@
 }
 
 .bg-login {
-  background-image: url('~src/assets/images/login-img.jpg');
-  background-size: cover;
+  background-image: url('~src/assets/images/brand/logo.png');
+  background-repeat: no-repeat;
+  background-size: contain;
   background-position: center center;
   padding: 60px 0;
   position: relative;
@@ -23,7 +24,7 @@
   content: '';
   position: absolute;
   background: -webkit-gradient(linear, left top, right top, from(#273c92), to(#293e92));
-  background: linear-gradient(to right, #273c92, #293e92);
+  background: linear-gradient(to right, var(--accent-color), var(--accent-darker-color));
   top: 0;
   right: 0;
   left: 0;

@@ -49,7 +49,7 @@ ul {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: #1e2938;
+  background-color: var(--color-primary-sidebar);
   background-clip: border-box;
   border: 0 solid #f6f6f6;
   border-radius: 0.25rem;
@@ -92,7 +92,6 @@ ul {
   color: var(--color-secondary-200) !important;
 }
 
-
 .input--form {
   width: 66.66%;
   margin-bottom: 1rem;
@@ -100,7 +99,6 @@ ul {
   &:first-child {
     margin-top: 2.5rem;
   }
-
 }
 
 .action-container {
@@ -133,7 +131,7 @@ ul {
     border: 2px solid var(--primary-color);
   }
 
-  &:hover{
+  &:hover {
     filter: brightness(115%);
     transform: scale(1.02);
   }
