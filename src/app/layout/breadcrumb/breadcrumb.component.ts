@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivationEnd, Router, RouterEvent } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { filter, map } from 'rxjs';
@@ -9,7 +9,7 @@ import { BreadcrumbService } from 'xng-breadcrumb';
   templateUrl: './breadcrumb.component.html',
   styleUrls: ['./breadcrumb.component.scss'],
 })
-export class BreadcrumbComponent implements OnInit {
+export class BreadcrumbComponent {
   title = '';
 
   constructor(
@@ -25,8 +25,6 @@ export class BreadcrumbComponent implements OnInit {
       this.title = breadcrumb;
     });
   }
-
-  ngOnInit() {}
 
   getDataRoute() {
     return this.router.events.pipe(

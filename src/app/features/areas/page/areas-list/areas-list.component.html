@@ -2,28 +2,28 @@
   <button
     *ngIf="selection.selected.length !== 0"
     [matTooltipPosition]="'below'"
-    aria-label="Editar usuario"
+    aria-label="Editar área"
     mat-icon-button
-    matTooltip="Editar usuario"
+    matTooltip="Editar área"
   >
     <mat-icon>edit</mat-icon>
   </button>
   <button
     *ngIf="selection.selected.length !== 0"
     [matTooltipPosition]="'below'"
-    aria-label="Eliminar usuario"
+    aria-label="Eliminar área"
     mat-icon-button
-    matTooltip="Eliminar usuario"
+    matTooltip="Eliminar área"
     (click)="delete()"
   >
     <mat-icon>person_remove</mat-icon>
   </button>
   <button
     [matTooltipPosition]="'below'"
-    aria-label="Agregar usuario"
+    aria-label="Agregar área"
     mat-icon-button
-    matTooltip="Agregar usuario"
-    (click)="goToNewUser()"
+    matTooltip="Agregar área"
+    (click)="goToNewArea()"
   >
     <mat-icon>person_add</mat-icon>
   </button>

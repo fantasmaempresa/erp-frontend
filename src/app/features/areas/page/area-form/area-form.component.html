@@ -1,0 +1,23 @@
+<mat-card>
+  <mat-toolbar>
+    <div>
+      <button aria-label="Regresar" mat-icon-button (click)="backToListAreas()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <form class="row justify-content-center">
+    <div class="col-6 d-flex flex-column">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput type="text" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput></textarea>
+      </mat-form-field>
+      <button mat-flat-button color="primary">Guardar</button>
+    </div>
+  </form>
+</mat-card>

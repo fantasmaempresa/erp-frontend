@@ -1,14 +1,29 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ClientFormComponent } from './client-form/client-form.component';
-import { ListClientsComponent } from './list-clients/list-clients.component';
+import { ChildrenRouteLayoutComponent } from '../../layout/children-route-layout/children-route-layout.component';
+import { ClientsListComponent } from './page/clients-list/clients-list.component';
+import { ClientFormComponent } from './page/client-form/client-form.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ClientFormComponent,
+    component: ChildrenRouteLayoutComponent,
     children: [
-      { path: 'add', component: ListClientsComponent, data: { breadcrumb: 'Agregar Cliente' } },
+      {
+        path: '',
+        redirectTo: 'list',
+        pathMatch: 'full',
+      },
+      {
+        path: 'list',
+        component: ClientsListComponent,
+        data: { breadcrumb: 'Lista de clientes' },
+      },
+      {
+        path: 'new',
+        component: ClientFormComponent,
+        data: { breadcrumb: 'Agregar Cliente' },
+      },
     ],
   },
 ];

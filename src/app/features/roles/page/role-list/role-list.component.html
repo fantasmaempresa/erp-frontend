@@ -2,28 +2,28 @@
   <button
     *ngIf="selection.selected.length !== 0"
     [matTooltipPosition]="'below'"
-    aria-label="Editar usuario"
+    aria-label="Editar rol"
     mat-icon-button
-    matTooltip="Editar usuario"
+    matTooltip="Editar rol"
   >
     <mat-icon>edit</mat-icon>
   </button>
   <button
     *ngIf="selection.selected.length !== 0"
     [matTooltipPosition]="'below'"
-    aria-label="Eliminar usuario"
+    aria-label="Eliminar rol"
     mat-icon-button
-    matTooltip="Eliminar usuario"
+    matTooltip="Eliminar rol"
     (click)="delete()"
   >
     <mat-icon>person_remove</mat-icon>
   </button>
   <button
     [matTooltipPosition]="'below'"
-    aria-label="Agregar usuario"
+    aria-label="Agregar rol"
     mat-icon-button
-    matTooltip="Agregar usuario"
-    (click)="goToNewUser()"
+    matTooltip="Agregar rol"
+    (click)="goToNewRole()"
   >
     <mat-icon>person_add</mat-icon>
   </button>

@@ -1,11 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { RoleFormComponent } from './role-form/role-form.component';
+import { ChildrenRouteLayoutComponent } from '../../layout/children-route-layout/children-route-layout.component';
+import { RoleListComponent } from './page/role-list/role-list.component';
+import { RoleFormComponent } from './page/role-form/role-form.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: RoleFormComponent,
+    component: ChildrenRouteLayoutComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: 'list',
+        pathMatch: 'full',
+      },
+      {
+        path: 'list',
+        component: RoleListComponent,
+        data: { breadcrumb: 'Lista de roles' },
+      },
+      {
+        path: 'new',
+        component: RoleFormComponent,
+        data: { breadcrumb: 'Nuevo rol' },
+      },
+    ],
   },
 ];
 
