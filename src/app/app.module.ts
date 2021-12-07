@@ -15,6 +15,7 @@ import { ContentLayoutComponent } from './layout/content-layout/content-layout.c
 import { HeaderComponent } from './layout/header/header.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
+import { ChildrenRouteLayoutComponent } from './layout/children-route-layout/children-route-layout.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
     HeaderComponent,
     SidebarComponent,
     BreadcrumbComponent,
+    ChildrenRouteLayoutComponent,
   ],
   imports: [
     BrowserModule,

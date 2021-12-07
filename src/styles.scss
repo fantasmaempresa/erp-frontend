@@ -7,6 +7,7 @@
 @import '~src/assets/styles/base/animation';
 
 @import '~src/assets/styles/components/profile-img';
+@import "~src/assets/styles/components/scrollbar";
 
 :root {
   @each $color, $shades in $colors {

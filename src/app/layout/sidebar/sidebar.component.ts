@@ -11,8 +11,8 @@ export class SidebarComponent {
       menuName: 'Menu',
       submenus: [
         { label: 'Home', route: '/dashboard', icon: 'home' },
-        { label: 'Usuarios', route: '/users', icon: 'person' },
-        { label: 'Roles', route: '/roles', icon: 'verified_user' },
+        // { label: 'Usuarios', route: '/users', icon: 'person' },
+        // { label: 'Roles', route: '/roles', icon: 'verified_user' },
         { label: 'Clientes', route: '/clients', icon: 'people' },
         { label: 'Personal', route: '/staff', icon: 'groups' },
         { label: 'Áreas', route: '/areas', icon: 'group_work' },
@@ -32,6 +32,15 @@ export class SidebarComponent {
           dropdowns: [
             { label: 'Pendientes', route: '/pending_procedures', icon: 'pause' },
             { label: 'En Curso', route: '/ongoing_procedure', icon: 'play_arrow' },
+          ],
+        },
+        {
+          label: 'Configuración',
+          icon: 'settings',
+          isOpen: false,
+          dropdowns: [
+            { label: 'Usuarios', route: '/users', icon: 'person' },
+            { label: 'Roles', route: '/roles', icon: 'verified_user' },
           ],
         },
       ],

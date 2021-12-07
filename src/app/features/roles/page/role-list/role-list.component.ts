@@ -1,0 +1,43 @@
+import { Component } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
+import { SelectionModel } from '@angular/cdk/collections';
+import { ELEMENT_DATA, PeriodicElement } from '../../../users/page/user-list/user-list.component';
+import { ActivatedRoute, Router } from '@angular/router';
+
+@Component({
+  selector: 'app-role-list',
+  templateUrl: './role-list.component.html',
+  styleUrls: ['./role-list.component.scss'],
+})
+export class RoleListComponent {
+  displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
+
+  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+
+  selection = new SelectionModel<PeriodicElement>(false, []);
+
+  constructor(private router: Router, private route: ActivatedRoute) {}
+
+  /** Whether the number of selected elements matches the total number of rows. */
+  isAllSelected() {
+    const numSelected = this.selection.selected.length;
+    const numRows = this.dataSource.data.length;
+    return numSelected === numRows;
+  }
+
+  /** The label for the checkbox on the passed row */
+  checkboxLabel(row?: PeriodicElement): string {
+    if (!row) {
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+    }
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+  }
+
+  delete() {
+    console.log(this.selection.selected);
+  }
+
+  goToNewRole() {
+    this.router.navigate(['../new'], { relativeTo: this.route });
+  }
+}

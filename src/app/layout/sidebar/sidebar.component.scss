@@ -1,6 +1,6 @@
 .sidebar-container {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   height: 100%;
 }
 
@@ -203,6 +203,7 @@
     border-radius: 0.5rem;
 
     &:hover {
+      color: var(--color-primary-bg);
       background: var(--primary-color);
     }
   }
