@@ -1,7 +1,12 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
+import { User } from '../../../../data/models/User.model';
+import { MatPaginator } from '@angular/material/paginator';
+import { Observable, switchMap, tap } from 'rxjs';
+import { UserService } from '../../../../data/services/user.service';
+import { Pagination } from '../../../../data/models/Pagination.model';
 
 export interface PeriodicElement {
   name: string;
@@ -28,14 +33,57 @@ export const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.scss'],
 })
-export class UserListComponent {
-  displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
+export class UserListComponent implements AfterViewInit {
+  displayedColumns: string[] = ['name', 'email', 'role', 'verified'];
 
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  dataSource = new MatTableDataSource<User>();
 
-  selection = new SelectionModel<PeriodicElement>(false, []);
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  dataSource$!: Observable<Pagination<User>>;
+
+  resultsLength = 0;
+
+  isLoadingResults = true;
+
+  isRateLimitReached = false;
+
+  nextURL!: string;
+
+  prevURL!: string;
+
+  pageIndex = 1;
+
+  selection = new SelectionModel<User>(false, []);
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private userService: UserService,
+  ) {
+    this.dataSource$ = userService.fetchAll();
+    this.dataSource$.subscribe(() => {
+      this.dataSource.paginator = this.paginator;
+    });
+
+    this.updateTable(this.dataSource$);
+  }
+
+  ngAfterViewInit() {
+    let url = '';
+    const paginator$ = this.paginator.page?.pipe(
+      tap(({ pageIndex, previousPageIndex }) => {
+        if (previousPageIndex !== undefined && pageIndex > previousPageIndex) {
+          url = this.nextURL;
+        } else {
+          url = this.prevURL;
+        }
+        this.isLoadingResults = true;
+      }),
+      switchMap(() => this.userService.changePage(url)),
+    );
+    this.updateTable(paginator$);
+  }
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -55,11 +103,12 @@ export class UserListComponent {
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: PeriodicElement): string {
+  checkboxLabel(row?: User): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+    // @ts-ignore
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
 
   delete() {
@@ -68,5 +117,29 @@ export class UserListComponent {
 
   async goToNewUser() {
     await this.router.navigate(['../new'], { relativeTo: this.route });
+  }
+
+  private updateTable(observable$: Observable<any>) {
+    observable$
+      .pipe(
+        tap(() => {
+          this.isLoadingResults = false;
+        }),
+      )
+      .subscribe((data: any) => {
+        console.log(data);
+        this.pageIndex = data.current_page - 1;
+        this.prevURL = data.prev_page_url;
+        this.nextURL = data.next_page_url;
+        this.resultsLength = data.total;
+
+        this.dataSource.data = data.data;
+
+        this.resultsLength += 1;
+        // fix to solve visual bug;
+        setTimeout(() => {
+          this.resultsLength -= 1;
+        });
+      });
   }
 }
