@@ -16,6 +16,8 @@ import { HeaderComponent } from './layout/header/header.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
 import { ChildrenRouteLayoutComponent } from './layout/children-route-layout/children-route-layout.component';
+import { MatPaginatorIntl } from '@angular/material/paginator';
+import { getSpanishPaginatorIntl } from './core/i18n/spanish-paginator-intl';
 
 @NgModule({
   declarations: [
@@ -37,7 +39,7 @@ import { ChildrenRouteLayoutComponent } from './layout/children-route-layout/chi
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     BrowserAnimationsModule,
   ],
-  providers: [],
+  providers: [{ provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }],
   bootstrap: [AppComponent],
   exports: [FooterComponent, HeaderComponent],
 })

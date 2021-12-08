@@ -6,6 +6,7 @@ import { RouterModule } from '@angular/router';
 import { BreadcrumbModule } from 'xng-breadcrumb';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [SpinnerComponent, PageNotFoundComponent],
@@ -18,6 +19,7 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
     MaterialModule,
     BreadcrumbModule,
     SpinnerComponent,
+    HttpClientModule,
   ],
 })
 export class SharedModule {}
