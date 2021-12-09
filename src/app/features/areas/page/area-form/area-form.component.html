@@ -6,16 +6,23 @@
       </button>
     </div>
   </mat-toolbar>
-  <form class="row justify-content-center">
+  <form
+    class="row justify-content-center"
+    [formGroup]="areaForm"
+    (ngSubmit)="onSubmit()"
+    (blur)="logValidationErrors()"
+  >
     <div class="col-6 d-flex flex-column">
       <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input matInput type="text" />
+        <input matInput type="text" formControlName="name" (blur)="logValidationErrors()" />
+        <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Descripción</mat-label>
-        <textarea matInput></textarea>
+        <textarea matInput formControlName="description" (blur)="logValidationErrors()"></textarea>
+        <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
       </mat-form-field>
       <button mat-flat-button color="primary">Guardar</button>
     </div>

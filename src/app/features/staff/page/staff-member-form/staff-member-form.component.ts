@@ -66,7 +66,7 @@ export class StaffMemberFormComponent {
       next: async () => {
         let message;
         this.isEdit ? (message = 'actualizado') : (message = 'registrado');
-        MessageHelper.successMessage('¡Éxito!', `El usuario ha sido ${message} correctamente.`);
+        MessageHelper.successMessage('¡Éxito!', `El miembro ha sido ${message} correctamente.`);
         await this.backToListRoles();
       },
     });

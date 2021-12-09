@@ -20,6 +20,11 @@ const routes: Routes = [
         data: { breadcrumb: 'Lista de areas' },
       },
       {
+        path: 'area',
+        component: AreaFormComponent,
+        data: { breadcrumb: 'Editar área' },
+      },
+      {
         path: 'new',
         component: AreaFormComponent,
         data: { breadcrumb: 'Nueva área' },
