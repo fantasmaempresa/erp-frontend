@@ -7,6 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { Observable, switchMap, tap } from 'rxjs';
 import { UserService } from '../../../../data/services/user.service';
 import { Pagination } from '../../../../data/models/Pagination.model';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 export interface PeriodicElement {
   name: string;
@@ -34,7 +35,7 @@ export const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements AfterViewInit {
-  displayedColumns: string[] = ['name', 'email', 'role', 'verified'];
+  displayedColumns: string[] = ['select', 'name', 'email', 'role', 'verified'];
 
   dataSource = new MatTableDataSource<User>();
 
@@ -61,12 +62,7 @@ export class UserListComponent implements AfterViewInit {
     private route: ActivatedRoute,
     private userService: UserService,
   ) {
-    this.dataSource$ = userService.fetchAll();
-    this.dataSource$.subscribe(() => {
-      this.dataSource.paginator = this.paginator;
-    });
-
-    this.updateTable(this.dataSource$);
+    this.fetchData();
   }
 
   ngAfterViewInit() {
@@ -83,6 +79,15 @@ export class UserListComponent implements AfterViewInit {
       switchMap(() => this.userService.changePage(url)),
     );
     this.updateTable(paginator$);
+  }
+
+  fetchData() {
+    this.dataSource$ = this.userService.fetchAll();
+    this.dataSource$.subscribe(() => {
+      this.dataSource.paginator = this.paginator;
+    });
+
+    this.updateTable(this.dataSource$);
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -112,7 +117,22 @@ export class UserListComponent implements AfterViewInit {
   }
 
   delete() {
-    console.log(this.selection.selected);
+    MessageHelper.decisionMessage(
+      `¿Deseas borrar al usuario ${this.selection.selected[0].name}?`,
+      'Una vez borrado no hay marcha atras.',
+      () => {
+        this.userService.delete(this.selection.selected[0].id).subscribe({
+          next: () => this.fetchData(),
+        });
+      },
+    );
+  }
+
+  async edit() {
+    await this.router.navigate([`../user`], {
+      queryParams: { id: this.selection.selected[0].id },
+      relativeTo: this.route,
+    });
   }
 
   async goToNewUser() {

@@ -8,11 +8,29 @@ import { User } from '../models/User.model';
   providedIn: 'root',
 })
 export class UserService {
+  endpoint = `${environment.base_url}/users`;
+
   constructor(private http: HttpClient) {}
 
   fetchAll() {
-    const url = `${environment.base_url}/users`;
-    return this.http.get<Pagination<User>>(url);
+    return this.http.get<Pagination<User>>(this.endpoint);
+  }
+
+  fetch(id: number) {
+    return this.http.get<User>(`${this.endpoint}/${id}`);
+  }
+
+  create(user: User) {
+    return this.http.post<User>(`${this.endpoint}`, user);
+  }
+
+  update(payload: User) {
+    let { id } = payload;
+    return this.http.put<User>(`${this.endpoint}/${id}`, payload);
+  }
+
+  delete(id: number | undefined) {
+    return this.http.delete(`${this.endpoint}/${id}`);
   }
 
   changePage(url: string) {

@@ -20,6 +20,11 @@ const routes: Routes = [
         data: { breadcrumb: 'Lista de usuarios' },
       },
       {
+        path: 'user',
+        component: UserFormComponent,
+        data: { breadcrumb: 'Editar usuario' },
+      },
+      {
         path: 'new',
         component: UserFormComponent,
         data: { breadcrumb: 'Nuevo usuario' },
