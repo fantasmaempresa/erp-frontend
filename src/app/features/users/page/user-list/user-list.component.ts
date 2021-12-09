@@ -35,11 +35,13 @@ export const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./user-list.component.scss'],
 })
 export class UserListComponent implements AfterViewInit {
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+
   displayedColumns: string[] = ['select', 'name', 'email', 'role', 'verified'];
 
-  dataSource = new MatTableDataSource<User>();
+  selection = new SelectionModel<User>(false, []);
 
-  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+  dataSource = new MatTableDataSource<User>();
 
   dataSource$!: Observable<Pagination<User>>;
 
@@ -54,8 +56,6 @@ export class UserListComponent implements AfterViewInit {
   prevURL!: string;
 
   pageIndex = 1;
-
-  selection = new SelectionModel<User>(false, []);
 
   constructor(
     private router: Router,
@@ -116,6 +116,17 @@ export class UserListComponent implements AfterViewInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
 
+  async goToNewUser() {
+    await this.router.navigate(['../new'], { relativeTo: this.route });
+  }
+
+  async edit() {
+    await this.router.navigate([`../user`], {
+      queryParams: { id: this.selection.selected[0].id },
+      relativeTo: this.route,
+    });
+  }
+
   delete() {
     MessageHelper.decisionMessage(
       `¿Deseas borrar al usuario ${this.selection.selected[0].name}?`,
@@ -128,17 +139,6 @@ export class UserListComponent implements AfterViewInit {
     );
   }
 
-  async edit() {
-    await this.router.navigate([`../user`], {
-      queryParams: { id: this.selection.selected[0].id },
-      relativeTo: this.route,
-    });
-  }
-
-  async goToNewUser() {
-    await this.router.navigate(['../new'], { relativeTo: this.route });
-  }
-
   private updateTable(observable$: Observable<any>) {
     observable$
       .pipe(
@@ -147,7 +147,6 @@ export class UserListComponent implements AfterViewInit {
         }),
       )
       .subscribe((data: any) => {
-        console.log(data);
         this.pageIndex = data.current_page - 1;
         this.prevURL = data.prev_page_url;
         this.nextURL = data.next_page_url;

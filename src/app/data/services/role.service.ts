@@ -20,6 +20,19 @@ export class RoleService {
     return this.http.get<Role>(`${this.endpoint}/${id}`);
   }
 
+  create(role: Role) {
+    return this.http.post<Role>(`${this.endpoint}`, role);
+  }
+
+  update(role: Role) {
+    let { id } = role;
+    return this.http.put<Role>(`${this.endpoint}/${id}`, role);
+  }
+
+  delete(id: number | undefined) {
+    return this.http.delete(`${this.endpoint}/${id}`);
+  }
+
   changePage(url: string) {
     return this.http.get(url);
   }

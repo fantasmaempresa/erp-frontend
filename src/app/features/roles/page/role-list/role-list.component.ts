@@ -1,22 +1,74 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
-import { ELEMENT_DATA, PeriodicElement } from '../../../users/page/user-list/user-list.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Role } from '../../../../data/models/Role.model';
+import { MatPaginator } from '@angular/material/paginator';
+import { Observable, switchMap, tap } from 'rxjs';
+import { Pagination } from '../../../../data/models/Pagination.model';
+import { RoleService } from '../../../../data/services/role.service';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 @Component({
   selector: 'app-role-list',
   templateUrl: './role-list.component.html',
   styleUrls: ['./role-list.component.scss'],
 })
-export class RoleListComponent {
-  displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
+export class RoleListComponent implements AfterViewInit {
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  displayedColumns: string[] = ['select', 'name', 'description'];
 
-  selection = new SelectionModel<PeriodicElement>(false, []);
+  selection = new SelectionModel<Role>(false, []);
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  dataSource = new MatTableDataSource<Role>();
+
+  dataSource$!: Observable<Pagination<Role>>;
+
+  resultsLength = 0;
+
+  isLoadingResults = true;
+
+  isRateLimitReached = false;
+
+  nextURL!: string;
+
+  prevURL!: string;
+
+  pageIndex = 1;
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private roleService: RoleService,
+  ) {
+    this.fetchData();
+  }
+
+  ngAfterViewInit() {
+    let url = '';
+    const paginator$ = this.paginator.page?.pipe(
+      tap(({ pageIndex, previousPageIndex }) => {
+        if (previousPageIndex !== undefined && pageIndex > previousPageIndex) {
+          url = this.nextURL;
+        } else {
+          url = this.prevURL;
+        }
+        this.isLoadingResults = true;
+      }),
+      switchMap(() => this.roleService.changePage(url)),
+    );
+    this.updateTable(paginator$);
+  }
+
+  fetchData() {
+    this.dataSource$ = this.roleService.fetchAll();
+    this.dataSource$.subscribe(() => {
+      this.dataSource.paginator = this.paginator;
+    });
+
+    this.updateTable(this.dataSource$);
+  }
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -26,18 +78,61 @@ export class RoleListComponent {
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: PeriodicElement): string {
+  checkboxLabel(row?: Role): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
-  }
-
-  delete() {
-    console.log(this.selection.selected);
+    // @ts-ignore
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
 
   goToNewRole() {
     this.router.navigate(['../new'], { relativeTo: this.route });
+  }
+
+  async edit() {
+    await this.router.navigate([`../role`], {
+      queryParams: { id: this.selection.selected[0].id },
+      relativeTo: this.route,
+    });
+  }
+
+  delete() {
+    MessageHelper.decisionMessage(
+      `¿Deseas borrar el rol ${this.selection.selected[0].name}?`,
+      'Una vez borrado no hay marcha atras.',
+      () => {
+        this.roleService.delete(this.selection.selected[0].id).subscribe({
+          next: () => this.fetchData(),
+          error: ({ error }) => {
+            console.log(error.error);
+            MessageHelper.errorMessage(error.error);
+          },
+        });
+      },
+    );
+  }
+
+  private updateTable(observable$: Observable<any>) {
+    observable$
+      .pipe(
+        tap(() => {
+          this.isLoadingResults = false;
+        }),
+      )
+      .subscribe((data: any) => {
+        this.pageIndex = data.current_page - 1;
+        this.prevURL = data.prev_page_url;
+        this.nextURL = data.next_page_url;
+        this.resultsLength = data.total;
+
+        this.dataSource.data = data.data;
+
+        this.resultsLength += 1;
+        // fix to solve visual bug;
+        setTimeout(() => {
+          this.resultsLength -= 1;
+        });
+      });
   }
 }

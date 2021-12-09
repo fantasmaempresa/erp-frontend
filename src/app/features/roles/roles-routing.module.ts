@@ -20,6 +20,11 @@ const routes: Routes = [
         data: { breadcrumb: 'Lista de roles' },
       },
       {
+        path: 'role',
+        component: RoleFormComponent,
+        data: { breadcrumb: 'Editar role' },
+      },
+      {
         path: 'new',
         component: RoleFormComponent,
         data: { breadcrumb: 'Nuevo rol' },

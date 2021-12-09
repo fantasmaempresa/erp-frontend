@@ -150,3 +150,8 @@ ul {
   align-items: center;
   justify-content: center;
 }
+
+
+td.mat-cell:first-of-type {
+  padding-right: 24px;
+}

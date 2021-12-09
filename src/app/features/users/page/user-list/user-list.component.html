@@ -29,7 +29,15 @@
     <mat-icon>person_add</mat-icon>
   </button>
 </mat-toolbar>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<table
+  mat-table
+  [dataSource]="dataSource"
+  class="mat-elevation-z8"
+  matSort
+  matSortActive="created"
+  matSortDisableClear
+  matSortDirection="desc"
+>
   <!-- Checkbox Column -->
   <ng-container matColumnDef="select">
     <th mat-header-cell *matHeaderCellDef></th>
@@ -74,7 +82,7 @@
 </table>
 <mat-paginator
   [length]="resultsLength"
-  pageSize="100"
+  pageSize="10"
   aria-label="Select page of search results"
   [pageIndex]="pageIndex"
 ></mat-paginator>

@@ -42,10 +42,8 @@ export class UserFormComponent {
       this.isEdit = true;
       userService.fetch(this.route.snapshot.queryParams.id).subscribe({
         next: (user) => {
-          console.log(user);
           this.userForm.addControl('id', new FormControl(''));
           this.userForm.patchValue(user);
-          console.log(this.userForm.value);
         },
       });
     }
