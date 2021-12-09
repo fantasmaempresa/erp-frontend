@@ -7,26 +7,54 @@
     </div>
   </mat-toolbar>
 
-  <form class="row justify-content-center">
+  <form
+    class="row justify-content-center"
+    [formGroup]="staffMemberForm"
+    (ngSubmit)="onSubmit()"
+    (blur)="logValidationErrors()"
+  >
     <div class="col-6 d-flex flex-column">
       <mat-form-field appearance="outline">
+        <mat-label>Area</mat-label>
+        <mat-select formControlName="work_area_id">
+          <mat-option>Ninguna</mat-option>
+          <mat-option
+            *ngFor="let area of workAreas$ | async"
+            [value]="area.id"
+            (blur)="logValidationErrors()"
+            >{{ area.name }}</mat-option
+          >
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input matInput type="text" />
+        <input matInput type="text" formControlName="name" (blur)="logValidationErrors()" />
+        <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Correo</mat-label>
-        <input matInput type="email" placeholder="ejemplo@ejemplo.com" />
+        <input
+          matInput
+          type="email"
+          placeholder="ejemplo@ejemplo.com"
+          formControlName="email"
+          (blur)="logValidationErrors()"
+        />
+        <mat-error *ngIf="formErrors.email">{{ formErrors.email }}</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Teléfono</mat-label>
-        <input matInput type="tel" />
+        <input matInput type="tel" formControlName="phone" (blur)="logValidationErrors()" />
+        <mat-error *ngIf="formErrors.phone">{{ formErrors.phone }}</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Alias/Apodo</mat-label>
-        <input matInput type="text" />
+        <input matInput type="text" formControlName="nickname" (blur)="logValidationErrors()" />
+        <mat-error *ngIf="formErrors.nickname">{{ formErrors.nickname }}</mat-error>
       </mat-form-field>
 
       <button mat-flat-button color="primary">Guardar</button>

@@ -20,9 +20,14 @@ const routes: Routes = [
         data: { breadcrumb: 'Lista de personal' },
       },
       {
+        path: 'staff-member',
+        component: StaffMemberFormComponent,
+        data: { breadcrumb: 'Editar miembro del personal' },
+      },
+      {
         path: 'new',
         component: StaffMemberFormComponent,
-        data: { breadcrumb: 'Nuevo rol' },
+        data: { breadcrumb: 'Nuevo miembro del personal' },
       },
     ],
   },

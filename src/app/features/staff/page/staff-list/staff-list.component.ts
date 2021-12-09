@@ -1,22 +1,74 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
-import { ELEMENT_DATA, PeriodicElement } from '../../../users/page/user-list/user-list.component';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatPaginator } from '@angular/material/paginator';
+import { Observable, switchMap, tap } from 'rxjs';
+import { Pagination } from '../../../../data/models/Pagination.model';
+import { StaffService } from '../../../../data/services/staff.service';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { Staff } from '../../../../data/models/Staff.model';
 
 @Component({
   selector: 'app-staff-list',
   templateUrl: './staff-list.component.html',
   styleUrls: ['./staff-list.component.scss'],
 })
-export class StaffListComponent {
-  displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
+export class StaffListComponent implements AfterViewInit {
+  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  displayedColumns: string[] = ['select', 'name', 'email', 'phone', 'extra_information'];
 
-  selection = new SelectionModel<PeriodicElement>(false, []);
+  selection = new SelectionModel<Staff>(false, []);
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  dataSource = new MatTableDataSource<Staff>();
+
+  dataSource$!: Observable<Pagination<Staff>>;
+
+  resultsLength = 0;
+
+  isLoadingResults = true;
+
+  isRateLimitReached = false;
+
+  nextURL!: string;
+
+  prevURL!: string;
+
+  pageIndex = 1;
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private staffService: StaffService,
+  ) {
+    this.fetchData();
+  }
+
+  ngAfterViewInit() {
+    let url = '';
+    const paginator$ = this.paginator.page?.pipe(
+      tap(({ pageIndex, previousPageIndex }) => {
+        if (previousPageIndex !== undefined && pageIndex > previousPageIndex) {
+          url = this.nextURL;
+        } else {
+          url = this.prevURL;
+        }
+        this.isLoadingResults = true;
+      }),
+      switchMap(() => this.staffService.changePage(url)),
+    );
+    this.updateTable(paginator$);
+  }
+
+  fetchData() {
+    this.dataSource$ = this.staffService.fetchAll();
+    this.dataSource$.subscribe(() => {
+      this.dataSource.paginator = this.paginator;
+    });
+
+    this.updateTable(this.dataSource$);
+  }
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
@@ -26,18 +78,58 @@ export class StaffListComponent {
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: PeriodicElement): string {
+  checkboxLabel(row?: Staff): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.position + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+  }
+
+  async goToNewStaff() {
+    await this.router.navigate(['../new'], { relativeTo: this.route });
+  }
+
+  async edit() {
+    await this.router.navigate([`../staff-member`], {
+      queryParams: { id: this.selection.selected[0].id },
+      relativeTo: this.route,
+    });
   }
 
   delete() {
-    console.log(this.selection.selected);
+    MessageHelper.decisionMessage(
+      `¿Deseas borrar al usuario ${this.selection.selected[0].name}?`,
+      'Una vez borrado no hay marcha atras.',
+      () => {
+        this.staffService.delete(this.selection.selected[0].id).subscribe({
+          next: () => this.fetchData(),
+        });
+      },
+    );
   }
 
-  goToNewStaff() {
-    this.router.navigate(['../new'], { relativeTo: this.route });
+
+
+  private updateTable(observable$: Observable<any>) {
+    observable$
+      .pipe(
+        tap(() => {
+          this.isLoadingResults = false;
+        }),
+      )
+      .subscribe((data: any) => {
+        this.pageIndex = data.current_page - 1;
+        this.prevURL = data.prev_page_url;
+        this.nextURL = data.next_page_url;
+        this.resultsLength = data.total;
+
+        this.dataSource.data = data.data;
+
+        this.resultsLength += 1;
+        // fix to solve visual bug;
+        setTimeout(() => {
+          this.resultsLength -= 1;
+        });
+      });
   }
 }
