@@ -58,14 +58,13 @@ export class StaffMemberFormComponent {
   onSubmit() {
     let request$: Observable<Staff>;
     if (!this.isEdit) {
-      request$ = this.staffService.create(this.staffMemberForm.value);
+      request$ = this.staffService.save(this.staffMemberForm.value);
     } else {
       request$ = this.staffService.update(this.staffMemberForm.value);
     }
     request$.subscribe({
       next: async () => {
-        let message;
-        this.isEdit ? (message = 'actualizado') : (message = 'registrado');
+        let message = this.isEdit ? 'actualizado' : 'registrado';
         MessageHelper.successMessage('¡Éxito!', `El miembro ha sido ${message} correctamente.`);
         await this.backToListRoles();
       },

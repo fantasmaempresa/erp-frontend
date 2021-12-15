@@ -56,14 +56,13 @@ export class UserFormComponent {
   onSubmit() {
     let request$: Observable<User>;
     if (!this.isEdit) {
-      request$ = this.userService.create(this.userForm.value);
+      request$ = this.userService.save(this.userForm.value);
     } else {
       request$ = this.userService.update(this.userForm.value);
     }
     request$.subscribe({
       next: async () => {
-        let message;
-        this.isEdit ? (message = 'actualizado') : (message = 'registrado');
+        let message = this.isEdit ? 'actualizado' : 'registrado';
         MessageHelper.successMessage('¡Éxito!', `El usuario ha sido ${message} correctamente.`);
         await this.backToListUsers();
       },

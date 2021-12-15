@@ -48,14 +48,13 @@ export class AreaFormComponent {
   onSubmit() {
     let request$: Observable<WorkArea>;
     if (!this.isEdit) {
-      request$ = this.areaService.create(this.areaForm.value);
+      request$ = this.areaService.save(this.areaForm.value);
     } else {
       request$ = this.areaService.update(this.areaForm.value);
     }
     request$.subscribe({
       next: async () => {
-        let message;
-        this.isEdit ? (message = 'actualizada') : (message = 'registrada');
+        const message = this.isEdit ? 'actualizada' : 'registrada';
         MessageHelper.successMessage('¡Éxito!', `El area ha sido ${message} correctamente.`);
         await this.backToListAreas();
       },

@@ -51,14 +51,13 @@ export class ClientFormComponent {
   onSubmit() {
     let request$: Observable<Client>;
     if (!this.isEdit) {
-      request$ = this.clientService.create(this.clientForm.value);
+      request$ = this.clientService.save(this.clientForm.value);
     } else {
       request$ = this.clientService.update(this.clientForm.value);
     }
     request$.subscribe({
       next: async () => {
-        let message;
-        this.isEdit ? (message = 'actualizado') : (message = 'registrado');
+        const message = this.isEdit ? 'actualizado' : 'registrado';
         MessageHelper.successMessage('¡Éxito!', `El cliente ha sido ${message} correctamente.`);
         await this.backToListRoles();
       },

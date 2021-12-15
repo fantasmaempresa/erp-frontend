@@ -46,14 +46,13 @@ export class RoleFormComponent {
   onSubmit() {
     let request$: Observable<Role>;
     if (!this.isEdit) {
-      request$ = this.roleService.create(this.roleForm.value);
+      request$ = this.roleService.save(this.roleForm.value);
     } else {
       request$ = this.roleService.update(this.roleForm.value);
     }
     request$.subscribe({
       next: async () => {
-        let message;
-        this.isEdit ? (message = 'actualizado') : (message = 'registrado');
+        let message = this.isEdit ? 'actualizado' : 'registrado';
         MessageHelper.successMessage('¡Éxito!', `El rol ha sido ${message} correctamente.`);
         await this.backToListRoles();
       },
