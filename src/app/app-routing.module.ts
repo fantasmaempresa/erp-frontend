@@ -52,6 +52,18 @@ const routes: Routes = [
         data: { breadcrumb: 'Áreas' },
       },
       {
+        path: 'concepts',
+        loadChildren: () =>
+          import('./features/concepts/concepts.module').then((m) => m.ConceptsModule),
+        data: { breadcrumb: 'Conceptos' },
+      },
+      {
+        path: 'quote-statuses',
+        loadChildren: () =>
+          import('./features/quote-status/quote-status.module').then((m) => m.QuoteStatusModule),
+        data: { breadcrumb: 'Estado de la cotización' },
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',
