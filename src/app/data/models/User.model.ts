@@ -1,5 +1,6 @@
-export interface User {
-  id?: number;
+import { EntityModel } from '../../core/interfaces/EntityModel';
+
+export interface User extends EntityModel {
   name: string;
   email: string;
   password?: string;
