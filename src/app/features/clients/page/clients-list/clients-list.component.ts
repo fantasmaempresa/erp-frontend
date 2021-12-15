@@ -4,7 +4,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { Observable, switchMap, tap } from 'rxjs';
-import { Pagination } from '../../../../data/models/Pagination.model';
+import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { Client } from '../../../../data/models/Client.model';
 import { ClientService } from '../../../../data/services/client.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';

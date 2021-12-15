@@ -6,7 +6,7 @@ import { User } from '../../../../data/models/User.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { Observable, switchMap, tap } from 'rxjs';
 import { UserService } from '../../../../data/services/user.service';
-import { Pagination } from '../../../../data/models/Pagination.model';
+import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 export interface PeriodicElement {
