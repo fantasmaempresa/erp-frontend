@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormValidationService } from '../../../../shared/services/form-validation.service';
 import { validationMessages } from '../../../../core/constants/validationMessages';
 import { UserService } from '../../../../data/services/user.service';
@@ -17,7 +17,7 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 })
 export class UserFormComponent {
   userForm = new FormGroup({
-    name: new FormControl(''),
+    name: new FormControl('', Validators.required),
     email: new FormControl(''),
     password: new FormControl(''),
     role_id: new FormControl(null),

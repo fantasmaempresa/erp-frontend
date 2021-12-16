@@ -1,21 +1,23 @@
-import { AfterViewInit, Directive, ElementRef, HostListener, Renderer2 } from '@angular/core';
-import { NgControl } from '@angular/forms';
+import { AfterViewInit, Directive, ElementRef, Injector, Renderer2 } from '@angular/core';
+import { MatFormField } from '@angular/material/form-field';
+import { AbstractControl } from '@angular/forms';
 
 @Directive({
   selector: '[appErrorMessage]',
 })
 export class ErrorMessageDirective implements AfterViewInit {
-  matError!: any;
+  control!: AbstractControl | null | undefined;
 
-  constructor(private el: ElementRef, private control: NgControl, private renderer2: Renderer2) {}
+  constructor(private _el: ElementRef, private _inj: Injector, private _renderer2: Renderer2) {}
 
   ngAfterViewInit(): void {
-    this.matError = this.el.nativeElement.nextElementSibling;
+    const inputRef = this._inj.get(MatFormField);
+    this.control = inputRef._control.ngControl?.control;
+
+    this.control?.statusChanges.subscribe(this.updateError.bind(this));
   }
 
-  @HostListener('blur')
-  setErrors() {
-    console.log(this.matError);
-    // this.renderer2.setProperty(this.matError, 'innerText', `Error`);
+  updateError() {
+    this._renderer2.setProperty(this._el.nativeElement, 'innerHTML', `Error`);
   }
 }

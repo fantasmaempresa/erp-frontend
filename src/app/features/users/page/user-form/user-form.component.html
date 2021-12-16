@@ -33,9 +33,8 @@
           type="text"
           autocomplete="off"
           formControlName="name"
-          (blur)="logValidationErrors()"
         />
-        <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
