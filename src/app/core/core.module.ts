@@ -5,6 +5,7 @@ import { throwIfAlreadyLoaded } from './guards/module-import.guard';
 @NgModule({
   declarations: [],
   imports: [CommonModule],
+  exports: [],
 })
 export class CoreModule {
   constructor(@Optional() @SkipSelf() parentModule: CoreModule) {
