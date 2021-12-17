@@ -44,9 +44,8 @@
           type="email"
           placeholder="ejemplo@email.com"
           formControlName="email"
-          (blur)="logValidationErrors()"
         />
-        <mat-error *ngIf="formErrors.email">{{ formErrors.email }}</mat-error>
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" *ngIf="!isEdit">
