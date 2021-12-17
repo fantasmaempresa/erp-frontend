@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { FormValidationService } from '../../../../shared/services/form-validation.service';
 import { UserService } from '../../../../data/services/user.service';
@@ -16,19 +16,16 @@ import { Role } from '../../../../data/models/Role.model';
 })
 export class RoleFormComponent {
   roleForm = new FormGroup({
-    name: new FormControl(''),
-    description: new FormControl(''),
+    name: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
     config: new FormControl({ test: 'test' }),
   });
 
   isEdit = false;
 
-  formErrors: any = {};
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private formValidationService: FormValidationService,
     private userService: UserService,
     private roleService: RoleService,
   ) {
@@ -57,13 +54,6 @@ export class RoleFormComponent {
         await this.backToListRoles();
       },
     });
-  }
-
-  logValidationErrors() {
-    this.formErrors = this.formValidationService.getValidationErrors(
-      this.roleForm,
-      validationMessages,
-    );
   }
 
   async backToListRoles() {

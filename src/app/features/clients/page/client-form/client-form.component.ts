@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup } from '@angular/forms';
-import { FormValidationService } from '../../../../shared/services/form-validation.service';
 import { ClientService } from '../../../../data/services/client.service';
 import { Observable } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { validationMessages } from '../../../../core/constants/validationMessages';
 import { Client } from '../../../../data/models/Client.model';
 
 @Component({
@@ -25,12 +23,9 @@ export class ClientFormComponent {
 
   isEdit = false;
 
-  formErrors: any = {};
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private formValidationService: FormValidationService,
     private clientService: ClientService,
   ) {
     if (this.route.snapshot.queryParams.id) {
@@ -62,12 +57,5 @@ export class ClientFormComponent {
         await this.backToListRoles();
       },
     });
-  }
-
-  logValidationErrors() {
-    this.formErrors = this.formValidationService.getValidationErrors(
-      this.clientForm,
-      validationMessages,
-    );
   }
 }

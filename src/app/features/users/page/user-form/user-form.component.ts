@@ -18,9 +18,9 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 export class UserFormComponent {
   userForm = new FormGroup({
     name: new FormControl('', [Validators.required]),
-    email: new FormControl(''),
-    password: new FormControl(''),
-    role_id: new FormControl(null),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    role_id: new FormControl(null, [Validators.required]),
     config: new FormControl({ test: 'test' }),
   });
 
