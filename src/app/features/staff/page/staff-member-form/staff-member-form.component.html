@@ -11,7 +11,6 @@
     class="row justify-content-center"
     [formGroup]="staffMemberForm"
     (ngSubmit)="onSubmit()"
-    (blur)="logValidationErrors()"
   >
     <div class="col-6 d-flex flex-column">
       <mat-form-field appearance="outline">
@@ -21,16 +20,16 @@
           <mat-option
             *ngFor="let area of workAreas$ | async"
             [value]="area.id"
-            (blur)="logValidationErrors()"
-            >{{ area.name }}</mat-option
+          >{{ area.name }}</mat-option
           >
         </mat-select>
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input matInput type="text" formControlName="name" (blur)="logValidationErrors()" />
-        <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
+        <input matInput type="text" formControlName="name"/>
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -40,21 +39,20 @@
           type="email"
           placeholder="ejemplo@ejemplo.com"
           formControlName="email"
-          (blur)="logValidationErrors()"
         />
-        <mat-error *ngIf="formErrors.email">{{ formErrors.email }}</mat-error>
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Teléfono</mat-label>
-        <input matInput type="tel" formControlName="phone" (blur)="logValidationErrors()" />
-        <mat-error *ngIf="formErrors.phone">{{ formErrors.phone }}</mat-error>
+        <input matInput type="tel" formControlName="phone"/>
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Alias/Apodo</mat-label>
-        <input matInput type="text" formControlName="nickname" (blur)="logValidationErrors()" />
-        <mat-error *ngIf="formErrors.nickname">{{ formErrors.nickname }}</mat-error>
+        <input matInput type="text" formControlName="nickname"/>
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <button mat-flat-button color="primary">Guardar</button>
