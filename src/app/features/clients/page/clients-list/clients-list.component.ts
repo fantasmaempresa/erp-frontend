@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -16,6 +16,12 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 })
 export class ClientsListComponent implements AfterViewInit {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+
+  @Input() toolbar = true;
+
+  @Input() pageSize = 10;
+
+  @Input() showPaginator = true;
 
   displayedColumns: string[] = ['select', 'name', 'email', 'phone', 'address'];
 

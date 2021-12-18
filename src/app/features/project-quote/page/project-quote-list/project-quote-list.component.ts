@@ -1,20 +1,20 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
+import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, switchMap, tap } from 'rxjs';
 import { Pagination } from '../../../../data/models/Pagination.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
 import { QuoteStatusService } from '../../../../data/services/quote-status.service';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 @Component({
-  selector: 'app-quote-status-list',
-  templateUrl: './quote-status-list.component.html',
-  styleUrls: ['./quote-status-list.component.scss'],
+  selector: 'app-project-quote-list',
+  templateUrl: './project-quote-list.component.html',
+  styleUrls: ['./project-quote-list.component.scss'],
 })
-export class QuoteStatusListComponent implements AfterViewInit {
+export class ProjectQuoteListComponent implements AfterViewInit {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['select', 'name', 'description'];
@@ -86,7 +86,7 @@ export class QuoteStatusListComponent implements AfterViewInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
 
-  async goToNewQuoteStatus() {
+  async goToNewQuote() {
     await this.router.navigate(['../new'], { relativeTo: this.route });
   }
 

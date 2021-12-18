@@ -1,34 +1,3 @@
-<mat-toolbar *ngIf="this.toolbar">
-  <button
-    *ngIf="selection.selected.length !== 0"
-    [matTooltipPosition]="'below'"
-    aria-label="Editar cliente"
-    mat-icon-button
-    matTooltip="Editar cliente"
-    (click)="edit()"
-  >
-    <mat-icon>edit</mat-icon>
-  </button>
-  <button
-    *ngIf="selection.selected.length !== 0"
-    [matTooltipPosition]="'below'"
-    aria-label="Eliminar cliente"
-    mat-icon-button
-    matTooltip="Eliminar cliente"
-    (click)="delete()"
-  >
-    <mat-icon>person_remove</mat-icon>
-  </button>
-  <button
-    [matTooltipPosition]="'below'"
-    aria-label="Agregar cliente"
-    mat-icon-button
-    matTooltip="Agregar cliente"
-    (click)="goToNewClient()"
-  >
-    <mat-icon>person_add</mat-icon>
-  </button>
-</mat-toolbar>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
   <!-- Checkbox Column -->
   <ng-container matColumnDef="select">

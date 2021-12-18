@@ -1,0 +1,69 @@
+<mat-card>
+  <mat-toolbar>
+    <div>
+      <button aria-label="Regresar" mat-icon-button (click)="backToListUsers()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <form
+    class="row justify-content-center"
+    [formGroup]="quoteForm"
+    (ngSubmit)="onSubmit()"
+    (blur)="logValidationErrors()"
+  >
+    <div class="col-6 d-flex flex-column pe-0">
+      <mat-form-field class="example-full-width" appearance="outline">
+        <mat-label>Usuario</mat-label>
+        <input type="text" matInput formControlName="client" [matAutocomplete]="auto" />
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+          <mat-option *ngFor="let option of filteredUsers$ | async" [value]="option">
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input
+          matInput
+          type="text"
+          autocomplete="off"
+          formControlName="name"
+          (blur)="logValidationErrors()"
+        />
+        <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Correo</mat-label>
+        <input
+          matInput
+          type="email"
+          placeholder="ejemplo@email.com"
+          formControlName="email"
+          (blur)="logValidationErrors()"
+        />
+        <mat-error *ngIf="formErrors.email">{{ formErrors.email }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf="!isEdit">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password" (blur)="logValidationErrors()" />
+        <mat-error *ngIf="formErrors.password">{{ formErrors.password }}</mat-error>
+      </mat-form-field>
+
+      <button mat-flat-button color="primary">Guardar</button>
+    </div>
+    <div class="col-1 d-flex flex-column">
+      <button
+        mat-icon-button
+        aria-label="Buscar usuario"
+        class="col-2 align-self-center search-button"
+        (click)="openDialog()"
+      >
+        <mat-icon>search</mat-icon>
+      </button>
+    </div>
+  </form>
+</mat-card>

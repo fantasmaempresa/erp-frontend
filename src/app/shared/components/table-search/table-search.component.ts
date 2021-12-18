@@ -1,29 +1,50 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
+import { Client } from '../../../data/models/Client.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable, switchMap, tap } from 'rxjs';
-import { Pagination } from '../../../../data/models/Pagination.model';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
-import { QuoteStatusService } from '../../../../data/services/quote-status.service';
+import { Observable, Subscription, switchMap, tap } from 'rxjs';
+import { Pagination } from '../../../data/models/Pagination.model';
+import { ClientService } from '../../../data/services/client.service';
+
+export interface TableOptions {
+  toolbar: boolean;
+  search: boolean;
+  pageSize: number;
+  paginator: boolean;
+}
 
 @Component({
-  selector: 'app-quote-status-list',
-  templateUrl: './quote-status-list.component.html',
-  styleUrls: ['./quote-status-list.component.scss'],
+  selector: 'app-table-search',
+  templateUrl: './table-search.component.html',
+  styleUrls: ['./table-search.component.scss'],
 })
-export class QuoteStatusListComponent implements AfterViewInit {
+export class TableSearchComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
-  displayedColumns: string[] = ['select', 'name', 'description'];
+  @Input() toolbar = true;
 
-  selection = new SelectionModel<QuoteStatus>(false, []);
+  @Input() pageSize = 10;
 
-  dataSource = new MatTableDataSource<QuoteStatus>();
+  @Input() showPaginator = true;
 
-  dataSource$!: Observable<Pagination<QuoteStatus>>;
+  @Output() optionSelected = new EventEmitter();
+
+  displayedColumns: string[] = ['select', 'name', 'email', 'phone', 'address'];
+
+  selection = new SelectionModel<Client>(false, []);
+
+  dataSource = new MatTableDataSource<Client>();
+
+  dataSource$!: Observable<Pagination<Client>>;
 
   resultsLength = 0;
 
@@ -37,12 +58,15 @@ export class QuoteStatusListComponent implements AfterViewInit {
 
   pageIndex = 1;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private quoteStatusService: QuoteStatusService,
-  ) {
+  optionSelectedSubscription!: Subscription;
+
+  constructor(private clientService: ClientService) {
     this.fetchData();
+    this.optionSelectedSubscription = this.selection.changed.subscribe((res) => {
+      if (res.added) {
+        this.optionSelected.emit(res.added[0]);
+      }
+    });
   }
 
   ngAfterViewInit() {
@@ -56,13 +80,17 @@ export class QuoteStatusListComponent implements AfterViewInit {
         }
         this.isLoadingResults = true;
       }),
-      switchMap(() => this.quoteStatusService.changePage(url)),
+      switchMap(() => this.clientService.changePage(url)),
     );
     this.updateTable(paginator$);
   }
 
+  ngOnDestroy() {
+    this.optionSelectedSubscription.unsubscribe();
+  }
+
   fetchData() {
-    this.dataSource$ = this.quoteStatusService.fetchAll();
+    this.dataSource$ = this.clientService.fetchAll();
     this.dataSource$.subscribe(() => {
       this.dataSource.paginator = this.paginator;
     });
@@ -78,35 +106,11 @@ export class QuoteStatusListComponent implements AfterViewInit {
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: QuoteStatus): string {
+  checkboxLabel(row?: Client): string {
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    // @ts-ignore
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
-  }
-
-  async goToNewQuoteStatus() {
-    await this.router.navigate(['../new'], { relativeTo: this.route });
-  }
-
-  async edit() {
-    await this.router.navigate([`../quote-status`], {
-      queryParams: { id: this.selection.selected[0].id },
-      relativeTo: this.route,
-    });
-  }
-
-  delete() {
-    MessageHelper.decisionMessage(
-      `¿Deseas borrar el concepto ${this.selection.selected[0].name}?`,
-      'Una vez borrado no hay marcha atras.',
-      () => {
-        this.quoteStatusService.delete(this.selection.selected[0].id).subscribe({
-          next: () => this.fetchData(),
-        });
-      },
-    );
   }
 
   private updateTable(observable$: Observable<any>) {

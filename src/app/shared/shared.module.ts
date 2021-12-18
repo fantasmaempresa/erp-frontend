@@ -7,10 +7,25 @@ import { BreadcrumbModule } from 'xng-breadcrumb';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { HttpClientModule } from '@angular/common/http';
+import { DialogSearchComponent } from './components/dialog-search/dialog-search.component';
+import { TableSearchComponent } from './components/table-search/table-search.component';
 
 @NgModule({
-  declarations: [SpinnerComponent, PageNotFoundComponent],
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, BreadcrumbModule],
+  entryComponents: [DialogSearchComponent],
+  declarations: [
+    SpinnerComponent,
+    PageNotFoundComponent,
+    DialogSearchComponent,
+    TableSearchComponent,
+  ],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    RouterModule,
+    BreadcrumbModule,
+    MaterialModule,
+  ],
   exports: [
     CommonModule,
     FormsModule,

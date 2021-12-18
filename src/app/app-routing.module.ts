@@ -58,6 +58,12 @@ const routes: Routes = [
         data: { breadcrumb: 'Conceptos' },
       },
       {
+        path: 'project-quote',
+        loadChildren: () =>
+          import('./features/project-quote/project-quote.module').then((m) => m.ProjectQuoteModule),
+        data: { breadcrumb: 'Cotizaciones de proyectos' },
+      },
+      {
         path: 'quote-statuses',
         loadChildren: () =>
           import('./features/quote-status/quote-status.module').then((m) => m.QuoteStatusModule),

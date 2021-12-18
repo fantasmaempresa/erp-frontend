@@ -1,4 +1,4 @@
-<mat-toolbar>
+<mat-toolbar *ngIf="toolbar">
   <button
     *ngIf="selection.selected.length !== 0"
     [matTooltipPosition]="'below'"

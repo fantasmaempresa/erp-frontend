@@ -17,7 +17,15 @@ export class SidebarComponent {
         { label: 'Personal', route: '/staff', icon: 'groups' },
         { label: 'Áreas', route: '/areas', icon: 'group_work' },
         { label: 'Conceptos', route: '/concepts', icon: 'group_work' },
-        { label: 'Estados de la cotización', route: '/quote-statuses', icon: 'group_work' },
+        {
+          label: 'Cotizaciones',
+          icon: 'rule_folder',
+          isOpen: false,
+          dropdowns: [
+            { label: 'Lista de cotizaciones', route: '/project-quote', icon: 'group_work' },
+            { label: 'Estados de la cotización', route: '/quote-statuses', icon: 'group_work' },
+          ],
+        },
         {
           label: 'Proyectos',
           icon: 'rule_folder',
