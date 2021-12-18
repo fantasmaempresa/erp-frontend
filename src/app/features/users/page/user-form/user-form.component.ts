@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { FormValidationService } from '../../../../shared/services/form-validation.service';
-import { validationMessages } from '../../../../core/constants/validationMessages';
 import { UserService } from '../../../../data/services/user.service';
 import { RoleService } from '../../../../data/services/role.service';
 import { map, Observable } from 'rxjs';
@@ -33,7 +31,6 @@ export class UserFormComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private formValidationService: FormValidationService,
     private userService: UserService,
     private roleService: RoleService,
   ) {
@@ -67,12 +64,5 @@ export class UserFormComponent {
         await this.backToListUsers();
       },
     });
-  }
-
-  logValidationErrors() {
-    this.formErrors = this.formValidationService.getValidationErrors(
-      this.userForm,
-      validationMessages,
-    );
   }
 }

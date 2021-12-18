@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClientService } from '../../../../data/services/client.service';
 import { Observable } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
@@ -13,12 +13,16 @@ import { Client } from '../../../../data/models/Client.model';
 })
 export class ClientFormComponent {
   clientForm = new FormGroup({
-    name: new FormControl(''),
-    email: new FormControl(''),
-    phone: new FormControl(''),
+    name: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    phone: new FormControl('', [Validators.required]),
     nickname: new FormControl(null),
     address: new FormControl(null),
-    rfc: new FormControl(''),
+    rfc: new FormControl('', [
+      Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(13),
+    ]),
   });
 
   isEdit = false;

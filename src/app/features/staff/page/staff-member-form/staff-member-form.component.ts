@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StaffService } from '../../../../data/services/staff.service';
 import { map, Observable } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
@@ -17,9 +17,13 @@ import { AreaService } from '../../../../data/services/area.service';
 })
 export class StaffMemberFormComponent {
   staffMemberForm = new FormGroup({
-    name: new FormControl(''),
-    email: new FormControl(''),
-    phone: new FormControl(''),
+    name: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required]),
+    phone: new FormControl('', [
+      Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(10),
+    ]),
     nickname: new FormControl(null),
     extra_information: new FormControl(null),
     work_area_id: new FormControl(null),
