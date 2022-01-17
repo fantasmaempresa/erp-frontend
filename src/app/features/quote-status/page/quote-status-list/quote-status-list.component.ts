@@ -3,11 +3,11 @@ import { MatPaginator } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, switchMap, tap } from 'rxjs';
-import { Pagination } from '../../../../data/models/Pagination.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
 import { QuoteStatusService } from '../../../../data/services/quote-status.service';
+import { Pagination } from '../../../../core/interfaces/Pagination.model';
 
 @Component({
   selector: 'app-quote-status-list',

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Pagination } from '../models/Pagination.model';
 import { Concept } from '../models/Concept.model';
+import { Pagination } from '../../core/interfaces/Pagination.model';
 
 @Injectable({
   providedIn: 'root',

@@ -12,8 +12,8 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Client } from '../../../data/models/Client.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subscription, switchMap, tap } from 'rxjs';
-import { Pagination } from '../../../data/models/Pagination.model';
 import { ClientService } from '../../../data/services/client.service';
+import { Pagination } from '../../../core/interfaces/Pagination.model';
 
 export interface TableOptions {
   toolbar: boolean;

@@ -4,11 +4,11 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Client } from '../../../../data/models/Client.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, switchMap, tap } from 'rxjs';
-import { Pagination } from '../../../../data/models/Pagination.model';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { Concept } from '../../../../data/models/Concept.model';
 import { ConceptService } from '../../../../data/services/concept.service';
+import { Pagination } from '../../../../core/interfaces/Pagination.model';
 
 @Component({
   selector: 'app-concept-list',
