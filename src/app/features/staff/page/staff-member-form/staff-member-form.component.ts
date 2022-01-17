@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StaffService } from '../../../../data/services/staff.service';
 import { map, Observable } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { validationMessages } from '../../../../core/constants/validationMessages';
-import { FormValidationService } from '../../../../shared/services/form-validation.service';
 import { Staff } from '../../../../data/models/Staff.model';
 import { WorkArea } from '../../../../data/models/WorkArea.model';
 import { AreaService } from '../../../../data/services/area.service';
@@ -17,9 +15,13 @@ import { AreaService } from '../../../../data/services/area.service';
 })
 export class StaffMemberFormComponent {
   staffMemberForm = new FormGroup({
-    name: new FormControl(''),
-    email: new FormControl(''),
-    phone: new FormControl(''),
+    name: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    phone: new FormControl('', [
+      Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(10),
+    ]),
     nickname: new FormControl(null),
     extra_information: new FormControl(null),
     work_area_id: new FormControl(null),
@@ -37,7 +39,6 @@ export class StaffMemberFormComponent {
     private route: ActivatedRoute,
     private staffService: StaffService,
     private areaSerivce: AreaService,
-    private formValidationService: FormValidationService,
   ) {
     this.workAreas$ = this.areaSerivce.fetchAll().pipe(map((areas) => areas.data));
     if (this.route.snapshot.queryParams.id) {
@@ -58,24 +59,16 @@ export class StaffMemberFormComponent {
   onSubmit() {
     let request$: Observable<Staff>;
     if (!this.isEdit) {
-      request$ = this.staffService.create(this.staffMemberForm.value);
+      request$ = this.staffService.save(this.staffMemberForm.value);
     } else {
       request$ = this.staffService.update(this.staffMemberForm.value);
     }
     request$.subscribe({
       next: async () => {
-        let message;
-        this.isEdit ? (message = 'actualizado') : (message = 'registrado');
+        let message = this.isEdit ? 'actualizado' : 'registrado';
         MessageHelper.successMessage('¡Éxito!', `El miembro ha sido ${message} correctamente.`);
         await this.backToListRoles();
       },
     });
-  }
-
-  logValidationErrors() {
-    this.formErrors = this.formValidationService.getValidationErrors(
-      this.staffMemberForm,
-      validationMessages,
-    );
   }
 }

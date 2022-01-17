@@ -7,19 +7,21 @@ import { BreadcrumbModule } from 'xng-breadcrumb';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ErrorMessageDirective } from '../core/directives/error-message.directive';
 import { DialogSearchComponent } from './components/dialog-search/dialog-search.component';
 import { TableSearchComponent } from './components/table-search/table-search.component';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
   declarations: [
-    SpinnerComponent,
+      SpinnerComponent,
     PageNotFoundComponent,
+    ErrorMessageDirective,
     DialogSearchComponent,
     TableSearchComponent,
   ],
   imports: [
-    CommonModule,
+      CommonModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
@@ -35,6 +37,7 @@ import { TableSearchComponent } from './components/table-search/table-search.com
     BreadcrumbModule,
     SpinnerComponent,
     HttpClientModule,
+    ErrorMessageDirective,
   ],
 })
 export class SharedModule {}

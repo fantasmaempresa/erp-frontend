@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
-import { FormValidationService } from '../../../../shared/services/form-validation.service';
-import { validationMessages } from '../../../../core/constants/validationMessages';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../../data/services/user.service';
 import { RoleService } from '../../../../data/services/role.service';
 import { map, Observable } from 'rxjs';
@@ -17,10 +15,10 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 })
 export class UserFormComponent {
   userForm = new FormGroup({
-    name: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
-    role_id: new FormControl(null),
+    name: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    password: new FormControl('', [Validators.required, Validators.minLength(6)]),
+    role_id: new FormControl(null, [Validators.required]),
     config: new FormControl({ test: 'test' }),
   });
 
@@ -33,7 +31,6 @@ export class UserFormComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private formValidationService: FormValidationService,
     private userService: UserService,
     private roleService: RoleService,
   ) {
@@ -56,24 +53,16 @@ export class UserFormComponent {
   onSubmit() {
     let request$: Observable<User>;
     if (!this.isEdit) {
-      request$ = this.userService.create(this.userForm.value);
+      request$ = this.userService.save(this.userForm.value);
     } else {
       request$ = this.userService.update(this.userForm.value);
     }
     request$.subscribe({
       next: async () => {
-        let message;
-        this.isEdit ? (message = 'actualizado') : (message = 'registrado');
+        let message = this.isEdit ? 'actualizado' : 'registrado';
         MessageHelper.successMessage('¡Éxito!', `El usuario ha sido ${message} correctamente.`);
         await this.backToListUsers();
       },
     });
-  }
-
-  logValidationErrors() {
-    this.formErrors = this.formValidationService.getValidationErrors(
-      this.userForm,
-      validationMessages,
-    );
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { FormGroup, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidatorFn } from '@angular/forms';
+import { genericErrorMessages } from '../../core/constants/validationMessages';
 
 @Injectable({
   providedIn: 'root',
@@ -51,5 +52,20 @@ export class FormValidationService {
         confirmControl.setErrors(null);
       }
     };
+  }
+
+  getErrorMessage(control: AbstractControl) {
+    let error = '';
+    console.log(control.errors);
+    if (control.errors) {
+      const [[keyErr, objErr]]: [string, any][] = Object.entries(control.errors);
+      console.log(keyErr, objErr);
+      if (genericErrorMessages[keyErr]) {
+        error = genericErrorMessages[keyErr](objErr);
+      } else {
+        error = `${keyErr} is not defined`;
+      }
+    }
+    return error;
   }
 }

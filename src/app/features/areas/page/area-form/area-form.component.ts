@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
+import {FormControl, FormGroup, Validator, Validators} from '@angular/forms';
 import { FormValidationService } from '../../../../shared/services/form-validation.service';
 import { AreaService } from '../../../../data/services/area.service';
 import { Observable } from 'rxjs';
@@ -15,8 +15,8 @@ import { WorkArea } from '../../../../data/models/WorkArea.model';
 })
 export class AreaFormComponent {
   areaForm = new FormGroup({
-    name: new FormControl(''),
-    description: new FormControl(''),
+    name: new FormControl('',[Validators.required]),
+    description: new FormControl('', [Validators.required]),
     config: new FormControl({ test: 'test' }),
   });
 
@@ -48,14 +48,13 @@ export class AreaFormComponent {
   onSubmit() {
     let request$: Observable<WorkArea>;
     if (!this.isEdit) {
-      request$ = this.areaService.create(this.areaForm.value);
+      request$ = this.areaService.save(this.areaForm.value);
     } else {
       request$ = this.areaService.update(this.areaForm.value);
     }
     request$.subscribe({
       next: async () => {
-        let message;
-        this.isEdit ? (message = 'actualizada') : (message = 'registrada');
+        const message = this.isEdit ? 'actualizada' : 'registrada';
         MessageHelper.successMessage('¡Éxito!', `El area ha sido ${message} correctamente.`);
         await this.backToListAreas();
       },

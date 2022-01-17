@@ -1,16 +1,15 @@
 <mat-card>
   <mat-toolbar>
     <div>
-      <button aria-label="Regresar" mat-icon-button (click)="backToListUsers()">
+      <button (click)="backToListUsers()" aria-label="Regresar" mat-icon-button>
         <mat-icon>arrow_back</mat-icon>
       </button>
     </div>
   </mat-toolbar>
   <form
-    class="row justify-content-center"
-    [formGroup]="userForm"
     (ngSubmit)="onSubmit()"
-    (blur)="logValidationErrors()"
+    [formGroup]="userForm"
+    class="row justify-content-center"
   >
     <div class="col-6 d-flex flex-column">
       <mat-form-field appearance="outline">
@@ -20,43 +19,41 @@
           <mat-option
             *ngFor="let role of roles$ | async"
             [value]="role.id"
-            (blur)="logValidationErrors()"
-            >{{ role.name }}</mat-option
+          >{{ role.name }}</mat-option
           >
         </mat-select>
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
         <input
-          matInput
-          type="text"
           autocomplete="off"
           formControlName="name"
-          (blur)="logValidationErrors()"
+          matInput
+          type="text"
         />
-        <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Correo</mat-label>
         <input
-          matInput
-          type="email"
-          placeholder="ejemplo@email.com"
           formControlName="email"
-          (blur)="logValidationErrors()"
+          matInput
+          placeholder="ejemplo@email.com"
+          type="email"
         />
-        <mat-error *ngIf="formErrors.email">{{ formErrors.email }}</mat-error>
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" *ngIf="!isEdit">
+      <mat-form-field *ngIf="!isEdit" appearance="outline">
         <mat-label>Contraseña</mat-label>
-        <input matInput type="password" formControlName="password" (blur)="logValidationErrors()" />
-        <mat-error *ngIf="formErrors.password">{{ formErrors.password }}</mat-error>
+        <input formControlName="password" matInput type="password" />
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
-      <button mat-flat-button color="primary">Guardar</button>
+      <button color="primary" mat-flat-button>Guardar</button>
     </div>
   </form>
 </mat-card>

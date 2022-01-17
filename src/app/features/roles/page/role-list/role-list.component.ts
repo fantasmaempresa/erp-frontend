@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Role } from '../../../../data/models/Role.model';
 import { MatPaginator } from '@angular/material/paginator';
 import { Observable, switchMap, tap } from 'rxjs';
-import { Pagination } from '../../../../data/models/Pagination.model';
+import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { RoleService } from '../../../../data/services/role.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 

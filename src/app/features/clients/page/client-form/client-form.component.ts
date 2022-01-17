@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
-import { FormValidationService } from '../../../../shared/services/form-validation.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClientService } from '../../../../data/services/client.service';
 import { Observable } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { validationMessages } from '../../../../core/constants/validationMessages';
 import { Client } from '../../../../data/models/Client.model';
 
 @Component({
@@ -15,22 +13,23 @@ import { Client } from '../../../../data/models/Client.model';
 })
 export class ClientFormComponent {
   clientForm = new FormGroup({
-    name: new FormControl(''),
-    email: new FormControl(''),
-    phone: new FormControl(''),
+    name: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    phone: new FormControl('', [Validators.required]),
     nickname: new FormControl(null),
     address: new FormControl(null),
-    rfc: new FormControl(''),
+    rfc: new FormControl('', [
+      Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(13),
+    ]),
   });
 
   isEdit = false;
 
-  formErrors: any = {};
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private formValidationService: FormValidationService,
     private clientService: ClientService,
   ) {
     if (this.route.snapshot.queryParams.id) {
@@ -51,24 +50,16 @@ export class ClientFormComponent {
   onSubmit() {
     let request$: Observable<Client>;
     if (!this.isEdit) {
-      request$ = this.clientService.create(this.clientForm.value);
+      request$ = this.clientService.save(this.clientForm.value);
     } else {
       request$ = this.clientService.update(this.clientForm.value);
     }
     request$.subscribe({
       next: async () => {
-        let message;
-        this.isEdit ? (message = 'actualizado') : (message = 'registrado');
+        const message = this.isEdit ? 'actualizado' : 'registrado';
         MessageHelper.successMessage('¡Éxito!', `El cliente ha sido ${message} correctamente.`);
         await this.backToListRoles();
       },
     });
-  }
-
-  logValidationErrors() {
-    this.formErrors = this.formValidationService.getValidationErrors(
-      this.clientForm,
-      validationMessages,
-    );
   }
 }

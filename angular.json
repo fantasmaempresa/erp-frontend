@@ -105,6 +105,7 @@
   },
   "defaultProject": "erp-frontend",
   "cli": {
+    "analytics": false,
     "defaultCollection": "@angular-eslint/schematics"
   }
 }

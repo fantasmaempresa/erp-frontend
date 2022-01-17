@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { FormValidationService } from '../../../../shared/services/form-validation.service';
 import { UserService } from '../../../../data/services/user.service';
@@ -16,19 +16,16 @@ import { Role } from '../../../../data/models/Role.model';
 })
 export class RoleFormComponent {
   roleForm = new FormGroup({
-    name: new FormControl(''),
-    description: new FormControl(''),
+    name: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
     config: new FormControl({ test: 'test' }),
   });
 
   isEdit = false;
 
-  formErrors: any = {};
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private formValidationService: FormValidationService,
     private userService: UserService,
     private roleService: RoleService,
   ) {
@@ -46,25 +43,17 @@ export class RoleFormComponent {
   onSubmit() {
     let request$: Observable<Role>;
     if (!this.isEdit) {
-      request$ = this.roleService.create(this.roleForm.value);
+      request$ = this.roleService.save(this.roleForm.value);
     } else {
       request$ = this.roleService.update(this.roleForm.value);
     }
     request$.subscribe({
       next: async () => {
-        let message;
-        this.isEdit ? (message = 'actualizado') : (message = 'registrado');
+        let message = this.isEdit ? 'actualizado' : 'registrado';
         MessageHelper.successMessage('¡Éxito!', `El rol ha sido ${message} correctamente.`);
         await this.backToListRoles();
       },
     });
-  }
-
-  logValidationErrors() {
-    this.formErrors = this.formValidationService.getValidationErrors(
-      this.roleForm,
-      validationMessages,
-    );
   }
 
   async backToListRoles() {

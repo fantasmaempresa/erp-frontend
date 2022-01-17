@@ -1,6 +1,7 @@
 import { User } from './User.model';
+import { EntityModel } from '../../core/interfaces/EntityModel';
 
-export interface Staff {
+export interface Staff extends EntityModel {
   id: number;
   name: string;
   email: string;

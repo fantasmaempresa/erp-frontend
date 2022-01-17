@@ -4,7 +4,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginator } from '@angular/material/paginator';
 import { Observable, switchMap, tap } from 'rxjs';
-import { Pagination } from '../../../../data/models/Pagination.model';
+import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { StaffService } from '../../../../data/services/staff.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { Staff } from '../../../../data/models/Staff.model';
@@ -107,8 +107,6 @@ export class StaffListComponent implements AfterViewInit {
       },
     );
   }
-
-
 
   private updateTable(observable$: Observable<any>) {
     observable$
