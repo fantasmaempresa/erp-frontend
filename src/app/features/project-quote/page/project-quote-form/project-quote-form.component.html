@@ -13,14 +13,13 @@
     (blur)="logValidationErrors()"
   >
     <div class="col-6 d-flex flex-column pe-0">
-      <mat-form-field class="example-full-width" appearance="outline">
-        <mat-label>Usuario</mat-label>
-        <input type="text" matInput formControlName="client" [matAutocomplete]="auto" />
-        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let option of filteredUsers$ | async" [value]="option">
-            {{ option.name }}
-          </mat-option>
-        </mat-autocomplete>
+      <mat-form-field appearance="outline">
+        <mat-label>Estado de la cotización</mat-label>
+        <mat-select formControlName="status_quote_id">
+          <mat-option *ngFor="let quoteStatus of quoteStatuses$ | async" [value]="quoteStatus.id">{{
+            quoteStatus.name
+          }}</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -35,35 +34,45 @@
         <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
       </mat-form-field>
 
+      <div class="d-flex flex-row">
+        <div class="col-11">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Cliente</mat-label>
+            <input type="text" matInput formControlName="client" [matAutocomplete]="auto" />
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let option of filteredClients$ | async" [value]="option">
+                {{ option.name }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="col-1">
+          <button
+            mat-icon-button
+            aria-label="Buscar cliente"
+            class="align-self-center search-button"
+            (click)="openDialog()"
+          >
+            <mat-icon>search</mat-icon>
+          </button>
+        </div>
+      </div>
+
       <mat-form-field appearance="outline">
-        <mat-label>Correo</mat-label>
-        <input
-          matInput
-          type="email"
-          placeholder="ejemplo@email.com"
-          formControlName="email"
-          (blur)="logValidationErrors()"
-        />
-        <mat-error *ngIf="formErrors.email">{{ formErrors.email }}</mat-error>
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="description" (blur)="logValidationErrors()"> </textarea>
+        <mat-error *ngIf="formErrors.description">{{ formErrors.description }}</mat-error>
       </mat-form-field>
 
-      <mat-form-field appearance="outline" *ngIf="!isEdit">
-        <mat-label>Contraseña</mat-label>
-        <input matInput type="password" formControlName="password" (blur)="logValidationErrors()" />
-        <mat-error *ngIf="formErrors.password">{{ formErrors.password }}</mat-error>
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de expiración</mat-label>
+        <input matInput [matDatepicker]="dp_end" formControlName="date_end" />
+        <mat-datepicker-toggle matSuffix [for]="dp_end"></mat-datepicker-toggle>
+        <mat-datepicker #dp_end disabled="false"></mat-datepicker>
+        <mat-error *ngIf="formErrors.date_end">{{ formErrors.date_end }}</mat-error>
       </mat-form-field>
 
       <button mat-flat-button color="primary">Guardar</button>
-    </div>
-    <div class="col-1 d-flex flex-column">
-      <button
-        mat-icon-button
-        aria-label="Buscar usuario"
-        class="col-2 align-self-center search-button"
-        (click)="openDialog()"
-      >
-        <mat-icon>search</mat-icon>
-      </button>
     </div>
   </form>
 </mat-card>

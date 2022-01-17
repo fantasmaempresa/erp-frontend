@@ -3,13 +3,15 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { map, Observable, startWith, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from '../../../../shared/services/form-validation.service';
-import { UserService } from '../../../../data/services/user.service';
-import { RoleService } from '../../../../data/services/role.service';
 import { User } from '../../../../data/models/User.model';
 import { validationMessages } from '../../../../core/constants/validationMessages';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogSearchComponent } from '../../../../shared/components/dialog-search/dialog-search.component';
-import { ClientsListComponent } from '../../../clients/page/clients-list/clients-list.component';
+import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
+import { QuoteStatusService } from '../../../../data/services/quote-status.service';
+import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
+import { ClientService } from '../../../../data/services/client.service';
+import { Client } from '../../../../data/models/Client.model';
 
 @Component({
   selector: 'app-project-quote-form',
@@ -18,49 +20,54 @@ import { ClientsListComponent } from '../../../clients/page/clients-list/clients
 })
 export class ProjectQuoteFormComponent {
   quoteForm = new FormGroup({
+    user_id: new FormControl(2),
     name: new FormControl(''),
-    email: new FormControl(''),
-    password: new FormControl(''),
-    role_id: new FormControl(null),
+    description: new FormControl(''),
+    date_end: new FormControl({ value: null, disabled: true }),
+    status_quote_id: new FormControl(null),
     client: new FormControl({ value: null, disabled: true }),
     client_id: new FormControl({ value: null, disabled: true }),
-    config: new FormControl({ test: 'test' }),
   });
 
   isEdit = false;
 
   formErrors: any = {};
 
-  users!: User[];
+  clients!: Client[];
 
-  filteredUsers$!: Observable<User[]> | undefined;
+  filteredClients$!: Observable<Client[]> | undefined;
+
+  quoteStatuses$!: Observable<QuoteStatus[]>;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private formValidationService: FormValidationService,
-    private userService: UserService,
-    private roleService: RoleService,
+    private clientService: ClientService,
+    private quoteStatusService: QuoteStatusService,
+    private projectQuoteService: ProjectQuoteService,
     public dialog: MatDialog,
   ) {
-    this.filteredUsers$ = userService.fetchAll().pipe(
-      map((users) => users.data),
-      tap((users) => {
-        this.users = users;
+    this.quoteStatuses$ = quoteStatusService.fetchAll().pipe(map((resp) => resp.data));
+
+    this.filteredClients$ = clientService.fetchAll().pipe(
+      map((clients) => clients.data),
+      tap((clients) => {
+        this.clients = clients;
       }),
       switchMap(() =>
         // @ts-ignore
         this.quoteForm.get('client').valueChanges.pipe(
           startWith(''),
           map((value) => (typeof value === 'string' ? value : value.name)),
-          map((name) => (name ? this._filter(name) : this.users.slice())),
+          map((name) => (name ? this._filter(name) : this.clients.slice())),
         ),
       ),
     );
 
     if (this.route.snapshot.queryParams.id) {
       this.isEdit = true;
-      userService.fetch(this.route.snapshot.queryParams.id).subscribe({
+      clientService.fetch(this.route.snapshot.queryParams.id).subscribe({
         next: (user) => {
           this.quoteForm.addControl('id', new FormControl(''));
           this.quoteForm.patchValue(user);
@@ -74,28 +81,16 @@ export class ProjectQuoteFormComponent {
   }
 
   onSubmit() {
-    console.log(this.quoteForm.value);
-    // let request$: Observable<User>;
-    // if (!this.isEdit) {
-    //   request$ = this.userService.create(this.quoteForm.value);
-    // } else {
-    //   request$ = this.userService.update(this.quoteForm.value);
-    // }
-    // request$.subscribe({
-    //   next: async () => {
-    //     let message;
-    //     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    //     this.isEdit ? (message = 'actualizado') : (message = 'registrado');
-    //     MessageHelper.successMessage('¡Éxito!', `El usuario ha sido ${message} correctamente.`);
-    //     await this.backToListUsers();
-    //   },
-    // });
+    console.log(this.quoteForm.getRawValue());
+    let { client, ...projectQuote } = this.quoteForm.getRawValue();
+    projectQuote.client_id = client.id;
+    console.log(projectQuote);
+    this.projectQuoteService.save(projectQuote).subscribe((resp) => console.log(resp));
   }
 
   openDialog() {
     const dialogRef = this.dialog.open(DialogSearchComponent, {
       data: {
-        component: ClientsListComponent,
         componentOptions: {
           toolbar: false,
           search: true,
@@ -125,9 +120,9 @@ export class ProjectQuoteFormComponent {
     return user && user.name ? user.name : '';
   }
 
-  private _filter(name: string): User[] {
+  private _filter(name: string): Client[] {
     const filterValue = name.toLowerCase();
 
-    return this.users.filter((option) => option.name.toLowerCase().includes(filterValue));
+    return this.clients.filter((option) => option.name.toLowerCase().includes(filterValue));
   }
 }
