@@ -18,6 +18,7 @@ import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
 import { ChildrenRouteLayoutComponent } from './layout/children-route-layout/children-route-layout.component';
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getSpanishPaginatorIntl } from './core/i18n/spanish-paginator-intl';
+import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { getSpanishPaginatorIntl } from './core/i18n/spanish-paginator-intl';
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
     BrowserAnimationsModule,
+    EffectsModule.forRoot([]),
   ],
   providers: [{ provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }],
   bootstrap: [AppComponent],
