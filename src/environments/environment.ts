@@ -5,6 +5,9 @@
 export const environment = {
   production: false,
   base_url: 'http://174.138.49.219:8080/api',
+  client_id: '95615f5e-0f18-4ea3-a34c-135c2a6a2f5b',
+  client_secret: 'h6K6JEJoUJkcqagEhas2Ye6Q8g0hAxjD2T1GBpi0',
+  grant_type: 'password',
 };
 
 /*
