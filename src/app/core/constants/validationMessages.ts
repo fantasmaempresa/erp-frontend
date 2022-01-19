@@ -2,6 +2,11 @@ export const validationMessages = {
   name: {
     required: 'Name is required.',
   },
+  username: {
+    required: 'Email is required.',
+    email: 'Please provide valid Email',
+    pattern: 'Please provide valid Email',
+  },
   email: {
     required: 'Email is required.',
     email: 'Please provide valid Email',

@@ -1,7 +1,23 @@
-import { createAction } from '@ngrx/store';
+import { createAction, props } from '@ngrx/store';
+import { AuthResponse } from '../../data/models/AuthResponse.model';
 
-export enum AuthActionsTypes {
-  Login = '[Auth] Login',
+export enum AuthActions {
+  LOGIN_START = '[Auth] Login start',
+  LOGIN_SUCCESS = '[Auth] Login success',
+  LOGIN_FAIL = '[Auth] Login Fail',
+  LOGOUT = '[Auth] Logout',
 }
 
-export const Login = createAction(AuthActionsTypes.Login);
+export const loginStart = createAction(
+  AuthActions.LOGIN_START,
+  props<{ username: string; password: string }>(),
+);
+export const loginSuccess = createAction(
+  AuthActions.LOGIN_SUCCESS,
+  props<{ tokens: AuthResponse }>(),
+);
+export const loginFailure = createAction(
+  AuthActions.LOGIN_FAIL,
+  props<{ payload?: any; hasError?: boolean }>(),
+);
+export const logout = createAction(AuthActions.LOGOUT);

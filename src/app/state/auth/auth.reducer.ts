@@ -1,17 +1,19 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
-import { Login } from './auth.actions';
-
-export interface AuthState extends EntityState<AuthState> {}
-
-export const adapter: EntityAdapter<AuthState> = createEntityAdapter<AuthState>();
-export const initialState: AuthState = adapter.getInitialState();
+import { loginSuccess, logout } from './auth.actions';
+import { initialState } from './auth.state';
 
 const AuthReducer = createReducer(
   initialState,
-  on(Login, (state): AuthState => {
+  on(loginSuccess, (state, action) => {
     return {
       ...state,
+      tokens: action.tokens,
+    };
+  }),
+  on(logout, (state, action) => {
+    return {
+      ...state,
+      tokens: null,
     };
   }),
 );

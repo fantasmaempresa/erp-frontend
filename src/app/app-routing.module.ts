@@ -6,12 +6,17 @@ import { PageNotFoundComponent } from './shared/components/page-not-found/page-n
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'auth',
+    pathMatch: 'full',
+  },
+  {
     path: 'auth',
     component: AuthLayoutComponent,
     loadChildren: () => import('./features/auth/auth.module').then((m) => m.AuthModule),
   },
   {
-    path: '',
+    path: 'app',
     component: ContentLayoutComponent,
     children: [
       {

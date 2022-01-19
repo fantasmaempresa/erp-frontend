@@ -13,17 +13,17 @@ export class SidebarComponent {
         { label: 'Home', route: '/dashboard', icon: 'home' },
         // { label: 'Usuarios', route: '/users', icon: 'person' },
         // { label: 'Roles', route: '/roles', icon: 'verified_user' },
-        { label: 'Clientes', route: '/clients', icon: 'people' },
-        { label: 'Personal', route: '/staff', icon: 'groups' },
-        { label: 'Áreas', route: '/areas', icon: 'group_work' },
-        { label: 'Conceptos', route: '/concepts', icon: 'group_work' },
+        { label: 'Clientes', route: './clients', icon: 'people' },
+        { label: 'Personal', route: './staff', icon: 'groups' },
+        { label: 'Áreas', route: './areas', icon: 'group_work' },
+        { label: 'Conceptos', route: './concepts', icon: 'group_work' },
         {
           label: 'Cotizaciones',
           icon: 'rule_folder',
           isOpen: false,
           dropdowns: [
-            { label: 'Lista de cotizaciones', route: '/project-quote', icon: 'group_work' },
-            { label: 'Estados de la cotización', route: '/quote-statuses', icon: 'group_work' },
+            { label: 'Lista de cotizaciones', route: './project-quote', icon: 'group_work' },
+            { label: 'Estados de la cotización', route: './quote-statuses', icon: 'group_work' },
           ],
         },
         {
@@ -31,8 +31,8 @@ export class SidebarComponent {
           icon: 'rule_folder',
           isOpen: false,
           dropdowns: [
-            { label: 'Pendientes', route: '/pending_projects', icon: 'pause' },
-            { label: 'En Curso', route: '/ongoing_projects', icon: 'play_arrow' },
+            { label: 'Pendientes', route: './pending_projects', icon: 'pause' },
+            { label: 'En Curso', route: './ongoing_projects', icon: 'play_arrow' },
           ],
         },
         {
@@ -40,8 +40,8 @@ export class SidebarComponent {
           icon: 'description',
           isOpen: false,
           dropdowns: [
-            { label: 'Pendientes', route: '/pending_procedures', icon: 'pause' },
-            { label: 'En Curso', route: '/ongoing_procedure', icon: 'play_arrow' },
+            { label: 'Pendientes', route: './pending_procedures', icon: 'pause' },
+            { label: 'En Curso', route: './ongoing_procedure', icon: 'play_arrow' },
           ],
         },
         {
@@ -49,8 +49,8 @@ export class SidebarComponent {
           icon: 'settings',
           isOpen: false,
           dropdowns: [
-            { label: 'Usuarios', route: '/users', icon: 'person' },
-            { label: 'Roles', route: '/roles', icon: 'verified_user' },
+            { label: 'Usuarios', route: './users', icon: 'person' },
+            { label: 'Roles', route: './roles', icon: 'verified_user' },
           ],
         },
       ],
