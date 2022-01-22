@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Client } from '../models/Client.model';
 import { CrudService } from '../../core/classes/Crud/CrudService';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { Pagination } from '../../core/interfaces/Pagination.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +13,10 @@ export class ClientService extends CrudService<Client> {
     super('clients', _http);
   }
 
-  changePage(url: string) {
-    return this._http.get(url);
+  changePage(page: number, size: number) {
+    let params = new HttpParams();
+    params = params.append('page', `${page}`);
+    params = params.append('paginate', `${size}`);
+    return this._http.get<Pagination<Client>>(`${environment.base_url}/clients`, { params });
   }
 }

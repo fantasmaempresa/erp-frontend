@@ -1,17 +1,9 @@
-import {
-  AfterViewInit,
-  Component,
-  EventEmitter,
-  Input,
-  OnDestroy,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Client } from '../../../data/models/Client.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable, Subscription, switchMap, tap } from 'rxjs';
+import { Observable, Subscription, tap } from 'rxjs';
 import { ClientService } from '../../../data/services/client.service';
 import { Pagination } from '../../../core/interfaces/Pagination.model';
 
@@ -27,7 +19,7 @@ export interface TableOptions {
   templateUrl: './table-search.component.html',
   styleUrls: ['./table-search.component.scss'],
 })
-export class TableSearchComponent implements AfterViewInit, OnDestroy {
+export class TableSearchComponent implements OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   @Input() toolbar = true;
@@ -67,22 +59,6 @@ export class TableSearchComponent implements AfterViewInit, OnDestroy {
         this.optionSelected.emit(res.added[0]);
       }
     });
-  }
-
-  ngAfterViewInit() {
-    let url = '';
-    const paginator$ = this.paginator.page?.pipe(
-      tap(({ pageIndex, previousPageIndex }) => {
-        if (previousPageIndex !== undefined && pageIndex > previousPageIndex) {
-          url = this.nextURL;
-        } else {
-          url = this.prevURL;
-        }
-        this.isLoadingResults = true;
-      }),
-      switchMap(() => this.clientService.changePage(url)),
-    );
-    this.updateTable(paginator$);
   }
 
   ngOnDestroy() {

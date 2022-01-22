@@ -1,4 +1,4 @@
-<mat-toolbar *ngIf="this.toolbar">
+<mat-toolbar>
   <button
     *ngIf="selection.selected.length !== 0"
     [matTooltipPosition]="'below'"
@@ -29,7 +29,7 @@
     <mat-icon>person_add</mat-icon>
   </button>
 </mat-toolbar>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<table mat-table [dataSource]="dataSource.data" class="mat-elevation-z8">
   <!-- Checkbox Column -->
   <ng-container matColumnDef="select">
     <th mat-header-cell *matHeaderCellDef></th>
@@ -73,9 +73,8 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
 </table>
 <mat-paginator
-  *ngIf="showPaginator"
-  [length]="resultsLength"
+  [length]="totalItems"
   [pageSize]="pageSize"
-  aria-label="Select page of search results"
-  [pageIndex]="pageIndex"
+  [pageSizeOptions]="[5, 10, 25, 100]"
+  (page)="pageEvent = $event; onPaginateChange($event)"
 ></mat-paginator>

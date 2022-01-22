@@ -1,27 +1,24 @@
-import { AfterViewInit, Component, Input, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
-import { Observable, switchMap, tap } from 'rxjs';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Observable, Subscription, tap } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { Client } from '../../../../data/models/Client.model';
 import { ClientService } from '../../../../data/services/client.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { Store } from '@ngrx/store';
+import { loadClients, loadNextPageOfClients } from '../../../../state/clients/clients.actions';
+import { selectClients } from '../../../../state/clients/clients.selector';
 
 @Component({
   selector: 'app-clients-list',
   templateUrl: './clients-list.component.html',
   styleUrls: ['./clients-list.component.scss'],
 })
-export class ClientsListComponent implements AfterViewInit {
+export class ClientsListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
-
-  @Input() toolbar = true;
-
-  @Input() pageSize = 10;
-
-  @Input() showPaginator = true;
 
   displayedColumns: string[] = ['select', 'name', 'email', 'phone', 'address'];
 
@@ -29,51 +26,47 @@ export class ClientsListComponent implements AfterViewInit {
 
   dataSource = new MatTableDataSource<Client>();
 
-  dataSource$!: Observable<Pagination<Client>>;
+  clients$!: Observable<Pagination<Client> | null>;
 
-  resultsLength = 0;
+  totalItems = 0;
+
+  pageSize = 100;
+
+  pageEvent!: PageEvent;
 
   isLoadingResults = true;
 
-  isRateLimitReached = false;
-
-  nextURL!: string;
-
-  prevURL!: string;
-
-  pageIndex = 1;
+  clientSubscription!: Subscription;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private clientService: ClientService,
+    private store: Store,
   ) {
-    this.fetchData();
+    this.clients$ = store.select(selectClients);
+    store.dispatch(loadClients());
+  }
+
+  ngOnInit() {
+    this.clientSubscription = this.clients$
+      .pipe(
+        tap(() => {
+          this.isLoadingResults = false;
+        }),
+      )
+      .subscribe((data: any) => {
+        this.totalItems = data.total;
+        this.dataSource = data;
+      });
   }
 
   ngAfterViewInit() {
-    let url = '';
-    const paginator$ = this.paginator.page?.pipe(
-      tap(({ pageIndex, previousPageIndex }) => {
-        if (previousPageIndex !== undefined && pageIndex > previousPageIndex) {
-          url = this.nextURL;
-        } else {
-          url = this.prevURL;
-        }
-        this.isLoadingResults = true;
-      }),
-      switchMap(() => this.clientService.changePage(url)),
-    );
-    this.updateTable(paginator$);
+    this.dataSource.paginator = this.paginator;
   }
 
-  fetchData() {
-    this.dataSource$ = this.clientService.fetchAll();
-    this.dataSource$.subscribe(() => {
-      this.dataSource.paginator = this.paginator;
-    });
-
-    this.updateTable(this.dataSource$);
+  ngOnDestroy() {
+    this.clientSubscription.unsubscribe();
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -108,32 +101,26 @@ export class ClientsListComponent implements AfterViewInit {
       'Una vez borrado no hay marcha atras.',
       () => {
         this.clientService.delete(this.selection.selected[0].id).subscribe({
-          next: () => this.fetchData(),
+          next: () => this.store.dispatch(loadClients()),
         });
       },
     );
   }
 
-  private updateTable(observable$: Observable<any>) {
-    observable$
-      .pipe(
-        tap(() => {
-          this.isLoadingResults = false;
-        }),
-      )
-      .subscribe((data: any) => {
-        this.pageIndex = data.current_page - 1;
-        this.prevURL = data.prev_page_url;
-        this.nextURL = data.next_page_url;
-        this.resultsLength = data.total;
-
-        this.dataSource.data = data.data;
-
-        this.resultsLength += 1;
-        // fix to solve visual bug;
-        setTimeout(() => {
-          this.resultsLength -= 1;
-        });
-      });
+  onPaginateChange(event: PageEvent) {
+    let page = event.pageIndex;
+    let size = event.pageSize;
+    page = page + 1;
+    this.store.dispatch(loadNextPageOfClients({ page, size }));
+    // if(this.filterValue == null) {
+    //   page = page +1;
+    //   this.userService.findAll(page, size).pipe(
+    //       map((userData: UserData) => this.dataSource = userData)
+    //   ).subscribe();
+    // } else {
+    //   this.userService.paginateByName(page, size, this.filterValue).pipe(
+    //       map((userData: UserData) => this.dataSource = userData)
+    //   ).subscribe()
+    // }
   }
 }
