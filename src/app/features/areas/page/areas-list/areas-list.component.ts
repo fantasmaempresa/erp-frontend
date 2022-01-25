@@ -10,7 +10,11 @@ import { WorkArea } from '../../../../data/models/WorkArea.model';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { Store } from '@ngrx/store';
 import { selectAreas } from '../../../../state/areas/areas.selector';
-import { loadAreas, loadNextPageOfAreas } from '../../../../state/areas/areas.actions';
+import {
+  emptyAreaList,
+  loadAreas,
+  loadNextPageOfAreas,
+} from '../../../../state/areas/areas.actions';
 
 @Component({
   selector: 'app-areas-list',
@@ -64,6 +68,7 @@ export class AreasListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.store.dispatch(emptyAreaList());
     this.areasSubscription.unsubscribe();
   }
 

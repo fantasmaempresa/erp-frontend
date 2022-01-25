@@ -11,6 +11,9 @@ const AreasReducer = createReducer(
       areas,
     };
   }),
+  on(AreasActions.emptyAreaList, (state) => {
+    return areasInitialState;
+  }),
 );
 
 export function areasReducer(state = areasInitialState, action: Action) {
