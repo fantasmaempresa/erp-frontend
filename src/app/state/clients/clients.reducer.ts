@@ -11,6 +11,9 @@ const ClientsReducer = createReducer(
       clients,
     };
   }),
+  on(ClientActions.emptyClientList, (state) => {
+    return initialState;
+  }),
 );
 
 export function clientReducer(state = initialState, action: Action) {

@@ -9,7 +9,11 @@ import { Client } from '../../../../data/models/Client.model';
 import { ClientService } from '../../../../data/services/client.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { Store } from '@ngrx/store';
-import { loadClients, loadNextPageOfClients } from '../../../../state/clients/clients.actions';
+import {
+  emptyClientList,
+  loadClients,
+  loadNextPageOfClients,
+} from '../../../../state/clients/clients.actions';
 import { selectClients } from '../../../../state/clients/clients.selector';
 
 @Component({
@@ -68,6 +72,7 @@ export class ClientsListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.store.dispatch(emptyClientList());
     this.clientSubscription.unsubscribe();
   }
 
