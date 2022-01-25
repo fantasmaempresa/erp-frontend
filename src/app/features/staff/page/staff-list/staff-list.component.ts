@@ -1,20 +1,24 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
-import { Observable, switchMap, tap } from 'rxjs';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Observable, Subscription, tap } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { StaffService } from '../../../../data/services/staff.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { Staff } from '../../../../data/models/Staff.model';
+import { Store } from '@ngrx/store';
+import { selectStaff } from '../../../../state/staff/staff.selector';
+import { loadNextPageOfStaff, loadStaff } from '../../../../state/staff/staff.actions';
+import { loadClients } from '../../../../state/clients/clients.actions';
 
 @Component({
   selector: 'app-staff-list',
   templateUrl: './staff-list.component.html',
   styleUrls: ['./staff-list.component.scss'],
 })
-export class StaffListComponent implements AfterViewInit {
+export class StaffListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['select', 'name', 'email', 'phone', 'extra_information'];
@@ -23,51 +27,45 @@ export class StaffListComponent implements AfterViewInit {
 
   dataSource = new MatTableDataSource<Staff>();
 
-  dataSource$!: Observable<Pagination<Staff>>;
+  staff$!: Observable<Pagination<Staff> | null>;
 
-  resultsLength = 0;
+  totalItems = 0;
+
+  pageSize = 100;
+
+  pageEvent!: PageEvent;
 
   isLoadingResults = true;
 
-  isRateLimitReached = false;
-
-  nextURL!: string;
-
-  prevURL!: string;
-
-  pageIndex = 1;
+  staffSubscription!: Subscription;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private staffService: StaffService,
+    private store: Store,
   ) {
-    this.fetchData();
+    this.staff$ = store.select(selectStaff);
+    store.dispatch(loadStaff());
+  }
+
+  ngOnInit(): void {
+    this.staffSubscription = this.staff$
+      .pipe(tap(() => (this.isLoadingResults = false)))
+      .subscribe((data) => {
+        if (data) {
+          this.totalItems = data.total;
+          this.dataSource.data = data.data;
+        }
+      });
   }
 
   ngAfterViewInit() {
-    let url = '';
-    const paginator$ = this.paginator.page?.pipe(
-      tap(({ pageIndex, previousPageIndex }) => {
-        if (previousPageIndex !== undefined && pageIndex > previousPageIndex) {
-          url = this.nextURL;
-        } else {
-          url = this.prevURL;
-        }
-        this.isLoadingResults = true;
-      }),
-      switchMap(() => this.staffService.changePage(url)),
-    );
-    this.updateTable(paginator$);
+    this.dataSource.paginator = this.paginator;
   }
 
-  fetchData() {
-    this.dataSource$ = this.staffService.fetchAll();
-    this.dataSource$.subscribe(() => {
-      this.dataSource.paginator = this.paginator;
-    });
-
-    this.updateTable(this.dataSource$);
+  ngOnDestroy(): void {
+    this.staffSubscription.unsubscribe();
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -85,7 +83,7 @@ export class StaffListComponent implements AfterViewInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
 
-  async goToNewStaff() {
+  async goToNewMemberOfStaff() {
     await this.router.navigate(['../new'], { relativeTo: this.route });
   }
 
@@ -102,32 +100,16 @@ export class StaffListComponent implements AfterViewInit {
       'Una vez borrado no hay marcha atras.',
       () => {
         this.staffService.delete(this.selection.selected[0].id).subscribe({
-          next: () => this.fetchData(),
+          next: () => this.store.dispatch(loadClients()),
         });
       },
     );
   }
 
-  private updateTable(observable$: Observable<any>) {
-    observable$
-      .pipe(
-        tap(() => {
-          this.isLoadingResults = false;
-        }),
-      )
-      .subscribe((data: any) => {
-        this.pageIndex = data.current_page - 1;
-        this.prevURL = data.prev_page_url;
-        this.nextURL = data.next_page_url;
-        this.resultsLength = data.total;
-
-        this.dataSource.data = data.data;
-
-        this.resultsLength += 1;
-        // fix to solve visual bug;
-        setTimeout(() => {
-          this.resultsLength -= 1;
-        });
-      });
+  onPaginateChange(event: PageEvent) {
+    let page = event.pageIndex;
+    let size = event.pageSize;
+    page = page + 1;
+    this.store.dispatch(loadNextPageOfStaff({ page, size }));
   }
 }
