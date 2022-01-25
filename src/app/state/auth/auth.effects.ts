@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { loginStart, loginSuccess, logout } from './auth.actions';
+import { autoLogin, loginStart, loginSuccess, logout } from './auth.actions';
 import { exhaustMap, map, tap } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
@@ -31,8 +31,20 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(loginSuccess),
-        tap((action) => {
+        tap(() => {
           this.router.navigate(['/app']);
+        }),
+      );
+    },
+    { dispatch: false },
+  );
+
+  autoLogin$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(autoLogin),
+        map(() => {
+          const token = this.authService.getToken();
         }),
       );
     },
@@ -43,7 +55,7 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(logout),
-        map((action) => {
+        map(() => {
           this.authService.logout();
           this.router.navigate(['auth']);
         }),

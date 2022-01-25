@@ -38,4 +38,9 @@ export class AuthService {
     localStorage.removeItem(this.ACCESS_TOKEN);
     localStorage.removeItem(this.REFRESH_TOKEN);
   }
+
+  getToken() {
+    const token = localStorage.getItem(this.ACCESS_TOKEN);
+    return token ? token : null;
+  }
 }

@@ -10,7 +10,7 @@ const AuthReducer = createReducer(
       tokens: action.tokens,
     };
   }),
-  on(logout, (state, action) => {
+  on(logout, (state) => {
     return {
       ...state,
       tokens: null,
