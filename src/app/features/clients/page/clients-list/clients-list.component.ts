@@ -55,9 +55,11 @@ export class ClientsListComponent implements OnInit, AfterViewInit, OnDestroy {
           this.isLoadingResults = false;
         }),
       )
-      .subscribe((data: any) => {
-        this.totalItems = data.total;
-        this.dataSource = data;
+      .subscribe((data) => {
+        if (data) {
+          this.totalItems = data.total;
+          this.dataSource.data = data.data;
+        }
       });
   }
 

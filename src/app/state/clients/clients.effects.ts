@@ -11,8 +11,7 @@ export class ClientsEffects {
   loadClients$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadClients),
-      mergeMap((action) => {
-        console.log(action);
+      mergeMap(() => {
         return this.clientService
           .fetchAll()
           .pipe(map((clients) => loadClientsSuccess({ clients })));
