@@ -7,12 +7,15 @@ import { initialState as staffInitialState, StaffState } from './staff/staff.sta
 import { staffReducer } from './staff/staff.reducer';
 import { areasInitialState, AreasState } from './areas/areas.state';
 import { areasReducer } from './areas/areas.reducer';
+import { conceptsInitialState, ConceptsState } from './concepts/concepts.state';
+import { conceptReducer } from './concepts/concepts.reducer';
 
 export interface AppState {
   auth: AuthState;
   clients: ClientsState;
   staff: StaffState;
   areas: AreasState;
+  concepts: ConceptsState;
 }
 
 export const initialAppState: AppState = {
@@ -20,6 +23,7 @@ export const initialAppState: AppState = {
   clients: clientsInitialState,
   staff: staffInitialState,
   areas: areasInitialState,
+  concepts: conceptsInitialState,
 };
 
 export function getInitialAppState(): AppState {
@@ -31,4 +35,5 @@ export const reducers: ActionReducerMap<AppState> = {
   clients: clientReducer,
   staff: staffReducer,
   areas: areasReducer,
+  concepts: conceptReducer,
 };

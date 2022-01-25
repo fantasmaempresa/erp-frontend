@@ -24,7 +24,7 @@
     aria-label="Agregar concepto"
     mat-icon-button
     matTooltip="Agregar concepto"
-    (click)="goToNewClient()"
+    (click)="goToNewConcept()"
   >
     <mat-icon>person_add</mat-icon>
   </button>
@@ -67,8 +67,8 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
 </table>
 <mat-paginator
-  [length]="resultsLength"
-  pageSize="10"
-  aria-label="Select page of search results"
-  [pageIndex]="pageIndex"
+  [length]="totalItems"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[5, 10, 25, 100]"
+  (page)="pageEvent = $event; onPaginateChange($event)"
 ></mat-paginator>

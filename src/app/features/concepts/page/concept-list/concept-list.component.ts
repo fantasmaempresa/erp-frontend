@@ -1,21 +1,28 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Client } from '../../../../data/models/Client.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, Subscription, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { Concept } from '../../../../data/models/Concept.model';
 import { ConceptService } from '../../../../data/services/concept.service';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
+import { Store } from '@ngrx/store';
+import { selectConcepts } from '../../../../state/concepts/concepts.selector';
+import {
+  emptyConceptList,
+  loadConcepts,
+  loadNextPageOfConcepts,
+} from '../../../../state/concepts/concepts.actions';
 
 @Component({
   selector: 'app-concept-list',
   templateUrl: './concept-list.component.html',
   styleUrls: ['./concept-list.component.scss'],
 })
-export class ConceptListComponent implements AfterViewInit {
+export class ConceptListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['select', 'name', 'description', 'amount'];
@@ -24,51 +31,50 @@ export class ConceptListComponent implements AfterViewInit {
 
   dataSource = new MatTableDataSource<Concept>();
 
-  dataSource$!: Observable<Pagination<Concept>>;
+  concepts$!: Observable<Pagination<Concept> | null>;
 
-  resultsLength = 0;
+  conceptSubscription!: Subscription;
+
+  totalItems = 0;
+
+  pageSize = 100;
+
+  pageEvent!: PageEvent;
 
   isLoadingResults = true;
-
-  isRateLimitReached = false;
-
-  nextURL!: string;
-
-  prevURL!: string;
-
-  pageIndex = 1;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private conceptService: ConceptService,
+    private store: Store,
   ) {
-    this.fetchData();
+    this.concepts$ = store.select(selectConcepts);
+    store.dispatch(loadConcepts());
+  }
+
+  ngOnInit() {
+    this.conceptSubscription = this.concepts$
+      .pipe(
+        tap(() => {
+          this.isLoadingResults = false;
+        }),
+      )
+      .subscribe((data) => {
+        if (data) {
+          this.totalItems = data.total;
+          this.dataSource.data = data.data;
+        }
+      });
   }
 
   ngAfterViewInit() {
-    let url = '';
-    const paginator$ = this.paginator.page?.pipe(
-      tap(({ pageIndex, previousPageIndex }) => {
-        if (previousPageIndex !== undefined && pageIndex > previousPageIndex) {
-          url = this.nextURL;
-        } else {
-          url = this.prevURL;
-        }
-        this.isLoadingResults = true;
-      }),
-      switchMap(() => this.conceptService.changePage(url)),
-    );
-    this.updateTable(paginator$);
+    this.dataSource.paginator = this.paginator;
   }
 
-  fetchData() {
-    this.dataSource$ = this.conceptService.fetchAll();
-    this.dataSource$.subscribe(() => {
-      this.dataSource.paginator = this.paginator;
-    });
-
-    this.updateTable(this.dataSource$);
+  ngOnDestroy() {
+    this.store.dispatch(emptyConceptList());
+    this.conceptSubscription.unsubscribe();
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -87,7 +93,7 @@ export class ConceptListComponent implements AfterViewInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
 
-  async goToNewClient() {
+  async goToNewConcept() {
     await this.router.navigate(['../new'], { relativeTo: this.route });
   }
 
@@ -104,32 +110,26 @@ export class ConceptListComponent implements AfterViewInit {
       'Una vez borrado no hay marcha atras.',
       () => {
         this.conceptService.delete(this.selection.selected[0].id).subscribe({
-          next: () => this.fetchData(),
+          next: () => this.store.dispatch(loadConcepts()),
         });
       },
     );
   }
 
-  private updateTable(observable$: Observable<any>) {
-    observable$
-      .pipe(
-        tap(() => {
-          this.isLoadingResults = false;
-        }),
-      )
-      .subscribe((data: any) => {
-        this.pageIndex = data.current_page - 1;
-        this.prevURL = data.prev_page_url;
-        this.nextURL = data.next_page_url;
-        this.resultsLength = data.total;
-
-        this.dataSource.data = data.data;
-
-        this.resultsLength += 1;
-        // fix to solve visual bug;
-        setTimeout(() => {
-          this.resultsLength -= 1;
-        });
-      });
+  onPaginateChange(event: PageEvent) {
+    let page = event.pageIndex;
+    let size = event.pageSize;
+    page = page + 1;
+    this.store.dispatch(loadNextPageOfConcepts({ page, size }));
+    // if(this.filterValue == null) {
+    //   page = page +1;
+    //   this.userService.findAll(page, size).pipe(
+    //       map((userData: UserData) => this.dataSource = userData)
+    //   ).subscribe();
+    // } else {
+    //   this.userService.paginateByName(page, size, this.filterValue).pipe(
+    //       map((userData: UserData) => this.dataSource = userData)
+    //   ).subscribe()
+    // }
   }
 }
