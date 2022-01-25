@@ -10,7 +10,7 @@ export class SidebarComponent {
     {
       menuName: 'Menu',
       submenus: [
-        { label: 'Home', route: '/dashboard', icon: 'home' },
+        { label: 'Home', route: './dashboard', icon: 'home' },
         // { label: 'Usuarios', route: '/users', icon: 'person' },
         // { label: 'Roles', route: '/roles', icon: 'verified_user' },
         { label: 'Clientes', route: './clients', icon: 'people' },
