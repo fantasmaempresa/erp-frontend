@@ -11,6 +11,7 @@ const StaffReducer = createReducer(
       staff,
     };
   }),
+  on(StaffActions.emptyStaffList, (state) => initialState),
 );
 
 export function staffReducer(state = initialState, action: Action) {

@@ -10,7 +10,11 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { Staff } from '../../../../data/models/Staff.model';
 import { Store } from '@ngrx/store';
 import { selectStaff } from '../../../../state/staff/staff.selector';
-import { loadNextPageOfStaff, loadStaff } from '../../../../state/staff/staff.actions';
+import {
+  emptyStaffList,
+  loadNextPageOfStaff,
+  loadStaff,
+} from '../../../../state/staff/staff.actions';
 import { loadClients } from '../../../../state/clients/clients.actions';
 
 @Component({
@@ -65,6 +69,7 @@ export class StaffListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.store.dispatch(emptyStaffList());
     this.staffSubscription.unsubscribe();
   }
 
