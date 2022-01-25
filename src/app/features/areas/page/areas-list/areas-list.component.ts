@@ -1,20 +1,23 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatPaginator } from '@angular/material/paginator';
-import { Observable, switchMap, tap } from 'rxjs';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { Observable, Subscription, tap } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { AreaService } from '../../../../data/services/area.service';
 import { WorkArea } from '../../../../data/models/WorkArea.model';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { Store } from '@ngrx/store';
+import { selectAreas } from '../../../../state/areas/areas.selector';
+import { loadAreas, loadNextPageOfAreas } from '../../../../state/areas/areas.actions';
 
 @Component({
   selector: 'app-areas-list',
   templateUrl: './areas-list.component.html',
   styleUrls: ['./areas-list.component.scss'],
 })
-export class AreasListComponent implements AfterViewInit {
+export class AreasListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['select', 'name', 'description'];
@@ -23,51 +26,45 @@ export class AreasListComponent implements AfterViewInit {
 
   dataSource = new MatTableDataSource<WorkArea>();
 
-  dataSource$!: Observable<Pagination<WorkArea>>;
+  areas$!: Observable<Pagination<WorkArea> | null>;
 
-  resultsLength = 0;
+  areasSubscription!: Subscription;
+
+  totalItems = 0;
+
+  pageSize = 100;
+
+  pageEvent!: PageEvent;
 
   isLoadingResults = true;
-
-  isRateLimitReached = false;
-
-  nextURL!: string;
-
-  prevURL!: string;
-
-  pageIndex = 1;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private areaService: AreaService,
+    private store: Store,
   ) {
-    this.fetchData();
+    this.areas$ = store.select(selectAreas);
+    store.dispatch(loadAreas());
+  }
+
+  ngOnInit(): void {
+    this.areasSubscription = this.areas$
+      .pipe(tap(() => (this.isLoadingResults = false)))
+      .subscribe((data) => {
+        if (data) {
+          this.totalItems = data.total;
+          this.dataSource.data = data.data;
+        }
+      });
   }
 
   ngAfterViewInit() {
-    let url = '';
-    const paginator$ = this.paginator.page?.pipe(
-      tap(({ pageIndex, previousPageIndex }) => {
-        if (previousPageIndex !== undefined && pageIndex > previousPageIndex) {
-          url = this.nextURL;
-        } else {
-          url = this.prevURL;
-        }
-        this.isLoadingResults = true;
-      }),
-      switchMap(() => this.areaService.changePage(url)),
-    );
-    this.updateTable(paginator$);
+    this.dataSource.paginator = this.paginator;
   }
 
-  fetchData() {
-    this.dataSource$ = this.areaService.fetchAll();
-    this.dataSource$.subscribe(() => {
-      this.dataSource.paginator = this.paginator;
-    });
-
-    this.updateTable(this.dataSource$);
+  ngOnDestroy(): void {
+    this.areasSubscription.unsubscribe();
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -102,32 +99,16 @@ export class AreasListComponent implements AfterViewInit {
       'Una vez borrada no hay marcha atras.',
       () => {
         this.areaService.delete(this.selection.selected[0].id).subscribe({
-          next: () => this.fetchData(),
+          next: () => this.store.dispatch(loadAreas()),
         });
       },
     );
   }
 
-  private updateTable(observable$: Observable<any>) {
-    observable$
-      .pipe(
-        tap(() => {
-          this.isLoadingResults = false;
-        }),
-      )
-      .subscribe((data: any) => {
-        this.pageIndex = data.current_page - 1;
-        this.prevURL = data.prev_page_url;
-        this.nextURL = data.next_page_url;
-        this.resultsLength = data.total;
-
-        this.dataSource.data = data.data;
-
-        this.resultsLength += 1;
-        // fix to solve visual bug;
-        setTimeout(() => {
-          this.resultsLength -= 1;
-        });
-      });
+  onPaginateChange(event: PageEvent) {
+    let page = event.pageIndex;
+    let size = event.pageSize;
+    page = page + 1;
+    this.store.dispatch(loadNextPageOfAreas({ page, size }));
   }
 }

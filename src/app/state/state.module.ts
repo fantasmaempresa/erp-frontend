@@ -8,13 +8,14 @@ import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './auth/auth.effects';
 import { ClientsEffects } from './clients/clients.effects';
 import { StaffEffects } from './staff/staff.effects';
+import { AreasEffects } from './areas/areas.effects';
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects, ClientsEffects, StaffEffects]),
+    EffectsModule.forRoot([AuthEffects, ClientsEffects, StaffEffects, AreasEffects]),
     StoreDevtoolsModule.instrument({ name: 'ERP', maxAge: 25, logOnly: environment.production }),
   ],
 })

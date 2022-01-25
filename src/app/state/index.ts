@@ -5,17 +5,21 @@ import { ClientsState, initialState as clientsInitialState } from './clients/cli
 import { clientReducer } from './clients/clients.reducer';
 import { initialState as staffInitialState, StaffState } from './staff/staff.state';
 import { staffReducer } from './staff/staff.reducer';
+import { areasInitialState, AreasState } from './areas/areas.state';
+import { areasReducer } from './areas/areas.reducer';
 
 export interface AppState {
   auth: AuthState;
   clients: ClientsState;
   staff: StaffState;
+  areas: AreasState;
 }
 
 export const initialAppState: AppState = {
   auth: initialState,
   clients: clientsInitialState,
   staff: staffInitialState,
+  areas: areasInitialState,
 };
 
 export function getInitialAppState(): AppState {
@@ -26,4 +30,5 @@ export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
   clients: clientReducer,
   staff: staffReducer,
+  areas: areasReducer,
 };
