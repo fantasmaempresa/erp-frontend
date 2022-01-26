@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuoteStatusService } from '../../../../data/services/quote-status.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
@@ -56,7 +56,7 @@ export class ProjectQuoteListComponent implements AfterViewInit {
         }
         this.isLoadingResults = true;
       }),
-      switchMap(() => this.quoteStatusService.changePage(url)),
+      // switchMap(() => this.quoteStatusService.changePage(url)),
     );
     this.updateTable(paginator$);
   }

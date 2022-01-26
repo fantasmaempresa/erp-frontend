@@ -9,6 +9,8 @@ import { areasInitialState, AreasState } from './areas/areas.state';
 import { areasReducer } from './areas/areas.reducer';
 import { conceptsInitialState, ConceptsState } from './concepts/concepts.state';
 import { conceptReducer } from './concepts/concepts.reducer';
+import { quoteStatusInitialState, QuoteStatusState } from './quote-status/quote-status.state';
+import { quoteStatusReducer } from './quote-status/quote-status.reducer';
 
 export interface AppState {
   auth: AuthState;
@@ -16,6 +18,7 @@ export interface AppState {
   staff: StaffState;
   areas: AreasState;
   concepts: ConceptsState;
+  quote_status: QuoteStatusState;
 }
 
 export const initialAppState: AppState = {
@@ -24,6 +27,7 @@ export const initialAppState: AppState = {
   staff: staffInitialState,
   areas: areasInitialState,
   concepts: conceptsInitialState,
+  quote_status: quoteStatusInitialState,
 };
 
 export function getInitialAppState(): AppState {
@@ -36,4 +40,5 @@ export const reducers: ActionReducerMap<AppState> = {
   staff: staffReducer,
   areas: areasReducer,
   concepts: conceptReducer,
+  quote_status: quoteStatusReducer,
 };

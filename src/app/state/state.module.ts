@@ -10,6 +10,7 @@ import { ClientsEffects } from './clients/clients.effects';
 import { StaffEffects } from './staff/staff.effects';
 import { AreasEffects } from './areas/areas.effects';
 import { ConceptsEffects } from './concepts/concepts.effects';
+import { QuoteStatusEffects } from './quote-status/quote-status.effects';
 
 @NgModule({
   declarations: [],
@@ -22,6 +23,7 @@ import { ConceptsEffects } from './concepts/concepts.effects';
       StaffEffects,
       AreasEffects,
       ConceptsEffects,
+      QuoteStatusEffects,
     ]),
     StoreDevtoolsModule.instrument({ name: 'ERP', maxAge: 25, logOnly: environment.production }),
   ],

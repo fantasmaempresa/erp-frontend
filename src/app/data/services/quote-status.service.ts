@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { QuoteStatus } from '../models/QuoteStatus.model';
 import { Pagination } from '../../core/interfaces/Pagination.model';
 
@@ -33,7 +33,12 @@ export class QuoteStatusService {
     return this.http.delete(`${this.endpoint}/${id}`);
   }
 
-  changePage(url: string) {
-    return this.http.get(url);
+  changePage(page: number, size: number) {
+    let params = new HttpParams();
+    params = params.append('page', `${page}`);
+    params = params.append('paginate', `${size}`);
+    return this.http.get<Pagination<QuoteStatus>>(`${environment.base_url}/statusQuotes`, {
+      params,
+    });
   }
 }
