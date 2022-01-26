@@ -1,17 +1,24 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { ProjectQuote } from '../models/ProjectQuote.model';
+import { CrudService } from '../../core/classes/Crud/CrudService';
+import { Pagination } from '../../core/interfaces/Pagination.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProjectQuoteService {
-  url = `${environment.base_url}/projectQuotes`;
+export class ProjectQuoteService extends CrudService<ProjectQuote> {
+  constructor(protected http: HttpClient) {
+    super('projectQuotes', http);
+  }
 
-  constructor(private http: HttpClient) {}
-
-  save(projectQuote: ProjectQuote) {
-    return this.http.post(this.url, projectQuote);
+  changePage(page: number, size: number) {
+    let params = new HttpParams();
+    params = params.append('page', `${page}`);
+    params = params.append('paginate', `${size}`);
+    return this._http.get<Pagination<ProjectQuote>>(`${environment.base_url}/projectQuotes`, {
+      params,
+    });
   }
 }

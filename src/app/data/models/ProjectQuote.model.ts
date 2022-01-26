@@ -1,4 +1,6 @@
-export interface ProjectQuote {
+import { EntityModel } from '../../core/interfaces/EntityModel';
+
+export interface ProjectQuote extends EntityModel {
   name: string;
   description: string;
   date_end: Date;

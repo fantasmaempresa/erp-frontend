@@ -1,73 +1,80 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable, tap } from 'rxjs';
+import { Observable, Subscription, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { QuoteStatusService } from '../../../../data/services/quote-status.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
+import { Store } from '@ngrx/store';
+import { selectQuotes } from '../../../../state/quotes/quotes.selector';
+import {
+  emptyQuoteList,
+  loadNextPageOfQuotes,
+  loadQuotes,
+} from '../../../../state/quotes/quotes.actions';
+import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
+import { ProjectQuote } from '../../../../data/models/ProjectQuote.model';
 
 @Component({
   selector: 'app-project-quote-list',
   templateUrl: './project-quote-list.component.html',
   styleUrls: ['./project-quote-list.component.scss'],
 })
-export class ProjectQuoteListComponent implements AfterViewInit {
+export class ProjectQuoteListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['select', 'name', 'description'];
 
-  selection = new SelectionModel<QuoteStatus>(false, []);
+  selection = new SelectionModel<ProjectQuote>(false, []);
 
   dataSource = new MatTableDataSource<QuoteStatus>();
 
-  dataSource$!: Observable<Pagination<QuoteStatus>>;
+  quotes$!: Observable<Pagination<QuoteStatus> | null>;
 
-  resultsLength = 0;
+  quotesSubscription!: Subscription;
+
+  totalItems = 0;
+
+  pageSize = 100;
+
+  pageEvent!: PageEvent;
 
   isLoadingResults = true;
-
-  isRateLimitReached = false;
-
-  nextURL!: string;
-
-  prevURL!: string;
-
-  pageIndex = 1;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private quoteStatusService: QuoteStatusService,
+    private quotesService: ProjectQuoteService,
+    private store: Store,
   ) {
-    this.fetchData();
+    this.quotes$ = store.select(selectQuotes);
+    store.dispatch(loadQuotes());
+  }
+
+  ngOnInit() {
+    this.quotesSubscription = this.quotes$
+      .pipe(
+        tap(() => {
+          this.isLoadingResults = false;
+        }),
+      )
+      .subscribe((data) => {
+        if (data) {
+          this.totalItems = data.total;
+          this.dataSource.data = data.data;
+        }
+      });
   }
 
   ngAfterViewInit() {
-    let url = '';
-    const paginator$ = this.paginator.page?.pipe(
-      tap(({ pageIndex, previousPageIndex }) => {
-        if (previousPageIndex !== undefined && pageIndex > previousPageIndex) {
-          url = this.nextURL;
-        } else {
-          url = this.prevURL;
-        }
-        this.isLoadingResults = true;
-      }),
-      // switchMap(() => this.quoteStatusService.changePage(url)),
-    );
-    this.updateTable(paginator$);
+    this.dataSource.paginator = this.paginator;
   }
 
-  fetchData() {
-    this.dataSource$ = this.quoteStatusService.fetchAll();
-    this.dataSource$.subscribe(() => {
-      this.dataSource.paginator = this.paginator;
-    });
-
-    this.updateTable(this.dataSource$);
+  ngOnDestroy() {
+    this.store.dispatch(emptyQuoteList());
+    this.quotesSubscription.unsubscribe();
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
@@ -102,33 +109,27 @@ export class ProjectQuoteListComponent implements AfterViewInit {
       `¿Deseas borrar el concepto ${this.selection.selected[0].name}?`,
       'Una vez borrado no hay marcha atras.',
       () => {
-        this.quoteStatusService.delete(this.selection.selected[0].id).subscribe({
-          next: () => this.fetchData(),
+        this.quotesService.delete(this.selection.selected[0].id).subscribe({
+          next: () => this.store.dispatch(loadQuotes()),
         });
       },
     );
   }
 
-  private updateTable(observable$: Observable<any>) {
-    observable$
-      .pipe(
-        tap(() => {
-          this.isLoadingResults = false;
-        }),
-      )
-      .subscribe((data: any) => {
-        this.pageIndex = data.current_page - 1;
-        this.prevURL = data.prev_page_url;
-        this.nextURL = data.next_page_url;
-        this.resultsLength = data.total;
-
-        this.dataSource.data = data.data;
-
-        this.resultsLength += 1;
-        // fix to solve visual bug;
-        setTimeout(() => {
-          this.resultsLength -= 1;
-        });
-      });
+  onPaginateChange(event: PageEvent) {
+    let page = event.pageIndex;
+    let size = event.pageSize;
+    page = page + 1;
+    this.store.dispatch(loadNextPageOfQuotes({ page, size }));
+    // if(this.filterValue == null) {
+    //   page = page +1;
+    //   this.userService.findAll(page, size).pipe(
+    //       map((userData: UserData) => this.dataSource = userData)
+    //   ).subscribe();
+    // } else {
+    //   this.userService.paginateByName(page, size, this.filterValue).pipe(
+    //       map((userData: UserData) => this.dataSource = userData)
+    //   ).subscribe()
+    // }
   }
 }
