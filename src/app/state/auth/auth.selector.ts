@@ -3,8 +3,16 @@ import { AuthState } from './auth.state';
 
 export const AUTH_STATE_NAME = 'auth';
 
-const getAuthState = createFeatureSelector<AuthState>(AUTH_STATE_NAME);
+const selectAuthState = createFeatureSelector<AuthState>(AUTH_STATE_NAME);
 
-export const isAuthenticated = createSelector(getAuthState, (state) => {
-  return state.tokens ? true : false;
+export const selectIsAuthenticated = createSelector(selectAuthState, (state) => {
+  return !!state.tokens;
+});
+
+export const selectIsLoading = createSelector(selectAuthState, (state) => {
+  return state.isLoading;
+});
+
+export const selectErrorMessage = createSelector(selectAuthState, (state) => {
+  return state.errorMessage;
 });

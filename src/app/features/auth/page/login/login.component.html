@@ -10,6 +10,9 @@
       </div>
     </div>
     <div class="card-body pt-5">
+      <div class="error-message m-3" *ngIf="errorMessage$ | async as message">
+        <span>{{ message }}</span>
+      </div>
       <div class="p-2">
         <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()" (blur)="logValidationErrors()">
           <mat-form-field appearance="outline" class="w-100 mb-2">
@@ -57,7 +60,7 @@
               class="w-100"
               color="primary"
               type="submit"
-              [disabled]="isLoading"
+              [disabled]="isLoading$ | async"
             >
               Iniciar sesión
             </button>

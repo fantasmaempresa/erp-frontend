@@ -5,6 +5,8 @@ import { validationMessages } from '../../../../core/constants/validationMessage
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { loginStart } from '../../../../state/auth/auth.actions';
+import { Observable } from 'rxjs';
+import { selectErrorMessage, selectIsLoading } from '../../../../state/auth/auth.selector';
 
 @Component({
   selector: 'app-login',
@@ -24,11 +26,15 @@ export class LoginComponent implements OnInit {
 
   hidePassword = true;
 
-  isLoading = false;
+  isLoading$!: Observable<boolean>;
 
   formErrors: any = {};
 
+  errorMessage$!: Observable<string | null>;
+
   ngOnInit(): void {
+    this.isLoading$ = this.store.select(selectIsLoading);
+    this.errorMessage$ = this.store.select(selectErrorMessage);
     this.signUpForm = new FormGroup(
       {
         username: new FormControl('', [Validators.required, Validators.email]),
@@ -55,13 +61,8 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.signUpForm.markAllAsTouched();
     this.logValidationErrors();
-    this.isLoading = true;
     const username = this.signUpForm.value.username;
     const password = this.signUpForm.value.password;
     this.store.dispatch(loginStart({ username, password }));
-    // setTimeout(async () => {
-    //   this.isLoading = false;
-    //   await this.router.navigate(['/dashboard']);
-    // }, 3000);
   }
 }

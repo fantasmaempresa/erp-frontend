@@ -63,3 +63,12 @@ h5 {
   vertical-align: -3px;
   font-size: 1rem;
 }
+
+.error-message {
+  color: #ba3939;
+  background: #ffe0e0;
+  border: 1px solid #a33a3a;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
