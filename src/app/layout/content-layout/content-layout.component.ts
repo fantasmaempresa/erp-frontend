@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { SocketService } from '../../core/services/socket.service';
+import { bindCallback } from 'rxjs';
 
 @Component({
   selector: 'app-content-layout',
@@ -6,7 +8,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./content-layout.component.scss'],
 })
 export class ContentLayoutComponent implements OnInit {
-  constructor() {}
+  constructor(private socketService: SocketService) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    let getQuotesAsObservable$ = bindCallback(this.socketService.subscribeToChannel);
+    getQuotesAsObservable$('quotes', 'QuoteEvent').subscribe((data) => console.log(data));
+  }
 }
