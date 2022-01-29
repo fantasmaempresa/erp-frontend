@@ -13,17 +13,17 @@
     (blur)="logValidationErrors()"
   >
     <div class="col-6 d-flex flex-column pe-0">
-      <mat-form-field appearance="outline">
-        <mat-label>Estado de la cotización</mat-label>
-        <mat-select formControlName="status_quote_id">
-          <mat-option *ngFor="let quoteStatus of quoteStatuses$ | async" [value]="quoteStatus.id">{{
-            quoteStatus.name
-          }}</mat-option>
-        </mat-select>
-      </mat-form-field>
+      <!--      <mat-form-field appearance="outline">-->
+      <!--        <mat-label>Estado de la cotización</mat-label>-->
+      <!--        <mat-select formControlName="status_quote_id">-->
+      <!--          <mat-option *ngFor="let quoteStatus of quoteStatuses$ | async" [value]="quoteStatus.id">{{-->
+      <!--            quoteStatus.name-->
+      <!--          }}</mat-option>-->
+      <!--        </mat-select>-->
+      <!--      </mat-form-field>-->
 
       <mat-form-field appearance="outline">
-        <mat-label>Nombre</mat-label>
+        <mat-label>Tipo de cotización</mat-label>
         <input
           matInput
           type="text"
@@ -32,6 +32,24 @@
           (blur)="logValidationErrors()"
         />
         <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>A quien va dirigido</mat-label>
+        <input
+          matInput
+          type="text"
+          autocomplete="off"
+          formControlName="addressee"
+          (blur)="logValidationErrors()"
+        />
+        <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea matInput formControlName="description" (blur)="logValidationErrors()"> </textarea>
+        <mat-error *ngIf="formErrors.description">{{ formErrors.description }}</mat-error>
       </mat-form-field>
 
       <div class="d-flex flex-row">
@@ -48,6 +66,7 @@
         </div>
         <div class="col-1">
           <button
+            type="button"
             mat-icon-button
             aria-label="Buscar cliente"
             class="align-self-center search-button"
@@ -57,12 +76,6 @@
           </button>
         </div>
       </div>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Descripción</mat-label>
-        <textarea matInput formControlName="description" (blur)="logValidationErrors()"> </textarea>
-        <mat-error *ngIf="formErrors.description">{{ formErrors.description }}</mat-error>
-      </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Fecha de expiración</mat-label>

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { map, Observable, startWith, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from '../../../../shared/services/form-validation.service';
@@ -20,13 +20,14 @@ import { Client } from '../../../../data/models/Client.model';
 })
 export class ProjectQuoteFormComponent {
   quoteForm = new FormGroup({
-    user_id: new FormControl(2),
     name: new FormControl(''),
+    addressee: new FormControl(''),
     description: new FormControl(''),
     date_end: new FormControl({ value: null, disabled: true }),
     status_quote_id: new FormControl(null),
     client: new FormControl({ value: null, disabled: true }),
     client_id: new FormControl({ value: null, disabled: true }),
+    concepts: new FormArray([]),
   });
 
   isEdit = false;
