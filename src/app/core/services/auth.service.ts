@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { AuthResponse } from '../../data/models/AuthResponse.model';
 
 @Injectable({
@@ -25,6 +25,18 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${environment.base_url}/oauth/token`, body);
   }
 
+  refreshToken() {
+    let body = {
+      grant_type: 'refresh_token',
+      client_id: environment.client_id,
+      client_secret: environment.client_secret,
+      refresh_token: this.getRefreshToken(),
+    };
+    return this.http
+      .post<any>(`${environment.base_url}/oauth/token`, body)
+      .pipe(tap((tokens: any) => this.storeTokens(tokens)));
+  }
+
   logout() {
     this.removeTokens();
   }
@@ -39,8 +51,13 @@ export class AuthService {
     localStorage.removeItem(this.REFRESH_TOKEN);
   }
 
-  getToken() {
+  getAuthorizationToken() {
     const token = localStorage.getItem(this.ACCESS_TOKEN);
+    return token ? token : null;
+  }
+
+  getRefreshToken() {
+    const token = localStorage.getItem(this.REFRESH_TOKEN);
     return token ? token : null;
   }
 }

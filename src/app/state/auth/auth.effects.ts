@@ -49,7 +49,7 @@ export class AuthEffects {
       return this.actions$.pipe(
         ofType(autoLogin),
         map(() => {
-          const token = this.authService.getToken();
+          const token = this.authService.getAuthorizationToken();
         }),
       );
     },

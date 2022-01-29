@@ -16,6 +16,8 @@ import { ChildrenRouteLayoutComponent } from './layout/children-route-layout/chi
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { getSpanishPaginatorIntl } from './core/i18n/spanish-paginator-intl';
 import { StateModule } from './state/state.module';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './core/guards/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,10 @@ import { StateModule } from './state/state.module';
     AppRoutingModule,
     BrowserAnimationsModule,
   ],
-  providers: [{ provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() }],
+  providers: [
+    { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
   exports: [FooterComponent, HeaderComponent],
 })
