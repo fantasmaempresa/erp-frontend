@@ -12,6 +12,10 @@ import { QuoteStatusService } from '../../../../data/services/quote-status.servi
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { ClientService } from '../../../../data/services/client.service';
 import { Client } from '../../../../data/models/Client.model';
+import { FormField } from '../../../../core/classes/FormField';
+import { FormfieldControlService } from '../../../../core/services/formfield-control.service';
+import { ConceptService } from '../../../../data/services/concept.service';
+import { Concept } from '../../../../data/models/Concept.model';
 
 @Component({
   selector: 'app-project-quote-form',
@@ -19,6 +23,8 @@ import { Client } from '../../../../data/models/Client.model';
   styleUrls: ['./project-quote-form.component.scss'],
 })
 export class ProjectQuoteFormComponent {
+  formFields: FormField<string>[] = [];
+
   quoteForm = new FormGroup({
     name: new FormControl(''),
     addressee: new FormControl(''),
@@ -27,8 +33,12 @@ export class ProjectQuoteFormComponent {
     status_quote_id: new FormControl(null),
     client: new FormControl({ value: null, disabled: true }),
     client_id: new FormControl({ value: null, disabled: true }),
-    concepts: new FormArray([]),
+    concepts: new FormArray([new FormControl({})]),
   });
+
+  get concepts() {
+    return this.quoteForm.get('concepts') as FormArray;
+  }
 
   isEdit = false;
 
@@ -40,17 +50,27 @@ export class ProjectQuoteFormComponent {
 
   quoteStatuses$!: Observable<QuoteStatus[]>;
 
+  concepts$!: Observable<Concept[]>;
+
+  conceptList!: Concept[];
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private formValidationService: FormValidationService,
     private clientService: ClientService,
     private quoteStatusService: QuoteStatusService,
+    private conceptService: ConceptService,
     private projectQuoteService: ProjectQuoteService,
+    private formfieldService: FormfieldControlService,
     public dialog: MatDialog,
   ) {
-    this.quoteStatuses$ = quoteStatusService.fetchAll().pipe(map((resp) => resp.data));
-
+    this.quoteStatuses$ = this.projectQuoteService
+      .fetchAll()
+      .pipe(map((statuses) => statuses.data));
+    this.concepts$ = this.conceptService.fetchAll().pipe(map((concepts) => concepts.data));
+    // this.quoteStatuses$ = quoteStatusService.fetchAll().pipe(map((resp) => resp.data));
+    this.formFields.push(this.formfieldService.createFormField('textbox', 'name', 'Nombre', true));
     this.filteredClients$ = clientService.fetchAll().pipe(
       map((clients) => clients.data),
       tap((clients) => {
@@ -82,7 +102,6 @@ export class ProjectQuoteFormComponent {
   }
 
   onSubmit() {
-    console.log(this.quoteForm.getRawValue());
     let { client, ...projectQuote } = this.quoteForm.getRawValue();
     projectQuote.client_id = client.id;
     console.log(projectQuote);
@@ -108,6 +127,11 @@ export class ProjectQuoteFormComponent {
       this.quoteForm.get('client')?.patchValue(result);
       console.log(this.quoteForm.getRawValue());
     });
+  }
+
+  addNewConcept() {
+    const control = <FormArray>this.quoteForm.controls.concepts;
+    control.push(new FormControl({}));
   }
 
   logValidationErrors() {

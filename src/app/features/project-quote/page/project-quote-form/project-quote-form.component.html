@@ -85,7 +85,41 @@
         <mat-error *ngIf="formErrors.date_end">{{ formErrors.date_end }}</mat-error>
       </mat-form-field>
 
+      <div formArrayName="concepts" class="row">
+        <div class="col-11">
+          <mat-form-field
+            appearance="outline"
+            class="w-100"
+            *ngFor="let concept of concepts.controls; index as i"
+          >
+            <mat-label>Concepto</mat-label>
+            <mat-select [formControlName]="i">
+              <mat-option>Ninguna</mat-option>
+              <mat-option *ngFor="let concept of concepts$ | async" [value]="concept">{{
+                concept.name
+              }}</mat-option>
+            </mat-select>
+            <!--        <mat-error appErrorMessage></mat-error>-->
+          </mat-form-field>
+        </div>
+
+        <div class="col-1">
+          <button
+            type="button"
+            mat-icon-button
+            aria-label="Buscar cliente"
+            class="align-self-center search-button"
+            matTooltip="Agregar otro concepto"
+            (click)="addNewConcept()"
+          >
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+
       <button mat-flat-button color="primary">Guardar</button>
+
+      <!--      <app-dynamic-form [formFields]="formFields"></app-dynamic-form>-->
     </div>
   </form>
 </mat-card>

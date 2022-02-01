@@ -10,18 +10,22 @@ import { HttpClientModule } from '@angular/common/http';
 import { ErrorMessageDirective } from '../core/directives/error-message.directive';
 import { DialogSearchComponent } from './components/dialog-search/dialog-search.component';
 import { TableSearchComponent } from './components/table-search/table-search.component';
+import { DynamicFormInputComponent } from './components/dynamic-form-input/dynamic-form-input.component';
+import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
   declarations: [
-      SpinnerComponent,
+    SpinnerComponent,
     PageNotFoundComponent,
     ErrorMessageDirective,
     DialogSearchComponent,
     TableSearchComponent,
+    DynamicFormInputComponent,
+    DynamicFormComponent,
   ],
   imports: [
-      CommonModule,
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
@@ -38,6 +42,7 @@ import { TableSearchComponent } from './components/table-search/table-search.com
     SpinnerComponent,
     HttpClientModule,
     ErrorMessageDirective,
+    DynamicFormComponent,
   ],
 })
 export class SharedModule {}
