@@ -29,6 +29,6 @@ export const genericErrorMessages: { [key: string]: any } = {
     `This field requires at least ${requiredLength} characters `,
   maxlength: ({ requiredLength }: any) =>
     `This field has a maximum of ${requiredLength} characters`,
-  min: (err: any) => `Min Value ${err.min}`,
-  max: (err: any) => `Max Value ${err.max}`,
+  min: ({ min }: any) => `Min Value ${min}`,
+  max: ({ max }: any) => `Max Value ${max}`,
 };
