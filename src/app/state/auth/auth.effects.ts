@@ -5,6 +5,7 @@ import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { TokensModel } from '../../data/models/Tokens.model';
 
 @Injectable()
 export class AuthEffects {
@@ -20,9 +21,16 @@ export class AuthEffects {
       ofType(loginStart),
       exhaustMap((action) => {
         return this.authService.login(action.username, action.password).pipe(
-          map((tokens) => {
+          map((resp) => {
+            const tokens: TokensModel = {
+              access_token: resp.access_token,
+              refresh_token: resp.refresh_token,
+              token_type: resp.token_type,
+              expires_in: resp.expires_in,
+            };
+            const user = resp.user;
             this.authService.storeTokens(tokens);
-            return loginSuccess({ tokens });
+            return loginSuccess({ tokens, user });
           }),
           catchError(() => {
             return of(loginFailure({ isLoading: false, errorMessage: 'Credenciales invalidas' }));

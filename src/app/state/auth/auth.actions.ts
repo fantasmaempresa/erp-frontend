@@ -1,5 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { AuthResponse } from '../../data/models/AuthResponse.model';
+import { UserAuthModel } from '../../data/models/UserAuth.model';
+import { TokensModel } from '../../data/models/Tokens.model';
 
 export enum AuthActions {
   LOGIN_START = '[Auth] Login start',
@@ -17,7 +18,7 @@ export const loginStart = createAction(
 export const loginLoading = createAction(AuthActions.LOGIN_LOADING, props<{ status: boolean }>());
 export const loginSuccess = createAction(
   AuthActions.LOGIN_SUCCESS,
-  props<{ tokens: AuthResponse }>(),
+  props<{ tokens: TokensModel; user: UserAuthModel }>(),
 );
 export const autoLogin = createAction(AuthActions.AUTO_LOGIN);
 export const loginFailure = createAction(

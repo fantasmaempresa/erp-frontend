@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable, tap } from 'rxjs';
 import { AuthResponse } from '../../data/models/AuthResponse.model';
+import { TokensModel } from '../../data/models/Tokens.model';
 
 @Injectable({
   providedIn: 'root',
@@ -41,7 +42,7 @@ export class AuthService {
     this.removeTokens();
   }
 
-  storeTokens(tokens: AuthResponse) {
+  storeTokens(tokens: TokensModel) {
     localStorage.setItem(this.ACCESS_TOKEN, tokens.access_token);
     localStorage.setItem(this.REFRESH_TOKEN, tokens.refresh_token);
   }
