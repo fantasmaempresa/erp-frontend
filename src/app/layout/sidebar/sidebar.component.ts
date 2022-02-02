@@ -1,4 +1,9 @@
 import { Component } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { User } from '../../data/models/User.model';
+import { selectRole, selectUser } from '../../state/auth/auth.selector';
+import { Role } from '../../data/models/Role.model';
 
 @Component({
   selector: 'app-sidebar',
@@ -56,6 +61,15 @@ export class SidebarComponent {
       ],
     },
   ];
+
+  user$: Observable<User | null>;
+
+  role$: Observable<Role | undefined>;
+
+  constructor(private store: Store) {
+    this.user$ = store.select(selectUser);
+    this.role$ = store.select(selectRole);
+  }
 
   dropdown(submenu: any) {
     this.menus.forEach((menu) => {

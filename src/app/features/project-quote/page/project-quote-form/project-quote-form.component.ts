@@ -16,6 +16,8 @@ import { FormField } from '../../../../core/classes/FormField';
 import { FormfieldControlService } from '../../../../core/services/formfield-control.service';
 import { ConceptService } from '../../../../data/services/concept.service';
 import { Concept } from '../../../../data/models/Concept.model';
+import { format } from 'date-fns';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 @Component({
   selector: 'app-project-quote-form',
@@ -102,10 +104,21 @@ export class ProjectQuoteFormComponent {
   }
 
   onSubmit() {
-    let { client, ...projectQuote } = this.quoteForm.getRawValue();
-    projectQuote.client_id = client.id;
-    console.log(projectQuote);
-    this.projectQuoteService.save(projectQuote).subscribe((resp) => console.log(resp));
+    let { client, date_end, ...projectQuote } = this.quoteForm.getRawValue();
+    projectQuote.date_end = format(date_end, 'yyyy-MM-dd');
+    this.projectQuoteService.save(projectQuote).subscribe({
+      next: async () => {
+        MessageHelper.successMessage(
+          '¡La cotización ha sido creada!',
+          `En breve se le notificara a los administradores para que sea verificada`,
+        );
+        await this.backToListQuotes();
+      },
+    });
+  }
+
+  backToListQuotes() {
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   openDialog() {

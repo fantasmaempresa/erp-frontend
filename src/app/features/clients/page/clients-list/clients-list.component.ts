@@ -34,7 +34,7 @@ export class ClientsListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   totalItems = 0;
 
-  pageSize = 100;
+  pageSize = 10;
 
   pageEvent!: PageEvent;
 
@@ -62,7 +62,7 @@ export class ClientsListComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe((data) => {
         if (data) {
           this.totalItems = data.total;
-          this.dataSource.data = data.data;
+          this.dataSource = new MatTableDataSource<Client>(data.data);
         }
       });
   }
@@ -115,6 +115,7 @@ export class ClientsListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onPaginateChange(event: PageEvent) {
+    console.log(event);
     let page = event.pageIndex;
     let size = event.pageSize;
     page = page + 1;

@@ -76,5 +76,5 @@
   [length]="totalItems"
   [pageSize]="pageSize"
   [pageSizeOptions]="[5, 10, 25, 100]"
-  (page)="pageEvent = $event; onPaginateChange($event)"
+  (page)="onPaginateChange($event)"
 ></mat-paginator>

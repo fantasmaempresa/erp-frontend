@@ -1,5 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AuthState } from './auth.state';
+import { UserAuthModel } from '../../data/models/UserAuth.model';
+import { User } from '../../data/models/User.model';
 
 export const AUTH_STATE_NAME = 'auth';
 
@@ -15,4 +17,17 @@ export const selectIsLoading = createSelector(selectAuthState, (state) => {
 
 export const selectErrorMessage = createSelector(selectAuthState, (state) => {
   return state.errorMessage;
+});
+
+export const selectUser = createSelector(selectAuthState, (state) => {
+  if (!state.user) {
+    return null;
+  }
+  const user: UserAuthModel = state.user;
+  const { role, staff, client, ...userData } = user;
+  return userData as unknown as User;
+});
+
+export const selectRole = createSelector(selectAuthState, (state) => {
+  return state.user?.role;
 });
