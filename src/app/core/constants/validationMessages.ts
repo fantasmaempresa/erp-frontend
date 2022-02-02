@@ -25,8 +25,10 @@ export const genericErrorMessages: { [key: string]: any } = {
   required: () => 'This field is required',
   email: () => 'This mail is invalid',
   pattern: () => 'This field does not match the pattern',
-  minlength: (err: any) => `This field requires at least ${err.requiredLength} characters `,
-  maxlength: (err: any) => `This field has a maximum of ${err.requiredLength} characters`,
+  minlength: ({ requiredLength }: any) =>
+    `This field requires at least ${requiredLength} characters `,
+  maxlength: ({ requiredLength }: any) =>
+    `This field has a maximum of ${requiredLength} characters`,
   min: (err: any) => `Min Value ${err.min}`,
   max: (err: any) => `Max Value ${err.max}`,
 };
