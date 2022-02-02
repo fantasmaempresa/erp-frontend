@@ -1,13 +1,15 @@
 <div class="sidebar-container">
   <nav class="sidebar">
-    <div class="sidebar-header">
+    <div class="sidebar-header" *ngIf="user$ | async as user">
       <img
         alt=""
         class="profile-img profile-img--sidebar-header"
         src="assets/images/profile_picture.jpg"
       />
-      <h3 class="sidebar-header__profile-name">Patrick Becker</h3>
-      <span class="sidebar-header__profile-place">UI/UX Designer</span>
+      <h3 class="sidebar-header__profile-name">{{ user.name }}</h3>
+      <span class="sidebar-header__profile-place" *ngIf="role$ | async as role">
+        {{ role.name }}
+      </span>
     </div>
 
     <div class="sidebar-body" *ngFor="let menu of menus">

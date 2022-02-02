@@ -18,6 +18,7 @@ const routes: Routes = [
   {
     path: 'app',
     component: ContentLayoutComponent,
+    data: { breadcrumb: 'Inicio' },
     children: [
       {
         path: '',
