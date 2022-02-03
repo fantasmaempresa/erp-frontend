@@ -63,10 +63,33 @@
   }
 
   &__item {
-    padding: 2.5rem 2rem;
+    padding: 2.5rem 1rem 1rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
 
-    &:not(:last-child) {
-      border-bottom: 1px solid #eee;
+    &-body {
+      min-height: 4rem;
+      display: flex;
+      align-items: center;
+    }
+
+    &-icon {
+      font-size: 3.75rem;
+      margin-right: 2rem;
+    }
+
+
+    &-label {
+      font-weight: 300;
+      font-size: 1.6rem;
+    }
+
+    &-date {
+      font-size: 1.3rem;
+      color: #7e7d7d;
+      font-weight: 450;
+      align-self: end;
     }
   }
 

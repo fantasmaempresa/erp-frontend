@@ -13,6 +13,7 @@ import { TableSearchComponent } from './components/table-search/table-search.com
 import { DynamicFormInputComponent } from './components/dynamic-form-input/dynamic-form-input.component';
 import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
 import { StopPropagationDirective } from '../core/directives/stop-propagation.directive';
+import { OutSideClickDirective } from '../core/directives/out-side-click.directive';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -21,6 +22,7 @@ import { StopPropagationDirective } from '../core/directives/stop-propagation.di
     PageNotFoundComponent,
     ErrorMessageDirective,
     StopPropagationDirective,
+    OutSideClickDirective,
     DialogSearchComponent,
     TableSearchComponent,
     DynamicFormInputComponent,
@@ -45,6 +47,7 @@ import { StopPropagationDirective } from '../core/directives/stop-propagation.di
     HttpClientModule,
     ErrorMessageDirective,
     StopPropagationDirective,
+    OutSideClickDirective,
     DynamicFormComponent,
   ],
 })
