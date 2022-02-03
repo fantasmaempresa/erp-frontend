@@ -1,6 +1,7 @@
 :host {
   display: grid;
 }
+
 .header {
   position: relative;
   background: var(--color-primary-header);
@@ -9,6 +10,7 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+
   &::after {
     content: '';
     width: 100%;
@@ -56,7 +58,7 @@
 
   &__profile {
     flex: 0 1 15%;
-    padding: 0.5rem 2rem;
+    padding: 0.5rem 1rem;
     display: flex;
     align-items: center;
 
@@ -126,6 +128,7 @@
     &-icon {
       font-size: var(--text-300);
     }
+
     &-text {
       font-size: var(--text-400);
       margin-left: 2rem;
@@ -150,4 +153,9 @@
     margin-left: 1rem;
     font-size: var(--text-200);
   }
+}
+
+.header__notification {
+  margin-right: 0.5rem;
+  margin-left: auto;
 }

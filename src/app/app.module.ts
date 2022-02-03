@@ -18,6 +18,7 @@ import { getSpanishPaginatorIntl } from './core/i18n/spanish-paginator-intl';
 import { StateModule } from './state/state.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './core/guards/jwt.interceptor';
+import { NotificationModule } from './features/notification/notification.module';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { JwtInterceptor } from './core/guards/jwt.interceptor';
     StateModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    NotificationModule,
   ],
   providers: [
     { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },

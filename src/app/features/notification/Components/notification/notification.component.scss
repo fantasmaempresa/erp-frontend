@@ -1,0 +1,88 @@
+.notifications {
+  $sizeBox: 15px;
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.125);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  &__icon {
+    font-size: 3rem;
+    font-weight: 500;
+    color: var(--primary-color);
+  }
+
+  &__container {
+    position: absolute;
+    width: 40rem;
+    height: 45rem;
+    opacity: 0;
+    background: var(--color-primary-sidebar);
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, calc(100% + #{$sizeBox} / 3));
+    cursor: auto;
+    border-radius: 4px;
+    box-shadow: 8px 8px 4px 4px rgba(0, 0, 0, .225);
+    overflow: hidden;
+  }
+
+  &__scroll-container {
+    height: calc(100% - 6rem);
+    width: 100%;
+    overflow: auto;
+  }
+
+  &::before {
+    position: absolute;
+    content: '';
+    height: $sizeBox;
+    width: $sizeBox;
+    bottom: -$sizeBox;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    background: var(--color-primary-sidebar);
+    z-index: -1;
+    opacity: 0;
+  }
+
+  &--visible {
+    & .notifications__container, &::before {
+      opacity: 1;
+    }
+  }
+
+  &__list {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+  }
+
+  &__item {
+    padding: 2.5rem 2rem;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid #eee;
+    }
+  }
+
+  &__action {
+    height: 6rem;
+    padding: 2rem;
+    display: block;
+    background: var(--accent-color);
+    text-align: center;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--primary-color);
+
+    &:hover {
+      color: var(--primary-darker-color);
+      background: var(--accent-darker-color);
+    }
+  }
+}
