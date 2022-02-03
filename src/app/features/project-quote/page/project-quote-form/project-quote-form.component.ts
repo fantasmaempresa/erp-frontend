@@ -98,10 +98,10 @@ export class ProjectQuoteFormComponent {
       });
     }
   }
-
-  async backToListUsers() {
-    await this.router.navigate(['../'], { relativeTo: this.route });
-  }
+  //
+  // async backToListUsers() {
+  //   await this.router.navigate(['../'], { relativeTo: this.route });
+  // }
 
   onSubmit() {
     let { client, date_end, ...projectQuote } = this.quoteForm.getRawValue();
@@ -140,11 +140,6 @@ export class ProjectQuoteFormComponent {
       this.quoteForm.get('client')?.patchValue(result);
       console.log(this.quoteForm.getRawValue());
     });
-  }
-
-  addNewConcept() {
-    const control = <FormArray>this.quoteForm.controls.concepts;
-    control.push(new FormControl({}));
   }
 
   logValidationErrors() {

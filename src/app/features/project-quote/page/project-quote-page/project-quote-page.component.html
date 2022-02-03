@@ -1,0 +1,53 @@
+<mat-card>
+  <mat-toolbar>
+    <div>
+      <button aria-label="Regresar" mat-icon-button (click)="backToListUsers()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Encabezado</mat-panel-title>
+        <mat-panel-description> Datos acerca de la cotización y el cliente </mat-panel-description>
+      </mat-expansion-panel-header>
+      <app-project-quote-form></app-project-quote-form>
+      <mat-action-row>
+        <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Cotización</mat-panel-title>
+        <mat-panel-description> Cotización </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <app-dynamic-form-creation
+        (formField)="addFieldToFormGroup($event)"
+      ></app-dynamic-form-creation>
+
+      <app-dynamic-form *ngIf="formFields.length > 0" [formFields]="formFields"></app-dynamic-form>
+
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Atras</button>
+        <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title> Conceptos </mat-panel-title>
+        <mat-panel-description> Conceptos que se agregaran a la cotización </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <app-project-quote-concepts></app-project-quote-concepts>
+
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Atras</button>
+        <button mat-button color="primary" (click)="nextStep()">Fin</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+  </mat-accordion>
+</mat-card>

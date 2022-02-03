@@ -12,6 +12,7 @@ import { DialogSearchComponent } from './components/dialog-search/dialog-search.
 import { TableSearchComponent } from './components/table-search/table-search.component';
 import { DynamicFormInputComponent } from './components/dynamic-form-input/dynamic-form-input.component';
 import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
+import { DynamicFormCreationComponent } from './components/dynamic-form-creation/dynamic-form-creation.component';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -23,6 +24,7 @@ import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.com
     TableSearchComponent,
     DynamicFormInputComponent,
     DynamicFormComponent,
+    DynamicFormCreationComponent,
   ],
   imports: [
     CommonModule,
@@ -43,6 +45,7 @@ import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.com
     HttpClientModule,
     ErrorMessageDirective,
     DynamicFormComponent,
+    DynamicFormCreationComponent,
   ],
 })
 export class SharedModule {}

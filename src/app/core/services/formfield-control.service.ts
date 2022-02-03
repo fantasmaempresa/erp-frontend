@@ -6,8 +6,6 @@ import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms'
   providedIn: 'root',
 })
 export class FormfieldControlService {
-  constructor() {}
-
   toFormGroup(inputs: FormField<string>[]): FormGroup {
     const group: any = {};
     inputs.forEach((input) => {
@@ -24,6 +22,7 @@ export class FormfieldControlService {
           ? new FormControl(input.value || '', validator)
           : new FormControl(input.value || '');
     });
+    console.log(group);
 
     return new FormGroup(group);
   }

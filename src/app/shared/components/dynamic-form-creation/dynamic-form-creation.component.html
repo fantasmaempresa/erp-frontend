@@ -1,0 +1,61 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Tipo de dato</mat-label>
+    <mat-select formControlName="controlType">
+      <mat-option>Ninguna</mat-option>
+      <mat-option *ngFor="let type of types; index as i" [value]="type.value">{{
+        type.label
+      }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Etiqueta</mat-label>
+    <input matInput type="text" autocomplete="off" formControlName="label" />
+  </mat-form-field>
+
+  <div class="d-flex flex-column" *ngIf="hasOptions()" formArrayName="options">
+    <div class="row" *ngFor="let option of options.controls; index as i" [formGroupName]="i">
+      <div class="col-5">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Clave</mat-label>
+          <input matInput type="text" autocomplete="off" formControlName="key" />
+        </mat-form-field>
+      </div>
+      <div class="col-5">
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Valor</mat-label>
+          <input matInput type="text" autocomplete="off" formControlName="value" />
+        </mat-form-field>
+      </div>
+      <div class="col-2 d-flex align-items-center" style="margin-top: -20px">
+        <button
+          *ngIf="options.controls.length > 1"
+          type="button"
+          mat-mini-fab
+          color="warn"
+          class="align-self-center search-button"
+          (click)="removeOption(i)"
+          matTooltip="Eliminar opción"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-1">
+        <button
+          type="button"
+          mat-fab
+          color="primary"
+          class="align-self-center search-button"
+          matTooltip="Agregar otra opción"
+          (click)="addOption()"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  <button mat-flat-button color="primary">Crear campo</button>
+</form>
