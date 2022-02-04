@@ -1,39 +1,45 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { FormField } from '../../../core/classes/FormField';
+import { Component } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormfieldControlService } from '../../../core/services/formfield-control.service';
+import { Store } from '@ngrx/store';
+import { selectDynamicForm } from '../../../state/dynamic-form/dynamic-form.selector';
+import { Observable } from 'rxjs';
+import { Formfield } from '../../../data/models/Formfield.model';
 
 @Component({
   selector: 'app-dynamic-form',
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.scss'],
 })
-export class DynamicFormComponent implements OnChanges {
-  // private _formFields!: FormField<string>[];
+export class DynamicFormComponent {
+  form: FormGroup = new FormGroup({});
 
-  @Input() formFields: FormField<string>[] = [];
+  payLoad = '';
 
-  // get formFields(): FormField<string>[] {
-  //   return this._formFields;
-  // }
+  fields$!: Observable<Formfield<any>[]>;
 
-  form!: FormGroup;
+  isLoading = false;
 
-  payLoad = ' ';
-
-  constructor(private formfieldService: FormfieldControlService, private ref: ChangeDetectorRef) {}
+  constructor(private formfieldService: FormfieldControlService, private store: Store) {
+    this.fields$ = store.select(selectDynamicForm);
+    this.fields$.subscribe((data) => {
+      console.log(data);
+      this.isLoading = true;
+      data.forEach((control) => {
+        this.form.setControl(control.key, new FormControl(''));
+      });
+      this.isLoading = false;
+    });
+  }
 
   onSubmit() {
     this.payLoad = JSON.stringify(this.form.getRawValue());
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const formFields = changes.formFields.currentValue;
-    console.log(changes.formFields.currentValue);
-    this.form = this.formfieldService.toFormGroup(formFields);
-    // console.log(this._formFields);
-    // this._formFields = formFields;
-    // this.form = this.formfieldService.toFormGroup(formFields);
-    // this.ref.detectChanges();
+  createOption() {
+    return new FormGroup({
+      key: new FormControl('', Validators.required),
+      value: new FormControl('', Validators.required),
+    });
   }
 }

@@ -13,6 +13,8 @@ import { quoteStatusInitialState, QuoteStatusState } from './quote-status/quote-
 import { quoteStatusReducer } from './quote-status/quote-status.reducer';
 import { quotesInitialState, QuotesState } from './quotes/quotes.state';
 import { quotesReducer } from './quotes/quotes.reducer';
+import { dynamicFormInitialState, DynamicFormState } from './dynamic-form/dynamic-form.state';
+import { dynamicFormReducer } from './dynamic-form/dynamic-form.reducer';
 
 export interface AppState {
   auth: AuthState;
@@ -22,6 +24,7 @@ export interface AppState {
   concepts: ConceptsState;
   quote_status: QuoteStatusState;
   quotes: QuotesState;
+  dynamicForm: DynamicFormState;
 }
 
 export const initialAppState: AppState = {
@@ -32,6 +35,7 @@ export const initialAppState: AppState = {
   concepts: conceptsInitialState,
   quote_status: quoteStatusInitialState,
   quotes: quotesInitialState,
+  dynamicForm: dynamicFormInitialState,
 };
 
 export function getInitialAppState(): AppState {
@@ -46,4 +50,5 @@ export const reducers: ActionReducerMap<AppState> = {
   concepts: conceptReducer,
   quote_status: quoteStatusReducer,
   quotes: quotesReducer,
+  dynamicForm: dynamicFormReducer,
 };

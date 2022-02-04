@@ -1,6 +1,9 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { FormField } from '../../../core/classes/FormField';
+import { FormFieldClass } from '../../../core/classes/FormFieldClass';
+import { Store } from '@ngrx/store';
+import { setField } from '../../../state/dynamic-form/dynamic-form.actions';
+import { Formfield } from '../../../data/models/Formfield.model';
 
 @Component({
   selector: 'app-dynamic-form-creation',
@@ -8,7 +11,7 @@ import { FormField } from '../../../core/classes/FormField';
   styleUrls: ['./dynamic-form-creation.component.scss'],
 })
 export class DynamicFormCreationComponent implements OnInit {
-  @Output() formField = new EventEmitter<FormField<string>>();
+  @Output() formField = new EventEmitter<FormFieldClass<string>>();
 
   types = [
     {
@@ -17,9 +20,13 @@ export class DynamicFormCreationComponent implements OnInit {
       type: 'text',
     },
     {
-      value: 'textbox',
+      value: 'number',
       label: 'Número',
       type: 'number',
+    },
+    {
+      value: 'textarea',
+      label: 'Area de texto',
     },
     {
       value: 'dropdown',
@@ -31,11 +38,11 @@ export class DynamicFormCreationComponent implements OnInit {
     },
     {
       value: 'radio',
-      label: 'Opciones',
+      label: 'Radio',
     },
     {
       value: 'checkbox',
-      label: 'Multiples valores',
+      label: 'Checkbox',
     },
   ];
 
@@ -48,6 +55,8 @@ export class DynamicFormCreationComponent implements OnInit {
   get options() {
     return this.form.controls.options as FormArray;
   }
+
+  constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.createForm();
@@ -86,14 +95,13 @@ export class DynamicFormCreationComponent implements OnInit {
   }
 
   onSubmit() {
-    const options = this.form.value;
+    const options: Formfield<any> = { ...this.form.value };
     if (!options.controlType || !options.label) {
       return;
     }
-    console.log('Pase la guarda');
     options.key = options.label.toLowerCase();
     console.log(options);
-    this.formField.emit(new FormField(options));
+    this.store.dispatch(setField({ form: options }));
     this.createForm();
   }
 }

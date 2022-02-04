@@ -12,7 +12,7 @@ import { QuoteStatusService } from '../../../../data/services/quote-status.servi
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { ClientService } from '../../../../data/services/client.service';
 import { Client } from '../../../../data/models/Client.model';
-import { FormField } from '../../../../core/classes/FormField';
+import { FormFieldClass } from '../../../../core/classes/FormFieldClass';
 import { FormfieldControlService } from '../../../../core/services/formfield-control.service';
 import { ConceptService } from '../../../../data/services/concept.service';
 import { Concept } from '../../../../data/models/Concept.model';
@@ -25,7 +25,7 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
   styleUrls: ['./project-quote-form.component.scss'],
 })
 export class ProjectQuoteFormComponent {
-  formFields: FormField<string>[] = [];
+  formFields: FormFieldClass<string>[] = [];
 
   quoteForm = new FormGroup({
     name: new FormControl(''),

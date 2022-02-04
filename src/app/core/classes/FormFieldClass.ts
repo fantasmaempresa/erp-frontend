@@ -1,4 +1,4 @@
-export class FormField<T> {
+export class FormFieldClass<T> {
   value: T | undefined;
 
   key: string;

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormField } from '../../../../core/classes/FormField';
+import { FormFieldClass } from '../../../../core/classes/FormFieldClass';
+import { Store } from '@ngrx/store';
+import { Formfield } from '../../../../data/models/Formfield.model';
 
 @Component({
   selector: 'app-project-quote-page',
@@ -8,19 +10,20 @@ import { FormField } from '../../../../core/classes/FormField';
   styleUrls: ['./project-quote-page.component.scss'],
 })
 export class ProjectQuotePageComponent {
-  formFields: FormField<any>[] = [];
+  formFields: FormFieldClass<any>[] = [];
 
   step = 0;
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(private router: Router, private route: ActivatedRoute, private store: Store) {}
 
-  addFieldToFormGroup(event: FormField<any>) {
-    if (this.formFields.length === 0) {
-      this.formFields = [event];
-      console.log('formFields vacio', this.formFields);
-    } else {
-      this.formFields = [...this.formFields, event];
-    }
+  addFieldToFormGroup(event: Formfield<any>) {
+    // if (this.formFields.length === 0) {
+    //   this.formFields = [event];
+    //   console.log('formFields vacio', this.formFields);
+    // } else {
+    //   this.formFields = [...this.formFields, event];
+    // }
+    // this.store.dispatch(setField({ form: event }));
   }
 
   async backToListUsers() {
