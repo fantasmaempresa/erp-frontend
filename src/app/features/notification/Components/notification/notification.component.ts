@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { NotificationsService } from '../../../../data/services/notifications.service';
 import { Observable, pluck } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectNotification } from '../../../../state/notifications/notification.selector';
+import { loadNotifications } from '../../../../state/notifications/notification.actions';
 
 @Component({
   selector: 'app-notification',
@@ -12,21 +14,17 @@ export class NotificationComponent {
 
   notifications$!: Observable<any>;
 
-  constructor(private notificationsService: NotificationsService) {}
+  constructor(private store: Store) {
+    this.notifications$ = this.store.select(selectNotification).pipe(pluck('data'));
+    this.store.dispatch(loadNotifications());
+  }
 
   toggleContainer($event: MouseEvent) {
     $event.stopPropagation();
     this.isOpened = !this.isOpened;
-    if (this.isOpened) {
-      this.getNotifications();
-    }
   }
 
   toggleClose = () => {
     this.isOpened = false;
   };
-
-  getNotifications() {
-    this.notifications$ = this.notificationsService.getLast().pipe(pluck('data'));
-  }
 }

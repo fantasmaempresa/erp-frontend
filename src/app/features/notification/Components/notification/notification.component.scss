@@ -29,6 +29,7 @@
     border-radius: 4px;
     box-shadow: 8px 8px 4px 4px rgba(0, 0, 0, .225);
     overflow: hidden;
+    pointer-events: none;
   }
 
   &__scroll-container {
@@ -52,6 +53,7 @@
 
   &--visible {
     & .notifications__container, &::before {
+      pointer-events: auto;
       opacity: 1;
     }
   }

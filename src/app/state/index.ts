@@ -13,6 +13,11 @@ import { quoteStatusInitialState, QuoteStatusState } from './quote-status/quote-
 import { quoteStatusReducer } from './quote-status/quote-status.reducer';
 import { quotesInitialState, QuotesState } from './quotes/quotes.state';
 import { quotesReducer } from './quotes/quotes.reducer';
+import {
+  initialState as notificationInitialState,
+  NotificationState,
+} from './notifications/notification.state';
+import { notificationReducer } from './notifications/notification.reducer';
 
 export interface AppState {
   auth: AuthState;
@@ -22,9 +27,11 @@ export interface AppState {
   concepts: ConceptsState;
   quote_status: QuoteStatusState;
   quotes: QuotesState;
+  notifications: NotificationState;
 }
 
 export const initialAppState: AppState = {
+  notifications: notificationInitialState,
   auth: initialState,
   clients: clientsInitialState,
   staff: staffInitialState,
@@ -46,4 +53,5 @@ export const reducers: ActionReducerMap<AppState> = {
   concepts: conceptReducer,
   quote_status: quoteStatusReducer,
   quotes: quotesReducer,
+  notifications: notificationReducer,
 };

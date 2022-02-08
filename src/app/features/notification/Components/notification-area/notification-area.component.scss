@@ -1,0 +1,72 @@
+.notifications-container {
+  height: 50rem;
+  width: 50rem;
+  padding: 3rem 4rem;
+}
+
+.notifications__list {
+  height: 100%;
+  width: 100%;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
+.notifications__item {
+  padding: 4.5rem 1rem 1rem;
+  flex-direction: column;
+  display: flex;
+  background: var(--color-primary-sidebar);
+  box-shadow: 0 0 32px 12px rgba(0, 0, 0, .325);
+  animation: 15s ease-in-out enterToArea backwards;
+  animation-fill-mode: forwards;
+
+  &:not(:last-child) {
+    margin-bottom: 3rem;
+  }
+
+  &-body {
+    min-height: 5rem;
+    display: flex;
+    align-items: center;
+  }
+
+  &-icon {
+    font-size: 4.25rem;
+    margin-right: 2.5rem;
+  }
+
+
+  &-label {
+    font-weight: 400;
+    font-size: 2rem;
+  }
+
+  &-date {
+    font-size: 1.5rem;
+    color: #7e7d7d;
+    font-weight: 450;
+    align-self: end;
+  }
+}
+
+@keyframes enterToArea {
+  0% {
+    transform: translate(100%, 0%);
+  }
+
+  15% {
+    transform: translate(0, 0);
+  }
+
+  80% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(0, -40rem);
+    opacity: 0;
+  }
+}

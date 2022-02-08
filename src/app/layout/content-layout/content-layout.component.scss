@@ -34,3 +34,15 @@
   margin-bottom: 1.5rem;
   padding: 0 24px 0;
 }
+
+.notification-area {
+  position: fixed;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  width: 60rem;
+  height: 60rem;
+  bottom: 5rem;
+  right: 0;
+  pointer-events: none;
+}

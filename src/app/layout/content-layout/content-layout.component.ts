@@ -3,6 +3,8 @@ import { SocketService } from '../../core/services/socket.service';
 import { bindCallback } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { incomingNotification } from '../../state/notifications/notification.actions';
 
 @Component({
   selector: 'app-content-layout',
@@ -14,19 +16,13 @@ export class ContentLayoutComponent implements OnInit {
     private socketService: SocketService,
     private snackBar: MatSnackBar,
     private router: Router,
+    private store: Store,
   ) {}
 
   ngOnInit(): void {
     let getQuotesAsObservable$ = bindCallback(this.socketService.subscribeToChannel);
-    getQuotesAsObservable$('quotes', 'QuoteEvent').subscribe((data) => {
-      const snackBarRef = this.snackBar.open('Se ha realizado una cotización', 'Abrir', {
-        horizontalPosition: 'right',
-        verticalPosition: 'top',
-      });
-      snackBarRef.onAction().subscribe(() => {
-        console.log('Estoy redirigiendo');
-        this.router.navigate(['app/project-quote']);
-      });
+    getQuotesAsObservable$('quotes', 'QuoteEvent').subscribe((notification: any) => {
+      this.store.dispatch(incomingNotification({ notification }));
     });
   }
 }
