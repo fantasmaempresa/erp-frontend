@@ -24,12 +24,13 @@
     background: var(--color-primary-sidebar);
     bottom: 0;
     left: 50%;
-    transform: translate(-50%, calc(100% + #{$sizeBox} / 3));
+    transform: translate(-50%, calc(100% + #{$sizeBox} / 3 + 10rem));
     cursor: auto;
     border-radius: 4px;
     box-shadow: 8px 8px 4px 4px rgba(0, 0, 0, .225);
     overflow: hidden;
     pointer-events: none;
+    transition: 450ms;
   }
 
   &__scroll-container {
@@ -45,16 +46,25 @@
     width: $sizeBox;
     bottom: -$sizeBox;
     left: 50%;
-    transform: translateX(-50%) rotate(45deg);
+    transform: translate(-50%, 5rem) rotate(45deg);
     background: var(--color-primary-sidebar);
     z-index: -1;
     opacity: 0;
+    transition: 450ms;
   }
 
   &--visible {
     & .notifications__container, &::before {
       pointer-events: auto;
       opacity: 1;
+    }
+
+    & .notifications__container {
+      transform: translate(-50%, calc(100% + #{$sizeBox} / 3));
+    }
+
+    &::before {
+      transform: translate(-50%, 0) rotate(45deg);
     }
   }
 
