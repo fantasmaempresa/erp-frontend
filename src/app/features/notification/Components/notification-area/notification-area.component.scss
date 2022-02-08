@@ -14,16 +14,35 @@
 }
 
 .notifications__item {
+  position: relative;
   padding: 4.5rem 1rem 1rem;
   flex-direction: column;
   display: flex;
   background: var(--color-primary-sidebar);
   box-shadow: 0 0 32px 12px rgba(0, 0, 0, .325);
-  animation: 15s ease-in-out enterToArea backwards;
+  animation: 12s ease-in-out enterToArea backwards;
   animation-fill-mode: forwards;
+  pointer-events: all;
+
 
   &:not(:last-child) {
     margin-bottom: 3rem;
+  }
+
+  &--close {
+    animation: 1.75s ease-out closeNotification backwards;
+    animation-fill-mode: forwards;
+  }
+
+  &-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-weight: 900;
+    font-size: 3.25rem;
+    padding: .75rem;
+    cursor: pointer;
+    color: var(--primary-color);
   }
 
   &-body {
@@ -56,13 +75,24 @@
     transform: translate(100%, 0%);
   }
 
-  15% {
+  8% {
     transform: translate(0, 0);
   }
 
   80% {
     transform: translate(0, 0);
     opacity: 1;
+  }
+
+  100% {
+    transform: translate(0, -40rem);
+    opacity: 0;
+  }
+}
+
+@keyframes closeNotification {
+  0% {
+    transform: translate(0, 0);
   }
 
   100% {

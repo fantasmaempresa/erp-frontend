@@ -1,6 +1,13 @@
 <div class="notifications-container">
   <ul class="notifications__list">
-    <li class="notifications__item" *ngFor="let notification of notifications$ | async">
+    <li
+      class="notifications__item"
+      *ngFor="let notification of notifications$ | async"
+      [class.notifications__item--close]="notification.isClose"
+    >
+      <span class="material-icons notifications__item-close" (click)="checkIsClose(notification)"
+        >close</span
+      >
       <div class="notifications__item-body">
         <span class="material-icons notifications__item-icon">notifications</span>
         <span class="notifications__item-label">{{ notification.notification.message }}</span>
@@ -8,6 +15,15 @@
       <span class="notifications__item-date">{{ notification.created_at | date }}</span>
     </li>
     <!--    <li class="notifications__item">-->
+    <!--      <span class="material-icons notifications__item-close">close</span>-->
+    <!--      <div class="notifications__item-body">-->
+    <!--        <span class="material-icons notifications__item-icon">notifications</span>-->
+    <!--        <span class="notifications__item-label">Prueba</span>-->
+    <!--      </div>-->
+    <!--      <span class="notifications__item-date">Fecha de Prueba</span>-->
+    <!--    </li>-->
+    <!--    <li class="notifications__item notifications__item&#45;&#45;close">-->
+    <!--      <span class="material-icons notifications__item-close">close</span>-->
     <!--      <div class="notifications__item-body">-->
     <!--        <span class="material-icons notifications__item-icon">notifications</span>-->
     <!--        <span class="notifications__item-label">Prueba</span>-->

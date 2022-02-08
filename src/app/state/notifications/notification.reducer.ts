@@ -20,7 +20,20 @@ const NotificationReducer = createReducer(
   on(NotificationActions.incomingNotification, (state: NotificationState, { notification }) => {
     return {
       ...state,
-      incomingNotifications: [...state.incomingNotifications, notification],
+      incomingNotifications: [...state.incomingNotifications, { ...notification, isClose: false }],
+    };
+  }),
+  on(NotificationActions.closeIncomingNotification, (state: NotificationState, { id }) => {
+    return {
+      ...state,
+      incomingNotifications: state.incomingNotifications.map((notification) =>
+        notification.id === id
+          ? {
+              ...notification,
+              isClose: true,
+            }
+          : notification,
+      ),
     };
   }),
   on(NotificationActions.deleteIncomingNotification, (state: NotificationState, { id }) => {
