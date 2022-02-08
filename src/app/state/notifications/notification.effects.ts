@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap } from 'rxjs';
-import { loadNotifications, loadNotificationsSuccess } from './notification.actions';
+import { bindCallback, map, mergeMap } from 'rxjs';
+import {
+  incomingNotification,
+  loadNotifications,
+  loadNotificationsSuccess,
+  startListenNotification,
+} from './notification.actions';
 import { NotificationsService } from '../../data/services/notifications.service';
+import { SocketService } from '../../core/services/socket.service';
 
 @Injectable()
 export class NotificationEffects {
@@ -10,10 +16,20 @@ export class NotificationEffects {
     return this.actions$.pipe(
       ofType(loadNotifications),
       mergeMap(() => {
-        return this.notificationsService
-          .getLast()
-          .pipe(map((notifications) => loadNotificationsSuccess({ notifications })));
+        return this.notificationsService.getLast();
       }),
+      map((notifications) => loadNotificationsSuccess({ notifications })),
+    );
+  });
+
+  listenNotifications$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(startListenNotification),
+      mergeMap(() => {
+        let getQuotesAsObservable$ = bindCallback(this.socketService.subscribeToChannel);
+        return getQuotesAsObservable$('quotes', 'QuoteEvent');
+      }),
+      map((notification: any) => incomingNotification({ notification })),
     );
   });
 
@@ -28,5 +44,9 @@ export class NotificationEffects {
   //   );
   // });
 
-  constructor(private actions$: Actions, private notificationsService: NotificationsService) {}
+  constructor(
+    private actions$: Actions,
+    private notificationsService: NotificationsService,
+    private socketService: SocketService,
+  ) {}
 }
