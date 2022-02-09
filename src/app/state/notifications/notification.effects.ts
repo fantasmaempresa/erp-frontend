@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { bindCallback, map, mergeMap } from 'rxjs';
+import { map, mergeMap, tap } from 'rxjs';
 import {
   incomingNotification,
   loadNotifications,
@@ -26,10 +26,10 @@ export class NotificationEffects {
     return this.actions$.pipe(
       ofType(startListenNotification),
       mergeMap(() => {
-        let getQuotesAsObservable$ = bindCallback(this.socketService.subscribeToChannel);
-        return getQuotesAsObservable$('quotes', 'QuoteEvent');
+        return this.socketService.echo$;
       }),
-      map((notification: any) => incomingNotification({ notification })),
+      tap((data) => console.log(data)),
+      map(({ notification }: any) => incomingNotification({ notification })),
     );
   });
 
@@ -48,5 +48,8 @@ export class NotificationEffects {
     private actions$: Actions,
     private notificationsService: NotificationsService,
     private socketService: SocketService,
-  ) {}
+  ) {
+    //setChanel
+    this.socketService.subscribeToChannel('quotes', 'QuoteEvent');
+  }
 }
