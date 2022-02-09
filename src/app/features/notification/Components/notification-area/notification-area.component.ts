@@ -17,6 +17,8 @@ export class NotificationAreaComponent {
     this.notifications$ = this.store.select(selectIncomingNotifications);
   }
 
+  trackById = (index: number, item: any) => item.id;
+
   checkIsClose(notification: NotificationPopUpModel) {
     this.store.dispatch(closeIncomingNotification({ id: notification.id }));
   }

@@ -2,8 +2,9 @@
   <ul class="notifications__list">
     <li
       class="notifications__item"
-      *ngFor="let notification of notifications$ | async"
+      *ngFor="let notification of notifications$ | async; let i = index; trackBy: trackById"
       [class.notifications__item--close]="notification.isClose"
+      [style.animation-delay]="i * 1.5 + 's'"
     >
       <span class="material-icons notifications__item-close" (click)="checkIsClose(notification)"
         >close</span
