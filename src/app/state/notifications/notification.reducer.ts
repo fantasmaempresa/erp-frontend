@@ -5,6 +5,7 @@ import * as NotificationActions from './notification.actions';
 const NotificationReducer = createReducer(
   initialState,
   on(NotificationActions.loadNotifications, (state): NotificationState => state),
+  on(NotificationActions.nothingNotification, (state): NotificationState => state),
   on(
     NotificationActions.loadNotificationsSuccess,
     (state: NotificationState, { notifications }) => {
@@ -17,16 +18,25 @@ const NotificationReducer = createReducer(
   on(NotificationActions.emptyNotificationList, () => {
     return initialState;
   }),
-  on(NotificationActions.incomingNotification, (state: NotificationState, { notification }) => {
+  on(NotificationActions.addIncomingNotification, (state: NotificationState, { notification }) => {
     return {
       ...state,
-      incomingNotifications: [...state.incomingNotifications, { ...notification, isClose: false }],
+      incomingNotifications: [...state.incomingNotifications, notification],
     };
   }),
-  on(NotificationActions.closeIncomingNotification, (state: NotificationState, { id }) => {
+  on(
+    NotificationActions.showIncomingNotification,
+    (state: NotificationState, { notifications }) => {
+      return {
+        ...state,
+        showNotifications: [...notifications],
+      };
+    },
+  ),
+  on(NotificationActions.closeShowNotification, (state: NotificationState, { id }) => {
     return {
       ...state,
-      incomingNotifications: state.incomingNotifications.map((notification) =>
+      showNotifications: state.showNotifications.map((notification) =>
         notification.id === id
           ? {
               ...notification,
@@ -36,12 +46,10 @@ const NotificationReducer = createReducer(
       ),
     };
   }),
-  on(NotificationActions.deleteIncomingNotification, (state: NotificationState, { id }) => {
+  on(NotificationActions.deleteShowNotifications, (state: NotificationState) => {
     return {
       ...state,
-      incomingNotifications: state.incomingNotifications.filter(
-        (notification) => notification.id !== id,
-      ),
+      incomingNotifications: [],
     };
   }),
 );
