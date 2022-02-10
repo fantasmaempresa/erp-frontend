@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, tap } from 'rxjs';
+import { from, map, mergeMap, tap } from 'rxjs';
 import {
   incomingNotification,
   loadNotifications,
@@ -28,8 +28,8 @@ export class NotificationEffects {
       mergeMap(() => {
         return this.socketService.echo$;
       }),
-      tap((data) => console.log(data)),
       map(({ notification }: any) => incomingNotification({ notification })),
+      tap((data) => console.log(data)),
     );
   });
 

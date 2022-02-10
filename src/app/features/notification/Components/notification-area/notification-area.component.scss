@@ -14,7 +14,8 @@
 
 .notifications__item {
   position: relative;
-  padding: 4.5rem 1rem 1rem;
+  flex: 0 0 auto;
+  padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
   background: var(--color-primary-sidebar);
@@ -25,12 +26,12 @@
   border-radius: 8px;
   pointer-events: all;
 
-
   &:not(:last-child) {
-    margin-bottom: 3rem;
+    margin-top: 2rem;
   }
 
   &--close {
+    animation-delay: 0s !important;
     animation: 1.75s ease-out closeNotification backwards;
     animation-fill-mode: forwards;
   }
@@ -39,9 +40,9 @@
     position: absolute;
     top: 0;
     right: 0;
-    font-weight: 900;
-    font-size: 3.25rem;
-    padding: .75rem;
+    font-weight: 600;
+    font-size: 2.5rem;
+    padding: 1rem;
     cursor: pointer;
     color: var(--primary-color);
   }
@@ -53,21 +54,21 @@
   }
 
   &-icon {
-    font-size: 4.25rem;
-    margin-right: 2.5rem;
+    font-size: 3.5rem;
+    margin-right: 1.5rem;
   }
 
 
   &-label {
     font-weight: 400;
-    font-size: 2rem;
+    font-size: 1.75rem;
   }
 
   &-date {
     font-size: 1.5rem;
     color: #7e7d7d;
-    font-weight: 450;
-    align-self: end;
+    font-weight: 300;
+    align-self: flex-end;
   }
 }
 
