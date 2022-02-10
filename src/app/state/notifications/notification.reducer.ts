@@ -36,14 +36,16 @@ const NotificationReducer = createReducer(
   on(NotificationActions.closeShowNotification, (state: NotificationState, { id }) => {
     return {
       ...state,
-      showNotifications: state.showNotifications.map((notification) =>
-        notification.id === id
-          ? {
-              ...notification,
-              isClose: true,
-            }
-          : notification,
-      ),
+      showNotifications: [
+        ...state.showNotifications.map((notification) =>
+          notification.id === id
+            ? {
+                ...notification,
+                isClose: true,
+              }
+            : notification,
+        ),
+      ],
     };
   }),
   on(NotificationActions.deleteShowNotifications, (state: NotificationState) => {

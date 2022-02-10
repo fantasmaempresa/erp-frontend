@@ -1,7 +1,7 @@
 <div class="notifications-container">
   <ul class="notifications__list">
     <li
-      *ngFor="let notification of notifications$ | async; let i = index; trackBy: trackById"
+      *ngFor="let notification of notifications$ | async; let i = index"
       [class.notifications__item--close]="notification.isClose"
       [style.animation-delay]="i * 1.5 + 's'"
       class="notifications__item"

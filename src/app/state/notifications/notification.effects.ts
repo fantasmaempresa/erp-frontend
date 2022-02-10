@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   bufferTime,
-  delay,
+  debounceTime,
+  filter,
   from,
   interval,
   map,
@@ -14,7 +15,6 @@ import {
 } from 'rxjs';
 import {
   addIncomingNotification,
-  deleteShowNotifications,
   loadNotifications,
   loadNotificationsSuccess,
   nothingNotification,
@@ -24,7 +24,7 @@ import {
 import { NotificationsService } from '../../data/services/notifications.service';
 import { SocketService } from '../../core/services/socket.service';
 import { Store } from '@ngrx/store';
-import { selectIncomingNotifications, selectShowNotifications } from './notification.selector';
+import { selectIncomingNotifications } from './notification.selector';
 
 @Injectable()
 export class NotificationEffects {
@@ -45,42 +45,41 @@ export class NotificationEffects {
         return this.socketService.echo$;
       }),
       map(({ notification }: any) => addIncomingNotification({ notification })),
-      tap((data) => console.log(data)),
     );
   });
 
-  clearShowNotifications$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(showIncomingNotification),
-      mergeMap(() => {
-        return this.store.select(selectShowNotifications);
-      }),
-      delay(14_001),
-      map(() => deleteShowNotifications()),
-    );
-  });
+  // clearShowNotifications$ = createEffect(() => {
+  //   return this.actions$.pipe(
+  //     ofType(showIncomingNotification),
+  //     mergeMap(() => {
+  //       return this.store.select(selectShowNotifications);
+  //     }),
+  //     map(() => deleteShowNotifications()),
+  //   );
+  // });
 
   //interval for exit from animation
   private readonly _animationTime = 14_000;
 
-  private readonly _bufferTimeSpan = 500;
-
   private readonly _chunkSize = 3;
 
-  private readonly _timeForEmit = this._bufferTimeSpan / this._chunkSize + 1;
+  private readonly _bufferTimeSpan = 300;
+
+  private readonly _timeForEmit = this._bufferTimeSpan / this._chunkSize - 1;
 
   // @ts-ignore
   notificationIncoming$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(addIncomingNotification),
+      debounceTime(1000),
       mergeMap(() => {
         return this.store.select(selectIncomingNotifications);
       }),
-      tap((data) => console.log(data)),
       switchMap((notifications) => from(notifications)),
       zipWith(interval(this._timeForEmit)),
       map(([n]) => n),
       bufferTime(this._bufferTimeSpan),
+      filter((data: any) => data.length),
       zipWith(timer(0, this._animationTime)),
       map(([n]) => n),
       tap((data) => console.log(data)),
@@ -92,7 +91,6 @@ export class NotificationEffects {
           return nothingNotification();
         }
       }),
-      tap((data) => console.log(data)),
     );
   });
 
