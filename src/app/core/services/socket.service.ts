@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import Echo from 'laravel-echo';
 import { environment } from '../../../environments/environment';
-import { Subject } from 'rxjs';
+import { bufferTime, filter, interval, map, Subject, take, tap, timer, zipWith } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -22,10 +22,23 @@ export class SocketService {
     });
   }
 
-  private _echo$ = new Subject<any>();
+  private _notifications$ = new Subject<any>();
 
-  get echo$(): any {
-    return this._echo$.asObservable();
+  get notifications$(): any {
+    return this._notifications$.asObservable().pipe(
+      // bufferTime(1_000),
+      // filter((data: any) => data.length),
+      // tap((data) => console.log(data)),
+      // mergeMap((data: any) => from(data)),
+      zipWith(interval(100)),
+      map(([n]) => n),
+      bufferTime(301),
+      filter((data: any) => data.length),
+      tap((data) => console.log(data)),
+      zipWith(timer(0, 15_000)),
+      map(([n]) => n),
+      tap((data) => console.log(data)),
+    );
   }
 
   subscribeToChannel(channelName: string, event: string) {
@@ -34,7 +47,21 @@ export class SocketService {
     const channel = this.echo.channel(channelName);
 
     channel.listen(event, (data: any) => {
-      this._echo$.next(data);
+      this._notifications$.next(data.notification);
+    });
+  }
+
+  subscribeToChannelTest() {
+    const generateRandomNotifications$ = timer(0, 10).pipe(
+      map(() => {
+        const id = new Date().getTime();
+        return { notification: { type: 1, message: `Notification Test ${id}` }, id };
+      }),
+      take(15),
+    );
+    generateRandomNotifications$.subscribe((notification: any) => {
+      this._notifications$.next(notification);
+      // console.log(notification);
     });
   }
 }

@@ -5,7 +5,6 @@ import * as NotificationActions from './notification.actions';
 const NotificationReducer = createReducer(
   initialState,
   on(NotificationActions.loadNotifications, (state): NotificationState => state),
-  on(NotificationActions.nothingNotification, (state): NotificationState => state),
   on(
     NotificationActions.loadNotificationsSuccess,
     (state: NotificationState, { notifications }) => {
@@ -18,40 +17,36 @@ const NotificationReducer = createReducer(
   on(NotificationActions.emptyNotificationList, () => {
     return initialState;
   }),
-  on(NotificationActions.addIncomingNotification, (state: NotificationState, { notification }) => {
+  on(NotificationActions.incomingNotification, (state: NotificationState, { notifications }) => {
     return {
       ...state,
-      incomingNotifications: [...state.incomingNotifications, notification],
+      incomingNotifications: notifications.map((notification) => {
+        return {
+          ...notification,
+          isClose: false,
+        };
+      }),
     };
   }),
-  on(
-    NotificationActions.showIncomingNotification,
-    (state: NotificationState, { notifications }) => {
-      return {
-        ...state,
-        showNotifications: [...notifications],
-      };
-    },
-  ),
-  on(NotificationActions.closeShowNotification, (state: NotificationState, { id }) => {
+  on(NotificationActions.closeIncomingNotification, (state: NotificationState, { id }) => {
     return {
       ...state,
-      showNotifications: [
-        ...state.showNotifications.map((notification) =>
-          notification.id === id
-            ? {
-                ...notification,
-                isClose: true,
-              }
-            : notification,
-        ),
-      ],
+      incomingNotifications: state.incomingNotifications.map((notification) =>
+        notification.id === id
+          ? {
+              ...notification,
+              isClose: true,
+            }
+          : notification,
+      ),
     };
   }),
-  on(NotificationActions.deleteShowNotifications, (state: NotificationState) => {
+  on(NotificationActions.deleteIncomingNotification, (state: NotificationState, { id }) => {
     return {
       ...state,
-      incomingNotifications: [],
+      incomingNotifications: state.incomingNotifications.filter(
+        (notification) => notification.id !== id,
+      ),
     };
   }),
 );

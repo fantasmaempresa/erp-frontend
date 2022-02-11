@@ -10,7 +10,3 @@ export const selectNotification = createSelector(selectNotificationState, (state
 export const selectIncomingNotifications = createSelector(selectNotificationState, (state) => {
   return state.incomingNotifications;
 });
-
-export const selectShowNotifications = createSelector(selectNotificationState, (state) => {
-  return state.showNotifications;
-});
