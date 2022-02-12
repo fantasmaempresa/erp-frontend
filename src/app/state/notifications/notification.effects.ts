@@ -52,5 +52,10 @@ export class NotificationEffects {
     //setChanel
     this.socketService.subscribeToChannel('quotes', 'QuoteEvent');
     this.socketService.subscribeToChannelTest();
+
+    setInterval(() => {
+      console.log('Creando nuevas notificaciones');
+      this.socketService.subscribeToChannelTest();
+    }, 30_000);
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import Echo from 'laravel-echo';
 import { environment } from '../../../environments/environment';
-import { bufferTime, filter, interval, map, Subject, take, tap, timer, zipWith } from 'rxjs';
+import { bufferTime, filter, map, Subject, take, tap, timer, zipWith } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -26,15 +26,8 @@ export class SocketService {
 
   get notifications$(): any {
     return this._notifications$.asObservable().pipe(
-      // bufferTime(1_000),
-      // filter((data: any) => data.length),
-      // tap((data) => console.log(data)),
-      // mergeMap((data: any) => from(data)),
-      zipWith(interval(100)),
-      map(([n]) => n),
-      bufferTime(301),
+      bufferTime(1_000, null, 3),
       filter((data: any) => data.length),
-      tap((data) => console.log(data)),
       zipWith(timer(0, 15_000)),
       map(([n]) => n),
       tap((data) => console.log(data)),

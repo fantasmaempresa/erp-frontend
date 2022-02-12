@@ -90,21 +90,30 @@
   80% {
     transform: translate(0, 0);
     opacity: 1;
+    pointer-events: none;
+  }
+
+  81% {
+    transform: translate(0, -.25rem);
+    pointer-events: none !important;
   }
 
   100% {
     transform: translate(0, -40rem);
     opacity: 0;
+    display: none;
   }
 }
 
 @keyframes closeNotification {
   0% {
     transform: translate(0, 0);
+    pointer-events: none;
   }
 
   100% {
     transform: translate(0, -40rem);
     opacity: 0;
+    display: none;
   }
 }
