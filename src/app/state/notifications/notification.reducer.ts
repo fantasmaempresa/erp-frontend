@@ -28,6 +28,23 @@ const NotificationReducer = createReducer(
       }),
     };
   }),
+  on(
+    NotificationActions.addIncomingNotification,
+    (state: NotificationState, { notifications }): NotificationState => {
+      // console.log(notifications);
+      return {
+        ...state,
+        // @ts-ignore
+        notifications: {
+          ...state.notifications,
+          data: [
+            ...notifications,
+            ...(state && state.notifications ? state.notifications.data : []),
+          ],
+        },
+      };
+    },
+  ),
   on(NotificationActions.closeIncomingNotification, (state: NotificationState, { id }) => {
     return {
       ...state,

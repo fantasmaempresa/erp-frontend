@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Observable, pluck } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { selectNotification } from '../../../../state/notifications/notification.selector';
+import { selectLastNotification } from '../../../../state/notifications/notification.selector';
 import { loadNotifications } from '../../../../state/notifications/notification.actions';
 
 @Component({
@@ -15,7 +15,7 @@ export class NotificationComponent {
   notifications$!: Observable<any>;
 
   constructor(private store: Store) {
-    this.notifications$ = this.store.select(selectNotification).pipe(pluck('data'));
+    this.notifications$ = this.store.select(selectLastNotification);
     this.store.dispatch(loadNotifications());
   }
 

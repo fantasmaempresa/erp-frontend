@@ -8,6 +8,7 @@ export enum NotificationActions {
   LOAD_NEXT_PAGE = '[Notification] Load next page',
   EMPTY_NOTIFICATION_LIST = '[Notification] Empty notification list',
   INCOMING_NOTIFICATION = '[Notification] Incoming',
+  ADD_INCOMING_NOTIFICATION = '[Notification] Add Incoming',
   CLOSE_INCOMING_NOTIFICATION = '[Notification] Close notification',
   DELETE_INCOMING_NOTIFICATION = '[Notification] Delete from notification area',
   LISTEN_NOTIFICATIONS = '[Notification] Start to listen for notifications',
@@ -27,6 +28,12 @@ export const incomingNotification = createAction(
   NotificationActions.INCOMING_NOTIFICATION,
   props<{ notifications: NotificationModel[] }>(),
 );
+
+export const addIncomingNotification = createAction(
+  NotificationActions.ADD_INCOMING_NOTIFICATION,
+  props<{ notifications: NotificationModel[] }>(),
+);
+
 export const closeIncomingNotification = createAction(
   NotificationActions.CLOSE_INCOMING_NOTIFICATION,
   props<{ id: number }>(),

@@ -3,10 +3,12 @@ import Echo from 'laravel-echo';
 import { environment } from '../../../environments/environment';
 import {
   bufferTime,
+  distinctUntilChanged,
   filter,
   map,
   repeatWhen,
   shareReplay,
+  skipUntil,
   Subject,
   take,
   takeUntil,
@@ -41,7 +43,16 @@ export class SocketService {
     const stop$ = new Subject<void>();
     let isStopping = false;
 
+    const timer$ = timer(0, 15_000).pipe(
+      skipUntil(this._notifications$.asObservable()),
+      distinctUntilChanged(),
+      tap((data) => console.log(data)),
+      takeUntil(stop$),
+      repeatWhen(() => start$),
+    );
+
     const source$ = this._notifications$.asObservable().pipe(
+      bufferTime(1_000, null, 3),
       tap(() => {
         if (isStopping) {
           start$.next();
@@ -49,14 +60,8 @@ export class SocketService {
           isStopping = false;
         }
       }),
-      bufferTime(1_000, null, 3),
       filter((data: any) => data.length),
-      zipWith(
-        timer(0, 15_000).pipe(
-          takeUntil(stop$),
-          repeatWhen(() => start$),
-        ),
-      ),
+      zipWith(timer$),
       map(([n]) => n),
       tap((data) => console.log(data)),
       shareReplay(),
@@ -64,7 +69,10 @@ export class SocketService {
 
     source$
       .pipe(
+        takeUntil(stop$),
+        repeatWhen(() => start$),
         bufferTime(15_001),
+        skipUntil(source$),
         tap((data: any) => {
           if (!data.length && !isStopping) {
             stop$.next();
@@ -94,7 +102,7 @@ export class SocketService {
         const id = new Date().getTime();
         return { notification: { type: 1, message: `Notification Test ${id}` }, id };
       }),
-      take(15),
+      take(8),
     );
     generateRandomNotifications$.subscribe((notification: any) => {
       this._notifications$.next(notification);

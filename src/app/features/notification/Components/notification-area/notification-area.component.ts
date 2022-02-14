@@ -20,7 +20,6 @@ export class NotificationAreaComponent {
   trackById = (index: number, item: any) => item.id;
 
   checkIsClose(notification: NotificationPopUpModel) {
-    console.log('Cerrando');
     this.store.dispatch(closeIncomingNotification({ id: notification.id }));
   }
 }

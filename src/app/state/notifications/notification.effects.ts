@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap } from 'rxjs';
 import {
+  addIncomingNotification,
   incomingNotification,
   loadNotifications,
   loadNotificationsSuccess,
@@ -9,6 +10,8 @@ import {
 } from './notification.actions';
 import { NotificationsService } from '../../data/services/notifications.service';
 import { SocketService } from '../../core/services/socket.service';
+import { Store } from '@ngrx/store';
+import { selectIncomingNotifications } from './notification.selector';
 
 @Injectable()
 export class NotificationEffects {
@@ -33,6 +36,17 @@ export class NotificationEffects {
     );
   });
 
+  addNotification$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(incomingNotification),
+      mergeMap(() => {
+        return this.store.select(selectIncomingNotifications);
+      }),
+      map((notifications: any) => addIncomingNotification({ notifications })),
+      // tap((data) => console.log(data)),
+    );
+  });
+
   // loadNextPageOfNotification$ = createEffect(() => {
   //   return this.actions$.pipe(
   //     ofType(loadNextPageOfNotifications),
@@ -48,25 +62,22 @@ export class NotificationEffects {
     private actions$: Actions,
     private notificationsService: NotificationsService,
     private socketService: SocketService,
+    private store: Store,
   ) {
     //setChanel
     this.socketService.subscribeToChannel('quotes', 'QuoteEvent');
 
-    // this.testNotifications();
+    this.testNotifications();
   }
 
   private testNotifications() {
-    this.socketService.subscribeToChannelTest();
-
-    let interval = Math.round(180_000 * Math.random());
-    console.log('Tiempo de siguiente notificación ', interval);
+    setTimeout(() => {
+      this.socketService.subscribeToChannelTest();
+    }, 19_000);
 
     setInterval(() => {
       console.log('Creando nuevas notificaciones');
       this.socketService.subscribeToChannelTest();
-
-      interval = Math.round(180_000 * Math.random());
-      console.log('Tiempo de siguiente notificación ', interval);
-    }, interval);
+    }, 120_000);
   }
 }

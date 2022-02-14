@@ -5,6 +5,7 @@ import { NotificationPopUpModel } from '../../data/models/NotificationPopUp.mode
 export interface NotificationState {
   notifications: Pagination<NotificationModel> | null;
   incomingNotifications: NotificationPopUpModel[];
+  newNotifications: boolean;
 }
 
 export const initialState: NotificationState = {
@@ -16,4 +17,5 @@ export const initialState: NotificationState = {
     // { notification: { type: 1, message: 'Prueba de Notificacion 4' }, isClose: false, id: 4 },
     // { notification: { type: 1, message: 'Prueba de Notificacion 5' }, isClose: false, id: 5 },
   ],
+  newNotifications: false,
 };

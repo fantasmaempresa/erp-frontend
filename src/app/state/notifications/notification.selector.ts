@@ -7,6 +7,10 @@ export const selectNotification = createSelector(selectNotificationState, (state
   return state.notifications;
 });
 
+export const selectLastNotification = createSelector(selectNotificationState, (state) => {
+  return state.notifications?.data.slice(0, 25);
+});
+
 export const selectIncomingNotifications = createSelector(selectNotificationState, (state) => {
   return state.incomingNotifications;
 });
