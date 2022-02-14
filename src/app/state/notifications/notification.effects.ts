@@ -51,6 +51,11 @@ export class NotificationEffects {
   ) {
     //setChanel
     this.socketService.subscribeToChannel('quotes', 'QuoteEvent');
+
+    // this.testNotifications();
+  }
+
+  private testNotifications() {
     this.socketService.subscribeToChannelTest();
 
     let interval = Math.round(180_000 * Math.random());
