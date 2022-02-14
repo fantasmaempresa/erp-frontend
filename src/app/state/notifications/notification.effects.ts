@@ -53,9 +53,15 @@ export class NotificationEffects {
     this.socketService.subscribeToChannel('quotes', 'QuoteEvent');
     this.socketService.subscribeToChannelTest();
 
+    let interval = Math.round(180_000 * Math.random());
+    console.log('Tiempo de siguiente notificación ', Math.round(180_000 * Math.random()));
+
     setInterval(() => {
       console.log('Creando nuevas notificaciones');
       this.socketService.subscribeToChannelTest();
-    }, 30_000);
+
+      interval = Math.round(180_000 * Math.random());
+      console.log('Tiempo de siguiente notificación ', Math.round(180_000 * Math.random()));
+    }, interval);
   }
 }

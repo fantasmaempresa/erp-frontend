@@ -1,7 +1,19 @@
 import { Injectable } from '@angular/core';
 import Echo from 'laravel-echo';
 import { environment } from '../../../environments/environment';
-import { bufferTime, filter, map, Subject, take, tap, timer, zipWith } from 'rxjs';
+import {
+  bufferTime,
+  filter,
+  map,
+  repeatWhen,
+  shareReplay,
+  Subject,
+  take,
+  takeUntil,
+  tap,
+  timer,
+  zipWith,
+} from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -25,13 +37,45 @@ export class SocketService {
   private _notifications$ = new Subject<any>();
 
   get notifications$(): any {
-    return this._notifications$.asObservable().pipe(
+    const start$ = new Subject<void>();
+    const stop$ = new Subject<void>();
+    let isStopping = false;
+
+    const source$ = this._notifications$.asObservable().pipe(
+      tap(() => {
+        if (isStopping) {
+          start$.next();
+          console.log('Reiniciando el contador');
+          isStopping = false;
+        }
+      }),
       bufferTime(1_000, null, 3),
       filter((data: any) => data.length),
-      zipWith(timer(0, 15_000)),
+      zipWith(
+        timer(0, 15_000).pipe(
+          takeUntil(stop$),
+          repeatWhen(() => start$),
+        ),
+      ),
       map(([n]) => n),
       tap((data) => console.log(data)),
+      shareReplay(),
     );
+
+    source$
+      .pipe(
+        bufferTime(15_001),
+        tap((data: any) => {
+          if (!data.length && !isStopping) {
+            stop$.next();
+            console.log('Parando el contador');
+            isStopping = true;
+          }
+        }),
+      )
+      .subscribe();
+
+    return source$;
   }
 
   subscribeToChannel(channelName: string, event: string) {
