@@ -5,4 +5,5 @@ export interface NotificationModel extends EntityModel {
     type: number;
     message: string;
   };
+  check: boolean;
 }

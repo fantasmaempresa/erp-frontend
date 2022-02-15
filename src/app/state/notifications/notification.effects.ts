@@ -47,6 +47,13 @@ export class NotificationEffects {
     );
   });
 
+  // readNotifications$ = createEffect(() => {
+  //   return this.actions$.pipe(
+  //     ofType(readAllNotifications),
+  //     // mergeMap(),
+  //   );
+  // });
+
   // loadNextPageOfNotification$ = createEffect(() => {
   //   return this.actions$.pipe(
   //     ofType(loadNextPageOfNotifications),
@@ -67,7 +74,7 @@ export class NotificationEffects {
     //setChanel
     this.socketService.subscribeToChannel('quotes', 'QuoteEvent');
 
-    this.testNotifications();
+    // this.testNotifications();
   }
 
   private testNotifications() {

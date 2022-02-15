@@ -1,8 +1,14 @@
 import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { selectLastNotification } from '../../../../state/notifications/notification.selector';
-import { loadNotifications } from '../../../../state/notifications/notification.actions';
+import {
+  selectLastNotification,
+  selectNumberOfNotifications,
+} from '../../../../state/notifications/notification.selector';
+import {
+  loadNotifications,
+  readAllNotifications,
+} from '../../../../state/notifications/notification.actions';
 
 @Component({
   selector: 'app-notification',
@@ -14,17 +20,24 @@ export class NotificationComponent {
 
   notifications$!: Observable<any>;
 
+  numberNotification$!: Observable<any>;
+
   constructor(private store: Store) {
     this.notifications$ = this.store.select(selectLastNotification);
+    this.numberNotification$ = this.store.select(selectNumberOfNotifications);
     this.store.dispatch(loadNotifications());
   }
 
-  toggleContainer($event: MouseEvent) {
-    $event.stopPropagation();
+  toggleContainer() {
     this.isOpened = !this.isOpened;
+
+    if (!this.isOpened) {
+      this.store.dispatch(readAllNotifications());
+    }
   }
 
   toggleClose = () => {
     this.isOpened = false;
+    this.store.dispatch(readAllNotifications());
   };
 }

@@ -14,3 +14,8 @@ export const selectLastNotification = createSelector(selectNotificationState, (s
 export const selectIncomingNotifications = createSelector(selectNotificationState, (state) => {
   return state.incomingNotifications;
 });
+
+export const selectNumberOfNotifications = createSelector(selectNotificationState, (state) => {
+  return state.notifications?.data.slice(0, 25).filter((notification) => !notification.check)
+    .length;
+});

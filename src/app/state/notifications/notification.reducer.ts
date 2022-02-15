@@ -66,6 +66,19 @@ const NotificationReducer = createReducer(
       ),
     };
   }),
+  on(NotificationActions.readAllNotifications, (state: NotificationState): NotificationState => {
+    return {
+      ...state,
+      notifications: {
+        ...state.notifications,
+        // @ts-ignore
+        data: state.notifications?.data.map((notification) => ({
+          ...notification,
+          check: true,
+        })),
+      },
+    };
+  }),
 );
 
 export function notificationReducer(state = initialState, action: Action) {
