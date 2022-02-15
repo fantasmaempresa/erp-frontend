@@ -23,4 +23,8 @@ export class NotificationsService extends CrudService<NotificationResponse> {
   getLastChecked(): Observable<any> {
     return this.http.get(`${this._base}/filter/getCheckUserNotifications`);
   }
+
+  // readAllNotifications(): Observable<any> {
+  //   return this.http.put`${this._base}/0`, {});
+  // }
 }

@@ -48,19 +48,19 @@ export class NotificationEffects {
   });
 
   // readNotifications$ = createEffect(() => {
-  //   return this.actions$.pipe(
+  //   return this.actions$.pipes(
   //     ofType(readAllNotifications),
   //     // mergeMap(),
   //   );
   // });
 
   // loadNextPageOfNotification$ = createEffect(() => {
-  //   return this.actions$.pipe(
+  //   return this.actions$.pipes(
   //     ofType(loadNextPageOfNotifications),
   //     mergeMap(({ page, size }) => {
   //       return this.notificationsService
   //         .changePage(page, size)
-  //         .pipe(map((notifications) => loadNotificationSuccess({ notifications })));
+  //         .pipes(map((notifications) => loadNotificationSuccess({ notifications })));
   //     }),
   //   );
   // });
