@@ -14,6 +14,7 @@ import { DynamicFormInputComponent } from './components/dynamic-form-input/dynam
 import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
 import { StopPropagationDirective } from '../core/directives/stop-propagation.directive';
 import { OutSideClickDirective } from '../core/directives/out-side-click.directive';
+import { FromDatePipe } from '../core/pipes/from-date.pipe';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -23,6 +24,7 @@ import { OutSideClickDirective } from '../core/directives/out-side-click.directi
     ErrorMessageDirective,
     StopPropagationDirective,
     OutSideClickDirective,
+    FromDatePipe,
     DialogSearchComponent,
     TableSearchComponent,
     DynamicFormInputComponent,
@@ -48,6 +50,7 @@ import { OutSideClickDirective } from '../core/directives/out-side-click.directi
     ErrorMessageDirective,
     StopPropagationDirective,
     OutSideClickDirective,
+    FromDatePipe,
     DynamicFormComponent,
   ],
 })
