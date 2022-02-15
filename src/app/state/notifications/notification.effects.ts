@@ -3,15 +3,17 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap } from 'rxjs';
 import {
   addIncomingNotification,
+  currentNotifications,
   incomingNotification,
   loadNotifications,
   loadNotificationsSuccess,
+  readAllNotifications,
   startListenNotification,
 } from './notification.actions';
 import { NotificationsService } from '../../data/services/notifications.service';
 import { SocketService } from '../../core/services/socket.service';
 import { Store } from '@ngrx/store';
-import { selectIncomingNotifications } from './notification.selector';
+import { selectIncomingNotifications, selectLastNotification } from './notification.selector';
 
 @Injectable()
 export class NotificationEffects {
@@ -47,12 +49,16 @@ export class NotificationEffects {
     );
   });
 
-  // readNotifications$ = createEffect(() => {
-  //   return this.actions$.pipes(
-  //     ofType(readAllNotifications),
-  //     // mergeMap(),
-  //   );
-  // });
+  readNotifications$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(readAllNotifications),
+      mergeMap(() => this.store.select(selectLastNotification)),
+      mergeMap((notifications: any) =>
+        this.notificationsService.readAllNotifications(notifications),
+      ),
+      map(() => currentNotifications()),
+    );
+  });
 
   // loadNextPageOfNotification$ = createEffect(() => {
   //   return this.actions$.pipes(

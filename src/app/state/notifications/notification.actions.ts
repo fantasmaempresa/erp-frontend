@@ -12,6 +12,7 @@ export enum NotificationActions {
   CLOSE_INCOMING_NOTIFICATION = '[Notification] Close notification',
   DELETE_INCOMING_NOTIFICATION = '[Notification] Delete from notification area',
   LISTEN_NOTIFICATIONS = '[Notification] Start to listen for notifications',
+  CURRENT_NOTIFICATIONS = '[Notification] Return current State',
   READ_NOTIFICATIONS = '[Notification] Read all notifications',
 }
 
@@ -45,4 +46,5 @@ export const deleteIncomingNotification = createAction(
 );
 
 export const readAllNotifications = createAction(NotificationActions.READ_NOTIFICATIONS);
+export const currentNotifications = createAction(NotificationActions.CURRENT_NOTIFICATIONS);
 export const startListenNotification = createAction(NotificationActions.LISTEN_NOTIFICATIONS);

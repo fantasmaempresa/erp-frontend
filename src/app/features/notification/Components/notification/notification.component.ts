@@ -37,7 +37,9 @@ export class NotificationComponent {
   }
 
   toggleClose = () => {
-    this.isOpened = false;
-    this.store.dispatch(readAllNotifications());
+    if (this.isOpened) {
+      this.isOpened = false;
+      this.store.dispatch(readAllNotifications());
+    }
   };
 }

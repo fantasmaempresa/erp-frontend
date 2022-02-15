@@ -5,6 +5,7 @@ import * as NotificationActions from './notification.actions';
 const NotificationReducer = createReducer(
   initialState,
   on(NotificationActions.loadNotifications, (state): NotificationState => state),
+  on(NotificationActions.currentNotifications, (state): NotificationState => state),
   on(
     NotificationActions.loadNotificationsSuccess,
     (state: NotificationState, { notifications }) => {

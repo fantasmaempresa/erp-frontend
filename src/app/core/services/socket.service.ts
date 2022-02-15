@@ -100,7 +100,7 @@ export class SocketService {
     const generateRandomNotifications$ = timer(0, 10).pipe(
       map(() => {
         const id = new Date().getTime();
-        return { notification: { type: 1, message: `Notification Test ${id}` }, id };
+        return { notification: { type: 1, message: `Notification Test ${id}` }, id, check: false };
       }),
       take(8),
     );
