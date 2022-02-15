@@ -4,6 +4,8 @@ import { FormFieldClass } from '../../../core/classes/FormFieldClass';
 import { Store } from '@ngrx/store';
 import { setField } from '../../../state/dynamic-form/dynamic-form.actions';
 import { Formfield } from '../../../data/models/Formfield.model';
+import { Observable } from 'rxjs';
+import { selectErrorMessage } from '../../../state/dynamic-form/dynamic-form.selector';
 
 @Component({
   selector: 'app-dynamic-form-creation',
@@ -56,7 +58,11 @@ export class DynamicFormCreationComponent implements OnInit {
     return this.form.controls.options as FormArray;
   }
 
-  constructor(private store: Store) {}
+  errorMessage$: Observable<string>;
+
+  constructor(private store: Store) {
+    this.errorMessage$ = store.select(selectErrorMessage);
+  }
 
   ngOnInit(): void {
     this.createForm();

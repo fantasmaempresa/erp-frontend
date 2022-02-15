@@ -7,6 +7,18 @@ export const selectDynamicForm = createSelector(selectFormState, (state) => {
   return state.formFields;
 });
 
-export const selectFormGroup = createSelector(selectFormState, (state) => {
-  return state.formGroup;
+export const selectDynamicFormId = createSelector(selectFormState, (state) => {
+  return state.id;
+});
+
+export const selectDynamicFormName = createSelector(selectFormState, (state) => {
+  return state.name;
+});
+
+export const selectErrorMessage = createSelector(selectFormState, (state) => {
+  return state.errorMessage;
+});
+
+export const selectIsEditable = createSelector(selectFormState, (state) => {
+  return state.isEditable;
 });

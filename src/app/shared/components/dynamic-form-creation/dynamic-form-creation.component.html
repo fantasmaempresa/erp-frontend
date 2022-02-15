@@ -14,6 +14,8 @@
     <input matInput type="text" autocomplete="off" formControlName="label" />
   </mat-form-field>
 
+  <p class="row" *ngIf="errorMessage$ | async as message" style="color: red">{{ message }}</p>
+
   <div class="d-flex flex-column" *ngIf="hasOptions()" formArrayName="options">
     <div class="row" *ngFor="let option of options.controls; index as i" [formGroupName]="i">
       <div class="col-5">

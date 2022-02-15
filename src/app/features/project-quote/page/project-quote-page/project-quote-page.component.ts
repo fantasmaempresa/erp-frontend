@@ -2,7 +2,11 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormFieldClass } from '../../../../core/classes/FormFieldClass';
 import { Store } from '@ngrx/store';
-import { Formfield } from '../../../../data/models/Formfield.model';
+import { TemplateQuotesService } from '../../../../data/services/template-quotes.service';
+import { map } from 'rxjs';
+import { TemplateQuotes } from '../../../../data/models/TemplateQuotes.model';
+import { FormControl } from '@angular/forms';
+import { emptyForm, loadForm } from '../../../../state/dynamic-form/dynamic-form.actions';
 
 @Component({
   selector: 'app-project-quote-page',
@@ -12,18 +16,37 @@ import { Formfield } from '../../../../data/models/Formfield.model';
 export class ProjectQuotePageComponent {
   formFields: FormFieldClass<any>[] = [];
 
+  templateControl = new FormControl(null);
+
   step = 0;
 
-  constructor(private router: Router, private route: ActivatedRoute, private store: Store) {}
+  templates$!: TemplateQuotes[];
 
-  addFieldToFormGroup(event: Formfield<any>) {
-    // if (this.formFields.length === 0) {
-    //   this.formFields = [event];
-    //   console.log('formFields vacio', this.formFields);
-    // } else {
-    //   this.formFields = [...this.formFields, event];
-    // }
-    // this.store.dispatch(setField({ form: event }));
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private store: Store,
+    private templateQuotesService: TemplateQuotesService,
+  ) {
+    templateQuotesService
+      .fetchAll()
+      .pipe(
+        map((templates) => {
+          return templates.data;
+        }),
+      )
+      .subscribe((data) => (this.templates$ = data));
+
+    this.templateControl.valueChanges.subscribe({
+      next: (value) => {
+        console.log(value);
+        if (value) {
+          this.store.dispatch(loadForm({ form: value.form, id: value.id, name: value.name }));
+        } else {
+          this.store.dispatch(emptyForm());
+        }
+      },
+    });
   }
 
   async backToListUsers() {

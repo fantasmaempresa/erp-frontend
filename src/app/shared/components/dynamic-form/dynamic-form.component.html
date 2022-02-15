@@ -1,7 +1,31 @@
-<div>
+<ng-container>
   <form (ngSubmit)="onSubmit()" [formGroup]="form">
-    <div *ngFor="let formField of fields$ | async" class="form-group">
-      <app-dynamic-form-input [input]="formField" [form]="form"></app-dynamic-form-input>
+    <div class="row" *ngFor="let formField of fields$ | async; index as i">
+      <div class="col-10">
+        <app-dynamic-form-input [input]="formField" [form]="form"></app-dynamic-form-input>
+      </div>
+      <div
+        class="col-1 d-flex align-items-center"
+        style="margin-top: -20px"
+        *ngIf="fields$ | async as fields"
+      >
+        <button
+          type="button"
+          mat-mini-fab
+          color="warn"
+          class="align-self-center search-button"
+          (click)="removeField(formField)"
+          matTooltip="Eliminar opción"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
+      </div>
     </div>
+
+    <ng-container *ngIf="fields$ | async as fields">
+      <button mat-flat-button color="primary" class="w-100" *ngIf="fields.length > 0">
+        Guardar plantilla
+      </button>
+    </ng-container>
   </form>
-</div>
+</ng-container>

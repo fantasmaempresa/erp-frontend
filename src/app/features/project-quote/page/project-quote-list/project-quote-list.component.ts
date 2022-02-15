@@ -63,7 +63,7 @@ export class ProjectQuoteListComponent implements OnInit, AfterViewInit, OnDestr
       .subscribe((data) => {
         if (data) {
           this.totalItems = data.total;
-          this.dataSource.data = data.data;
+          this.dataSource = new MatTableDataSource(data.data);
         }
       });
   }

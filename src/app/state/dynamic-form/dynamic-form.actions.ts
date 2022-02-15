@@ -1,6 +1,5 @@
 import { createAction, props } from '@ngrx/store';
 import { Formfield } from '../../data/models/Formfield.model';
-import { FormGroup } from '@angular/forms';
 
 export enum DynamicFormActions {
   LOAD_FORM = '[Dynamic Form] Load form',
@@ -10,7 +9,10 @@ export enum DynamicFormActions {
   EMPTY_FORM = '[Dynamic Form] Empty form',
 }
 
-export const loadForm = createAction(DynamicFormActions.LOAD_FORM, props<{ form: FormGroup }>());
+export const loadForm = createAction(
+  DynamicFormActions.LOAD_FORM,
+  props<{ form: Formfield<any>[]; id: number; name: string }>(),
+);
 export const loadFormSuccess = createAction(
   DynamicFormActions.LOAD_FORM_SUCCESS,
   props<{ formFields: Formfield<string>[] }>(),
@@ -21,5 +23,6 @@ export const setField = createAction(
 );
 export const removeField = createAction(
   DynamicFormActions.REMOVE_FIELD,
-  props<{ form: Formfield<string> }>(),
+  props<{ payload: Formfield<any> }>(),
 );
+export const emptyForm = createAction(DynamicFormActions.EMPTY_FORM);

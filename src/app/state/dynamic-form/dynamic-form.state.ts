@@ -1,12 +1,17 @@
 import { Formfield } from '../../data/models/Formfield.model';
-import { FormGroup } from '@angular/forms';
 
 export interface DynamicFormState {
-  formGroup: FormGroup;
+  id: number;
+  name: string;
   formFields: Formfield<any>[];
+  errorMessage: string;
+  isEditable: boolean;
 }
 
 export const dynamicFormInitialState: DynamicFormState = {
-  formGroup: new FormGroup({}),
+  id: 0,
+  name: '',
   formFields: [],
+  errorMessage: '',
+  isEditable: true,
 };

@@ -1,17 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormfieldControlService } from '../../../core/services/formfield-control.service';
 import { Store } from '@ngrx/store';
-import { selectDynamicForm } from '../../../state/dynamic-form/dynamic-form.selector';
-import { Observable } from 'rxjs';
+import {
+  selectDynamicForm,
+  selectDynamicFormId,
+  selectDynamicFormName,
+} from '../../../state/dynamic-form/dynamic-form.selector';
+import { lastValueFrom, Observable } from 'rxjs';
 import { Formfield } from '../../../data/models/Formfield.model';
+import { removeField } from '../../../state/dynamic-form/dynamic-form.actions';
+import { MessageHelper } from '../../helpers/MessageHelper';
+import Swal from 'sweetalert2';
+import { TemplateQuotesService } from '../../../data/services/template-quotes.service';
+import { TemplateQuotes } from '../../../data/models/TemplateQuotes.model';
 
 @Component({
   selector: 'app-dynamic-form',
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.scss'],
 })
-export class DynamicFormComponent {
+export class DynamicFormComponent implements OnDestroy {
   form: FormGroup = new FormGroup({});
 
   payLoad = '';
@@ -20,20 +29,68 @@ export class DynamicFormComponent {
 
   isLoading = false;
 
-  constructor(private formfieldService: FormfieldControlService, private store: Store) {
+  formFields!: Formfield<any>[];
+
+  templateId = 0;
+
+  templateName = '';
+
+  dynamicFormId$!: Observable<number>;
+
+  dynamicFormName$!: Observable<string>;
+
+  constructor(
+    private formfieldService: FormfieldControlService,
+    private store: Store,
+    private templateQuotesService: TemplateQuotesService,
+  ) {
     this.fields$ = store.select(selectDynamicForm);
     this.fields$.subscribe((data) => {
-      console.log(data);
+      this.formFields = data;
       this.isLoading = true;
       data.forEach((control) => {
         this.form.setControl(control.key, new FormControl(''));
       });
       this.isLoading = false;
     });
+    this.dynamicFormId$ = store.select(selectDynamicFormId);
+    this.dynamicFormId$.subscribe((id) => (this.templateId = id));
+    this.dynamicFormName$ = store.select(selectDynamicFormName);
+    this.dynamicFormName$.subscribe((name) => (this.templateName = name));
   }
 
   onSubmit() {
-    this.payLoad = JSON.stringify(this.form.getRawValue());
+    const template: TemplateQuotes = {
+      id: this.templateId,
+      name: this.templateName,
+      form: this.formFields,
+    };
+    if (this.templateId !== 0) {
+      this.templateQuotesService.update(template).subscribe((data) => console.log(data));
+      return;
+    }
+
+    if (this.templateId === 0) {
+      Swal.fire({
+        title: 'Guardar plantilla',
+        icon: 'question',
+        input: 'text',
+        text: 'Ponle un titulo a la plantilla',
+        showCancelButton: true,
+        confirmButtonColor: '#dfc356',
+        cancelButtonColor: '#475C6F',
+        confirmButtonText: 'Guardar',
+        showLoaderOnConfirm: true,
+        preConfirm: (name) => {
+          template.name = name;
+          let request = this.templateQuotesService.save(template);
+          return lastValueFrom(request);
+        },
+        allowOutsideClick: () => !Swal.isLoading(),
+      }).then(() => {
+        MessageHelper.successMessage('Exito', 'Plantilla guardada con éxito');
+      });
+    }
   }
 
   createOption() {
@@ -42,4 +99,11 @@ export class DynamicFormComponent {
       value: new FormControl('', Validators.required),
     });
   }
+
+  removeField(formField: Formfield<any>) {
+    console.log(formField);
+    this.store.dispatch(removeField({ payload: formField }));
+  }
+
+  ngOnDestroy(): void {}
 }
