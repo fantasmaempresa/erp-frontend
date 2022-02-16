@@ -3,16 +3,19 @@ import Echo from 'laravel-echo';
 import { environment } from '../../../environments/environment';
 import {
   bufferTime,
-  distinctUntilChanged,
+  catchError,
   filter,
   map,
+  of,
   repeatWhen,
-  shareReplay,
-  skipUntil,
+  startWith,
   Subject,
+  switchMap,
   take,
   takeUntil,
   tap,
+  throttleTime,
+  timeout,
   timer,
   zipWith,
 } from 'rxjs';
@@ -41,47 +44,35 @@ export class SocketService {
   get notifications$(): any {
     const start$ = new Subject<void>();
     const stop$ = new Subject<void>();
-    let isStopping = false;
+    const timerSubject$ = new Subject<void>();
 
-    const timer$ = timer(0, 15_000).pipe(
-      skipUntil(this._notifications$.asObservable()),
-      distinctUntilChanged(),
+    const timer$ = timerSubject$.asObservable().pipe(
+      startWith(0),
+      switchMap(() => timer(0, 15_000)),
+      throttleTime(15_000),
       tap((data) => console.log(data)),
-      takeUntil(stop$),
-      repeatWhen(() => start$),
     );
 
     const source$ = this._notifications$.asObservable().pipe(
       bufferTime(1_000, null, 3),
-      tap(() => {
-        if (isStopping) {
-          start$.next();
-          console.log('Reiniciando el contador');
-          isStopping = false;
-        }
-      }),
       filter((data: any) => data.length),
+      timeout(15_001),
+      catchError(() =>
+        of(null).pipe(
+          tap(() => {
+            console.log('Reset timer and buffer');
+            stop$.next();
+            start$.next();
+            timerSubject$.next();
+          }),
+        ),
+      ),
+      takeUntil(stop$),
+      repeatWhen(() => start$),
       zipWith(timer$),
       map(([n]) => n),
       tap((data) => console.log(data)),
-      shareReplay(),
     );
-
-    source$
-      .pipe(
-        takeUntil(stop$),
-        repeatWhen(() => start$),
-        bufferTime(15_001),
-        skipUntil(source$),
-        tap((data: any) => {
-          if (!data.length && !isStopping) {
-            stop$.next();
-            console.log('Parando el contador');
-            isStopping = true;
-          }
-        }),
-      )
-      .subscribe();
 
     return source$;
   }
