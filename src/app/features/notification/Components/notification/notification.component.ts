@@ -7,7 +7,7 @@ import {
 } from '../../../../state/notifications/notification.selector';
 import {
   loadNotifications,
-  readAllNotifications,
+  readAllNotificationsServer,
 } from '../../../../state/notifications/notification.actions';
 
 @Component({
@@ -32,14 +32,16 @@ export class NotificationComponent {
     this.isOpened = !this.isOpened;
 
     if (!this.isOpened) {
-      this.store.dispatch(readAllNotifications());
+      this.store.dispatch(readAllNotificationsServer());
+      console.log('Disparando evento2');
     }
   }
 
   toggleClose = () => {
     if (this.isOpened) {
       this.isOpened = false;
-      this.store.dispatch(readAllNotifications());
+      this.store.dispatch(readAllNotificationsServer());
+      console.log('Disparando evento');
     }
   };
 }

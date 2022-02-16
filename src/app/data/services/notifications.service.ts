@@ -14,7 +14,7 @@ export class NotificationsService extends CrudService<NotificationResponse> {
   }
 
   getLast(): Observable<any> {
-    return this.http.get(`${this._base}/filter/getUncheckUserNotifications`);
+    return this.http.get(`${this._base}/filter/getLastUserNotifications`);
   }
 
   getLastUnchecked(): Observable<any> {

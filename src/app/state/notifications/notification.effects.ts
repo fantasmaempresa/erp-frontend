@@ -1,6 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap } from 'rxjs';
+import {
+  catchError,
+  distinctUntilChanged,
+  exhaustMap,
+  filter,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  take,
+} from 'rxjs';
 import {
   addIncomingNotification,
   currentNotifications,
@@ -8,12 +18,14 @@ import {
   loadNotifications,
   loadNotificationsSuccess,
   readAllNotifications,
+  readAllNotificationsServer,
   startListenNotification,
 } from './notification.actions';
 import { NotificationsService } from '../../data/services/notifications.service';
 import { SocketService } from '../../core/services/socket.service';
 import { Store } from '@ngrx/store';
-import { selectIncomingNotifications, selectLastNotification } from './notification.selector';
+import { selectIncomingNotifications, selectUnreadNotifications } from './notification.selector';
+import { NotificationModel } from '../../data/models/Notification.model';
 
 @Injectable()
 export class NotificationEffects {
@@ -33,7 +45,9 @@ export class NotificationEffects {
       mergeMap(() => {
         return this.socketService.notifications$;
       }),
-      map((notifications: any) => incomingNotification({ notifications })),
+      map((notifications: any) => {
+        return incomingNotification({ notifications });
+      }),
       // tap((data) => console.log(data)),
     );
   });
@@ -44,19 +58,23 @@ export class NotificationEffects {
       mergeMap(() => {
         return this.store.select(selectIncomingNotifications);
       }),
+      distinctUntilChanged(),
       map((notifications: any) => addIncomingNotification({ notifications })),
-      // tap((data) => console.log(data)),
     );
   });
 
-  readNotifications$ = createEffect(() => {
+  readNotificationsServer$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(readAllNotifications),
-      mergeMap(() => this.store.select(selectLastNotification)),
-      mergeMap((notifications: any) =>
+      ofType(readAllNotificationsServer),
+      switchMap(() => this.store.select(selectUnreadNotifications).pipe(take(1))),
+      filter((notifications: any) =>
+        notifications.some((notification: NotificationModel) => !notification.check),
+      ),
+      exhaustMap((notifications: any) =>
         this.notificationsService.readAllNotifications(notifications),
       ),
-      map(() => currentNotifications()),
+      map(() => readAllNotifications()),
+      catchError(() => of(currentNotifications)),
     );
   });
 
@@ -88,9 +106,9 @@ export class NotificationEffects {
       this.socketService.subscribeToChannelTest();
     }, 19_000);
 
-    setInterval(() => {
-      console.log('Creando nuevas notificaciones');
-      this.socketService.subscribeToChannelTest();
-    }, 120_000);
+    // setInterval(() => {
+    //   console.log('Creando nuevas notificaciones');
+    //   this.socketService.subscribeToChannelTest();
+    // }, 120_000);
   }
 }

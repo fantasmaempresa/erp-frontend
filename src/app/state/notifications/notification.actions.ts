@@ -14,6 +14,7 @@ export enum NotificationActions {
   LISTEN_NOTIFICATIONS = '[Notification] Start to listen for notifications',
   CURRENT_NOTIFICATIONS = '[Notification] Return current State',
   READ_NOTIFICATIONS = '[Notification] Read all notifications',
+  READ_NOTIFICATIONS_SERVER = '[Notification] Read all notifications from server',
 }
 
 export const loadNotifications = createAction(NotificationActions.LOAD_NOTIFICATION);
@@ -46,5 +47,8 @@ export const deleteIncomingNotification = createAction(
 );
 
 export const readAllNotifications = createAction(NotificationActions.READ_NOTIFICATIONS);
+export const readAllNotificationsServer = createAction(
+  NotificationActions.READ_NOTIFICATIONS_SERVER,
+);
 export const currentNotifications = createAction(NotificationActions.CURRENT_NOTIFICATIONS);
 export const startListenNotification = createAction(NotificationActions.LISTEN_NOTIFICATIONS);

@@ -19,3 +19,7 @@ export const selectNumberOfNotifications = createSelector(selectNotificationStat
   return state.notifications?.data.slice(0, 25).filter((notification) => !notification.check)
     .length;
 });
+
+export const selectUnreadNotifications = createSelector(selectNotificationState, (state) => {
+  return state.notifications?.data.slice(0, 25).filter((notification) => !notification.check);
+});

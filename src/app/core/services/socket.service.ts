@@ -102,7 +102,7 @@ export class SocketService {
         const id = new Date().getTime();
         return { notification: { type: 1, message: `Notification Test ${id}` }, id, check: false };
       }),
-      take(8),
+      take(5),
     );
     generateRandomNotifications$.subscribe((notification: any) => {
       this._notifications$.next(notification);
