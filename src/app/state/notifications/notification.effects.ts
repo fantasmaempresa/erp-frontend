@@ -1,16 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  catchError,
-  distinctUntilChanged,
-  exhaustMap,
-  filter,
-  map,
-  mergeMap,
-  of,
-  switchMap,
-  take,
-} from 'rxjs';
+import { catchError, exhaustMap, filter, map, mergeMap, of, switchMap, take } from 'rxjs';
 import {
   addIncomingNotification,
   currentNotifications,
@@ -56,9 +46,8 @@ export class NotificationEffects {
     return this.actions$.pipe(
       ofType(incomingNotification),
       mergeMap(() => {
-        return this.store.select(selectIncomingNotifications);
+        return this.store.select(selectIncomingNotifications).pipe(take(1));
       }),
-      distinctUntilChanged(),
       map((notifications: any) => addIncomingNotification({ notifications })),
     );
   });
