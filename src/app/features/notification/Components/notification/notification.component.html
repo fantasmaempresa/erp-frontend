@@ -6,13 +6,13 @@
   appStopPropagation
   class="notifications"
 >
-  <span class="material-icons notifications__icon">notifications</span>
   <span
     *ngIf="numberNotification$ | async as number"
     [class.notifications__number--entry]="number"
     class="notifications__number"
     >{{ number }}</span
   >
+  <span class="material-icons notifications__icon">notifications</span>
   <div appStopPropagation class="notifications__container">
     <div class="notifications__scroll-container">
       <ul class="notifications__list">
