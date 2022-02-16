@@ -33,7 +33,6 @@ export class NotificationComponent {
 
     if (!this.isOpened) {
       this.store.dispatch(readAllNotificationsServer());
-      console.log('Disparando evento2');
     }
   }
 
@@ -41,7 +40,6 @@ export class NotificationComponent {
     if (this.isOpened) {
       this.isOpened = false;
       this.store.dispatch(readAllNotificationsServer());
-      console.log('Disparando evento');
     }
   };
 }
