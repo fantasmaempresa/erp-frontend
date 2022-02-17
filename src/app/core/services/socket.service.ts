@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import {
   bufferTime,
   catchError,
+  distinctUntilChanged,
   filter,
   map,
   of,
@@ -19,6 +20,8 @@ import {
   timer,
   zipWith,
 } from 'rxjs';
+
+const ANIMATION_TIME = 18_000;
 
 @Injectable({
   providedIn: 'root',
@@ -48,33 +51,33 @@ export class SocketService {
 
     const timer$ = timerSubject$.asObservable().pipe(
       startWith(0),
-      switchMap(() => timer(0, 15_000)),
-      throttleTime(15_000),
-      tap((data) => console.log(data)),
+      switchMap(() => timer(0, ANIMATION_TIME)),
+      throttleTime(ANIMATION_TIME),
+      distinctUntilChanged(),
+      tap((data) => console.log('timer ', data)),
     );
 
-    const source$ = this._notifications$.asObservable().pipe(
+    return this._notifications$.asObservable().pipe(
       bufferTime(1_000, null, 3),
       filter((data: any) => data.length),
-      timeout(15_001),
-      catchError(() =>
-        of(null).pipe(
-          tap(() => {
-            console.log('Reset timer and buffer');
-            stop$.next();
-            start$.next();
-            timerSubject$.next();
-          }),
-        ),
-      ),
-      takeUntil(stop$),
-      repeatWhen(() => start$),
-      zipWith(timer$),
-      map(([n]) => n),
+      // zipWith(timer$),
+      // tap((data) => console.log(data)),
+      // map(([n]) => n),
+      // timeout(ANIMATION_TIME + 1),
+      // catchError(() =>
+      //   of(null).pipe(
+      //     tap(() => {
+      //       console.log('Reset timer and buffer');
+      //       stop$.next();
+      //       start$.next();
+      //       timerSubject$.next();
+      //     }),
+      //   ),
+      // ),
+      // takeUntil(stop$),
+      // repeatWhen(() => start$),
       tap((data) => console.log(data)),
     );
-
-    return source$;
   }
 
   subscribeToChannel(channelName: string, event: string) {
