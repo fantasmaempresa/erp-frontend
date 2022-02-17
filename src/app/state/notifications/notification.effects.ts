@@ -63,7 +63,7 @@ export class NotificationEffects {
         this.notificationsService.readAllNotifications(notifications),
       ),
       map(() => readAllNotifications()),
-      catchError(() => of(currentNotifications)),
+      catchError(() => of(currentNotifications())),
     );
   });
 
