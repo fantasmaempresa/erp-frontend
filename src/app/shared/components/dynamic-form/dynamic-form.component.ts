@@ -71,22 +71,20 @@ export class DynamicFormComponent implements OnDestroy {
     }
 
     if (this.templateId === 0) {
+      // TODO: Modificar para utilizar un dialog de angular
       Swal.fire({
         title: 'Guardar plantilla',
         icon: 'question',
         input: 'text',
         text: 'Ponle un titulo a la plantilla',
-        showCancelButton: true,
         confirmButtonColor: '#dfc356',
-        cancelButtonColor: '#475C6F',
+        focusConfirm: false,
         confirmButtonText: 'Guardar',
-        showLoaderOnConfirm: true,
         preConfirm: (name) => {
           template.name = name;
           let request = this.templateQuotesService.save(template);
           return lastValueFrom(request);
         },
-        allowOutsideClick: () => !Swal.isLoading(),
       }).then(() => {
         MessageHelper.successMessage('Exito', 'Plantilla guardada con éxito');
       });

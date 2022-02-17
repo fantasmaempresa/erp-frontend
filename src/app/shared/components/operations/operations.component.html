@@ -1,0 +1,21 @@
+<!--Group-->
+<div class="row">
+  <div class="col-3">
+    <button mat-button [matMenuTriggerFor]="field" class="w-100">Campo</button>
+    <mat-menu #field="matMenu">
+      <mat-form-field appearance="outline" (click)="$event.stopPropagation()">
+        <mat-label>Filtrar</mat-label>
+        <input matInput placeholder="Placeholder" />
+        <mat-icon matSuffix>search</mat-icon>
+      </mat-form-field>
+      <button mat-menu-item *ngFor="let field of formFields$ | async">
+        <span>{{ field.label }}</span>
+      </button>
+    </mat-menu>
+  </div>
+  <div class="col-1">
+    <button mat-icon-button matTooltip="Agregar concepto a este campo">
+      <mat-icon>add</mat-icon>
+    </button>
+  </div>
+</div>

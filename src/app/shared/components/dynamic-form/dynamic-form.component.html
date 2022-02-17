@@ -1,13 +1,13 @@
 <ng-container>
-  <form (ngSubmit)="onSubmit()" [formGroup]="form">
-    <div class="row" *ngFor="let formField of fields$ | async; index as i">
+  <form (ngSubmit)="onSubmit()" [formGroup]="form" *ngIf="fields$ | async as fields">
+    <div class="row" *ngFor="let formField of fields; index as i">
       <div class="col-10">
         <app-dynamic-form-input [input]="formField" [form]="form"></app-dynamic-form-input>
       </div>
       <div
         class="col-1 d-flex align-items-center"
         style="margin-top: -20px"
-        *ngIf="fields$ | async as fields"
+        *ngIf="formField.key !== 'total'"
       >
         <button
           type="button"

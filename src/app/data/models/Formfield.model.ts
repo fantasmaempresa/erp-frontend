@@ -7,9 +7,9 @@ export interface Formfield<T> {
 
   required: boolean;
 
-  validator: string;
+  validator?: string;
 
-  order: number;
+  order?: number;
 
   controlType: string;
 

@@ -9,7 +9,7 @@ const DynamicFormReducer = createReducer(
       ...state,
       id: actions.id,
       name: actions.name,
-      formFields: [...actions.form],
+      formFields: [...actions.form, ...state.formFields],
     };
   }),
   on(DynamicFormActions.setField, (state, actions) => {
@@ -17,7 +17,7 @@ const DynamicFormReducer = createReducer(
     if (index === -1) {
       return {
         ...state,
-        formFields: [...state.formFields, actions.form],
+        formFields: [actions.form, ...state.formFields],
         errorMessage: '',
       };
     }

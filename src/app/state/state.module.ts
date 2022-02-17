@@ -13,6 +13,7 @@ import { ConceptsEffects } from './concepts/concepts.effects';
 import { QuoteStatusEffects } from './quote-status/quote-status.effects';
 import { QuotesEffects } from './quotes/quotes.effects';
 import { localStorageSync } from 'ngrx-store-localstorage';
+import { DynamicFormEffects } from './dynamic-form/dynamic-form.effects';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({ keys: ['auth'], rehydrate: true })(reducer);
@@ -32,6 +33,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       ConceptsEffects,
       QuoteStatusEffects,
       QuotesEffects,
+      DynamicFormEffects,
     ]),
     StoreDevtoolsModule.instrument({ name: 'ERP', maxAge: 25, logOnly: environment.production }),
   ],

@@ -106,7 +106,6 @@ export class DynamicFormCreationComponent implements OnInit {
       return;
     }
     options.key = options.label.toLowerCase();
-    console.log(options);
     this.store.dispatch(setField({ form: options }));
     this.createForm();
   }
