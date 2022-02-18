@@ -21,7 +21,6 @@ export class DynamicFormInputComponent implements OnChanges, OnInit {
   @Input() input!: Formfield<any>;
 
   @Input() set form(formGroup: FormGroup) {
-    console.log(formGroup);
     this._form = formGroup;
   }
 
@@ -39,7 +38,5 @@ export class DynamicFormInputComponent implements OnChanges, OnInit {
     this.form = this.controlContainer.control as FormGroup;
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
-  }
+  ngOnChanges(changes: SimpleChanges): void {}
 }

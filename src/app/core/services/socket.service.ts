@@ -23,8 +23,6 @@ export class SocketService {
       authEndpoint: 'broadcasting/auth',
     });
 
-    console.log(channelName, event);
-
     let channel = echo.channel(channelName);
 
     channel.listen(event, (data: any) => {

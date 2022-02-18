@@ -1,21 +1,86 @@
 <!--Group-->
 <div class="row">
-  <div class="col-3">
-    <button mat-button [matMenuTriggerFor]="field" class="w-100">Campo</button>
-    <mat-menu #field="matMenu">
-      <mat-form-field appearance="outline" (click)="$event.stopPropagation()">
-        <mat-label>Filtrar</mat-label>
-        <input matInput placeholder="Placeholder" />
-        <mat-icon matSuffix>search</mat-icon>
+  <form [formGroup]="operationsForm">
+    <div class="row" formArrayName="operation_fields">
+      <ng-container
+        *ngFor="
+          let _ of operationsForm.controls.operation_fields.value;
+          index as i;
+          trackBy: trackByFn
+        "
+        [formGroupName]="i"
+      >
+        <div class="col-5">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Input</mat-label>
+            <input matInput formControlName="key" />
+          </mat-form-field>
+        </div>
+        <div class="col-5">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Number</mat-label>
+            <input
+              type="text"
+              matInput
+              [formControl]="autocompleteControl"
+              [matAutocomplete]="auto"
+            />
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option
+                *ngFor="let option of filteredOptions$ | async"
+                [value]="option"
+                (click)="addOperation(option)"
+              >
+                {{ option.label }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div class="col-1">
+          <button mat-icon-button type="button" matTooltip="Agregar concepto a este campo">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </ng-container>
+    </div>
+    <div class="col-3">
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Selecciona un campo</mat-label>
+        <input type="text" matInput [formControl]="autocompleteControl" [matAutocomplete]="auto" />
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option
+            *ngFor="let option of filteredOptions$ | async"
+            [value]="option"
+            (click)="addOperation(option)"
+          >
+            {{ option.label }}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
-      <button mat-menu-item *ngFor="let field of formFields$ | async">
-        <span>{{ field.label }}</span>
-      </button>
-    </mat-menu>
-  </div>
-  <div class="col-1">
-    <button mat-icon-button matTooltip="Agregar concepto a este campo">
-      <mat-icon>add</mat-icon>
-    </button>
-  </div>
+      <!--      <button-->
+      <!--        mat-button-->
+      <!--        [matMenuTriggerFor]="field"-->
+      <!--        class="w-100"-->
+      <!--        type="button"-->
+      <!--        (click)="$event.stopPropagation()"-->
+      <!--      >-->
+      <!--        Campo-->
+      <!--      </button>-->
+      <!--      <mat-menu #field="matMenu">-->
+      <!--        <mat-form-field appearance="outline">-->
+      <!--          <mat-label>Filtrar</mat-label>-->
+      <!--          <input matInput placeholder="Placeholder" />-->
+      <!--          <mat-icon matSuffix>search</mat-icon>-->
+      <!--        </mat-form-field>-->
+      <!--        <button-->
+      <!--          mat-menu-item-->
+      <!--          type="button"-->
+      <!--          *ngFor="let field of formFields$ | async"-->
+      <!--          (click)="addOperation(field)"-->
+      <!--        >-->
+      <!--          <span>{{ field.label }}</span>-->
+      <!--        </button>-->
+      <!--      </mat-menu>-->
+    </div>
+  </form>
 </div>
