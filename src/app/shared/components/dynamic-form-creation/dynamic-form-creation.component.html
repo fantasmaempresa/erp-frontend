@@ -7,11 +7,13 @@
         type.label
       }}</mat-option>
     </mat-select>
+    <mat-error *ngIf="f.controlType.hasError">Requerido</mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="outline" class="w-100">
     <mat-label>Etiqueta</mat-label>
     <input matInput type="text" autocomplete="off" formControlName="label" />
+    <mat-error *ngIf="f.controlType.hasError">Requerido</mat-error>
   </mat-form-field>
 
   <p class="row" *ngIf="errorMessage$ | async as message" style="color: red">{{ message }}</p>

@@ -70,11 +70,18 @@ export class DynamicFormCreationComponent implements OnInit {
 
   createForm() {
     this.form = new FormGroup({
-      controlType: new FormControl(''),
+      controlType: new FormControl('', [Validators.required]),
       key: new FormControl(''),
-      label: new FormControl(''),
+      label: new FormControl('', [Validators.required]),
       required: new FormControl(false),
-      options: new FormArray([this.createOption()]),
+      options: new FormArray([]),
+    });
+
+    this.f.controlType.valueChanges.subscribe((value) => {
+      this.options.clear();
+      if (value === 'dropdown' || value === 'radio' || value === 'checkbox') {
+        this.addOption();
+      }
     });
   }
 
@@ -101,6 +108,12 @@ export class DynamicFormCreationComponent implements OnInit {
   }
 
   onSubmit() {
+    this.form.markAllAsTouched();
+    console.log(this.form);
+    if (this.form.invalid) {
+      console.log(this.form.status);
+      return;
+    }
     const options: Formfield<any> = { ...this.form.value };
     if (!options.controlType || !options.label) {
       return;

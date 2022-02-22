@@ -59,9 +59,9 @@
     </div>
 
     <div *ngSwitchCase="'textarea'">
-      <mat-form-field appearance="outline" class="w-100" [formControlName]="input.key">
+      <mat-form-field appearance="outline" class="w-100">
         <mat-label>{{ input.label }}</mat-label>
-        <textarea matInput></textarea>
+        <textarea matInput [formControlName]="input.key"></textarea>
       </mat-form-field>
     </div>
 

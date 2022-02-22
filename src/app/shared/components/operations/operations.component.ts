@@ -97,7 +97,6 @@ export class OperationsComponent implements OnInit {
   }
 
   private _filter(value: string, options: any) {
-    console.log(value);
     const filterValue = value.toLowerCase();
 
     return options.filter((option: any) => {
