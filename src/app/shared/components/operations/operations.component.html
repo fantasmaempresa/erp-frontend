@@ -1,6 +1,7 @@
 <!--Group-->
 <div class="row">
   <form [formGroup]="operationsForm">
+    <!--    Operations field-->
     <div class="row" formArrayName="operation_fields">
       <ng-container
         *ngFor="
@@ -22,7 +23,7 @@
             <input
               type="text"
               matInput
-              formControlName="conceptId"
+              formControlName="concept_id"
               [matAutocomplete]="autoConcept"
             />
             <mat-autocomplete #autoConcept="matAutocomplete" [displayWith]="displayConceptFn">
@@ -51,6 +52,7 @@
       </ng-container>
     </div>
 
+    <!--    Operations total-->
     <div class="row" formArrayName="operation_total">
       <ng-container
         *ngFor="
@@ -72,7 +74,7 @@
             <input
               type="text"
               matInput
-              formControlName="conceptId"
+              formControlName="concept_id"
               [matAutocomplete]="autoConcept"
             />
             <mat-autocomplete #autoConcept="matAutocomplete" [displayWith]="displayConceptFn">

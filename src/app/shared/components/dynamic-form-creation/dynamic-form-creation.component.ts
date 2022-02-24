@@ -2,10 +2,20 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormFieldClass } from '../../../core/classes/FormFieldClass';
 import { Store } from '@ngrx/store';
-import { setField } from '../../../state/dynamic-form/dynamic-form.actions';
+import { removeField, setField } from '../../../state/dynamic-form/dynamic-form.actions';
 import { Formfield } from '../../../data/models/Formfield.model';
-import { Observable } from 'rxjs';
-import { selectErrorMessage } from '../../../state/dynamic-form/dynamic-form.selector';
+import { lastValueFrom, Observable } from 'rxjs';
+import {
+  selectDynamicForm,
+  selectDynamicFormId,
+  selectDynamicFormName,
+  selectErrorMessage,
+} from '../../../state/dynamic-form/dynamic-form.selector';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { TemplateQuotes } from '../../../data/models/TemplateQuotes.model';
+import Swal from 'sweetalert2';
+import { MessageHelper } from '../../helpers/MessageHelper';
+import { TemplateQuotesService } from '../../../data/services/template-quotes.service';
 
 @Component({
   selector: 'app-dynamic-form-creation',
@@ -14,6 +24,18 @@ import { selectErrorMessage } from '../../../state/dynamic-form/dynamic-form.sel
 })
 export class DynamicFormCreationComponent implements OnInit {
   @Output() formField = new EventEmitter<FormFieldClass<string>>();
+
+  formFields$!: Observable<Formfield<any>[]>;
+
+  formFields!: Formfield<any>[];
+
+  templateId = 0;
+
+  templateName = '';
+
+  dynamicFormId$!: Observable<number>;
+
+  dynamicFormName$!: Observable<string>;
 
   types = [
     {
@@ -60,8 +82,17 @@ export class DynamicFormCreationComponent implements OnInit {
 
   errorMessage$: Observable<string>;
 
-  constructor(private store: Store) {
+  constructor(private store: Store, private templateQuotesService: TemplateQuotesService) {
     this.errorMessage$ = store.select(selectErrorMessage);
+    this.formFields$ = store.select(selectDynamicForm);
+    this.formFields$.subscribe((data) => {
+      this.formFields = data;
+    });
+
+    this.dynamicFormId$ = store.select(selectDynamicFormId);
+    this.dynamicFormId$.subscribe((id) => (this.templateId = id));
+    this.dynamicFormName$ = store.select(selectDynamicFormName);
+    this.dynamicFormName$.subscribe((name) => (this.templateName = name));
   }
 
   ngOnInit(): void {
@@ -75,6 +106,7 @@ export class DynamicFormCreationComponent implements OnInit {
       label: new FormControl('', [Validators.required]),
       required: new FormControl(false),
       options: new FormArray([]),
+      value: new FormControl(''),
     });
 
     this.f.controlType.valueChanges.subscribe((value) => {
@@ -107,6 +139,11 @@ export class DynamicFormCreationComponent implements OnInit {
     });
   }
 
+  removeField(formField: Formfield<any>) {
+    console.log(formField);
+    this.store.dispatch(removeField({ payload: formField }));
+  }
+
   onSubmit() {
     this.form.markAllAsTouched();
     console.log(this.form);
@@ -121,5 +158,43 @@ export class DynamicFormCreationComponent implements OnInit {
     options.key = options.label.toLowerCase();
     this.store.dispatch(setField({ form: options }));
     this.createForm();
+  }
+
+  saveTemplate() {
+    const template: TemplateQuotes = {
+      id: this.templateId,
+      name: this.templateName,
+      form: this.formFields,
+    };
+    console.log(template);
+    return;
+    if (this.templateId !== 0) {
+      this.templateQuotesService.update(template).subscribe((data) => console.log(data));
+      return;
+    }
+
+    if (this.templateId === 0) {
+      // TODO: Modificar para utilizar un dialog de angular
+      Swal.fire({
+        title: 'Guardar plantilla',
+        icon: 'question',
+        input: 'text',
+        text: 'Ponle un titulo a la plantilla',
+        confirmButtonColor: '#dfc356',
+        focusConfirm: false,
+        confirmButtonText: 'Guardar',
+        preConfirm: (name) => {
+          template.name = name;
+          let request = this.templateQuotesService.save(template);
+          return lastValueFrom(request);
+        },
+      }).then(() => {
+        MessageHelper.successMessage('Exito', 'Plantilla guardada con éxito');
+      });
+    }
+  }
+
+  drop(event: CdkDragDrop<Formfield<any>[]>) {
+    moveItemInArray(this.formFields, event.previousIndex, event.currentIndex);
   }
 }

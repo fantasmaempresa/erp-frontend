@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { combineLatestWith, map, Observable, startWith, tap } from 'rxjs';
 import { Formfield } from '../../../data/models/Formfield.model';
@@ -13,6 +13,8 @@ import { Concept } from '../../../data/models/Concept.model';
   styleUrls: ['./operations.component.scss'],
 })
 export class OperationsComponent implements OnInit {
+  @Output() form = new EventEmitter();
+
   @ViewChild('fieldInput') fieldInput!: ElementRef;
 
   autocompleteControl = new FormControl();
@@ -67,12 +69,14 @@ export class OperationsComponent implements OnInit {
       operation_fields: new FormArray([]),
       operation_total: new FormArray([]),
     });
+
+    this.operationsForm.valueChanges.subscribe(() => this.form.emit(this.operationsForm.value));
   }
 
-  createOperationGroup(key: string, conceptId?: number): FormGroup {
+  createOperationGroup(key: string): FormGroup {
     return new FormGroup({
       key: new FormControl({ value: key, disabled: true }),
-      conceptId: new FormControl(''),
+      concept_id: new FormControl(''),
     });
   }
 

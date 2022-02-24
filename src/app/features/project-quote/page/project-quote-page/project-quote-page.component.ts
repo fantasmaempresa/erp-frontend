@@ -1,13 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormFieldClass } from '../../../../core/classes/FormFieldClass';
 import { Store } from '@ngrx/store';
 import { TemplateQuotesService } from '../../../../data/services/template-quotes.service';
-import { map } from 'rxjs';
+import { combineLatest, map, Observable } from 'rxjs';
 import { TemplateQuotes } from '../../../../data/models/TemplateQuotes.model';
-import { FormControl } from '@angular/forms';
-import { emptyForm, loadForm, setField } from '../../../../state/dynamic-form/dynamic-form.actions';
+import { FormControl, FormGroup } from '@angular/forms';
+import {
+  changeStatus,
+  emptyForm,
+  loadForm,
+  setField,
+} from '../../../../state/dynamic-form/dynamic-form.actions';
 import { Formfield } from '../../../../data/models/Formfield.model';
+import {
+  selectDynamicForm,
+  selectStatus,
+} from '../../../../state/dynamic-form/dynamic-form.selector';
 
 @Component({
   selector: 'app-project-quote-page',
@@ -15,7 +23,11 @@ import { Formfield } from '../../../../data/models/Formfield.model';
   styleUrls: ['./project-quote-page.component.scss'],
 })
 export class ProjectQuotePageComponent implements OnInit {
-  formFields: FormFieldClass<any>[] = [];
+  quoteForm = new FormGroup({});
+
+  formFields!: Formfield<any>[];
+
+  operationsForm!: any;
 
   templateControl = new FormControl(null);
 
@@ -29,6 +41,13 @@ export class ProjectQuotePageComponent implements OnInit {
     private store: Store,
     private templateQuotesService: TemplateQuotesService,
   ) {
+    const status$: Observable<'EDITABLE' | 'NEW'> = store.select(selectStatus);
+    const fields$: Observable<Formfield<any>[]> = store.select(selectDynamicForm);
+    combineLatest([fields$, status$]).subscribe(([fields, status]) => {
+      if (status !== 'EDITABLE') {
+        this.formFields = fields;
+      }
+    });
     templateQuotesService
       .fetchAll()
       .pipe(
@@ -66,6 +85,12 @@ export class ProjectQuotePageComponent implements OnInit {
 
   nextStep() {
     this.step++;
+    if (this.step === 2) {
+      console.log(this.formFields);
+      this.store.dispatch(changeStatus({ status: 'EDITABLE' }));
+    }
+    if (this.step === 3) {
+    }
   }
 
   prevStep() {

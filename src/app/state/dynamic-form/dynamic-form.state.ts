@@ -6,6 +6,7 @@ export interface DynamicFormState {
   formFields: Formfield<any>[];
   errorMessage: string;
   isEditable: boolean;
+  status: 'EDITABLE' | 'NEW';
 }
 
 export const dynamicFormInitialState: DynamicFormState = {
@@ -14,4 +15,5 @@ export const dynamicFormInitialState: DynamicFormState = {
   formFields: [],
   errorMessage: '',
   isEditable: true,
+  status: 'NEW',
 };

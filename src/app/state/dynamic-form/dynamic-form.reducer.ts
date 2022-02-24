@@ -1,6 +1,7 @@
 import { Action, createReducer, on } from '@ngrx/store';
 import { dynamicFormInitialState, DynamicFormState } from './dynamic-form.state';
 import * as DynamicFormActions from './dynamic-form.actions';
+import { Formfield } from '../../data/models/Formfield.model';
 
 const DynamicFormReducer = createReducer(
   dynamicFormInitialState,
@@ -24,6 +25,29 @@ const DynamicFormReducer = createReducer(
     return {
       ...state,
       errorMessage: `Ya hay un campo creado con la etiqueta ${actions.form.key}`,
+    };
+  }),
+  on(DynamicFormActions.setValuesToFields, (state, { fields }) => {
+    let newState: Formfield<any>[] = [];
+    for (const field in fields) {
+      console.log(fields[field]);
+      newState = state.formFields.map((item) => {
+        console.log(fields);
+        return {
+          ...item,
+          value: fields[field],
+        };
+      });
+    }
+    return {
+      ...state,
+      formFields: newState,
+    };
+  }),
+  on(DynamicFormActions.changeStatus, (state, { status }) => {
+    return {
+      ...state,
+      status,
     };
   }),
   on(DynamicFormActions.removeField, (state, actions) => {

@@ -7,7 +7,12 @@
     </div>
   </mat-toolbar>
   <mat-accordion class="example-headers-align">
-    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+    <mat-expansion-panel
+      [expanded]="step === 0"
+      (opened)="setStep(0)"
+      hideToggle
+      [disabled]="step !== 0"
+    >
       <mat-expansion-panel-header>
         <mat-panel-title>Encabezado</mat-panel-title>
         <mat-panel-description> Datos acerca de la cotización y el cliente </mat-panel-description>
@@ -18,10 +23,15 @@
       </mat-action-row>
     </mat-expansion-panel>
 
-    <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+    <mat-expansion-panel
+      [expanded]="step === 1"
+      (opened)="setStep(1)"
+      hideToggle
+      [disabled]="step !== 1"
+    >
       <mat-expansion-panel-header>
         <mat-panel-title>Cotización</mat-panel-title>
-        <mat-panel-description> Cotización </mat-panel-description>
+        <mat-panel-description> Creación de formulario </mat-panel-description>
       </mat-expansion-panel-header>
 
       <mat-form-field appearance="outline" class="w-100">
@@ -37,7 +47,24 @@
 
       <app-dynamic-form-creation></app-dynamic-form-creation>
 
-      <app-dynamic-form></app-dynamic-form>
+      <mat-action-row>
+        <button mat-button color="warn" (click)="prevStep()">Atras</button>
+        <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel
+      [expanded]="step === 2"
+      (opened)="setStep(2)"
+      hideToggle
+      [disabled]="step !== 2"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title>Cotización</mat-panel-title>
+        <mat-panel-description> Llenado de formulario </mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <app-dynamic-form *ngIf="step === 2" [formFields]="formFields"></app-dynamic-form>
 
       <mat-action-row>
         <button mat-button color="warn" (click)="prevStep()">Atras</button>
@@ -45,13 +72,18 @@
       </mat-action-row>
     </mat-expansion-panel>
 
-    <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" hideToggle>
+    <mat-expansion-panel
+      [expanded]="step === 3"
+      (opened)="setStep(3)"
+      hideToggle
+      [disabled]="step !== 3"
+    >
       <mat-expansion-panel-header>
         <mat-panel-title> Conceptos </mat-panel-title>
         <mat-panel-description> Conceptos que se agregaran a la cotización </mat-panel-description>
       </mat-expansion-panel-header>
 
-      <app-operations></app-operations>
+      <app-operations (form)="operationsForm = $event"></app-operations>
 
       <!--      <app-project-quote-concepts></app-project-quote-concepts>-->
 

@@ -1,94 +1,67 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormfieldControlService } from '../../../core/services/formfield-control.service';
 import { Store } from '@ngrx/store';
-import {
-  selectDynamicForm,
-  selectDynamicFormId,
-  selectDynamicFormName,
-} from '../../../state/dynamic-form/dynamic-form.selector';
-import { lastValueFrom, Observable } from 'rxjs';
+import { selectDynamicForm, selectStatus } from '../../../state/dynamic-form/dynamic-form.selector';
+import { Observable, Subscription } from 'rxjs';
 import { Formfield } from '../../../data/models/Formfield.model';
-import { removeField } from '../../../state/dynamic-form/dynamic-form.actions';
-import { MessageHelper } from '../../helpers/MessageHelper';
-import Swal from 'sweetalert2';
-import { TemplateQuotesService } from '../../../data/services/template-quotes.service';
-import { TemplateQuotes } from '../../../data/models/TemplateQuotes.model';
+import { setValuesToFields } from '../../../state/dynamic-form/dynamic-form.actions';
 
 @Component({
   selector: 'app-dynamic-form',
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.scss'],
 })
-export class DynamicFormComponent implements OnDestroy {
+export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
+  @Input() formFields!: Formfield<any>[];
+
   form: FormGroup = new FormGroup({});
 
   payLoad = '';
 
   fields$!: Observable<Formfield<any>[]>;
 
+  formStatus$!: Observable<'EDITABLE' | 'NEW'>;
+
   isLoading = false;
 
-  formFields!: Formfield<any>[];
+  // formFields!: Formfield<any>[];
 
-  templateId = 0;
+  formChangesSubscription = Subscription.EMPTY;
 
-  templateName = '';
-
-  dynamicFormId$!: Observable<number>;
-
-  dynamicFormName$!: Observable<string>;
-
-  constructor(
-    private formfieldService: FormfieldControlService,
-    private store: Store,
-    private templateQuotesService: TemplateQuotesService,
-  ) {
+  constructor(private formfieldService: FormfieldControlService, private store: Store) {
     this.fields$ = store.select(selectDynamicForm);
-    this.fields$.subscribe((data) => {
-      this.formFields = data;
-      this.isLoading = true;
-      data.forEach((control) => {
-        this.form.setControl(control.key, new FormControl(''));
-      });
-      this.isLoading = false;
-    });
-    this.dynamicFormId$ = store.select(selectDynamicFormId);
-    this.dynamicFormId$.subscribe((id) => (this.templateId = id));
-    this.dynamicFormName$ = store.select(selectDynamicFormName);
-    this.dynamicFormName$.subscribe((name) => (this.templateName = name));
-  }
-
-  onSubmit() {
-    const template: TemplateQuotes = {
-      id: this.templateId,
-      name: this.templateName,
-      form: this.formFields,
-    };
-    if (this.templateId !== 0) {
-      this.templateQuotesService.update(template).subscribe((data) => console.log(data));
-      return;
-    }
-
-    if (this.templateId === 0) {
-      // TODO: Modificar para utilizar un dialog de angular
-      Swal.fire({
-        title: 'Guardar plantilla',
-        icon: 'question',
-        input: 'text',
-        text: 'Ponle un titulo a la plantilla',
-        confirmButtonColor: '#dfc356',
-        focusConfirm: false,
-        confirmButtonText: 'Guardar',
-        preConfirm: (name) => {
-          template.name = name;
-          let request = this.templateQuotesService.save(template);
-          return lastValueFrom(request);
-        },
-      }).then(() => {
-        MessageHelper.successMessage('Exito', 'Plantilla guardada con éxito');
-      });
-    }
+    this.formStatus$ = store.select(selectStatus);
+    // combineLatest([this.fields$, this.formStatus$]).subscribe(([fields, status]) => {
+    //   console.log(fields, status);
+    //   this.formFields = fields;
+    //   this.formChangesSubscription.unsubscribe();
+    //   if (status !== 'EDITABLE') {
+    //     this.isLoading = true;
+    //     this.form = new FormGroup({});
+    //     fields.forEach((control) => {
+    //       this.form.setControl(control.key, new FormControl(''));
+    //     });
+    //   }
+    //   this.formChangesSubscription = this.form.valueChanges.subscribe((val) => {
+    //     console.log(val);
+    //     this.store.dispatch(setValuesToFields({ fields: val }));
+    //   });
+    // });
+    // this.fields$.subscribe((data) => {
+    //   this.formFields = data;
+    //   this.isLoading = true;
+    //   this.formChangesSubscription.unsubscribe();
+    //   this.form = new FormGroup({});
+    //   data.forEach((control) => {
+    //     this.form.setControl(control.key, new FormControl(''));
+    //   });
+    //   this.formChangesSubscription = this.form.valueChanges.subscribe((val) => {
+    //     console.log(val);
+    //     // this.store.dispatch(setValuesToFields({ fields: val }));
+    //   });
+    //   // this.isLoading = false;
+    // });
   }
 
   createOption() {
@@ -98,10 +71,25 @@ export class DynamicFormComponent implements OnDestroy {
     });
   }
 
-  removeField(formField: Formfield<any>) {
-    console.log(formField);
-    this.store.dispatch(removeField({ payload: formField }));
+  ngOnInit() {
+    this.formChangesSubscription = this.form.valueChanges.subscribe((val) => {
+      console.log(val);
+      this.store.dispatch(setValuesToFields({ fields: val }));
+    });
   }
 
   ngOnDestroy(): void {}
+
+  ngOnChanges(changes: SimpleChanges) {
+    console.log(changes);
+    // if (!changes.formFields.firstChange) {
+    this.createForm(this.formFields);
+    // }
+  }
+
+  createForm(controls: Formfield<any>[]) {
+    for (const control of controls) {
+      this.form.addControl(control.key, new FormControl(''));
+    }
+  }
 }
