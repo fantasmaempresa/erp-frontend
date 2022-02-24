@@ -31,13 +31,11 @@ const DynamicFormReducer = createReducer(
     let newState: Formfield<any>[] = [];
     for (const field in fields) {
       console.log(fields[field]);
-      newState = state.formFields.map((item) => {
-        console.log(fields);
-        return {
-          ...item,
-          value: fields[field],
-        };
-      });
+      for (const item of state.formFields) {
+        if (item.key === field) {
+          newState = [...newState, { ...item, value: fields[field] }];
+        }
+      }
     }
     return {
       ...state,
