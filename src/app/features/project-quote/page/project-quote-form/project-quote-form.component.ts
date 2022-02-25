@@ -98,10 +98,6 @@ export class ProjectQuoteFormComponent {
       });
     }
   }
-  //
-  // async backToListUsers() {
-  //   await this.router.navigate(['../'], { relativeTo: this.route });
-  // }
 
   onSubmit() {
     let { client, date_end, ...projectQuote } = this.quoteForm.getRawValue();

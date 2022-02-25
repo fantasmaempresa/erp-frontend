@@ -20,12 +20,7 @@
         <div class="col-5">
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Concepto</mat-label>
-            <input
-              type="text"
-              matInput
-              formControlName="concept_id"
-              [matAutocomplete]="autoConcept"
-            />
+            <input type="text" matInput formControlName="concept" [matAutocomplete]="autoConcept" />
             <mat-autocomplete #autoConcept="matAutocomplete" [displayWith]="displayConceptFn">
               <mat-option
                 *ngFor="let concept of filteredConcepts$ | async; trackBy: trackConceptsByFn"
@@ -71,12 +66,7 @@
         <div class="col-5">
           <mat-form-field class="w-100" appearance="outline">
             <mat-label>Concepto</mat-label>
-            <input
-              type="text"
-              matInput
-              formControlName="concept_id"
-              [matAutocomplete]="autoConcept"
-            />
+            <input type="text" matInput formControlName="concept" [matAutocomplete]="autoConcept" />
             <mat-autocomplete #autoConcept="matAutocomplete" [displayWith]="displayConceptFn">
               <mat-option
                 *ngFor="let concept of filteredConcepts$ | async; trackBy: trackConceptsByFn"

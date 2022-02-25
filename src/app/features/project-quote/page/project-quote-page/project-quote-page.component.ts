@@ -95,6 +95,7 @@ export class ProjectQuotePageComponent implements OnInit {
 
   prevStep() {
     this.step--;
+    this.store.dispatch(changeStatus({ status: 'NEW' }));
   }
 
   addTotalToTemplate() {
@@ -108,5 +109,13 @@ export class ProjectQuotePageComponent implements OnInit {
       type: 'number',
     };
     this.store.dispatch(setField({ form }));
+  }
+
+  getDynamicForm() {}
+
+  async saveQuote() {
+    this.store.select(selectDynamicForm).subscribe((form) => {
+      console.log(form);
+    });
   }
 }

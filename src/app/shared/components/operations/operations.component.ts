@@ -76,7 +76,7 @@ export class OperationsComponent implements OnInit {
   createOperationGroup(key: string): FormGroup {
     return new FormGroup({
       key: new FormControl({ value: key, disabled: true }),
-      concept_id: new FormControl(''),
+      concept: new FormControl(''),
     });
   }
 

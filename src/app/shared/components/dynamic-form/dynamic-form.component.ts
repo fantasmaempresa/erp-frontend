@@ -25,8 +25,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
 
   isLoading = false;
 
-  // formFields!: Formfield<any>[];
-
   formChangesSubscription = Subscription.EMPTY;
 
   constructor(private formfieldService: FormfieldControlService, private store: Store) {
@@ -89,7 +87,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
 
   createForm(controls: Formfield<any>[]) {
     for (const control of controls) {
-      this.form.addControl(control.key, new FormControl(''));
+      this.form.addControl(control.key, new FormControl(control.value));
     }
   }
 }
