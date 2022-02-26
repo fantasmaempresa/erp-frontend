@@ -70,7 +70,7 @@ export class OperationsComponent implements OnInit {
       operation_total: new FormArray([]),
     });
 
-    this.operationsForm.valueChanges.subscribe(() => this.form.emit(this.operationsForm.value));
+    this.operationsForm.valueChanges.subscribe(() => this.form.emit(this.operationsForm));
   }
 
   createOperationGroup(key: string): FormGroup {

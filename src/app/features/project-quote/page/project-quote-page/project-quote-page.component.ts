@@ -16,6 +16,8 @@ import {
   selectDynamicForm,
   selectStatus,
 } from '../../../../state/dynamic-form/dynamic-form.selector';
+import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 @Component({
   selector: 'app-project-quote-page',
@@ -27,7 +29,7 @@ export class ProjectQuotePageComponent implements OnInit {
 
   formFields!: Formfield<any>[];
 
-  operationsForm!: any;
+  operationsForm = new FormGroup({});
 
   templateControl = new FormControl(null);
 
@@ -40,6 +42,7 @@ export class ProjectQuotePageComponent implements OnInit {
     private route: ActivatedRoute,
     private store: Store,
     private templateQuotesService: TemplateQuotesService,
+    private projectQuoteService: ProjectQuoteService,
   ) {
     const status$: Observable<'EDITABLE' | 'NEW'> = store.select(selectStatus);
     const fields$: Observable<Formfield<any>[]> = store.select(selectDynamicForm);
@@ -115,7 +118,22 @@ export class ProjectQuotePageComponent implements OnInit {
 
   async saveQuote() {
     this.store.select(selectDynamicForm).subscribe((form) => {
-      console.log(form);
+      const quote = {
+        ...this.quoteForm.getRawValue(),
+        quote: {
+          form: {
+            ...form,
+          },
+          operations: {
+            ...this.operationsForm.getRawValue(),
+          },
+        },
+      };
+      console.log(quote);
+      this.projectQuoteService.save(quote).subscribe((val) => {
+        console.log(val);
+        MessageHelper.successMessage('Éxito', 'Cotización guardada');
+      });
     });
   }
 }

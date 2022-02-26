@@ -1,5 +1,26 @@
 <!--Group-->
 <div class="row">
+  <div class="row">
+    <mat-form-field class="w-100" appearance="outline">
+      <mat-label>Selecciona un campo</mat-label>
+      <input
+        type="text"
+        matInput
+        [matAutocomplete]="auto"
+        #fieldInput
+        [formControl]="autocompleteControl"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option
+          *ngFor="let option of filteredOptions$ | async"
+          (click)="addOperation(option)"
+          [value]="''"
+        >
+          {{ option.label }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
   <form [formGroup]="operationsForm">
     <!--    Operations field-->
     <div class="row" formArrayName="operation_fields">
@@ -91,28 +112,6 @@
           </button>
         </div>
       </ng-container>
-    </div>
-
-    <div class="row">
-      <mat-form-field class="w-100" appearance="outline">
-        <mat-label>Selecciona un campo</mat-label>
-        <input
-          type="text"
-          matInput
-          [matAutocomplete]="auto"
-          #fieldInput
-          [formControl]="autocompleteControl"
-        />
-        <mat-autocomplete #auto="matAutocomplete">
-          <mat-option
-            *ngFor="let option of filteredOptions$ | async"
-            (click)="addOperation(option)"
-            [value]="''"
-          >
-            {{ option.label }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
     </div>
     <div class="row">
       <button type="button" mat-raised-button color="primary" (click)="calculateOperations()">

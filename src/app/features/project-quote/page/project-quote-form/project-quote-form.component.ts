@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { map, Observable, startWith, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,6 +25,8 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
   styleUrls: ['./project-quote-form.component.scss'],
 })
 export class ProjectQuoteFormComponent {
+  @Output() form = new EventEmitter();
+
   formFields: FormFieldClass<string>[] = [];
 
   quoteForm = new FormGroup({
@@ -97,6 +99,8 @@ export class ProjectQuoteFormComponent {
         },
       });
     }
+
+    this.quoteForm.valueChanges.subscribe(() => this.form.emit(this.quoteForm));
   }
 
   onSubmit() {

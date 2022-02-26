@@ -71,7 +71,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     this.formChangesSubscription = this.form.valueChanges.subscribe((val) => {
-      console.log(val);
       this.store.dispatch(setValuesToFields({ fields: val }));
     });
   }
@@ -79,7 +78,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
   ngOnDestroy(): void {}
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes);
     // if (!changes.formFields.firstChange) {
     this.createForm(this.formFields);
     // }

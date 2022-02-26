@@ -17,7 +17,7 @@
         <mat-panel-title>Encabezado</mat-panel-title>
         <mat-panel-description> Datos acerca de la cotización y el cliente </mat-panel-description>
       </mat-expansion-panel-header>
-      <app-project-quote-form></app-project-quote-form>
+      <app-project-quote-form (form)="quoteForm = $event"></app-project-quote-form>
       <mat-action-row>
         <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
       </mat-action-row>

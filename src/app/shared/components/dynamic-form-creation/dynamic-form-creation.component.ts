@@ -140,13 +140,11 @@ export class DynamicFormCreationComponent implements OnInit {
   }
 
   removeField(formField: Formfield<any>) {
-    console.log(formField);
     this.store.dispatch(removeField({ payload: formField }));
   }
 
   onSubmit() {
     this.form.markAllAsTouched();
-    console.log(this.form);
     if (this.form.invalid) {
       console.log(this.form.status);
       return;
@@ -166,8 +164,6 @@ export class DynamicFormCreationComponent implements OnInit {
       name: this.templateName,
       form: this.formFields,
     };
-    console.log(template);
-    return;
     if (this.templateId !== 0) {
       this.templateQuotesService.update(template).subscribe((data) => console.log(data));
       return;
