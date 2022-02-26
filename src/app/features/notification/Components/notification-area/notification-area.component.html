@@ -9,6 +9,7 @@
       <span (click)="checkIsClose(notification)" class="material-icons notifications__item-close"
         >close</span
       >
+      <span class="notifications__item-title">{{ notification?.notification?.title }}</span>
       <div class="notifications__item-body">
         <span class="material-icons notifications__item-icon">notifications</span>
         <span class="notifications__item-label">{{ notification?.notification?.message }}</span>

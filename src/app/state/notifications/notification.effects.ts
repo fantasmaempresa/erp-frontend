@@ -85,9 +85,9 @@ export class NotificationEffects {
     private store: Store,
   ) {
     //setChanel
-    this.socketService.subscribeToChannel('quotes', 'QuoteEvent');
+    this.socketService.subscribeToChannel('notification', 'NotificationEvent');
 
-    this.testNotifications();
+    // this.testNotifications();
   }
 
   private testNotifications() {
