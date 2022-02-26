@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { map, Observable, startWith, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { QuoteStatusService } from '../../../../data/services/quote-status.servi
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { ClientService } from '../../../../data/services/client.service';
 import { Client } from '../../../../data/models/Client.model';
-import { FormField } from '../../../../core/classes/FormField';
+import { FormFieldClass } from '../../../../core/classes/FormFieldClass';
 import { FormfieldControlService } from '../../../../core/services/formfield-control.service';
 import { ConceptService } from '../../../../data/services/concept.service';
 import { Concept } from '../../../../data/models/Concept.model';
@@ -25,7 +25,9 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
   styleUrls: ['./project-quote-form.component.scss'],
 })
 export class ProjectQuoteFormComponent {
-  formFields: FormField<string>[] = [];
+  @Output() form = new EventEmitter();
+
+  formFields: FormFieldClass<string>[] = [];
 
   quoteForm = new FormGroup({
     name: new FormControl(''),
@@ -97,10 +99,8 @@ export class ProjectQuoteFormComponent {
         },
       });
     }
-  }
 
-  async backToListUsers() {
-    await this.router.navigate(['../'], { relativeTo: this.route });
+    this.quoteForm.valueChanges.subscribe(() => this.form.emit(this.quoteForm));
   }
 
   onSubmit() {
@@ -140,11 +140,6 @@ export class ProjectQuoteFormComponent {
       this.quoteForm.get('client')?.patchValue(result);
       console.log(this.quoteForm.getRawValue());
     });
-  }
-
-  addNewConcept() {
-    const control = <FormArray>this.quoteForm.controls.concepts;
-    control.push(new FormControl({}));
   }
 
   logValidationErrors() {

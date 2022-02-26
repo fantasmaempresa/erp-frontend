@@ -15,6 +15,8 @@ import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.com
 import { StopPropagationDirective } from '../core/directives/stop-propagation.directive';
 import { OutSideClickDirective } from '../core/directives/out-side-click.directive';
 import { FromDatePipe } from '../core/pipes/from-date.pipe';
+import { DynamicFormCreationComponent } from './components/dynamic-form-creation/dynamic-form-creation.component';
+import { OperationsComponent } from './components/operations/operations.component';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -29,6 +31,8 @@ import { FromDatePipe } from '../core/pipes/from-date.pipe';
     TableSearchComponent,
     DynamicFormInputComponent,
     DynamicFormComponent,
+    DynamicFormCreationComponent,
+    OperationsComponent,
   ],
   imports: [
     CommonModule,
@@ -52,6 +56,8 @@ import { FromDatePipe } from '../core/pipes/from-date.pipe';
     OutSideClickDirective,
     FromDatePipe,
     DynamicFormComponent,
+    DynamicFormCreationComponent,
+    OperationsComponent,
   ],
 })
 export class SharedModule {}

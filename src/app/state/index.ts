@@ -13,6 +13,8 @@ import { quoteStatusInitialState, QuoteStatusState } from './quote-status/quote-
 import { quoteStatusReducer } from './quote-status/quote-status.reducer';
 import { quotesInitialState, QuotesState } from './quotes/quotes.state';
 import { quotesReducer } from './quotes/quotes.reducer';
+import { dynamicFormInitialState, DynamicFormState } from './dynamic-form/dynamic-form.state';
+import { dynamicFormReducer } from './dynamic-form/dynamic-form.reducer';
 import {
   initialState as notificationInitialState,
   NotificationState,
@@ -28,6 +30,7 @@ export interface AppState {
   quote_status: QuoteStatusState;
   quotes: QuotesState;
   notifications: NotificationState;
+  dynamicForm: DynamicFormState;
 }
 
 export const initialAppState: AppState = {
@@ -39,6 +42,7 @@ export const initialAppState: AppState = {
   concepts: conceptsInitialState,
   quote_status: quoteStatusInitialState,
   quotes: quotesInitialState,
+  dynamicForm: dynamicFormInitialState,
 };
 
 export function getInitialAppState(): AppState {
@@ -54,4 +58,5 @@ export const reducers: ActionReducerMap<AppState> = {
   quote_status: quoteStatusReducer,
   quotes: quotesReducer,
   notifications: notificationReducer,
+  dynamicForm: dynamicFormReducer,
 };

@@ -1,125 +1,125 @@
-<mat-card>
-  <mat-toolbar>
-    <div>
-      <button aria-label="Regresar" mat-icon-button (click)="backToListUsers()">
-        <mat-icon>arrow_back</mat-icon>
-      </button>
-    </div>
-  </mat-toolbar>
-  <form
-    class="row justify-content-center"
-    [formGroup]="quoteForm"
-    (ngSubmit)="onSubmit()"
-    (blur)="logValidationErrors()"
-  >
-    <div class="col-6 d-flex flex-column pe-0">
-      <!--      <mat-form-field appearance="outline">-->
-      <!--        <mat-label>Estado de la cotización</mat-label>-->
-      <!--        <mat-select formControlName="status_quote_id">-->
-      <!--          <mat-option *ngFor="let quoteStatus of quoteStatuses$ | async" [value]="quoteStatus.id">{{-->
-      <!--            quoteStatus.name-->
-      <!--          }}</mat-option>-->
-      <!--        </mat-select>-->
-      <!--      </mat-form-field>-->
+<!--<mat-card>-->
+<!--  <mat-toolbar>-->
+<!--    <div>-->
+<!--      <button aria-label="Regresar" mat-icon-button (click)="backToListUsers()">-->
+<!--        <mat-icon>arrow_back</mat-icon>-->
+<!--      </button>-->
+<!--    </div>-->
+<!--  </mat-toolbar>-->
+<form
+  class="row justify-content-center"
+  [formGroup]="quoteForm"
+  (ngSubmit)="onSubmit()"
+  (blur)="logValidationErrors()"
+>
+  <div class="col-6 d-flex flex-column pe-0">
+    <!--      <mat-form-field appearance="outline">-->
+    <!--        <mat-label>Estado de la cotización</mat-label>-->
+    <!--        <mat-select formControlName="status_quote_id">-->
+    <!--          <mat-option *ngFor="let quoteStatus of quoteStatuses$ | async" [value]="quoteStatus.id">{{-->
+    <!--            quoteStatus.name-->
+    <!--          }}</mat-option>-->
+    <!--        </mat-select>-->
+    <!--      </mat-form-field>-->
 
-      <mat-form-field appearance="outline">
-        <mat-label>Tipo de cotización</mat-label>
-        <input
-          matInput
-          type="text"
-          autocomplete="off"
-          formControlName="name"
-          (blur)="logValidationErrors()"
-        />
-        <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
-      </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Tipo de cotización</mat-label>
+      <input
+        matInput
+        type="text"
+        autocomplete="off"
+        formControlName="name"
+        (blur)="logValidationErrors()"
+      />
+      <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
+    </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>A quien va dirigido</mat-label>
-        <input
-          matInput
-          type="text"
-          autocomplete="off"
-          formControlName="addressee"
-          (blur)="logValidationErrors()"
-        />
-        <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
-      </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>A quien va dirigido</mat-label>
+      <input
+        matInput
+        type="text"
+        autocomplete="off"
+        formControlName="addressee"
+        (blur)="logValidationErrors()"
+      />
+      <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
+    </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Descripción</mat-label>
-        <textarea matInput formControlName="description" (blur)="logValidationErrors()"> </textarea>
-        <mat-error *ngIf="formErrors.description">{{ formErrors.description }}</mat-error>
-      </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="description" (blur)="logValidationErrors()"> </textarea>
+      <mat-error *ngIf="formErrors.description">{{ formErrors.description }}</mat-error>
+    </mat-form-field>
 
-      <div class="d-flex flex-row">
-        <div class="col-11">
-          <mat-form-field class="w-100" appearance="outline">
-            <mat-label>Cliente</mat-label>
-            <input type="text" matInput formControlName="client" [matAutocomplete]="auto" />
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-              <mat-option *ngFor="let option of filteredClients$ | async" [value]="option">
-                {{ option.name }}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-        </div>
-        <div class="col-1">
-          <button
-            type="button"
-            mat-icon-button
-            aria-label="Buscar cliente"
-            class="align-self-center search-button"
-            (click)="openDialog()"
-          >
-            <mat-icon>search</mat-icon>
-          </button>
-        </div>
+    <div class="d-flex flex-row">
+      <div class="col-11">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Cliente</mat-label>
+          <input type="text" matInput formControlName="client" [matAutocomplete]="auto" />
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let option of filteredClients$ | async" [value]="option">
+              {{ option.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
       </div>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha de expiración</mat-label>
-        <input matInput [matDatepicker]="dp_end" formControlName="date_end" />
-        <mat-datepicker-toggle matSuffix [for]="dp_end"></mat-datepicker-toggle>
-        <mat-datepicker #dp_end disabled="false"></mat-datepicker>
-        <mat-error *ngIf="formErrors.date_end">{{ formErrors.date_end }}</mat-error>
-      </mat-form-field>
-
-      <div formArrayName="concepts" class="row">
-        <div class="col-11">
-          <mat-form-field
-            appearance="outline"
-            class="w-100"
-            *ngFor="let concept of concepts.controls; index as i"
-          >
-            <mat-label>Concepto</mat-label>
-            <mat-select [formControlName]="i">
-              <mat-option>Ninguna</mat-option>
-              <mat-option *ngFor="let concept of concepts$ | async" [value]="concept">{{
-                concept.name
-              }}</mat-option>
-            </mat-select>
-            <!--        <mat-error appErrorMessage></mat-error>-->
-          </mat-form-field>
-        </div>
-
-        <div class="col-1">
-          <button
-            type="button"
-            mat-icon-button
-            aria-label="Buscar cliente"
-            class="align-self-center search-button"
-            matTooltip="Agregar otro concepto"
-            (click)="addNewConcept()"
-          >
-            <mat-icon>add</mat-icon>
-          </button>
-        </div>
+      <div class="col-1">
+        <button
+          type="button"
+          mat-icon-button
+          aria-label="Buscar cliente"
+          class="align-self-center search-button"
+          (click)="openDialog()"
+        >
+          <mat-icon>search</mat-icon>
+        </button>
       </div>
-
-      <button mat-flat-button color="primary">Guardar</button>
-
-      <!--      <app-dynamic-form [formFields]="formFields"></app-dynamic-form>-->
     </div>
-  </form>
-</mat-card>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha de expiración</mat-label>
+      <input matInput [matDatepicker]="dp_end" formControlName="date_end" />
+      <mat-datepicker-toggle matSuffix [for]="dp_end"></mat-datepicker-toggle>
+      <mat-datepicker #dp_end disabled="false"></mat-datepicker>
+      <mat-error *ngIf="formErrors.date_end">{{ formErrors.date_end }}</mat-error>
+    </mat-form-field>
+
+    <!--    <div formArrayName="concepts" class="row">-->
+    <!--      <div class="col-11">-->
+    <!--        <mat-form-field-->
+    <!--          appearance="outline"-->
+    <!--          class="w-100"-->
+    <!--          *ngFor="let concept of concepts.controls; index as i"-->
+    <!--        >-->
+    <!--          <mat-label>Concepto</mat-label>-->
+    <!--          <mat-select [formControlName]="i">-->
+    <!--            <mat-option>Ninguna</mat-option>-->
+    <!--            <mat-option *ngFor="let concept of concepts$ | async" [value]="concept">{{-->
+    <!--              concept.name-->
+    <!--            }}</mat-option>-->
+    <!--          </mat-select>-->
+    <!--          &lt;!&ndash;        <mat-error appErrorMessage></mat-error>&ndash;&gt;-->
+    <!--        </mat-form-field>-->
+    <!--      </div>-->
+
+    <!--      <div class="col-1">-->
+    <!--        <button-->
+    <!--          type="button"-->
+    <!--          mat-icon-button-->
+    <!--          aria-label="Buscar cliente"-->
+    <!--          class="align-self-center search-button"-->
+    <!--          matTooltip="Agregar otro concepto"-->
+    <!--          (click)="addNewConcept()"-->
+    <!--        >-->
+    <!--          <mat-icon>add</mat-icon>-->
+    <!--        </button>-->
+    <!--      </div>-->
+    <!--    </div>-->
+
+    <!--    <button mat-flat-button color="primary">Guardar</button>-->
+
+    <!--      <app-dynamic-form [formFields]="formFields"></app-dynamic-form>-->
+  </div>
+</form>
+<!--</mat-card>-->

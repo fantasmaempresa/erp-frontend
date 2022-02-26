@@ -1,22 +1,42 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormField } from '../../../core/classes/FormField';
-import { FormGroup } from '@angular/forms';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+} from '@angular/core';
+import { ControlContainer, FormGroup } from '@angular/forms';
+import { Formfield } from '../../../data/models/Formfield.model';
 
 @Component({
   selector: 'app-dynamic-form-input',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './dynamic-form-input.component.html',
   styleUrls: ['./dynamic-form-input.component.scss'],
 })
-export class DynamicFormInputComponent implements OnInit {
-  @Input() input!: FormField<string>;
+export class DynamicFormInputComponent implements OnChanges, OnInit {
+  _form!: FormGroup;
 
-  @Input() form!: FormGroup;
+  @Input() input!: Formfield<any>;
+
+  @Input() set form(formGroup: FormGroup) {
+    this._form = formGroup;
+  }
+
+  get form() {
+    return this._form;
+  }
 
   get isValid() {
     return this.form.controls[this.input.key].valid;
   }
 
-  constructor() {}
+  constructor(private controlContainer: ControlContainer) {}
 
-  ngOnInit(): void {}
+  ngOnInit() {
+    this.form = this.controlContainer.control as FormGroup;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {}
 }

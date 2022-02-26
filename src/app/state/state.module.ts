@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreModule } from '@ngrx/store';
+import { ActionReducer, MetaReducer, StoreModule } from '@ngrx/store';
 import { reducers } from './index';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../../environments/environment';
@@ -13,12 +13,19 @@ import { ConceptsEffects } from './concepts/concepts.effects';
 import { QuoteStatusEffects } from './quote-status/quote-status.effects';
 import { QuotesEffects } from './quotes/quotes.effects';
 import { NotificationEffects } from './notifications/notification.effects';
+import { localStorageSync } from 'ngrx-store-localstorage';
+import { DynamicFormEffects } from './dynamic-form/dynamic-form.effects';
+
+export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
+  return localStorageSync({ keys: ['auth'], rehydrate: true })(reducer);
+}
+const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forRoot(reducers),
+    StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot([
       AuthEffects,
       ClientsEffects,
@@ -28,6 +35,7 @@ import { NotificationEffects } from './notifications/notification.effects';
       QuoteStatusEffects,
       QuotesEffects,
       NotificationEffects,
+      DynamicFormEffects,
     ]),
     StoreDevtoolsModule.instrument({ name: 'ERP', maxAge: 25, logOnly: environment.production }),
   ],
