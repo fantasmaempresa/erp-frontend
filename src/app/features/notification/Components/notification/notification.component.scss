@@ -13,6 +13,7 @@
 
   &:hover {
     background: rgba(255, 255, 255, 0.325);
+    border-radius: 50%;
   }
 
   &__icon {
@@ -126,6 +127,8 @@
     }
 
     &-title {
+      padding-left: 0.5rem;
+      padding-bottom: 0.5rem;
       font-weight: 400;
       font-size: 1.75rem;
     }
