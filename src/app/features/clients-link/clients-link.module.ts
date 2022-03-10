@@ -8,5 +8,6 @@ import { SharedModule } from '../../shared/shared.module';
 @NgModule({
   declarations: [ClientLinkListComponent, ClientLinkFormComponent],
   imports: [SharedModule, ClientsLinkRoutingModule],
+  exports: [ClientLinkListComponent],
 })
 export class ClientsLinkModule {}

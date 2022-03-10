@@ -97,17 +97,19 @@ export class ClientsListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   async edit() {
     await this.router.navigate([`../client`], {
-      queryParams: { id: this.selection.selected[0].id },
+      queryParams: { id: this.getSelectedElement().id },
       relativeTo: this.route,
     });
   }
 
+  private getSelectedElement = () => this.selection.selected[0];
+
   delete() {
     MessageHelper.decisionMessage(
-      `¿Deseas borrar al cliente ${this.selection.selected[0].name}?`,
-      'Una vez borrado no hay marcha atras.',
+      `¿Deseas borrar al cliente ${this.getSelectedElement().name}?`,
+      'Una vez borrado no hay marcha atrás.',
       () => {
-        this.clientService.delete(this.selection.selected[0].id).subscribe({
+        this.clientService.delete(this.getSelectedElement().id).subscribe({
           next: () => this.store.dispatch(loadClients()),
         });
       },
@@ -130,5 +132,11 @@ export class ClientsListComponent implements OnInit, AfterViewInit, OnDestroy {
     //       map((userData: UserData) => this.dataSource = userData)
     //   ).subscribe()
     // }
+  }
+
+  async goToClientsLink() {
+    await this.router.navigate(['../', this.getSelectedElement().id, 'clientsLink'], {
+      relativeTo: this.route,
+    });
   }
 }

@@ -1,1 +1,42 @@
-<p>client-link-list works!</p>
+<mat-toolbar>
+  <!--  <button-->
+  <!--    *ngIf="selection.selected.length !== 0"-->
+  <!--    [matTooltipPosition]="'below'"-->
+  <!--    aria-label="Ver Enlaces"-->
+  <!--    mat-icon-button-->
+  <!--    color="primary"-->
+  <!--    matTooltip="Ver Enlaces"-->
+  <!--    (click)="goToClientsLink()"-->
+  <!--  >-->
+  <!--    <mat-icon>people</mat-icon>-->
+  <!--  </button>-->
+  <!--  <button-->
+  <!--    *ngIf="selection.selected.length !== 0"-->
+  <!--    [matTooltipPosition]="'below'"-->
+  <!--    aria-label="Editar cliente"-->
+  <!--    mat-icon-button-->
+  <!--    matTooltip="Editar cliente"-->
+  <!--    (click)="edit()"-->
+  <!--  >-->
+  <!--    <mat-icon>edit</mat-icon>-->
+  <!--  </button>-->
+  <!--  <button-->
+  <!--    *ngIf="selection.selected.length !== 0"-->
+  <!--    [matTooltipPosition]="'below'"-->
+  <!--    aria-label="Eliminar cliente"-->
+  <!--    mat-icon-button-->
+  <!--    matTooltip="Eliminar cliente"-->
+  <!--    (click)="delete()"-->
+  <!--  >-->
+  <!--    <mat-icon>person_remove</mat-icon>-->
+  <!--  </button>-->
+  <button
+    [matTooltipPosition]="'below'"
+    aria-label="Agregar Enlace"
+    mat-icon-button
+    matTooltip="Agregar Enlace"
+    (click)="goToNewClientLink()"
+  >
+    <mat-icon>person_add</mat-icon>
+  </button>
+</mat-toolbar>

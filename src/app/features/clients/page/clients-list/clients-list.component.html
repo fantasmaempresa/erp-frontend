@@ -2,6 +2,17 @@
   <button
     *ngIf="selection.selected.length !== 0"
     [matTooltipPosition]="'below'"
+    aria-label="Ver Enlaces"
+    mat-icon-button
+    color="primary"
+    matTooltip="Ver Enlaces"
+    (click)="goToClientsLink()"
+  >
+    <mat-icon>people</mat-icon>
+  </button>
+  <button
+    *ngIf="selection.selected.length !== 0"
+    [matTooltipPosition]="'below'"
     aria-label="Editar cliente"
     mat-icon-button
     matTooltip="Editar cliente"

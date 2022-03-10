@@ -48,12 +48,6 @@ const routes: Routes = [
         data: { breadcrumb: 'Clientes' },
       },
       {
-        path: 'clientsLink',
-        loadChildren: () =>
-          import('./features/clients-link/clients-link.module').then((m) => m.ClientsLinkModule),
-        data: { breadcrumb: 'Enlaces' },
-      },
-      {
         path: 'staff',
         loadChildren: () => import('./features/staff/staff.module').then((m) => m.StaffModule),
         data: { breadcrumb: 'Personal' },
