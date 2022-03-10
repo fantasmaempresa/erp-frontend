@@ -1,10 +1,12 @@
 import {
   AfterViewInit,
   Component,
+  EventEmitter,
   Inject,
   InjectionToken,
   OnDestroy,
   OnInit,
+  Output,
   ViewChild,
 } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -33,6 +35,9 @@ export class GenericTableComponent<T extends EntityModel>
   implements OnInit, AfterViewInit, OnDestroy
 {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
+
+  @Output()
+  selectedItem = new EventEmitter<T>();
 
   selection = new SelectionModel<T>(false, []);
 
@@ -107,5 +112,14 @@ export class GenericTableComponent<T extends EntityModel>
     let size = event.pageSize;
     page = page + 1;
     this.store.dispatch(this.loadNextPageAction({ size, page }));
+  }
+
+  setSelectedItem(item: T) {
+    this.selection.toggle(item);
+    if (this.selection.isSelected(item)) {
+      this.selectedItem.emit(item);
+    } else {
+      this.selectedItem.emit(undefined);
+    }
   }
 }
