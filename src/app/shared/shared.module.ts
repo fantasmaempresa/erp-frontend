@@ -17,6 +17,7 @@ import { OutSideClickDirective } from '../core/directives/out-side-click.directi
 import { FromDatePipe } from '../core/pipes/from-date.pipe';
 import { DynamicFormCreationComponent } from './components/dynamic-form-creation/dynamic-form-creation.component';
 import { OperationsComponent } from './components/operations/operations.component';
+import { GenericTableComponent } from './components/generic-table/generic-table.component';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -33,6 +34,7 @@ import { OperationsComponent } from './components/operations/operations.componen
     DynamicFormComponent,
     DynamicFormCreationComponent,
     OperationsComponent,
+    GenericTableComponent,
   ],
   imports: [
     CommonModule,
@@ -58,6 +60,7 @@ import { OperationsComponent } from './components/operations/operations.componen
     DynamicFormComponent,
     DynamicFormCreationComponent,
     OperationsComponent,
+    GenericTableComponent,
   ],
 })
 export class SharedModule {}
