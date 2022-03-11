@@ -18,7 +18,6 @@ import { FromDatePipe } from '../core/pipes/from-date.pipe';
 import { DynamicFormCreationComponent } from './components/dynamic-form-creation/dynamic-form-creation.component';
 import { OperationsComponent } from './components/operations/operations.component';
 import { MapToPipe } from '../core/pipes/map-to.pipe';
-import { DynamicViewsModule } from './components/dinamyc-views/dynamic-views.module';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -44,7 +43,6 @@ import { DynamicViewsModule } from './components/dinamyc-views/dynamic-views.mod
     RouterModule,
     BreadcrumbModule,
     MaterialModule,
-    DynamicViewsModule,
   ],
   exports: [
     CommonModule,
@@ -60,7 +58,6 @@ import { DynamicViewsModule } from './components/dinamyc-views/dynamic-views.mod
     OutSideClickDirective,
     FromDatePipe,
     MapToPipe,
-    DynamicViewsModule,
     DynamicFormComponent,
     DynamicFormCreationComponent,
     OperationsComponent,

@@ -22,11 +22,11 @@ import {
     { provide: LOAD_ACTION, useValue: loadClientsLink },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClients },
     {
-      provide: LABELS,
+      provide: FIELDS,
       useValue: ['name', 'email', 'phone', 'rfc', 'profession', 'degree'],
     },
     {
-      provide: FIELDS,
+      provide: LABELS,
       useValue: ['Nombre', 'Correo', 'Teléfono', 'RFC', 'Profesión', 'Grado de Estudios'],
     },
     { provide: ACTION_KEY, useValue: 'clientId' },

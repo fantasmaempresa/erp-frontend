@@ -27,18 +27,17 @@ export abstract class DynamicViewComponent<T extends EntityModel> {
     protected loadAction: any,
     @Inject(LOAD_NEXT_ACTION)
     protected loadNextPageAction: (props: { size: number; page: number }) => any,
-    @Inject(LABELS)
-    public displayedColumns: string[],
     @Inject(FIELDS)
-    public fields: string[],
+    public displayedColumns: string[],
+    @Inject(LABELS)
+    public labels: string[],
     @Optional()
     @Inject(ACTION_KEY)
     protected actionKey: string,
     protected route: ActivatedRoute,
   ) {
-    this.displayedColumns = ['select', ...displayedColumns];
     this.data$ = this.store.select(selector);
-    const id = Number(route.snapshot.parent?.params.id);
+    const id = Number(this.route.snapshot.parent?.params.id);
 
     if (id && this.actionKey) {
       this.store.dispatch(loadAction({ [actionKey]: id }));

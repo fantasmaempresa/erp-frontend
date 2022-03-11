@@ -17,7 +17,7 @@
 
   <!-- Position Column -->
   <ng-container
-    *ngFor="let field of fields; let i = index"
+    *ngFor="let field of labels; let i = index"
     [matColumnDef]="displayedColumns[i + 1]"
   >
     <th mat-header-cell *matHeaderCellDef>{{ field }}</th>

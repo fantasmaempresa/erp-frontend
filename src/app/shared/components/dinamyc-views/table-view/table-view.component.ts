@@ -2,8 +2,10 @@ import {
   AfterViewInit,
   Component,
   EventEmitter,
+  Inject,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -14,9 +16,19 @@ import { Subscription, tap } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { DynamicViewComponent } from '../class/dynamic-view.component';
 import { EntityModel } from '../../../../core/interfaces/EntityModel';
+import { MemoizedSelector, Store } from '@ngrx/store';
+import {
+  ACTION_KEY,
+  FIELDS,
+  LABELS,
+  LOAD_ACTION,
+  LOAD_NEXT_ACTION,
+  SELECTOR,
+} from '../dynamic-views.module';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
-  selector: 'app-generic-table',
+  selector: 'app-table-view',
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.scss'],
 })
@@ -42,6 +54,33 @@ export class TableViewComponent<T extends EntityModel>
   isLoadingResults = true;
 
   dataSubscription!: Subscription;
+
+  constructor(
+    store: Store,
+    @Inject(SELECTOR) selector: MemoizedSelector<any, any>,
+    @Inject(LOAD_ACTION) loadAction: any,
+    @Inject(LOAD_NEXT_ACTION) loadNextPageAction: (props: { size: number; page: number }) => any,
+    @Inject(FIELDS)
+    public displayedColumns: string[],
+    @Inject(LABELS)
+    public labels: string[],
+    @Optional()
+    @Inject(ACTION_KEY)
+    actionKey: string,
+    route: ActivatedRoute,
+  ) {
+    super(
+      store,
+      selector,
+      loadAction,
+      loadNextPageAction,
+      displayedColumns,
+      labels,
+      actionKey,
+      route,
+    );
+    this.displayedColumns = ['select', ...displayedColumns];
+  }
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;

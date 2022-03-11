@@ -6,11 +6,12 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CardViewComponent } from './card-view/card-view.component';
+import { SharedModule } from '../../shared.module';
 
 @NgModule({
   declarations: [TableViewComponent, CardViewComponent],
-  imports: [CommonModule, MatTableModule, MatCheckboxModule, MatPaginatorModule],
-  exports: [TableViewComponent],
+  imports: [CommonModule, MatTableModule, MatCheckboxModule, MatPaginatorModule, SharedModule],
+  exports: [TableViewComponent, CardViewComponent],
 })
 export class DynamicViewsModule {}
 
