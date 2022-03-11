@@ -2,36 +2,28 @@ import {
   AfterViewInit,
   Component,
   EventEmitter,
-  Inject,
   OnDestroy,
   OnInit,
-  Optional,
   Output,
   ViewChild,
 } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
-import { Observable, Subscription, tap } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
+import { DynamicViewComponent } from '../class/dynamic-view.component';
 import { EntityModel } from '../../../../core/interfaces/EntityModel';
-import { MemoizedSelector, Store } from '@ngrx/store';
-import { ActivatedRoute } from '@angular/router';
-import {
-  ACTION_KEY,
-  FIELDS,
-  LABELS,
-  LOAD_ACTION,
-  LOAD_NEXT_ACTION,
-  SELECTOR,
-} from '../dynamic-views.module';
 
 @Component({
   selector: 'app-generic-table',
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.scss'],
 })
-export class TableViewComponent<T extends EntityModel> implements OnInit, AfterViewInit, OnDestroy {
+export class TableViewComponent<T extends EntityModel>
+  extends DynamicViewComponent<T>
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   @Output()
@@ -40,8 +32,6 @@ export class TableViewComponent<T extends EntityModel> implements OnInit, AfterV
   selection = new SelectionModel<T>(false, []);
 
   dataSource = new MatTableDataSource<T>();
-
-  data$!: Observable<Pagination<T> | null>;
 
   totalItems = 0;
 
@@ -52,28 +42,6 @@ export class TableViewComponent<T extends EntityModel> implements OnInit, AfterV
   isLoadingResults = true;
 
   dataSubscription!: Subscription;
-
-  constructor(
-    private store: Store,
-    @Inject(SELECTOR) private selector: MemoizedSelector<any, any>,
-    @Inject(LOAD_ACTION) private loadAction: any,
-    @Inject(LOAD_NEXT_ACTION)
-    private loadNextPageAction: (props: { size: number; page: number }) => any,
-    @Inject(LABELS) public displayedColumns: string[],
-    @Inject(FIELDS) public fields: string[],
-    @Inject(ACTION_KEY) @Optional() private actionKey: string,
-    private route: ActivatedRoute,
-  ) {
-    this.displayedColumns = ['select', ...this.displayedColumns];
-    this.data$ = store.select(selector);
-    const id = Number(route.snapshot.parent?.params.id);
-
-    if (id && actionKey) {
-      store.dispatch(loadAction({ [actionKey]: id }));
-    } else {
-      store.dispatch(loadAction);
-    }
-  }
 
   isAllSelected() {
     const numSelected = this.selection.selected.length;
