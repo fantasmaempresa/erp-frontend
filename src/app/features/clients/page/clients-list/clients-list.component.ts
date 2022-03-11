@@ -102,7 +102,7 @@ export class ClientsListComponent implements OnInit, AfterViewInit, OnDestroy {
     });
   }
 
-  private getSelectedElement = () => this.selection.selected[0];
+  getSelectedElement = () => this.selection.selected[0];
 
   delete() {
     MessageHelper.decisionMessage(

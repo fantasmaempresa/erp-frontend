@@ -18,6 +18,7 @@ export class ClientFormComponent {
     phone: new FormControl('', [Validators.required]),
     nickname: new FormControl(null),
     address: new FormControl(null),
+    type: new FormControl(null, Validators.required),
     rfc: new FormControl('', [
       Validators.required,
       Validators.minLength(10),

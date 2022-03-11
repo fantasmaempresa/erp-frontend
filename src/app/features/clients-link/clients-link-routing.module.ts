@@ -20,14 +20,14 @@ const routes: Routes = [
         data: { breadcrumb: 'Lista de Enlaces' },
       },
       {
-        path: ':id',
-        component: ClientLinkFormComponent,
-        data: { breadcrumb: 'Editar Enlace' },
-      },
-      {
         path: 'new',
         component: ClientLinkFormComponent,
         data: { breadcrumb: 'Agregar Enlace' },
+      },
+      {
+        path: ':id',
+        component: ClientLinkFormComponent,
+        data: { breadcrumb: 'Editar Enlace' },
       },
     ],
   },

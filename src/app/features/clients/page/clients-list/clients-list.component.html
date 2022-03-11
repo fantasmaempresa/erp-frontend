@@ -1,6 +1,6 @@
 <mat-toolbar>
   <button
-    *ngIf="selection.selected.length !== 0"
+    *ngIf="selection.selected.length !== 0 && getSelectedElement().type === 1"
     [matTooltipPosition]="'below'"
     aria-label="Ver Enlaces"
     mat-icon-button

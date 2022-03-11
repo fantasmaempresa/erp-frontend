@@ -1,35 +1,52 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  HEADERS,
+  ACTION_KEY,
+  FIELDS,
+  LABELS,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
-  TABLE_FIELDS,
-} from '../../../../shared/components/generic-table/generic-table.component';
-import { selectClients } from '../../../../state/clients/clients.selector';
-import { loadClients, loadNextPageOfClients } from '../../../../state/clients/clients.actions';
+} from '../../../../shared/shared.module';
+import { loadNextPageOfClients } from '../../../../state/clients/clients.actions';
+import { EntityModel } from '../../../../core/interfaces/EntityModel';
+import { selectClientsLink } from '../../../../state/clients-link/clients-link.selector';
+import { loadClientsLink } from '../../../../state/clients-link/clients-link.actions';
 
 @Component({
   selector: 'app-client-link-list',
   templateUrl: './client-link-list.component.html',
   styleUrls: ['./client-link-list.component.scss'],
   providers: [
-    { provide: SELECTOR, useValue: selectClients },
-    { provide: LOAD_ACTION, useValue: loadClients() },
+    { provide: SELECTOR, useValue: selectClientsLink },
+    { provide: LOAD_ACTION, useValue: loadClientsLink },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClients },
-    { provide: HEADERS, useValue: ['select', 'name', 'email', 'phone'] },
-    { provide: TABLE_FIELDS, useValue: ['Nombre', 'Correo', 'Teléfono'] },
+    {
+      provide: LABELS,
+      useValue: ['name', 'email', 'phone'],
+    },
+    { provide: FIELDS, useValue: ['Nombre', 'Correo', 'Teléfono'] },
+    { provide: ACTION_KEY, useValue: 'clientId' },
   ],
 })
-export class ClientLinkListComponent implements OnInit {
-  constructor(private route: ActivatedRoute, private router: Router) {}
+export class ClientLinkListComponent {
+  selectedItem!: EntityModel;
 
-  ngOnInit(): void {}
+  setSelectedItem = (item: EntityModel) => {
+    this.selectedItem = item;
+  };
 
-  async goToNewClientLink() {
+  goToEditForm = async () => {
+    await this.router.navigate(['../', this.selectedItem.id], {
+      relativeTo: this.route,
+    });
+  };
+
+  goToAddForm = async () => {
     await this.router.navigate(['../new'], {
       relativeTo: this.route,
     });
-  }
+  };
+
+  constructor(private route: ActivatedRoute, private router: Router) {}
 }

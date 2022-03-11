@@ -9,5 +9,6 @@ export interface Client extends EntityModel {
   address: string;
   rfc: string;
   extra_information: string;
+  type: number;
   user?: User;
 }
