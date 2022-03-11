@@ -5,6 +5,7 @@ import {
   Inject,
   OnDestroy,
   OnInit,
+  Optional,
   Output,
   ViewChild,
 } from '@angular/core';
@@ -15,8 +16,15 @@ import { Observable, Subscription, tap } from 'rxjs';
 import { Pagination } from '../../../core/interfaces/Pagination.model';
 import { EntityModel } from '../../../core/interfaces/EntityModel';
 import { MemoizedSelector, Store } from '@ngrx/store';
-import { TypedAction } from '@ngrx/store/src/models';
-import { FIELDS, LABELS, LOAD_ACTION, LOAD_NEXT_ACTION, SELECTOR } from '../../shared.module';
+import {
+  ACTION_KEY,
+  FIELDS,
+  LABELS,
+  LOAD_ACTION,
+  LOAD_NEXT_ACTION,
+  SELECTOR,
+} from '../../shared.module';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-generic-table',
@@ -50,15 +58,23 @@ export class GenericTableComponent<T extends EntityModel>
   constructor(
     private store: Store,
     @Inject(SELECTOR) private selector: MemoizedSelector<any, any>,
-    @Inject(LOAD_ACTION) private loadAction: TypedAction<any>,
+    @Inject(LOAD_ACTION) private loadAction: any,
     @Inject(LOAD_NEXT_ACTION)
     private loadNextPageAction: (props: { size: number; page: number }) => any,
     @Inject(LABELS) public displayedColumns: string[],
     @Inject(FIELDS) public fields: string[],
+    @Inject(ACTION_KEY) @Optional() private actionKey: string,
+    private route: ActivatedRoute,
   ) {
-    this.displayedColumns.unshift('select');
+    this.displayedColumns = ['select', ...this.displayedColumns];
     this.data$ = store.select(selector);
-    store.dispatch(loadAction);
+    const id = Number(route.snapshot.parent?.params.id);
+
+    if (id && actionKey) {
+      store.dispatch(loadAction({ [actionKey]: id }));
+    } else {
+      store.dispatch(loadAction);
+    }
   }
 
   isAllSelected() {

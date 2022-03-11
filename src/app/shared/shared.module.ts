@@ -21,7 +21,6 @@ import { GenericTableComponent } from './components/generic-table/generic-table.
 import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { MapToPipe } from '../core/pipes/map-to.pipe';
 import { MemoizedSelector } from '@ngrx/store';
-import { TypedAction } from '@ngrx/store/src/models';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -74,9 +73,10 @@ import { TypedAction } from '@ngrx/store/src/models';
 export class SharedModule {}
 
 export const SELECTOR = new InjectionToken<MemoizedSelector<any, any>>('selector');
-export const LOAD_ACTION = new InjectionToken<TypedAction<any>>('load_action');
+export const LOAD_ACTION = new InjectionToken<any>('load_action');
 export const LOAD_NEXT_ACTION = new InjectionToken<(props: { size: number; page: number }) => any>(
   'load_next_action',
 );
 export const LABELS = new InjectionToken<string[]>('labels');
 export const FIELDS = new InjectionToken<string[]>('fields');
+export const ACTION_KEY = new InjectionToken<string>('action_key');
