@@ -13,8 +13,8 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subscription, tap } from 'rxjs';
-import { Pagination } from '../../../core/interfaces/Pagination.model';
-import { EntityModel } from '../../../core/interfaces/EntityModel';
+import { Pagination } from '../../../../core/interfaces/Pagination.model';
+import { EntityModel } from '../../../../core/interfaces/EntityModel';
 import { MemoizedSelector, Store } from '@ngrx/store';
 import {
   ACTION_KEY,
@@ -23,7 +23,7 @@ import {
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
-} from '../../shared.module';
+} from '../../../shared.module';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({

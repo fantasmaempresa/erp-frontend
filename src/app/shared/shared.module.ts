@@ -17,7 +17,7 @@ import { OutSideClickDirective } from '../core/directives/out-side-click.directi
 import { FromDatePipe } from '../core/pipes/from-date.pipe';
 import { DynamicFormCreationComponent } from './components/dynamic-form-creation/dynamic-form-creation.component';
 import { OperationsComponent } from './components/operations/operations.component';
-import { GenericTableComponent } from './components/generic-table/generic-table.component';
+import { GenericTableComponent } from './components/dinamyc-views/generic-table/generic-table.component';
 import { MapToPipe } from '../core/pipes/map-to.pipe';
 import { MemoizedSelector } from '@ngrx/store';
 
