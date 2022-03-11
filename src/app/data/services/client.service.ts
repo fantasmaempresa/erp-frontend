@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Client } from '../models/Client.model';
 import { CrudService } from '../../core/classes/Crud/CrudService';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { Pagination } from '../../core/interfaces/Pagination.model';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
