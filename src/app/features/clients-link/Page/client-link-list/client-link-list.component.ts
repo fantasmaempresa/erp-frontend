@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { loadNextPageOfClients } from '../../../../state/clients/clients.actions';
+import { EntityModel } from '../../../../core/interfaces/EntityModel';
+import { selectClientsLink } from '../../../../state/clients-link/clients-link.selector';
+import { loadClientsLink } from '../../../../state/clients-link/clients-link.actions';
 import {
   ACTION_KEY,
   FIELDS,
@@ -7,11 +11,7 @@ import {
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
-} from '../../../../shared/shared.module';
-import { loadNextPageOfClients } from '../../../../state/clients/clients.actions';
-import { EntityModel } from '../../../../core/interfaces/EntityModel';
-import { selectClientsLink } from '../../../../state/clients-link/clients-link.selector';
-import { loadClientsLink } from '../../../../state/clients-link/clients-link.actions';
+} from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 
 @Component({
   selector: 'app-client-link-list',

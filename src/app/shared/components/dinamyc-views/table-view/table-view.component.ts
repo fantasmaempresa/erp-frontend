@@ -16,6 +16,7 @@ import { Observable, Subscription, tap } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { EntityModel } from '../../../../core/interfaces/EntityModel';
 import { MemoizedSelector, Store } from '@ngrx/store';
+import { ActivatedRoute } from '@angular/router';
 import {
   ACTION_KEY,
   FIELDS,
@@ -23,17 +24,14 @@ import {
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
-} from '../../../shared.module';
-import { ActivatedRoute } from '@angular/router';
+} from '../dynamic-views.module';
 
 @Component({
   selector: 'app-generic-table',
-  templateUrl: './generic-table.component.html',
-  styleUrls: ['./generic-table.component.scss'],
+  templateUrl: './table-view.component.html',
+  styleUrls: ['./table-view.component.scss'],
 })
-export class GenericTableComponent<T extends EntityModel>
-  implements OnInit, AfterViewInit, OnDestroy
-{
+export class TableViewComponent<T extends EntityModel> implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   @Output()

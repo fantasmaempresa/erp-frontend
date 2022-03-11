@@ -1,4 +1,4 @@
-import { InjectionToken, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -17,9 +17,8 @@ import { OutSideClickDirective } from '../core/directives/out-side-click.directi
 import { FromDatePipe } from '../core/pipes/from-date.pipe';
 import { DynamicFormCreationComponent } from './components/dynamic-form-creation/dynamic-form-creation.component';
 import { OperationsComponent } from './components/operations/operations.component';
-import { GenericTableComponent } from './components/dinamyc-views/generic-table/generic-table.component';
 import { MapToPipe } from '../core/pipes/map-to.pipe';
-import { MemoizedSelector } from '@ngrx/store';
+import { DynamicViewsModule } from './components/dinamyc-views/dynamic-views.module';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -37,7 +36,6 @@ import { MemoizedSelector } from '@ngrx/store';
     DynamicFormComponent,
     DynamicFormCreationComponent,
     OperationsComponent,
-    GenericTableComponent,
   ],
   imports: [
     CommonModule,
@@ -46,6 +44,7 @@ import { MemoizedSelector } from '@ngrx/store';
     RouterModule,
     BreadcrumbModule,
     MaterialModule,
+    DynamicViewsModule,
   ],
   exports: [
     CommonModule,
@@ -61,19 +60,10 @@ import { MemoizedSelector } from '@ngrx/store';
     OutSideClickDirective,
     FromDatePipe,
     MapToPipe,
+    DynamicViewsModule,
     DynamicFormComponent,
     DynamicFormCreationComponent,
     OperationsComponent,
-    GenericTableComponent,
   ],
 })
 export class SharedModule {}
-
-export const SELECTOR = new InjectionToken<MemoizedSelector<any, any>>('selector');
-export const LOAD_ACTION = new InjectionToken<any>('load_action');
-export const LOAD_NEXT_ACTION = new InjectionToken<(props: { size: number; page: number }) => any>(
-  'load_next_action',
-);
-export const LABELS = new InjectionToken<string[]>('labels');
-export const FIELDS = new InjectionToken<string[]>('fields');
-export const ACTION_KEY = new InjectionToken<string>('action_key');
