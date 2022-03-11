@@ -3,7 +3,6 @@ import {
   Component,
   EventEmitter,
   Inject,
-  InjectionToken,
   OnDestroy,
   OnInit,
   Output,
@@ -17,14 +16,7 @@ import { Pagination } from '../../../core/interfaces/Pagination.model';
 import { EntityModel } from '../../../core/interfaces/EntityModel';
 import { MemoizedSelector, Store } from '@ngrx/store';
 import { TypedAction } from '@ngrx/store/src/models';
-
-export const SELECTOR = new InjectionToken<MemoizedSelector<any, any>>('selector');
-export const LOAD_ACTION = new InjectionToken<TypedAction<any>>('load_action');
-export const LOAD_NEXT_ACTION = new InjectionToken<(props: { size: number; page: number }) => any>(
-  'load_next_action',
-);
-export const HEADERS = new InjectionToken<string[]>('headers');
-export const TABLE_FIELDS = new InjectionToken<string[]>('table_fields');
+import { FIELDS, LABELS, LOAD_ACTION, LOAD_NEXT_ACTION, SELECTOR } from '../../shared.module';
 
 @Component({
   selector: 'app-generic-table',
@@ -61,8 +53,8 @@ export class GenericTableComponent<T extends EntityModel>
     @Inject(LOAD_ACTION) private loadAction: TypedAction<any>,
     @Inject(LOAD_NEXT_ACTION)
     private loadNextPageAction: (props: { size: number; page: number }) => any,
-    @Inject(HEADERS) public displayedColumns: string[],
-    @Inject(TABLE_FIELDS) public fields: string[],
+    @Inject(LABELS) public displayedColumns: string[],
+    @Inject(FIELDS) public fields: string[],
   ) {
     this.displayedColumns.unshift('select');
     this.data$ = store.select(selector);

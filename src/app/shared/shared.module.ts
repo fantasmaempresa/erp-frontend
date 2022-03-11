@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { InjectionToken, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,6 +18,10 @@ import { FromDatePipe } from '../core/pipes/from-date.pipe';
 import { DynamicFormCreationComponent } from './components/dynamic-form-creation/dynamic-form-creation.component';
 import { OperationsComponent } from './components/operations/operations.component';
 import { GenericTableComponent } from './components/generic-table/generic-table.component';
+import { ToolbarComponent } from './components/toolbar/toolbar.component';
+import { MapToPipe } from '../core/pipes/map-to.pipe';
+import { MemoizedSelector } from '@ngrx/store';
+import { TypedAction } from '@ngrx/store/src/models';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -28,6 +32,7 @@ import { GenericTableComponent } from './components/generic-table/generic-table.
     StopPropagationDirective,
     OutSideClickDirective,
     FromDatePipe,
+    MapToPipe,
     DialogSearchComponent,
     TableSearchComponent,
     DynamicFormInputComponent,
@@ -35,6 +40,7 @@ import { GenericTableComponent } from './components/generic-table/generic-table.
     DynamicFormCreationComponent,
     OperationsComponent,
     GenericTableComponent,
+    ToolbarComponent,
   ],
   imports: [
     CommonModule,
@@ -57,10 +63,20 @@ import { GenericTableComponent } from './components/generic-table/generic-table.
     StopPropagationDirective,
     OutSideClickDirective,
     FromDatePipe,
+    MapToPipe,
     DynamicFormComponent,
     DynamicFormCreationComponent,
     OperationsComponent,
     GenericTableComponent,
+    ToolbarComponent,
   ],
 })
 export class SharedModule {}
+
+export const SELECTOR = new InjectionToken<MemoizedSelector<any, any>>('selector');
+export const LOAD_ACTION = new InjectionToken<TypedAction<any>>('load_action');
+export const LOAD_NEXT_ACTION = new InjectionToken<(props: { size: number; page: number }) => any>(
+  'load_next_action',
+);
+export const LABELS = new InjectionToken<string[]>('labels');
+export const FIELDS = new InjectionToken<string[]>('fields');
