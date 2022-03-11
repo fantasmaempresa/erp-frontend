@@ -64,6 +64,7 @@ export class GenericTableComponent<T extends EntityModel>
     @Inject(HEADERS) public displayedColumns: string[],
     @Inject(TABLE_FIELDS) public fields: string[],
   ) {
+    this.displayedColumns.unshift('select');
     this.data$ = store.select(selector);
     store.dispatch(loadAction);
   }
