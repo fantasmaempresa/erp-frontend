@@ -20,10 +20,16 @@ import {
   NotificationState,
 } from './notifications/notification.state';
 import { notificationReducer } from './notifications/notification.reducer';
+import {
+  ClientsLinkState,
+  initialState as clientsLinkInitalState,
+} from './clients-link/clients-link.state';
+import { clientsLinkReducer } from './clients-link/clients-link.reducer';
 
 export interface AppState {
   auth: AuthState;
   clients: ClientsState;
+  clientsLink: ClientsLinkState;
   staff: StaffState;
   areas: AreasState;
   concepts: ConceptsState;
@@ -37,6 +43,7 @@ export const initialAppState: AppState = {
   notifications: notificationInitialState,
   auth: initialState,
   clients: clientsInitialState,
+  clientsLink: clientsLinkInitalState,
   staff: staffInitialState,
   areas: areasInitialState,
   concepts: conceptsInitialState,
@@ -59,4 +66,5 @@ export const reducers: ActionReducerMap<AppState> = {
   quotes: quotesReducer,
   notifications: notificationReducer,
   dynamicForm: dynamicFormReducer,
+  clientsLink: clientsLinkReducer,
 };
