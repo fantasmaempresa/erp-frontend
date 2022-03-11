@@ -47,7 +47,7 @@ export class ClientLinkFormComponent {
   }
 
   back() {
-    this.router.navigate(['../list'], { relativeTo: this.route });
+    this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   onSubmit() {
