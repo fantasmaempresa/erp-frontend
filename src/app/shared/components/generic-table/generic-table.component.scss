@@ -4,9 +4,9 @@ table {
 
 .mat-row {
   cursor: pointer;
-  transition: background-color 400ms ease-out;
+  transition: background-color 250ms ease-out;
 
   &:hover {
-    background: rgba(0, 0, 0, .525);
+    background: rgba(0, 0, 0, .215);
   }
 }
