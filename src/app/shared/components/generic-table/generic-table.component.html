@@ -25,7 +25,12 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="setSelectedItem(row)"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: displayedColumns"
+    (click)="setSelectedItem(row)"
+    class="mat-row"
+  ></tr>
 </table>
 
 <mat-paginator

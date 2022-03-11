@@ -1,3 +1,12 @@
 table {
   width: 100%;
 }
+
+.mat-row {
+  cursor: pointer;
+  transition: background-color 400ms ease-out;
+
+  &:hover {
+    background: rgba(0, 0, 0, .525);
+  }
+}
