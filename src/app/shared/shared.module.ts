@@ -18,7 +18,6 @@ import { FromDatePipe } from '../core/pipes/from-date.pipe';
 import { DynamicFormCreationComponent } from './components/dynamic-form-creation/dynamic-form-creation.component';
 import { OperationsComponent } from './components/operations/operations.component';
 import { GenericTableComponent } from './components/generic-table/generic-table.component';
-import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { MapToPipe } from '../core/pipes/map-to.pipe';
 import { MemoizedSelector } from '@ngrx/store';
 
@@ -39,7 +38,6 @@ import { MemoizedSelector } from '@ngrx/store';
     DynamicFormCreationComponent,
     OperationsComponent,
     GenericTableComponent,
-    ToolbarComponent,
   ],
   imports: [
     CommonModule,
@@ -67,7 +65,6 @@ import { MemoizedSelector } from '@ngrx/store';
     DynamicFormCreationComponent,
     OperationsComponent,
     GenericTableComponent,
-    ToolbarComponent,
   ],
 })
 export class SharedModule {}
