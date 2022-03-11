@@ -23,9 +23,12 @@ import { loadClientsLink } from '../../../../state/clients-link/clients-link.act
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClients },
     {
       provide: LABELS,
-      useValue: ['name', 'email', 'phone'],
+      useValue: ['name', 'email', 'phone', 'rfc', 'profession', 'degree'],
     },
-    { provide: FIELDS, useValue: ['Nombre', 'Correo', 'Teléfono'] },
+    {
+      provide: FIELDS,
+      useValue: ['Nombre', 'Correo', 'Teléfono', 'RFC', 'Profesión', 'Grado de Estudios'],
+    },
     { provide: ACTION_KEY, useValue: 'clientId' },
   ],
 })
