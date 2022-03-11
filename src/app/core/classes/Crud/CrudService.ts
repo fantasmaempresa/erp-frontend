@@ -1,6 +1,6 @@
 import { CrudOperations } from '../../interfaces/CrudOperations';
 import { Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Pagination } from '../../interfaces/Pagination.model';
 import { EntityModel } from '../../interfaces/EntityModel';
@@ -10,21 +10,21 @@ export abstract class CrudService<T extends EntityModel> implements CrudOperatio
     this._base = `${environment.base_url}/` + this._base;
   }
 
-  save(t: T): Observable<T> {
-    return this._http.post<T>(this._base, t);
+  save(t: T, params?: HttpParams): Observable<T> {
+    return this._http.post<T>(this._base, t, { params });
   }
 
-  update(t: T): Observable<T> {
+  update(t: T, params?: HttpParams): Observable<T> {
     const { id } = t;
-    return this._http.put<T>(`${this._base}/${id}`, t);
+    return this._http.put<T>(`${this._base}/${id}`, t, { params });
   }
 
-  fetch(id: number): Observable<T> {
-    return this._http.get<T>(`${this._base}/${id}`);
+  fetch(id: number, params?: HttpParams): Observable<T> {
+    return this._http.get<T>(`${this._base}/${id}`, { params });
   }
 
-  fetchAll(): Observable<Pagination<T>> {
-    return this._http.get<Pagination<T>>(this._base);
+  fetchAll(params?: HttpParams): Observable<Pagination<T>> {
+    return this._http.get<Pagination<T>>(this._base, { params });
   }
 
   delete(id: number): Observable<any> {
