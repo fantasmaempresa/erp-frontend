@@ -1,7 +1,7 @@
 import { MemoizedSelector, Store } from '@ngrx/store';
 import { Component, Inject, Optional } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { EntityModel } from '../../../../core/interfaces/EntityModel';
 import {
@@ -36,7 +36,7 @@ export abstract class DynamicViewComponent<T extends EntityModel> {
     protected actionKey: string,
     protected route: ActivatedRoute,
   ) {
-    this.data$ = this.store.select(selector);
+    this.data$ = this.store.select(selector).pipe(shareReplay());
     const id = Number(this.route.snapshot.parent?.params.id);
 
     if (id && this.actionKey) {
