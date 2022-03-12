@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { loadNextPageOfClients } from '../../../../state/clients/clients.actions';
 import { EntityModel } from '../../../../core/interfaces/EntityModel';
 import { selectClientsLink } from '../../../../state/clients-link/clients-link.selector';
-import { loadClientsLink } from '../../../../state/clients-link/clients-link.actions';
+import {
+  loadClientsLink,
+  loadNextPageOfClientsLink,
+} from '../../../../state/clients-link/clients-link.actions';
 import {
   ACTION_KEY,
   FIELDS,
@@ -21,7 +23,7 @@ import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-vi
   providers: [
     { provide: SELECTOR, useValue: selectClientsLink },
     { provide: LOAD_ACTION, useValue: loadClientsLink },
-    { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClients },
+    { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClientsLink },
     {
       provide: FIELDS,
       useValue: ['name', 'email', 'phone', 'rfc', 'profession', 'degree'],
@@ -34,7 +36,7 @@ import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-vi
   ],
 })
 export class ClientLinkListComponent {
-  selectedItem!: EntityModel;
+  selectedItem!: any;
 
   setSelectedItem = (item: EntityModel) => {
     this.selectedItem = item;

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActionsCard } from '../card-view/card-view.component';
 
 @Component({
@@ -11,4 +11,10 @@ export class ChangeViewComponent {
 
   @Input()
   actions: ActionsCard[] = [];
+
+  @Output() selectedItem = new EventEmitter<any>();
+
+  setSelectedItem(item: any) {
+    this.selectedItem.emit(item);
+  }
 }

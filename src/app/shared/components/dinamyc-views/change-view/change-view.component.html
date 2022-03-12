@@ -8,6 +8,5 @@
     </mat-button-toggle>
   </mat-button-toggle-group>
 </div>
-<app-table-view [hidden]="isSelected"></app-table-view>
-
+<app-table-view [hidden]="isSelected" (selectedItem)="setSelectedItem($event)"></app-table-view>
 <app-card-view [actions]="actions" [hidden]="!isSelected"></app-card-view>
