@@ -4,5 +4,10 @@
       <span class="card__field">{{ label }}</span>
       <span class="card__value">{{ item | mapTo: mapToGetKey:i }}</span>
     </ng-container>
+
+    <div class="card__buttons">
+      <mat-icon class="card__button"> edit</mat-icon>
+      <mat-icon class="card__button"> delete</mat-icon>
+    </div>
   </div>
 </div>
