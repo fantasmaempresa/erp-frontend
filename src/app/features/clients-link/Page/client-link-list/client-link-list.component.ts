@@ -55,10 +55,9 @@ export class ClientLinkListComponent {
   actions: ActionsCard[] = [
     {
       icon: 'edit',
-      OnClick: async ({ id }) => {
-        await this.router.navigate(['../', id], {
-          relativeTo: this.route,
-        });
+      OnClick: async (item: any) => {
+        this.selectedItem = item;
+        await this.goToEditForm();
       },
     },
     {
