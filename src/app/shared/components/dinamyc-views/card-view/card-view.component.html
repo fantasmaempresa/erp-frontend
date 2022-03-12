@@ -6,7 +6,13 @@
     </ng-container>
 
     <div class="card__buttons">
-      <mat-icon class="card__button" *ngFor="let action of actions" (click)="action.OnClick(item)">
+      <mat-icon
+        class="card__button"
+        matTooltipPosition="before"
+        [matTooltip]="action?.tooltip | mapTo: mapToTooltip"
+        *ngFor="let action of actions"
+        (click)="action.OnClick(item)"
+      >
         {{ action.icon }}</mat-icon
       >
     </div>

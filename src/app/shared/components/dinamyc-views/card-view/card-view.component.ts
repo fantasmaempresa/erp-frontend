@@ -20,4 +20,6 @@ export class CardViewComponent<T extends EntityModel> extends DynamicViewCompone
 
   @Input()
   actions: ActionsCard[] = [];
+
+  mapToTooltip = (s: any) => (!s ? '' : s);
 }

@@ -59,12 +59,14 @@ export class ClientLinkListComponent {
         this.selectedItem = item;
         await this.goToEditForm();
       },
+      tooltip: 'Editar Enlace',
     },
     {
       icon: 'delete',
       OnClick: (item: any) => {
         console.log(item);
       },
+      tooltip: 'Eliminar Enlace',
     },
   ];
 
