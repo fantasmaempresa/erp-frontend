@@ -1,9 +1,9 @@
 <div class="slider-container">
   <mat-button-toggle-group [(ngModel)]="isSelected">
-    <mat-button-toggle [value]="true">
+    <mat-button-toggle [value]="true" matTooltip="Vista de Cartas">
       <mat-icon>drag_indicator</mat-icon>
     </mat-button-toggle>
-    <mat-button-toggle [value]="false">
+    <mat-button-toggle [value]="false" matTooltip="Vista de Tabla">
       <mat-icon>table_rows</mat-icon>
     </mat-button-toggle>
   </mat-button-toggle-group>
