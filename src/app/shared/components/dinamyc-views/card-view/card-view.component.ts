@@ -1,6 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { DynamicViewComponent } from '../class/dynamic-view.component';
 import { EntityModel } from '../../../../core/interfaces/EntityModel';
+
+export interface ActionsCard {
+  icon: string;
+  OnClick: (item?: any) => void;
+  tooltip?: string;
+}
 
 @Component({
   selector: 'app-card-view',
@@ -11,4 +17,7 @@ export class CardViewComponent<T extends EntityModel> extends DynamicViewCompone
   mapToGetKey = (item: any, [index]: [number]) => {
     return item[this.displayedColumns[index]];
   };
+
+  @Input()
+  actions: ActionsCard[] = [];
 }

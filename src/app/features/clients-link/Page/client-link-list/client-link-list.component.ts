@@ -12,6 +12,7 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
+import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
 
 @Component({
   selector: 'app-client-link-list',
@@ -50,6 +51,23 @@ export class ClientLinkListComponent {
       relativeTo: this.route,
     });
   };
+
+  actions: ActionsCard[] = [
+    {
+      icon: 'edit',
+      OnClick: async ({ id }) => {
+        await this.router.navigate(['../', id], {
+          relativeTo: this.route,
+        });
+      },
+    },
+    {
+      icon: 'delete',
+      OnClick: (item: any) => {
+        console.log(item);
+      },
+    },
+  ];
 
   constructor(private route: ActivatedRoute, private router: Router) {}
 }
