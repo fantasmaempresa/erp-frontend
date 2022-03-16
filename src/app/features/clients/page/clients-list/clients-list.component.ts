@@ -10,6 +10,7 @@ import {
   LABELS,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
+  MAP_TO_FIELDS,
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { selectClients } from '../../../../state/clients/clients.selector';
@@ -25,11 +26,23 @@ import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-vi
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClients },
     {
       provide: FIELDS,
-      useValue: ['name', 'email', 'phone', 'rfc'],
+      useValue: ['name', 'email', 'phone', 'rfc', 'type'],
     },
     {
       provide: LABELS,
-      useValue: ['Nombre', 'Correo', 'Teléfono', 'RFC'],
+      useValue: ['Nombre', 'Correo', 'Teléfono', 'RFC', 'Tipo de Persona'],
+    },
+    {
+      provide: MAP_TO_FIELDS,
+      useValue: {
+        type: (value: any) => {
+          const types = {
+            1: 'Moral',
+            2: 'Física',
+          };
+          return types[value as keyof typeof types];
+        },
+      },
     },
     // { provide: ACTION_KEY, useValue: 'clientId' },
   ],
@@ -80,15 +93,18 @@ export class ClientsListComponent {
   actions: ActionsCard[] = [
     {
       icon: 'people',
-      OnClick: async (item: any) => {
+      callback: async (item: any) => {
         this.selectedItem = item;
         await this.goToClientsLink();
+      },
+      isVisible: (item: any) => {
+        return item.type === 1;
       },
       tooltip: 'Ver Enlaces',
     },
     {
       icon: 'edit',
-      OnClick: async (item: any) => {
+      callback: async (item: any) => {
         this.selectedItem = item;
         await this.goToEditForm();
       },
@@ -96,7 +112,7 @@ export class ClientsListComponent {
     },
     {
       icon: 'delete',
-      OnClick: (item: any) => {
+      callback: (item: any) => {
         this.selectedItem = item;
         this.delete();
       },

@@ -23,4 +23,5 @@ export const LOAD_NEXT_ACTION = new InjectionToken<(props: { size: number; page:
 );
 export const LABELS = new InjectionToken<string[]>('labels');
 export const FIELDS = new InjectionToken<string[]>('fields');
+export const MAP_TO_FIELDS = new InjectionToken<Object>('mapTo');
 export const ACTION_KEY = new InjectionToken<string>('action_key');

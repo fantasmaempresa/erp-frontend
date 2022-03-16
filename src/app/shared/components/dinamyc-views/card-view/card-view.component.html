@@ -6,15 +6,17 @@
     </ng-container>
 
     <div class="card__buttons">
-      <mat-icon
-        class="card__button"
-        matTooltipPosition="before"
-        [matTooltip]="action?.tooltip | mapTo: mapToTooltip"
-        *ngFor="let action of actions"
-        (click)="action.OnClick(item)"
-      >
-        {{ action.icon }}</mat-icon
-      >
+      <ng-container *ngFor="let action of actions">
+        <mat-icon
+          class="card__button"
+          matTooltipPosition="before"
+          [matTooltip]="action?.tooltip | mapTo: mapToTooltip"
+          (click)="action.callback(item)"
+          *ngIf="action.isVisible | mapTo: mapToVisible:item"
+        >
+          {{ action.icon }}</mat-icon
+        >
+      </ng-container>
     </div>
   </div>
 </div>

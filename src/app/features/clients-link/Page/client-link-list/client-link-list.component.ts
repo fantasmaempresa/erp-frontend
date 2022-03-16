@@ -57,7 +57,7 @@ export class ClientLinkListComponent {
   actions: ActionsCard[] = [
     {
       icon: 'edit',
-      OnClick: async (item: any) => {
+      callback: async (item: any) => {
         this.selectedItem = item;
         await this.goToEditForm();
       },
@@ -65,7 +65,7 @@ export class ClientLinkListComponent {
     },
     {
       icon: 'delete',
-      OnClick: (item: any) => {
+      callback: (item: any) => {
         console.log(item);
       },
       tooltip: 'Eliminar Enlace',

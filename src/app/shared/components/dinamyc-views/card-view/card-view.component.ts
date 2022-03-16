@@ -4,7 +4,8 @@ import { EntityModel } from '../../../../core/interfaces/EntityModel';
 
 export interface ActionsCard {
   icon: string;
-  OnClick: (item?: any) => void;
+  callback: (item?: any) => void;
+  isVisible?: (item?: any) => boolean;
   tooltip?: string;
 }
 
@@ -14,12 +15,15 @@ export interface ActionsCard {
   styleUrls: ['./card-view.component.scss'],
 })
 export class CardViewComponent<T extends EntityModel> extends DynamicViewComponent<T> {
-  mapToGetKey = (item: any, [index]: [number]) => {
-    return item[this.displayedColumns[index]];
-  };
-
   @Input()
   actions: ActionsCard[] = [];
 
   mapToTooltip = (s: any) => (!s ? '' : s);
+
+  mapToVisible = (callback: (item?: any) => boolean, [item]: any[]) => {
+    if (!callback) {
+      return true;
+    }
+    return callback(item);
+  };
 }

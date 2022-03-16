@@ -10,6 +10,7 @@ import {
   LABELS,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
+  MAP_TO_FIELDS,
   SELECTOR,
 } from '../dynamic-views.module';
 
@@ -18,6 +19,16 @@ import {
 })
 export abstract class DynamicViewComponent<T extends EntityModel> {
   data$!: Observable<Pagination<T> | null>;
+
+  mapToGetKey = (item: any, [index]: [number]) => {
+    const key = this.displayedColumns[index];
+    if (Object.keys(this.mapToFields).includes(key)) {
+      // @ts-ignore
+      return this.mapToFields[key](item[key]);
+    } else {
+      return item[key];
+    }
+  };
 
   public constructor(
     protected store: Store,
@@ -34,6 +45,9 @@ export abstract class DynamicViewComponent<T extends EntityModel> {
     @Optional()
     @Inject(ACTION_KEY)
     protected actionKey: string,
+    @Optional()
+    @Inject(MAP_TO_FIELDS)
+    public mapToFields: Object,
     protected route: ActivatedRoute,
   ) {
     this.data$ = this.store.select(selector).pipe(shareReplay());

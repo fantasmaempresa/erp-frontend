@@ -23,6 +23,7 @@ import {
   LABELS,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
+  MAP_TO_FIELDS,
   SELECTOR,
 } from '../dynamic-views.module';
 import { ActivatedRoute } from '@angular/router';
@@ -67,6 +68,9 @@ export class TableViewComponent<T extends EntityModel>
     @Optional()
     @Inject(ACTION_KEY)
     actionKey: string,
+    @Optional()
+    @Inject(MAP_TO_FIELDS)
+    mapToFields: any,
     route: ActivatedRoute,
   ) {
     super(
@@ -77,6 +81,7 @@ export class TableViewComponent<T extends EntityModel>
       displayedColumns,
       labels,
       actionKey,
+      mapToFields,
       route,
     );
     this.displayedColumns = ['select', ...displayedColumns];

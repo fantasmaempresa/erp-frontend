@@ -21,7 +21,7 @@
     [matColumnDef]="displayedColumns[i + 1]"
   >
     <th mat-header-cell *matHeaderCellDef>{{ field }}</th>
-    <td mat-cell *matCellDef="let element">{{ element[displayedColumns[i + 1]] }}</td>
+    <td mat-cell *matCellDef="let element">{{ element | mapTo: mapToGetKey:i + 1 }}</td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
