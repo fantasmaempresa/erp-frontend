@@ -46,12 +46,6 @@ export class TableViewComponent<T extends EntityModel>
 
   dataSource = new MatTableDataSource<T>();
 
-  totalItems = 0;
-
-  pageSize = 10;
-
-  pageEvent!: PageEvent;
-
   isLoadingResults = true;
 
   dataSubscription!: Subscription;
@@ -112,7 +106,6 @@ export class TableViewComponent<T extends EntityModel>
       )
       .subscribe((data: Pagination<T> | null) => {
         if (data) {
-          this.totalItems = data.total;
           this.dataSource = new MatTableDataSource<T>(data.data);
         }
       });

@@ -20,3 +20,9 @@
     </div>
   </div>
 </div>
+<mat-paginator
+  [length]="(data$ | async)?.total"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="pageSizeOptions"
+  (page)="onPaginateChange($event)"
+></mat-paginator>

@@ -34,8 +34,8 @@
 </table>
 
 <mat-paginator
-  [length]="totalItems"
+  [length]="(data$ | async)?.total"
   [pageSize]="pageSize"
-  [pageSizeOptions]="[5, 10, 25, 100]"
+  [pageSizeOptions]="pageSizeOptions"
   (page)="onPaginateChange($event)"
 ></mat-paginator>

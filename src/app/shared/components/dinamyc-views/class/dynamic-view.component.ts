@@ -13,6 +13,7 @@ import {
   MAP_TO_FIELDS,
   SELECTOR,
 } from '../dynamic-views.module';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   template: '',
@@ -29,6 +30,10 @@ export abstract class DynamicViewComponent<T extends EntityModel> {
       return item[key];
     }
   };
+
+  pageSize = 10;
+
+  pageSizeOptions = [5, 10, 25, 100];
 
   public constructor(
     protected store: Store,
@@ -58,5 +63,12 @@ export abstract class DynamicViewComponent<T extends EntityModel> {
     } else {
       this.store.dispatch(loadAction);
     }
+  }
+
+  onPaginateChange(event: PageEvent) {
+    let page = event.pageIndex;
+    let size = event.pageSize;
+    page = page + 1;
+    this.store.dispatch(this.loadNextPageAction({ size, page }));
   }
 }
