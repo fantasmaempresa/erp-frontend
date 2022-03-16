@@ -23,7 +23,7 @@ export abstract class DynamicViewComponent<T extends EntityModel> {
 
   mapToGetKey = (item: any, [index]: [number]) => {
     const key = this.displayedColumns[index];
-    if (Object.keys(this.mapToFields).includes(key)) {
+    if (this.mapToFields && Object.keys(this.mapToFields).includes(key)) {
       // @ts-ignore
       return this.mapToFields[key](item[key]);
     } else {
