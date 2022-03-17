@@ -20,6 +20,7 @@ import { MemoizedSelector, Store } from '@ngrx/store';
 import { ACTION_KEY, LOAD_ACTION, LOAD_NEXT_ACTION, SELECTOR } from '../dynamic-views.module';
 import { ActivatedRoute } from '@angular/router';
 import { Class2ViewBuilderService } from '../services/class2-view-builder.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-table-view',
@@ -53,8 +54,9 @@ export class TableViewComponent<T extends EntityModel>
     actionKey: string,
     route: ActivatedRoute,
     class2View: Class2ViewBuilderService,
+    sanitizer: DomSanitizer,
   ) {
-    super(store, selector, loadAction, loadNextPageAction, actionKey, route, class2View);
+    super(store, selector, loadAction, loadNextPageAction, actionKey, route, class2View, sanitizer);
     this.displayedColumns = ['select', ...this.displayedColumns];
   }
 

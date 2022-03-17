@@ -6,7 +6,7 @@ import 'reflect-metadata';
   providedIn: 'root',
 })
 export class Class2ViewBuilderService {
-  private readonly objClass: any;
+  public readonly objClass: any;
 
   constructor(@Inject(CLAZZ) clazz: any) {
     this.objClass = new clazz();
@@ -32,11 +32,20 @@ export class Class2ViewBuilderService {
 
   getMapsFunctions() {
     const printableKeys = this.getAttrs();
+    return this._getKeysDecoratorValues(printableKeys, 'mapTo');
+  }
+
+  getHtmlMaps() {
+    const printableKeys = this.getAttrs();
+    return this._getKeysDecoratorValues(printableKeys, 'mapHTML');
+  }
+
+  private _getKeysDecoratorValues(printableKeys: string[], decoratorName: string) {
     const mapToArrays = printableKeys.filter((key) =>
-      Reflect.getMetadataKeys(this.objClass, key).includes('mapTo'),
+      Reflect.getMetadataKeys(this.objClass, key).includes(decoratorName),
     );
     const objectMapper = mapToArrays.map((key) => ({
-      [key]: Reflect.getMetadata('mapTo', this.objClass, key),
+      [key]: Reflect.getMetadata(decoratorName, this.objClass, key),
     }));
     return objectMapper.reduce((acc, value) => ({ ...acc, ...value }), {});
   }

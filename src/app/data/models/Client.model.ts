@@ -1,9 +1,9 @@
-import { User } from './User.model';
 import { EntityModel } from '../../core/interfaces/EntityModel';
 import {
   mapToLabel,
   printLabel,
 } from '../../shared/components/dinamyc-views/DynamicViews.decorators';
+import { User } from './User.model';
 
 export class Client extends EntityModel {
   @printLabel('Nombre')
@@ -40,7 +40,6 @@ export class Client extends EntityModel {
 
   public updated_at?: Date;
 
-  @printLabel('Fecha de Creación', -1)
   public created_at?: Date;
 
   public id: number = 0;
