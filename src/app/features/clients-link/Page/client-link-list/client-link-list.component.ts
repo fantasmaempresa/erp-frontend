@@ -8,13 +8,14 @@ import {
 } from '../../../../state/clients-link/clients-link.actions';
 import {
   ACTION_KEY,
-  FIELDS,
-  LABELS,
+  CLAZZ,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
+import { Class2ViewBuilderService } from '../../../../shared/components/dinamyc-views/services/class2-view-builder.service';
+import { ClientLink } from '../../../../data/models/ClientLink.model';
 
 @Component({
   selector: 'app-client-link-list',
@@ -22,17 +23,11 @@ import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-vi
   styleUrls: ['./client-link-list.component.scss'],
   providers: [
     { provide: SELECTOR, useValue: selectClientsLink },
+    { provide: CLAZZ, useValue: ClientLink },
     { provide: LOAD_ACTION, useValue: loadClientsLink },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClientsLink },
-    {
-      provide: FIELDS,
-      useValue: ['name', 'email', 'phone', 'rfc', 'profession', 'degree'],
-    },
-    {
-      provide: LABELS,
-      useValue: ['Nombre', 'Correo', 'Teléfono', 'RFC', 'Profesión', 'Grado de Estudios'],
-    },
     { provide: ACTION_KEY, useValue: 'clientId' },
+    Class2ViewBuilderService,
   ],
 })
 export class ClientLinkListComponent {

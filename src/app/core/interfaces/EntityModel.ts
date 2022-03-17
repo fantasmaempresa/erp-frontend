@@ -1,5 +1,3 @@
-export interface EntityModel {
-  id: number;
-  created_at?: Date;
-  updated_at?: Date;
+export class EntityModel {
+  constructor(public id: number, public created_at?: Date, public updated_at?: Date) {}
 }

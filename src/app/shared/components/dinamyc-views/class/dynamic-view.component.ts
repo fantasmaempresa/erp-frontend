@@ -6,20 +6,23 @@ import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { EntityModel } from '../../../../core/interfaces/EntityModel';
 import {
   ACTION_KEY,
-  FIELDS,
-  LABELS,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   MAP_TO_FIELDS,
   SELECTOR,
 } from '../dynamic-views.module';
 import { PageEvent } from '@angular/material/paginator';
+import { Class2ViewBuilderService } from '../services/class2-view-builder.service';
 
 @Component({
   template: '',
 })
 export abstract class DynamicViewComponent<T extends EntityModel> {
   data$!: Observable<Pagination<T> | null>;
+
+  displayedColumns!: string[];
+
+  labels!: string[];
 
   mapToGetKey = (item: any, [index]: [number]) => {
     const key = this.displayedColumns[index];
@@ -43,10 +46,6 @@ export abstract class DynamicViewComponent<T extends EntityModel> {
     protected loadAction: any,
     @Inject(LOAD_NEXT_ACTION)
     protected loadNextPageAction: (props: { size: number; page: number }) => any,
-    @Inject(FIELDS)
-    public displayedColumns: string[],
-    @Inject(LABELS)
-    public labels: string[],
     @Optional()
     @Inject(ACTION_KEY)
     protected actionKey: string,
@@ -54,7 +53,10 @@ export abstract class DynamicViewComponent<T extends EntityModel> {
     @Inject(MAP_TO_FIELDS)
     public mapToFields: Object,
     protected route: ActivatedRoute,
+    class2View: Class2ViewBuilderService,
   ) {
+    this.labels = class2View.getLabels();
+    this.displayedColumns = class2View.getAttrs();
     this.data$ = this.store.select(selector).pipe(shareReplay());
     const id = Number(this.route.snapshot.parent?.params.id);
 

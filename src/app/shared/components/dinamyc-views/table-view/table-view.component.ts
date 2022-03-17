@@ -19,14 +19,13 @@ import { EntityModel } from '../../../../core/interfaces/EntityModel';
 import { MemoizedSelector, Store } from '@ngrx/store';
 import {
   ACTION_KEY,
-  FIELDS,
-  LABELS,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   MAP_TO_FIELDS,
   SELECTOR,
 } from '../dynamic-views.module';
 import { ActivatedRoute } from '@angular/router';
+import { Class2ViewBuilderService } from '../services/class2-view-builder.service';
 
 @Component({
   selector: 'app-table-view',
@@ -55,10 +54,6 @@ export class TableViewComponent<T extends EntityModel>
     @Inject(SELECTOR) selector: MemoizedSelector<any, any>,
     @Inject(LOAD_ACTION) loadAction: any,
     @Inject(LOAD_NEXT_ACTION) loadNextPageAction: (props: { size: number; page: number }) => any,
-    @Inject(FIELDS)
-    public displayedColumns: string[],
-    @Inject(LABELS)
-    public labels: string[],
     @Optional()
     @Inject(ACTION_KEY)
     actionKey: string,
@@ -66,19 +61,19 @@ export class TableViewComponent<T extends EntityModel>
     @Inject(MAP_TO_FIELDS)
     mapToFields: any,
     route: ActivatedRoute,
+    class2View: Class2ViewBuilderService,
   ) {
     super(
       store,
       selector,
       loadAction,
       loadNextPageAction,
-      displayedColumns,
-      labels,
       actionKey,
       mapToFields,
       route,
+      class2View,
     );
-    this.displayedColumns = ['select', ...displayedColumns];
+    this.displayedColumns = ['select', ...this.displayedColumns];
   }
 
   isAllSelected() {

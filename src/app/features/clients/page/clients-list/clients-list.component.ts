@@ -6,8 +6,7 @@ import { ClientService } from '../../../../data/services/client.service';
 import { EntityModel } from '../../../../core/interfaces/EntityModel';
 import { Store } from '@ngrx/store';
 import {
-  FIELDS,
-  LABELS,
+  CLAZZ,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   MAP_TO_FIELDS,
@@ -15,6 +14,8 @@ import {
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { selectClients } from '../../../../state/clients/clients.selector';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
+import { Client } from '../../../../data/models/Client.model';
+import { Class2ViewBuilderService } from '../../../../shared/components/dinamyc-views/services/class2-view-builder.service';
 
 @Component({
   selector: 'app-clients-list',
@@ -22,16 +23,9 @@ import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-vi
   styleUrls: ['./clients-list.component.scss'],
   providers: [
     { provide: SELECTOR, useValue: selectClients },
+    { provide: CLAZZ, useValue: Client },
     { provide: LOAD_ACTION, useValue: loadClients() },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClients },
-    {
-      provide: FIELDS,
-      useValue: ['name', 'email', 'phone', 'rfc', 'type'],
-    },
-    {
-      provide: LABELS,
-      useValue: ['Nombre', 'Correo', 'Teléfono', 'RFC', 'Tipo de Persona'],
-    },
     {
       provide: MAP_TO_FIELDS,
       useValue: {
@@ -44,6 +38,7 @@ import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-vi
         },
       },
     },
+    Class2ViewBuilderService,
     // { provide: ACTION_KEY, useValue: 'clientId' },
   ],
 })
