@@ -40,6 +40,7 @@ export class Client extends EntityModel {
 
   public updated_at?: Date;
 
+  @printLabel('Fecha de Creación', -1)
   public created_at?: Date;
 
   public id: number = 0;

@@ -14,14 +14,20 @@ export class Class2ViewBuilderService {
 
   getAttrs(): string[] {
     const propertyNames = Object.getOwnPropertyNames(this.objClass);
-    return propertyNames.filter((key) =>
-      Reflect.getMetadataKeys(this.objClass, key).includes('printLabel'),
-    );
+    return propertyNames
+      .filter((key) => Reflect.getMetadataKeys(this.objClass, key).includes('printLabel'))
+      .map((key) => {
+        return { key, metadata: Reflect.getMetadata('printLabel', this.objClass, key) };
+      })
+      .sort((a, b) => b.metadata.order - a.metadata.order)
+      .map(({ key }) => key);
   }
 
   getLabels(): string[] {
     const printableKeys = this.getAttrs();
-    return printableKeys.map((key) => Reflect.getMetadata('printLabel', this.objClass, key));
+    return printableKeys
+      .map((key) => Reflect.getMetadata('printLabel', this.objClass, key))
+      .map(({ label }) => label);
   }
 
   getMapsFunctions() {
