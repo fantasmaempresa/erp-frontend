@@ -9,7 +9,6 @@ import {
   CLAZZ,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
-  MAP_TO_FIELDS,
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { selectClients } from '../../../../state/clients/clients.selector';
@@ -26,18 +25,6 @@ import { Class2ViewBuilderService } from '../../../../shared/components/dinamyc-
     { provide: CLAZZ, useValue: Client },
     { provide: LOAD_ACTION, useValue: loadClients() },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClients },
-    {
-      provide: MAP_TO_FIELDS,
-      useValue: {
-        type: (value: any) => {
-          const types = {
-            1: 'Moral',
-            2: 'Física',
-          };
-          return types[value as keyof typeof types];
-        },
-      },
-    },
     Class2ViewBuilderService,
     // { provide: ACTION_KEY, useValue: 'clientId' },
   ],

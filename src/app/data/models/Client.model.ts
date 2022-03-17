@@ -1,6 +1,9 @@
 import { User } from './User.model';
 import { EntityModel } from '../../core/interfaces/EntityModel';
-import { printLabel } from '../../shared/components/dinamyc-views/DynamicViews.decorators';
+import {
+  mapToLabel,
+  printLabel,
+} from '../../shared/components/dinamyc-views/DynamicViews.decorators';
 
 export class Client extends EntityModel {
   @printLabel('Nombre')
@@ -23,6 +26,13 @@ export class Client extends EntityModel {
 
   public extra_information: string;
 
+  @mapToLabel((value: any) => {
+    const types = {
+      1: 'Moral',
+      2: 'Física',
+    };
+    return types[value as keyof typeof types];
+  })
   @printLabel('Tipo de Persona')
   public type: number;
 

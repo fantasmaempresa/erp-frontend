@@ -23,4 +23,15 @@ export class Class2ViewBuilderService {
     const printableKeys = this.getAttrs();
     return printableKeys.map((key) => Reflect.getMetadata('printLabel', this.objClass, key));
   }
+
+  getMapsFunctions() {
+    const printableKeys = this.getAttrs();
+    const mapToArrays = printableKeys.filter((key) =>
+      Reflect.getMetadataKeys(this.objClass, key).includes('mapTo'),
+    );
+    const objectMapper = mapToArrays.map((key) => ({
+      [key]: Reflect.getMetadata('mapTo', this.objClass, key),
+    }));
+    return objectMapper.reduce((acc, value) => ({ ...acc, ...value }), {});
+  }
 }

@@ -17,13 +17,7 @@ import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { DynamicViewComponent } from '../class/dynamic-view.component';
 import { EntityModel } from '../../../../core/interfaces/EntityModel';
 import { MemoizedSelector, Store } from '@ngrx/store';
-import {
-  ACTION_KEY,
-  LOAD_ACTION,
-  LOAD_NEXT_ACTION,
-  MAP_TO_FIELDS,
-  SELECTOR,
-} from '../dynamic-views.module';
+import { ACTION_KEY, LOAD_ACTION, LOAD_NEXT_ACTION, SELECTOR } from '../dynamic-views.module';
 import { ActivatedRoute } from '@angular/router';
 import { Class2ViewBuilderService } from '../services/class2-view-builder.service';
 
@@ -57,22 +51,10 @@ export class TableViewComponent<T extends EntityModel>
     @Optional()
     @Inject(ACTION_KEY)
     actionKey: string,
-    @Optional()
-    @Inject(MAP_TO_FIELDS)
-    mapToFields: any,
     route: ActivatedRoute,
     class2View: Class2ViewBuilderService,
   ) {
-    super(
-      store,
-      selector,
-      loadAction,
-      loadNextPageAction,
-      actionKey,
-      mapToFields,
-      route,
-      class2View,
-    );
+    super(store, selector, loadAction, loadNextPageAction, actionKey, route, class2View);
     this.displayedColumns = ['select', ...this.displayedColumns];
   }
 
