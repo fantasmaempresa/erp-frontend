@@ -13,24 +13,14 @@ export class Class2ViewBuilderService {
   }
 
   getAttrs(): string[] {
-    const attrs = [];
     const propertyNames = Object.getOwnPropertyNames(this.objClass);
-    for (const propertyName of propertyNames) {
-      const decorators = Reflect.getMetadataKeys(this.objClass, propertyName);
-      if (decorators.includes('printLabel')) {
-        attrs.push(propertyName);
-      }
-    }
-    return attrs;
+    return propertyNames.filter((key) =>
+      Reflect.getMetadataKeys(this.objClass, key).includes('printLabel'),
+    );
   }
 
   getLabels(): string[] {
-    const propertyNames = Object.getOwnPropertyNames(this.objClass);
-
-    const printableKeys = propertyNames.filter((key) =>
-      Reflect.getMetadataKeys(this.objClass, key).includes('printLabel'),
-    );
-
+    const printableKeys = this.getAttrs();
     return printableKeys.map((key) => Reflect.getMetadata('printLabel', this.objClass, key));
   }
 }
