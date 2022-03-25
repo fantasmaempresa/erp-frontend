@@ -23,7 +23,9 @@ export class OperationsComponent implements OnInit {
 
   filteredOptions$!: Observable<Formfield<any>[]>;
 
-  filteredConcepts$!: Observable<Concept[]>;
+  filteredConcepts$: Observable<Concept[]>[] = [];
+
+  filteredConceptsTotal$: Observable<Concept[]>[] = [];
 
   formFields$!: Observable<Formfield<any>[]>;
 
@@ -33,6 +35,10 @@ export class OperationsComponent implements OnInit {
 
   get operation_fields() {
     return this.operationsForm.controls.operation_fields as FormArray;
+  }
+
+  get operation_total() {
+    return this.operationsForm.controls.operation_total as FormArray;
   }
 
   constructor(private store: Store, private conceptService: ConceptService) {
@@ -55,13 +61,6 @@ export class OperationsComponent implements OnInit {
         return this._filter(data[1], data[0]);
       }),
     );
-    let valueOfConceptControl = this.autocompleteConceptControl.valueChanges.pipe(startWith(''));
-    this.filteredConcepts$ = this.concepts$.pipe(
-      combineLatestWith(valueOfConceptControl),
-      map((data) => {
-        return this._filterConcepts(data[1], data[0]);
-      }),
-    );
   }
 
   initOperationsFormGroup() {
@@ -73,11 +72,34 @@ export class OperationsComponent implements OnInit {
     this.operationsForm.valueChanges.subscribe(() => this.form.emit(this.operationsForm));
   }
 
-  createOperationGroup(key: string): FormGroup {
-    return new FormGroup({
+  createOperationGroup(key: string, target: string): FormGroup {
+    let operation = new FormGroup({
       key: new FormControl({ value: key, disabled: true }),
       concept: new FormControl(''),
     });
+
+    if (target === 'total') {
+      let valueOfConceptControl = operation.controls.concept.valueChanges.pipe(startWith(''));
+      this.filteredConceptsTotal$.push(
+        this.concepts$.pipe(
+          combineLatestWith(valueOfConceptControl),
+          map((data) => {
+            return this._filterConcepts(data[1], data[0]);
+          }),
+        ),
+      );
+    } else {
+      let valueOfConceptControl = operation.controls.concept.valueChanges.pipe(startWith(''));
+      this.filteredConcepts$.push(
+        this.concepts$.pipe(
+          combineLatestWith(valueOfConceptControl),
+          map((data) => {
+            return this._filterConcepts(data[1], data[0]);
+          }),
+        ),
+      );
+    }
+    return operation;
   }
 
   addOperation(item: Formfield<any>) {
@@ -87,20 +109,33 @@ export class OperationsComponent implements OnInit {
     }
     if (item.key === 'total') {
       const control = this.operationsForm.get('operation_total') as FormArray;
-      control.push(this.createOperationGroup(item.key));
+      control.push(this.createOperationGroup(item.key, 'total'));
     } else {
       const control = this.operationsForm.get('operation_fields') as FormArray;
-      control.push(this.createOperationGroup(item.key));
+      control.push(this.createOperationGroup(item.key, 'other'));
     }
     // this.autocompleteControl = new FormControl();
   }
 
-  removeOperation(index: number) {
-    const control = this.operation_fields;
+  removeOperation(index: number, target: string) {
+    let control!: any;
+
+    if (target === 'total') {
+      control = this.operation_total;
+      this.filteredConceptsTotal$.splice(index, 1);
+    } else {
+      control = this.operation_fields;
+      this.filteredConcepts$.splice(index, 1);
+    }
+
     control.removeAt(index);
   }
 
-  private _filter(value: string, options: any) {
+  private _filter(value: string | object, options: any) {
+    if (typeof value !== 'string') {
+      return;
+    }
+
     const filterValue = value.toLowerCase();
 
     return options.filter((option: any) => {
@@ -108,7 +143,11 @@ export class OperationsComponent implements OnInit {
     });
   }
 
-  private _filterConcepts(value: string, options: Concept[]) {
+  private _filterConcepts(value: string | object, options: Concept[]) {
+    if (typeof value !== 'string') {
+      return [];
+    }
+
     const filterValue = value.toLowerCase();
 
     return options.filter((option: Concept) => {

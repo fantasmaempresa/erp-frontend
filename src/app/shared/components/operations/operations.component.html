@@ -44,7 +44,7 @@
             <input type="text" matInput formControlName="concept" [matAutocomplete]="autoConcept" />
             <mat-autocomplete #autoConcept="matAutocomplete" [displayWith]="displayConceptFn">
               <mat-option
-                *ngFor="let concept of filteredConcepts$ | async; trackBy: trackConceptsByFn"
+                *ngFor="let concept of filteredConcepts$[i] | async; trackBy: trackConceptsByFn"
                 [value]="concept"
               >
                 {{ concept.name }}
@@ -59,7 +59,7 @@
             mat-mini-fab
             color="warn"
             class="align-self-center search-button"
-            (click)="removeOperation(i)"
+            (click)="removeOperation(i, 'other')"
             matTooltip="Eliminar opción"
           >
             <mat-icon>remove</mat-icon>
@@ -90,7 +90,10 @@
             <input type="text" matInput formControlName="concept" [matAutocomplete]="autoConcept" />
             <mat-autocomplete #autoConcept="matAutocomplete" [displayWith]="displayConceptFn">
               <mat-option
-                *ngFor="let concept of filteredConcepts$ | async; trackBy: trackConceptsByFn"
+                *ngFor="
+                  let concept of filteredConceptsTotal$[i] | async;
+                  trackBy: trackConceptsByFn
+                "
                 [value]="concept"
               >
                 {{ concept.name }}
@@ -98,14 +101,13 @@
             </mat-autocomplete>
           </mat-form-field>
         </div>
-        <!--        TODO: Cambiar por un boton para eliminar el concepto-->
         <div class="col-1 d-flex align-items-center" style="margin-top: -20px">
           <button
             type="button"
             mat-mini-fab
             color="warn"
             class="align-self-center search-button"
-            (click)="removeOperation(i)"
+            (click)="removeOperation(i, 'total')"
             matTooltip="Eliminar opción"
           >
             <mat-icon>remove</mat-icon>
