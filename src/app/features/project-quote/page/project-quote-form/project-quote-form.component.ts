@@ -1,10 +1,9 @@
-import { Component, EventEmitter, Output } from '@angular/core';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
 import { map, Observable, startWith, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from '../../../../shared/services/form-validation.service';
 import { User } from '../../../../data/models/User.model';
-import { validationMessages } from '../../../../core/constants/validationMessages';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogSearchComponent } from '../../../../shared/components/dialog-search/dialog-search.component';
 import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
@@ -15,7 +14,6 @@ import { Client } from '../../../../data/models/Client.model';
 import { FormFieldClass } from '../../../../core/classes/FormFieldClass';
 import { FormfieldControlService } from '../../../../core/services/formfield-control.service';
 import { ConceptService } from '../../../../data/services/concept.service';
-import { Concept } from '../../../../data/models/Concept.model';
 import { format } from 'date-fns';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
@@ -24,25 +22,12 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
   templateUrl: './project-quote-form.component.html',
   styleUrls: ['./project-quote-form.component.scss'],
 })
-export class ProjectQuoteFormComponent {
-  @Output() form = new EventEmitter();
+export class ProjectQuoteFormComponent implements OnInit {
+  @Input() formGroupName!: string;
+
+  form!: FormGroup;
 
   formFields: FormFieldClass<string>[] = [];
-
-  quoteForm = new FormGroup({
-    name: new FormControl(''),
-    addressee: new FormControl(''),
-    description: new FormControl(''),
-    date_end: new FormControl({ value: null, disabled: true }),
-    status_quote_id: new FormControl(null),
-    client: new FormControl({ value: null, disabled: true }),
-    client_id: new FormControl({ value: null, disabled: true }),
-    concepts: new FormArray([new FormControl({})]),
-  });
-
-  get concepts() {
-    return this.quoteForm.get('concepts') as FormArray;
-  }
 
   isEdit = false;
 
@@ -54,10 +39,6 @@ export class ProjectQuoteFormComponent {
 
   quoteStatuses$!: Observable<QuoteStatus[]>;
 
-  concepts$!: Observable<Concept[]>;
-
-  conceptList!: Concept[];
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -68,11 +49,11 @@ export class ProjectQuoteFormComponent {
     private projectQuoteService: ProjectQuoteService,
     private formfieldService: FormfieldControlService,
     public dialog: MatDialog,
+    private rootFormGroup: FormGroupDirective,
   ) {
     this.quoteStatuses$ = this.projectQuoteService
       .fetchAll()
       .pipe(map((statuses) => statuses.data));
-    this.concepts$ = this.conceptService.fetchAll().pipe(map((concepts) => concepts.data));
     // this.quoteStatuses$ = quoteStatusService.fetchAll().pipe(map((resp) => resp.data));
     this.formFields.push(this.formfieldService.createFormField('textbox', 'name', 'Nombre', true));
     this.filteredClients$ = clientService.fetchAll().pipe(
@@ -82,7 +63,7 @@ export class ProjectQuoteFormComponent {
       }),
       switchMap(() =>
         // @ts-ignore
-        this.quoteForm.get('client').valueChanges.pipe(
+        this.form.get('client').valueChanges.pipe(
           startWith(''),
           map((value) => (typeof value === 'string' ? value : value.name)),
           map((name) => (name ? this._filter(name) : this.clients.slice())),
@@ -94,17 +75,21 @@ export class ProjectQuoteFormComponent {
       this.isEdit = true;
       clientService.fetch(this.route.snapshot.queryParams.id).subscribe({
         next: (user) => {
-          this.quoteForm.addControl('id', new FormControl(''));
-          this.quoteForm.patchValue(user);
+          this.form.addControl('id', new FormControl(''));
+          this.form.patchValue(user);
         },
       });
     }
+  }
 
-    this.quoteForm.valueChanges.subscribe(() => this.form.emit(this.quoteForm));
+  ngOnInit(): void {
+    console.log(this.rootFormGroup.control.value);
+    this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
   }
 
   onSubmit() {
-    let { client, date_end, ...projectQuote } = this.quoteForm.getRawValue();
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    let { client, date_end, ...projectQuote } = this.form.getRawValue();
     projectQuote.date_end = format(date_end, 'yyyy-MM-dd');
     this.projectQuoteService.save(projectQuote).subscribe({
       next: async () => {
@@ -136,17 +121,12 @@ export class ProjectQuoteFormComponent {
       height: '75vh',
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      this.quoteForm.get('client')?.patchValue(result);
-      console.log(this.quoteForm.getRawValue());
+    dialogRef.afterClosed().subscribe((result: Client) => {
+      console.log(result);
+      this.form.get('client')?.patchValue(result);
+      this.form.get('addressee')?.patchValue(result.name);
+      console.log(this.form.getRawValue());
     });
-  }
-
-  logValidationErrors() {
-    this.formErrors = this.formValidationService.getValidationErrors(
-      this.quoteForm,
-      validationMessages,
-    );
   }
 
   displayFn(user: User): string {

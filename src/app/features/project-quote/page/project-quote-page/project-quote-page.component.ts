@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TemplateQuotesService } from '../../../../data/services/template-quotes.service';
-import { combineLatest, map, Observable } from 'rxjs';
+import { combineLatest, map, Observable, take } from 'rxjs';
 import { TemplateQuotes } from '../../../../data/models/TemplateQuotes.model';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   changeStatus,
   emptyForm,
@@ -25,7 +25,20 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
   styleUrls: ['./project-quote-page.component.scss'],
 })
 export class ProjectQuotePageComponent implements OnInit {
-  quoteForm = new FormGroup({});
+  headerForm = new FormGroup({
+    name: new FormControl('', [Validators.required]),
+    addressee: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
+    date_end: new FormControl({ value: null, disabled: true }),
+    status_quote_id: new FormControl(null),
+    client: new FormControl({ value: null, disabled: true }),
+    client_id: new FormControl({ value: null, disabled: true }),
+    concepts: new FormArray([new FormControl({})]),
+  });
+
+  quoteForm = new FormGroup({
+    headerForm: this.headerForm,
+  });
 
   formFields!: Formfield<any>[];
 
@@ -87,9 +100,14 @@ export class ProjectQuotePageComponent implements OnInit {
   }
 
   nextStep() {
+    this.quoteForm.markAllAsTouched();
+    if (this.quoteForm.invalid) {
+      return;
+    }
+
     this.step++;
+
     if (this.step === 2) {
-      console.log(this.formFields);
       this.store.dispatch(changeStatus({ status: 'EDITABLE' }));
     }
     if (this.step === 3) {
@@ -117,23 +135,26 @@ export class ProjectQuotePageComponent implements OnInit {
   getDynamicForm() {}
 
   async saveQuote() {
-    this.store.select(selectDynamicForm).subscribe((form) => {
-      const quote = {
-        ...this.quoteForm.getRawValue(),
-        quote: {
-          form: {
-            ...form,
+    this.store
+      .select(selectDynamicForm)
+      .pipe(take(1))
+      .subscribe((form) => {
+        const quote = {
+          ...this.quoteForm.getRawValue(),
+          quote: {
+            form: {
+              ...form,
+            },
+            operations: {
+              ...this.operationsForm.getRawValue(),
+            },
           },
-          operations: {
-            ...this.operationsForm.getRawValue(),
-          },
-        },
-      };
-      console.log(quote);
-      this.projectQuoteService.save(quote).subscribe((val) => {
-        console.log(val);
-        MessageHelper.successMessage('Éxito', 'Cotización guardada');
+        };
+        console.log(quote);
+        this.projectQuoteService.save(quote).subscribe((val) => {
+          console.log(val);
+          MessageHelper.successMessage('Éxito', 'Cotización guardada');
+        });
       });
-    });
   }
 }
