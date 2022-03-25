@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Observable, tap } from 'rxjs';
+import { Observable, take, tap } from 'rxjs';
 import { AuthResponse } from '../../data/models/AuthResponse.model';
 import { TokensModel } from '../../data/models/Tokens.model';
 
@@ -13,7 +13,11 @@ export class AuthService {
 
   private readonly REFRESH_TOKEN = 'REFRESH_TOKEN';
 
-  constructor(private http: HttpClient) {}
+  private readonly _base;
+
+  constructor(private http: HttpClient) {
+    this._base = `${environment.base_url}/oauth/`;
+  }
 
   login(username: string, password: string): Observable<AuthResponse> {
     const body = {
@@ -23,7 +27,7 @@ export class AuthService {
       username,
       password,
     };
-    return this.http.post<AuthResponse>(`${environment.base_url}/oauth/token`, body);
+    return this.http.post<AuthResponse>(`${this._base}token`, body);
   }
 
   refreshToken() {
@@ -39,7 +43,12 @@ export class AuthService {
   }
 
   logout() {
-    this.removeTokens();
+    this.http
+      .get(`${this._base}logout`)
+      .pipe(take(1))
+      .subscribe(() => {
+        this.removeTokens();
+      });
   }
 
   storeTokens(tokens: TokensModel) {
@@ -60,5 +69,9 @@ export class AuthService {
   getRefreshToken() {
     const token = localStorage.getItem(this.REFRESH_TOKEN);
     return token ? token : null;
+  }
+
+  statusOffline(status: 'online' | 'offline' = 'offline') {
+    this.http.get(`${this._base}${status}`).pipe(take(1)).subscribe();
   }
 }
