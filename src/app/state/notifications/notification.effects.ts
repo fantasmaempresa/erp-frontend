@@ -12,7 +12,7 @@ import {
   startListenNotification,
 } from './notification.actions';
 import { NotificationsService } from '../../data/services/notifications.service';
-import { NotificationSocketService } from '../../core/services/notification-socket.service';
+import { NotificationSocketService } from '../../core/services/SocketChannels/notification-socket.service';
 import { Store } from '@ngrx/store';
 import { selectIncomingNotifications, selectUnreadNotifications } from './notification.selector';
 import { NotificationModel } from '../../data/models/Notification.model';

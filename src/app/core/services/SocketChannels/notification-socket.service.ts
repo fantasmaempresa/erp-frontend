@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { bufferTime, filter, map, Observable, pluck, take, tap, timer } from 'rxjs';
-import { LaravelWebSocket } from '../classes/laravel-web-socket';
+import { LaravelWebSocket } from '../../classes/laravel-web-socket';
 
 // const ANIMATION_TIME = 18_000;
 
