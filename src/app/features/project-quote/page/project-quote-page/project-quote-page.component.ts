@@ -77,7 +77,6 @@ export class ProjectQuotePageComponent implements OnInit {
       next: (value) => {
         if (value) {
           this.store.dispatch(emptyForm());
-          this.addTotalToTemplate();
           this.store.dispatch(loadForm({ form: value.form, id: value.id, name: value.name }));
         } else {
           this.store.dispatch(emptyForm());
@@ -121,7 +120,7 @@ export class ProjectQuotePageComponent implements OnInit {
 
   addTotalToTemplate() {
     const form: Formfield<number> = {
-      required: false,
+      required: true,
       controlType: 'number',
       label: 'Total',
       value: 0,
@@ -131,8 +130,6 @@ export class ProjectQuotePageComponent implements OnInit {
     };
     this.store.dispatch(setField({ form }));
   }
-
-  getDynamicForm() {}
 
   async saveQuote() {
     this.store

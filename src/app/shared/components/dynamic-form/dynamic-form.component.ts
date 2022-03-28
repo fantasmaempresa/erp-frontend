@@ -12,7 +12,7 @@ import { setValuesToFields } from '../../../state/dynamic-form/dynamic-form.acti
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.scss'],
 })
-export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
+export class DynamicFormComponent implements OnInit, OnChanges {
   @Input() formFields!: Formfield<any>[];
 
   form: FormGroup = new FormGroup({});
@@ -75,17 +75,20 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
     });
   }
 
-  ngOnDestroy(): void {}
-
   ngOnChanges(changes: SimpleChanges) {
     // if (!changes.formFields.firstChange) {
-    this.createForm(this.formFields);
+    this.form = this.createForm(this.formFields);
+    // this.createForm(this.formFields);
     // }
   }
 
-  createForm(controls: Formfield<any>[]) {
+  createForm(controls: Formfield<any>[]): FormGroup {
+    const group: any = {};
     for (const control of controls) {
-      this.form.addControl(control.key, new FormControl(control.value));
+      group[control.key] = control.required
+        ? new FormControl(control.value || '', [Validators.required])
+        : new FormControl(control.value || '');
     }
+    return new FormGroup(group);
   }
 }
