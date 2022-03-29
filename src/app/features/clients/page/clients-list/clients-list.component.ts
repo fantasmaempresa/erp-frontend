@@ -43,10 +43,6 @@ export class ClientsListComponent {
     this.selectedItem = item;
   };
 
-  goToNewClient = async () => {
-    await this.router.navigate(['../new'], { relativeTo: this.route });
-  };
-
   goToEditForm = async () => {
     await this.router.navigate([`../client`], {
       queryParams: { id: this.selectedItem.id },
