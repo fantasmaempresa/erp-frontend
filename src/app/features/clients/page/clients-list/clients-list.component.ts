@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { loadClients, loadNextPageOfClients } from '../../../../state/clients/clients.actions';
 import { ClientService } from '../../../../data/services/client.service';
 import { EntityModel } from '../../../../core/interfaces/EntityModel';
 import { Store } from '@ngrx/store';
@@ -11,10 +10,11 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { selectClients } from '../../../../state/clients/clients.selector';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
 import { Client } from '../../../../data/models/Client.model';
 import { Class2ViewBuilderService } from '../../../../shared/components/dinamyc-views/services/class2-view-builder.service';
+import { loadClients, loadNextPageOfClients } from '../../../../state/clients/clients.actions';
+import { selectClients } from '../../../../state/clients/clients.selector';
 
 @Component({
   selector: 'app-clients-list',

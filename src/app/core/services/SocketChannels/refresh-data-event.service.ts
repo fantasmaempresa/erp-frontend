@@ -8,7 +8,7 @@ import { Observable, tap } from 'rxjs';
 export class RefreshDataEventService extends LaravelWebSocket {
   constructor() {
     super();
-    this.subscribeToChannel('refresh-users', 'RefreshDataEvent');
+    this.subscribeToChannel('refresh-clients', 'RefreshDataEvent');
   }
 
   get userStatus$(): Observable<any> {

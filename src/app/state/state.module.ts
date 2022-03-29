@@ -6,7 +6,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { AuthEffects } from './auth/auth.effects';
-import { ClientsEffects } from './clients/clients.effects';
+import { UsersEffects } from './users/users.effects';
 import { StaffEffects } from './staff/staff.effects';
 import { AreasEffects } from './areas/areas.effects';
 import { ConceptsEffects } from './concepts/concepts.effects';
@@ -16,6 +16,7 @@ import { NotificationEffects } from './notifications/notification.effects';
 import { localStorageSync } from 'ngrx-store-localstorage';
 import { DynamicFormEffects } from './dynamic-form/dynamic-form.effects';
 import { ClientsLinkEffects } from './clients-link/clients-link.effects';
+import { ClientsEffects } from './clients/clients.effects';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({ keys: ['auth'], rehydrate: true })(reducer);
@@ -30,6 +31,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot([
       AuthEffects,
+      UsersEffects,
       ClientsEffects,
       StaffEffects,
       AreasEffects,
