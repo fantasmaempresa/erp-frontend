@@ -54,6 +54,12 @@ export class ClientsListComponent {
     });
   };
 
+  goToAddForm = async () => {
+    await this.router.navigate(['../new'], {
+      relativeTo: this.route,
+    });
+  };
+
   delete = () => {
     MessageHelper.decisionMessage(
       `¿Deseas borrar al cliente ${this.selectedItem.name}?`,
