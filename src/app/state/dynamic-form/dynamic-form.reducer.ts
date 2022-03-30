@@ -29,7 +29,7 @@ const DynamicFormReducer = createReducer(
     };
   }),
   on(DynamicFormActions.removeField, (state, actions) => {
-    return dynamicFormAdapter.removeOne(actions.payload.key, state);
+    return dynamicFormAdapter.removeOne(actions.payload.id, state);
   }),
   on(DynamicFormActions.emptyForm, (): DynamicFormState => {
     return initialState;

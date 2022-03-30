@@ -21,6 +21,7 @@ import Swal from 'sweetalert2';
 import { MessageHelper } from '../../helpers/MessageHelper';
 import { TemplateQuotesService } from '../../../data/services/template-quotes.service';
 import { Update } from '@ngrx/entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-dynamic-form-creation',
@@ -118,6 +119,7 @@ export class DynamicFormCreationComponent implements OnInit {
 
   createForm() {
     this.form = new FormGroup({
+      id: new FormControl(uuidv4()),
       controlType: new FormControl('', [Validators.required]),
       key: new FormControl(''),
       label: new FormControl('', [Validators.required]),
@@ -167,17 +169,16 @@ export class DynamicFormCreationComponent implements OnInit {
       return;
     }
     const options: Formfield<any> = { ...this.form.value };
-    options.order = this.formFields.length;
-    console.log(options);
     options.key = options.label.toLowerCase();
     if (this.isEdit) {
       console.log('Estoy editando');
       const updatedField: Update<Formfield<any>> = {
-        id: options.order,
+        id: options.id,
         changes: { ...options },
       };
       this.store.dispatch(updateField({ form: updatedField }));
     } else {
+      options.order = this.formFields.length;
       console.log('No estoy editando');
       this.store.dispatch(setField({ form: options }));
     }
@@ -224,7 +225,7 @@ export class DynamicFormCreationComponent implements OnInit {
     this.formFields.forEach((field, index) => {
       console.log(field, index);
       const updatedForm: Update<Formfield<any>> = {
-        id: field.key,
+        id: field.id,
         changes: {
           order: index,
         },

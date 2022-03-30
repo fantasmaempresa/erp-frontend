@@ -1,4 +1,6 @@
 export interface Formfield<T> {
+  id: string;
+
   value: T | undefined;
 
   key: string;

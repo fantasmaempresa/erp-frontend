@@ -19,6 +19,7 @@ import {
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import faker from '@faker-js/faker';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-project-quote-page',
@@ -123,6 +124,7 @@ export class ProjectQuotePageComponent implements OnInit {
 
   addTotalToTemplate() {
     const form: Formfield<number> = {
+      id: uuidv4(),
       required: true,
       controlType: 'number',
       label: 'Total',

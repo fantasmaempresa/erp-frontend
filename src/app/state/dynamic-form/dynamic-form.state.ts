@@ -9,9 +9,7 @@ export interface DynamicFormState extends EntityState<Formfield<any>> {
   status: 'EDITABLE' | 'NEW';
 }
 
-export const dynamicFormAdapter = createEntityAdapter<Formfield<any>>({
-  selectId: (field: Formfield<any>) => field.key,
-});
+export const dynamicFormAdapter = createEntityAdapter<Formfield<any>>();
 
 export const initialState: DynamicFormState = dynamicFormAdapter.getInitialState({
   id: 0,

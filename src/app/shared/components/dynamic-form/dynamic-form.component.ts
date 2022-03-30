@@ -77,7 +77,7 @@ export class DynamicFormComponent implements OnInit, OnChanges {
         for (const item of this.formFields) {
           if (item.key === field) {
             formUpdate = {
-              id: item.key,
+              id: item.id,
               changes: {
                 value: val[field],
               },
@@ -99,9 +99,13 @@ export class DynamicFormComponent implements OnInit, OnChanges {
   createForm(controls: Formfield<any>[]): FormGroup {
     const group: any = {};
     for (const control of controls) {
-      group[control.key] = control.required
-        ? new FormControl(control.value || '', [Validators.required])
-        : new FormControl(control.value || '');
+      if (control.key === 'total') {
+        group[control.key] = new FormControl({ value: null, disabled: true });
+      } else {
+        group[control.key] = control.required
+          ? new FormControl(control.value || '', [Validators.required])
+          : new FormControl(control.value || '');
+      }
     }
     return new FormGroup(group);
   }
