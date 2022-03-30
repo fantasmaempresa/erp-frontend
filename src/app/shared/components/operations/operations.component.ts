@@ -55,6 +55,7 @@ export class OperationsComponent implements OnInit {
   ngOnInit(): void {
     let valueOfControl$ = this.autocompleteControl.valueChanges.pipe(startWith(''));
     this.filteredOptions$ = this.formFields$.pipe(
+      map((value) => value.filter((x) => x.controlType === 'number')),
       tap(() => this.initOperationsFormGroup()),
       combineLatestWith(valueOfControl$),
       map((data) => {
