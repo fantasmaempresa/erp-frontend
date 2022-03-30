@@ -6,6 +6,8 @@ import { selectDynamicForm } from '../../../state/dynamic-form/dynamic-form.sele
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ConceptService } from '../../../data/services/concept.service';
 import { Concept } from '../../../data/models/Concept.model';
+import { MatDialog } from '@angular/material/dialog';
+import { ConceptFormComponent } from '../../../features/concepts/page/concept-form/concept-form.component';
 
 @Component({
   selector: 'app-operations',
@@ -41,7 +43,11 @@ export class OperationsComponent implements OnInit {
     return this.operationsForm.controls.operation_total as FormArray;
   }
 
-  constructor(private store: Store, private conceptService: ConceptService) {
+  constructor(
+    private store: Store,
+    private conceptService: ConceptService,
+    public dialog: MatDialog,
+  ) {
     this.formFields$ = store.select(selectDynamicForm);
     this.concepts$ = this.conceptService.fetchAll().pipe(map((concepts) => concepts.data));
     this.initOperationsFormGroup();
@@ -176,5 +182,16 @@ export class OperationsComponent implements OnInit {
 
   calculateOperations() {
     console.log(this.operationsForm.getRawValue());
+  }
+
+  createNewConcept() {
+    const dialogRef = this.dialog.open(ConceptFormComponent, {
+      width: '75vw',
+      height: '75vh',
+    });
+
+    dialogRef.afterClosed().subscribe((result: any) => {
+      console.log(result);
+    });
   }
 }

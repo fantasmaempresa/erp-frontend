@@ -89,6 +89,7 @@
             <mat-label>Concepto</mat-label>
             <input type="text" matInput formControlName="concept" [matAutocomplete]="autoConcept" />
             <mat-autocomplete #autoConcept="matAutocomplete" [displayWith]="displayConceptFn">
+              <mat-option (click)="createNewConcept()">Crear concepto nuevo</mat-option>
               <mat-option
                 *ngFor="
                   let concept of filteredConceptsTotal$[i] | async;

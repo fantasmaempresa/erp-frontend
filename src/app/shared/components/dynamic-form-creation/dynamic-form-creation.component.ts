@@ -171,7 +171,6 @@ export class DynamicFormCreationComponent implements OnInit {
     const options: Formfield<any> = { ...this.form.value };
     options.key = options.label.toLowerCase();
     if (this.isEdit) {
-      console.log('Estoy editando');
       const updatedField: Update<Formfield<any>> = {
         id: options.id,
         changes: { ...options },
@@ -179,7 +178,6 @@ export class DynamicFormCreationComponent implements OnInit {
       this.store.dispatch(updateField({ form: updatedField }));
     } else {
       options.order = this.formFields.length;
-      console.log('No estoy editando');
       this.store.dispatch(setField({ form: options }));
     }
     this.createForm();
