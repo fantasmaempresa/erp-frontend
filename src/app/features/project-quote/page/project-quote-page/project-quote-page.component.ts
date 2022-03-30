@@ -18,6 +18,7 @@ import {
 } from '../../../../state/dynamic-form/dynamic-form.selector';
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import faker from '@faker-js/faker';
 
 @Component({
   selector: 'app-project-quote-page',
@@ -26,10 +27,12 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 })
 export class ProjectQuotePageComponent implements OnInit {
   headerForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    addressee: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
-    date_end: new FormControl({ value: null, disabled: true }),
+    name: new FormControl(faker.datatype.uuid(), [Validators.required]),
+    addressee: new FormControl(`${faker.name.firstName()} ${faker.name.lastName()}`, [
+      Validators.required,
+    ]),
+    description: new FormControl(faker.lorem.lines(2), [Validators.required]),
+    date_end: new FormControl({ value: faker.date.soon(5), disabled: true }),
     status_quote_id: new FormControl(null),
     client: new FormControl({ value: null, disabled: true }),
     client_id: new FormControl({ value: null, disabled: true }),
@@ -46,7 +49,7 @@ export class ProjectQuotePageComponent implements OnInit {
 
   templateControl = new FormControl(null);
 
-  step = 0;
+  step = 1;
 
   templates$!: TemplateQuotes[];
 

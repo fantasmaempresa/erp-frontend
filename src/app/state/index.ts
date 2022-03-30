@@ -13,7 +13,10 @@ import { quoteStatusInitialState, QuoteStatusState } from './quote-status/quote-
 import { quoteStatusReducer } from './quote-status/quote-status.reducer';
 import { quotesInitialState, QuotesState } from './quotes/quotes.state';
 import { quotesReducer } from './quotes/quotes.reducer';
-import { dynamicFormInitialState, DynamicFormState } from './dynamic-form/dynamic-form.state';
+import {
+  DynamicFormState,
+  initialState as dynamicFormInitialState,
+} from './dynamic-form/dynamic-form.state';
 import { dynamicFormReducer } from './dynamic-form/dynamic-form.reducer';
 import {
   initialState as notificationInitialState,

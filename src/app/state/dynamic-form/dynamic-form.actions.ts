@@ -1,10 +1,12 @@
 import { createAction, props } from '@ngrx/store';
 import { Formfield } from '../../data/models/Formfield.model';
+import { Update } from '@ngrx/entity';
 
 export enum DynamicFormActions {
   LOAD_FORM = '[Dynamic Form] Load form',
   LOAD_FORM_SUCCESS = '[Dynamic Form] Load form success',
   SET_FIELD = '[Dynamic Form] Set field',
+  UPDATE_FIELD = '[Dynamic Form] Update field',
   SET_VALUES_TO_FIELDS = '[Dynamic Form] Set value to fields',
   CHANGE_STATUS = '[Dynanic Form] Change status',
   REMOVE_FIELD = '[Dynamic Form] Removing field',
@@ -22,6 +24,10 @@ export const loadFormSuccess = createAction(
 export const setField = createAction(
   DynamicFormActions.SET_FIELD,
   props<{ form: Formfield<any> }>(),
+);
+export const updateField = createAction(
+  DynamicFormActions.UPDATE_FIELD,
+  props<{ form: Update<Formfield<any>> }>(),
 );
 export const setValuesToFields = createAction(
   DynamicFormActions.SET_VALUES_TO_FIELDS,

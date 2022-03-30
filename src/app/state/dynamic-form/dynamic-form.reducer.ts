@@ -1,45 +1,26 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { dynamicFormInitialState, DynamicFormState } from './dynamic-form.state';
+import { dynamicFormAdapter, DynamicFormState, initialState } from './dynamic-form.state';
 import * as DynamicFormActions from './dynamic-form.actions';
-import { Formfield } from '../../data/models/Formfield.model';
 
 const DynamicFormReducer = createReducer(
-  dynamicFormInitialState,
-  on(DynamicFormActions.loadForm, (state, actions): DynamicFormState => {
-    return {
-      ...state,
-      id: actions.id,
-      name: actions.name,
-      formFields: [...actions.form, ...state.formFields],
-    };
+  initialState,
+  on(DynamicFormActions.loadForm, (state, actions) => {
+    return dynamicFormAdapter.setAll(actions.form, state);
   }),
   on(DynamicFormActions.setField, (state, actions) => {
-    let index = state.formFields.findIndex((el) => el.key === actions.form.key);
-    if (index === -1) {
+    if (state.entities[actions.form.key]) {
       return {
         ...state,
-        formFields: [actions.form, ...state.formFields],
-        errorMessage: '',
+        errorMessage: `Ya hay un campo creado con la etiqueta ${actions.form.key}`,
       };
     }
-    return {
-      ...state,
-      errorMessage: `Ya hay un campo creado con la etiqueta ${actions.form.key}`,
-    };
+    return dynamicFormAdapter.addOne(actions.form, state);
+  }),
+  on(DynamicFormActions.updateField, (state, action) => {
+    return dynamicFormAdapter.updateOne(action.form, state);
   }),
   on(DynamicFormActions.setValuesToFields, (state, { fields }) => {
-    let newState: Formfield<any>[] = [];
-    for (const field in fields) {
-      for (const item of state.formFields) {
-        if (item.key === field) {
-          newState = [...newState, { ...item, value: fields[field] }];
-        }
-      }
-    }
-    return {
-      ...state,
-      formFields: newState,
-    };
+    return dynamicFormAdapter.updateMany(fields, state);
   }),
   on(DynamicFormActions.changeStatus, (state, { status }) => {
     return {
@@ -48,16 +29,13 @@ const DynamicFormReducer = createReducer(
     };
   }),
   on(DynamicFormActions.removeField, (state, actions) => {
-    return {
-      ...state,
-      formFields: state.formFields.filter((item) => item.key !== actions.payload.key),
-    };
+    return dynamicFormAdapter.removeOne(actions.payload.key, state);
   }),
   on(DynamicFormActions.emptyForm, (): DynamicFormState => {
-    return dynamicFormInitialState;
+    return initialState;
   }),
 );
 
-export function dynamicFormReducer(state = dynamicFormInitialState, action: Action) {
+export function dynamicFormReducer(state = initialState, action: Action) {
   return DynamicFormReducer(state, action);
 }

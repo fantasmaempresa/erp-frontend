@@ -2,7 +2,11 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormFieldClass } from '../../../core/classes/FormFieldClass';
 import { Store } from '@ngrx/store';
-import { removeField, setField } from '../../../state/dynamic-form/dynamic-form.actions';
+import {
+  removeField,
+  setField,
+  updateField,
+} from '../../../state/dynamic-form/dynamic-form.actions';
 import { Formfield } from '../../../data/models/Formfield.model';
 import { lastValueFrom, Observable } from 'rxjs';
 import {
@@ -16,6 +20,7 @@ import { TemplateQuotes } from '../../../data/models/TemplateQuotes.model';
 import Swal from 'sweetalert2';
 import { MessageHelper } from '../../helpers/MessageHelper';
 import { TemplateQuotesService } from '../../../data/services/template-quotes.service';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'app-dynamic-form-creation',
@@ -36,6 +41,8 @@ export class DynamicFormCreationComponent implements OnInit {
   dynamicFormId$!: Observable<number>;
 
   dynamicFormName$!: Observable<string>;
+
+  isEdit = false;
 
   types = [
     {
@@ -146,16 +153,24 @@ export class DynamicFormCreationComponent implements OnInit {
   onSubmit() {
     this.form.markAllAsTouched();
     if (this.form.invalid) {
-      console.log(this.form.status);
       return;
     }
     const options: Formfield<any> = { ...this.form.value };
-    if (!options.controlType || !options.label) {
-      return;
-    }
+    console.log(options);
     options.key = options.label.toLowerCase();
-    this.store.dispatch(setField({ form: options }));
+    if (this.isEdit) {
+      console.log('Estoy editando');
+      const updatedField: Update<Formfield<any>> = {
+        id: options.key,
+        changes: { ...options },
+      };
+      this.store.dispatch(updateField({ form: updatedField }));
+    } else {
+      console.log('No estoy editando');
+      this.store.dispatch(setField({ form: options }));
+    }
     this.createForm();
+    this.isEdit = false;
   }
 
   saveTemplate() {
@@ -191,6 +206,12 @@ export class DynamicFormCreationComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<Formfield<any>[]>) {
+    console.log(event);
     moveItemInArray(this.formFields, event.previousIndex, event.currentIndex);
+  }
+
+  setDataInForm(field: Formfield<any>) {
+    this.isEdit = true;
+    this.form.patchValue(field);
   }
 }

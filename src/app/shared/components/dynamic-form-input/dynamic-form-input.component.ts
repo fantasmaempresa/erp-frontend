@@ -1,11 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
 import { Formfield } from '../../../data/models/Formfield.model';
 
@@ -15,7 +8,7 @@ import { Formfield } from '../../../data/models/Formfield.model';
   templateUrl: './dynamic-form-input.component.html',
   styleUrls: ['./dynamic-form-input.component.scss'],
 })
-export class DynamicFormInputComponent implements OnChanges, OnInit {
+export class DynamicFormInputComponent implements OnInit {
   _form!: FormGroup;
 
   @Input() input!: Formfield<any>;
@@ -37,6 +30,4 @@ export class DynamicFormInputComponent implements OnChanges, OnInit {
   ngOnInit() {
     this.form = this.controlContainer.control as FormGroup;
   }
-
-  ngOnChanges(changes: SimpleChanges): void {}
 }

@@ -1,11 +1,12 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormfieldControlService } from '../../../core/services/formfield-control.service';
 import { Store } from '@ngrx/store';
 import { selectDynamicForm, selectStatus } from '../../../state/dynamic-form/dynamic-form.selector';
 import { Observable, Subscription } from 'rxjs';
 import { Formfield } from '../../../data/models/Formfield.model';
-import { setValuesToFields } from '../../../state/dynamic-form/dynamic-form.actions';
+import { updateField } from '../../../state/dynamic-form/dynamic-form.actions';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -71,7 +72,20 @@ export class DynamicFormComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.formChangesSubscription = this.form.valueChanges.subscribe((val) => {
-      this.store.dispatch(setValuesToFields({ fields: val }));
+      let formUpdate: Update<Formfield<any>>;
+      for (const field in val) {
+        for (const item of this.formFields) {
+          if (item.key === field) {
+            formUpdate = {
+              id: item.key,
+              changes: {
+                value: val[field],
+              },
+            };
+            this.store.dispatch(updateField({ form: formUpdate }));
+          }
+        }
+      }
     });
   }
 

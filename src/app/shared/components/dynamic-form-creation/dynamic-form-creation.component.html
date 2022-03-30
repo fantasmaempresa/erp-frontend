@@ -8,15 +8,26 @@
             >{{ field.key }} - Tipo: {{ field.controlType }}</span
           >
 
-          <button
-            type="button"
-            mat-icon-button
-            matTooltip="Eliminar opción"
-            *ngIf="field.key !== 'total'"
-            (click)="removeField(field)"
-          >
-            <mat-icon>remove</mat-icon>
-          </button>
+          <div>
+            <button
+              type="button"
+              mat-icon-button
+              matTooltip="Editar opción"
+              *ngIf="field.key !== 'total'"
+              (click)="setDataInForm(field)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              type="button"
+              mat-icon-button
+              matTooltip="Eliminar opción"
+              *ngIf="field.key !== 'total'"
+              (click)="removeField(field)"
+            >
+              <mat-icon>remove</mat-icon>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -39,6 +50,10 @@
         <input matInput type="text" autocomplete="off" formControlName="label" />
         <mat-error *ngIf="f.controlType.hasError">Requerido</mat-error>
       </mat-form-field>
+
+      <div class="row">
+        <mat-checkbox color="primary" class="checkbox"> ¿Es requerido? </mat-checkbox>
+      </div>
 
       <p class="row" *ngIf="errorMessage$ | async as message" style="color: red">{{ message }}</p>
 
@@ -85,7 +100,10 @@
           </div>
         </div>
       </div>
-      <button mat-flat-button color="primary">Crear campo</button>
+      <div class="row justify-content-between">
+        <button mat-flat-button color="primary" class="col-4">Crear campo</button>
+        <button mat-flat-button type="button" color="accent" class="col-4">Limpiar</button>
+      </div>
     </form>
   </div>
   <ng-container *ngIf="formFields$ | async as fields">
