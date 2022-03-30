@@ -130,6 +130,7 @@ export class ProjectQuotePageComponent implements OnInit {
       options: [],
       key: 'total',
       type: 'number',
+      order: 0,
     };
     this.store.dispatch(setField({ form }));
   }

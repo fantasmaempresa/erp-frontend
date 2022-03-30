@@ -9,7 +9,7 @@ export interface Formfield<T> {
 
   validator?: string;
 
-  order?: number;
+  order: number;
 
   controlType: string;
 

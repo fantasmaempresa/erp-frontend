@@ -93,7 +93,17 @@ export class DynamicFormCreationComponent implements OnInit {
     this.errorMessage$ = store.select(selectErrorMessage);
     this.formFields$ = store.select(selectDynamicForm);
     this.formFields$.subscribe((data) => {
-      this.formFields = data;
+      this.formFields = data.sort((a, b) => {
+        // @ts-ignore
+        if (a.order < b.order) {
+          return -1;
+        }
+        // @ts-ignore
+        if (a.order > b.order) {
+          return 1;
+        }
+        return 0;
+      });
     });
 
     this.dynamicFormId$ = store.select(selectDynamicFormId);
@@ -114,6 +124,7 @@ export class DynamicFormCreationComponent implements OnInit {
       required: new FormControl(false),
       options: new FormArray([]),
       value: new FormControl(''),
+      order: new FormControl(0),
     });
 
     this.f.controlType.valueChanges.subscribe((value) => {
@@ -156,12 +167,13 @@ export class DynamicFormCreationComponent implements OnInit {
       return;
     }
     const options: Formfield<any> = { ...this.form.value };
+    options.order = this.formFields.length;
     console.log(options);
     options.key = options.label.toLowerCase();
     if (this.isEdit) {
       console.log('Estoy editando');
       const updatedField: Update<Formfield<any>> = {
-        id: options.key,
+        id: options.order,
         changes: { ...options },
       };
       this.store.dispatch(updateField({ form: updatedField }));
@@ -207,7 +219,18 @@ export class DynamicFormCreationComponent implements OnInit {
 
   drop(event: CdkDragDrop<Formfield<any>[]>) {
     console.log(event);
+    console.log('FORMFIELDS => ', this.formFields);
     moveItemInArray(this.formFields, event.previousIndex, event.currentIndex);
+    this.formFields.forEach((field, index) => {
+      console.log(field, index);
+      const updatedForm: Update<Formfield<any>> = {
+        id: field.key,
+        changes: {
+          order: index,
+        },
+      };
+      this.store.dispatch(updateField({ form: updatedForm }));
+    });
   }
 
   setDataInForm(field: Formfield<any>) {
