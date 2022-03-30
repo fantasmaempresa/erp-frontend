@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChildrenRouteLayoutComponent } from '../../layout/children-route-layout/children-route-layout.component';
 import { ConceptListComponent } from './page/concept-list/concept-list.component';
-import { ConceptFormComponent } from './page/concept-form/concept-form.component';
+import { ConceptPageComponent } from './page/concept-page/concept-page.component';
 
 const routes: Routes = [
   {
@@ -21,12 +21,12 @@ const routes: Routes = [
       },
       {
         path: 'concept',
-        component: ConceptFormComponent,
+        component: ConceptPageComponent,
         data: { breadcrumb: 'Editar concepto' },
       },
       {
         path: 'new',
-        component: ConceptFormComponent,
+        component: ConceptPageComponent,
         data: { breadcrumb: 'Nuevo concepto' },
       },
     ],

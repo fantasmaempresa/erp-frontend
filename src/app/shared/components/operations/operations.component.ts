@@ -186,8 +186,7 @@ export class OperationsComponent implements OnInit {
 
   createNewConcept() {
     const dialogRef = this.dialog.open(ConceptFormComponent, {
-      width: '75vw',
-      height: '75vh',
+      width: '50vw',
     });
 
     dialogRef.afterClosed().subscribe((result: any) => {
