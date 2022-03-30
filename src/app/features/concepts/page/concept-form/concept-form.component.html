@@ -6,36 +6,40 @@
       </button>
     </div>
   </mat-toolbar>
-  <form
-    class="row justify-content-center"
-    [formGroup]="conceptForm"
-    (ngSubmit)="onSubmit()"
-    (blur)="logValidationErrors()"
-  >
+  <form class="row justify-content-center" [formGroup]="conceptForm" (ngSubmit)="onSubmit()">
     <div class="col-6 d-flex flex-column">
       <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input
-          matInput
-          type="text"
-          autocomplete="off"
-          formControlName="name"
-          (blur)="logValidationErrors()"
-        />
-        <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
+        <input matInput type="text" autocomplete="off" formControlName="name" />
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Descripción</mat-label>
-        <input matInput type="text" formControlName="description" (blur)="logValidationErrors()" />
-        <mat-error *ngIf="formErrors.description">{{ formErrors.description }}</mat-error>
+        <input matInput type="text" formControlName="description" />
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Importe</mat-label>
-        <input matInput type="number" formControlName="amount" (blur)="logValidationErrors()" />
-        <mat-error *ngIf="formErrors.amount">{{ formErrors.amount }}</mat-error>
+        <input matInput type="number" formControlName="amount" />
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
+
+      <div formGroupName="formula" class="w-100">
+        <mat-checkbox formControlName="percentage" color="primary" class="mb-4">
+          ¿Es porcentaje?
+        </mat-checkbox>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Tipo de Operación</mat-label>
+          <mat-select formControlName="operation">
+            <mat-option *ngFor="let operation of operations" [value]="operation.value">{{
+              operation.label
+            }}</mat-option>
+          </mat-select>
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
 
       <button mat-flat-button color="primary">Guardar</button>
     </div>

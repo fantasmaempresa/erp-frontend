@@ -29,6 +29,12 @@ const routes: Routes = [
         component: ClientFormComponent,
         data: { breadcrumb: 'Agregar Cliente' },
       },
+      {
+        path: ':id/clientsLink',
+        loadChildren: () =>
+          import('../clients-link/clients-link.module').then((m) => m.ClientsLinkModule),
+        data: { breadcrumb: 'Enlaces' },
+      },
     ],
   },
 ];

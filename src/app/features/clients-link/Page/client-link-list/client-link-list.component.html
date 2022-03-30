@@ -1,0 +1,31 @@
+<mat-toolbar>
+  <button
+    *ngIf="selectedItem"
+    [matTooltipPosition]="'below'"
+    aria-label="Editar Enlace"
+    mat-icon-button
+    matTooltip="Editar Enlace"
+    (click)="goToEditForm()"
+  >
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button
+    *ngIf="selectedItem"
+    [matTooltipPosition]="'below'"
+    aria-label="Eliminar Enlace"
+    mat-icon-button
+    matTooltip="Eliminar Enlace"
+  >
+    <mat-icon>person_remove</mat-icon>
+  </button>
+  <button
+    [matTooltipPosition]="'below'"
+    aria-label="Agregar Enlace"
+    mat-icon-button
+    matTooltip="Agregar Enlace"
+    (click)="goToAddForm()"
+  >
+    <mat-icon>person_add</mat-icon>
+  </button>
+</mat-toolbar>
+<app-change-view [actions]="actions" (selectedItem)="setSelectedItem($event)"></app-change-view>

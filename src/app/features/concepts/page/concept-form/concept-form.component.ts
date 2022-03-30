@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from '../../../../shared/services/form-validation.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { validationMessages } from '../../../../core/constants/validationMessages';
 import { ConceptService } from '../../../../data/services/concept.service';
 import { Concept } from '../../../../data/models/Concept.model';
 
@@ -15,15 +14,28 @@ import { Concept } from '../../../../data/models/Concept.model';
 })
 export class ConceptFormComponent {
   conceptForm = new FormGroup({
-    name: new FormControl(''),
+    name: new FormControl('', Validators.required),
     description: new FormControl(''),
-    formula: new FormControl({ test: 'test' }),
     amount: new FormControl(null),
+    formula: new FormGroup({
+      operation: new FormControl(null, Validators.required),
+      percentage: new FormControl(null),
+    }),
   });
 
   isEdit = false;
 
   formErrors: any = {};
+
+  operations: { value: string; label: string }[] = [
+    { value: '+', label: 'Suma' },
+    {
+      value: '-',
+      label: 'Resta',
+    },
+    { value: '*', label: 'Multiplicación' },
+    { value: '/', label: 'División' },
+  ];
 
   constructor(
     private router: Router,
@@ -56,17 +68,11 @@ export class ConceptFormComponent {
     request$.subscribe({
       next: async () => {
         let message;
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         this.isEdit ? (message = 'actualizado') : (message = 'registrado');
         MessageHelper.successMessage('¡Éxito!', `El concepto ha sido ${message} correctamente.`);
         await this.backToListConcept();
       },
     });
-  }
-
-  logValidationErrors() {
-    this.formErrors = this.formValidationService.getValidationErrors(
-      this.conceptForm,
-      validationMessages,
-    );
   }
 }

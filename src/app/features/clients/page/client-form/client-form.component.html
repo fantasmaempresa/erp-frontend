@@ -6,11 +6,7 @@
       </button>
     </div>
   </mat-toolbar>
-  <form
-    (ngSubmit)="onSubmit()"
-    [formGroup]="clientForm"
-    class="row justify-content-center"
-  >
+  <form (ngSubmit)="onSubmit()" [formGroup]="clientForm" class="row justify-content-center">
     <div class="col-6 d-flex flex-column">
       <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
@@ -20,12 +16,7 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Correo</mat-label>
-        <input
-          formControlName="email"
-          matInput
-          placeholder="ejemplo@ejemplo.com"
-          type="email"
-        />
+        <input formControlName="email" matInput placeholder="ejemplo@ejemplo.com" type="email" />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
@@ -50,6 +41,15 @@
       <mat-form-field appearance="outline">
         <mat-label>RFC</mat-label>
         <input formControlName="rfc" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de Persona</mat-label>
+        <mat-select formControlName="type">
+          <mat-option [value]="1">Moral</mat-option>
+          <mat-option [value]="2">Física</mat-option>
+        </mat-select>
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 

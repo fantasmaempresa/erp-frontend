@@ -1,0 +1,84 @@
+import { MemoizedSelector, Store } from '@ngrx/store';
+import { Component, Inject, Optional } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Observable, shareReplay } from 'rxjs';
+import { Pagination } from '../../../../core/interfaces/Pagination.model';
+import { EntityModel } from '../../../../core/interfaces/EntityModel';
+import { ACTION_KEY, LOAD_ACTION, LOAD_NEXT_ACTION, SELECTOR } from '../dynamic-views.module';
+import { PageEvent } from '@angular/material/paginator';
+import { Class2ViewBuilderService } from '../services/class2-view-builder.service';
+import { DomSanitizer } from '@angular/platform-browser';
+
+@Component({
+  template: '',
+})
+export abstract class DynamicViewComponent<T extends EntityModel> {
+  data$!: Observable<Pagination<T> | null>;
+
+  displayedColumns!: string[];
+
+  labels!: string[];
+
+  mapToFields: { [p: string]: any };
+
+  mapToHTML: { [p: string]: any };
+
+  mapToGetKey = (item: any, [index]: [number]) => {
+    const key = this.displayedColumns[index];
+    if (this.mapToFields && Object.keys(this.mapToFields).includes(key)) {
+      return this.mapToFields[key](item[key]);
+    } else {
+      return item[key];
+    }
+  };
+
+  mapToInnerHtml = (item: any, [index]: [number]) => {
+    const key = this.displayedColumns[index];
+    const innerHtml = this.mapToHTML[key](item[key]);
+    return this.sanitizer.bypassSecurityTrustHtml(innerHtml);
+  };
+
+  pageSize = 10;
+
+  pageSizeOptions = [5, 10, 25, 100];
+
+  doesntHaveHtml = (key: string) => {
+    return !this.mapToHTML[key];
+  };
+
+  public constructor(
+    protected store: Store,
+    @Inject(SELECTOR)
+    protected selector: MemoizedSelector<any, any>,
+    @Inject(LOAD_ACTION)
+    protected loadAction: any,
+    @Inject(LOAD_NEXT_ACTION)
+    protected loadNextPageAction: (props: { size: number; page: number }) => any,
+    @Optional()
+    @Inject(ACTION_KEY)
+    protected actionKey: string,
+    protected route: ActivatedRoute,
+    class2View: Class2ViewBuilderService,
+    private sanitizer: DomSanitizer,
+  ) {
+    this.labels = class2View.getLabels();
+    this.displayedColumns = class2View.getAttrs();
+    this.mapToFields = class2View.getMapsFunctions();
+    this.mapToHTML = class2View.getHtmlMaps();
+    this.data$ = this.store.select(selector).pipe(shareReplay());
+    const id = Number(this.route.snapshot.parent?.params.id);
+
+    if (id && this.actionKey) {
+      this.store.dispatch(loadAction({ [actionKey]: id }));
+    } else {
+      this.store.dispatch(loadAction);
+    }
+  }
+
+  onPaginateChange(event: PageEvent) {
+    let page = event.pageIndex;
+    let size = event.pageSize;
+    page = page + 1;
+    this.store.dispatch(this.loadNextPageAction({ size, page }));
+  }
+}
