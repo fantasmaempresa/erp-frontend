@@ -14,6 +14,7 @@ import {
   selectDynamicFormId,
   selectDynamicFormName,
   selectErrorMessage,
+  selectIsEditable,
 } from '../../../state/dynamic-form/dynamic-form.selector';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TemplateQuotes } from '../../../data/models/TemplateQuotes.model';
@@ -43,7 +44,11 @@ export class DynamicFormCreationComponent implements OnInit {
 
   dynamicFormName$!: Observable<string>;
 
+  isEditable$: Observable<boolean>;
+
   isEdit = false;
+
+  saveMessageButtonLabel = '';
 
   types = [
     {
@@ -111,6 +116,12 @@ export class DynamicFormCreationComponent implements OnInit {
     this.dynamicFormId$.subscribe((id) => (this.templateId = id));
     this.dynamicFormName$ = store.select(selectDynamicFormName);
     this.dynamicFormName$.subscribe((name) => (this.templateName = name));
+    this.isEditable$ = store.select(selectIsEditable);
+    // this.isEditable$.subscribe({
+    //   next: (isEditable) => {
+    //     isEditable ? this.saveMessageButtonLabel = ''
+    //   }
+    // })
   }
 
   ngOnInit(): void {
@@ -235,5 +246,10 @@ export class DynamicFormCreationComponent implements OnInit {
   setDataInForm(field: Formfield<any>) {
     this.isEdit = true;
     this.form.patchValue(field);
+  }
+
+  cancelEditField() {
+    this.isEdit = false;
+    this.createForm();
   }
 }

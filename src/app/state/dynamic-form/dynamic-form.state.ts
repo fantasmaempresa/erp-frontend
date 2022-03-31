@@ -15,7 +15,7 @@ export const initialState: DynamicFormState = dynamicFormAdapter.getInitialState
   id: 0,
   name: '',
   errorMessage: '',
-  isEditable: true,
+  isEditable: false,
   status: 'NEW',
 });
 

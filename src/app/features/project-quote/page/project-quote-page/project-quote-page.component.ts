@@ -52,7 +52,7 @@ export class ProjectQuotePageComponent implements OnInit {
 
   step = 1;
 
-  templates$!: TemplateQuotes[];
+  templates!: TemplateQuotes[];
 
   constructor(
     private router: Router,
@@ -75,7 +75,7 @@ export class ProjectQuotePageComponent implements OnInit {
           return templates.data;
         }),
       )
-      .subscribe((data) => (this.templates$ = data));
+      .subscribe((data) => (this.templates = data));
 
     this.templateControl.valueChanges.subscribe({
       next: (value) => {

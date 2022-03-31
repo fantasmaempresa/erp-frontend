@@ -21,3 +21,5 @@ export const selectErrorMessage = createSelector(selectFormState, (state) => {
 export const selectStatus = createSelector(selectFormState, (state) => {
   return state.status;
 });
+
+export const selectIsEditable = createSelector(selectFormState, (state) => state.isEditable);

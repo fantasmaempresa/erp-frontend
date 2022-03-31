@@ -5,7 +5,12 @@ import * as DynamicFormActions from './dynamic-form.actions';
 const DynamicFormReducer = createReducer(
   initialState,
   on(DynamicFormActions.loadForm, (state, actions) => {
-    return dynamicFormAdapter.setAll(actions.form, state);
+    return dynamicFormAdapter.setAll(actions.form, {
+      ...state,
+      id: actions.id,
+      name: actions.name,
+      isEditable: true,
+    });
   }),
   on(DynamicFormActions.setField, (state, actions) => {
     if (state.entities[actions.form.key]) {

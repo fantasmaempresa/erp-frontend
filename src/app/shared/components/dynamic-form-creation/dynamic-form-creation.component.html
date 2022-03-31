@@ -37,8 +37,8 @@
       </div>
     </div>
   </div>
-  <div class="col-8">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="col-8 mat-elevation-z5">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="m-1">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Tipo de dato</mat-label>
         <mat-select formControlName="controlType">
@@ -106,20 +106,37 @@
         </div>
       </div>
       <div class="row justify-content-between">
-        <button mat-flat-button color="primary" class="col-4">Crear campo</button>
-        <button mat-flat-button type="button" color="accent" class="col-4">Limpiar</button>
+        <button mat-flat-button color="primary" class="col-4">
+          {{ isEdit ? 'Modificar' : 'Crear' }} campo
+        </button>
+        <button
+          *ngIf="isEdit"
+          mat-flat-button
+          type="button"
+          color="accent"
+          class="col-4"
+          (click)="cancelEditField()"
+        >
+          Cancelar
+        </button>
       </div>
     </form>
   </div>
   <ng-container *ngIf="formFields$ | async as fields">
-    <button
-      mat-flat-button
-      color="primary"
-      class="w-100 mt-5"
-      (click)="saveTemplate()"
-      *ngIf="fields.length > 1"
-    >
-      Guardar plantilla
-    </button>
+    <div class="d-flex justify-content-between">
+      <button
+        mat-flat-button
+        color="primary"
+        class="col-5 mt-5"
+        (click)="saveTemplate()"
+        *ngIf="fields.length > 1"
+      >
+        Guardar plantilla
+      </button>
+
+      <button mat-flat-button color="warn" class="col-5 mt-5" *ngIf="isEditable$ | async">
+        Eliminar plantilla
+      </button>
+    </div>
   </ng-container>
 </div>
