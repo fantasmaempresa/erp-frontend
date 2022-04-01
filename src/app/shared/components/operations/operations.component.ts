@@ -9,6 +9,9 @@ import { Concept } from '../../../data/models/Concept.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConceptFormComponent } from '../../../features/concepts/page/concept-form/concept-form.component';
 import { ProjectQuoteService } from '../../../data/services/project-quote.service';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-operations',
@@ -43,6 +46,8 @@ export class OperationsComponent implements OnInit {
   get operation_total() {
     return this.operationsForm.controls.operation_total as FormArray;
   }
+
+  separatorKeysCodes: number[] = [ENTER, COMMA];
 
   constructor(
     private store: Store,
@@ -87,7 +92,8 @@ export class OperationsComponent implements OnInit {
       label: new FormControl(field.label),
       value: new FormControl({ value: field.value, disabled: true }),
       key: new FormControl(field.key),
-      concept: new FormControl(''),
+      conceptCtrl: new FormControl(),
+      concepts: new FormArray([]),
     });
 
     if (target === 'total') {
@@ -102,7 +108,7 @@ export class OperationsComponent implements OnInit {
         ),
       );
     } else {
-      let valueOfConceptControl = operation.controls.concept.valueChanges.pipe(startWith(''));
+      let valueOfConceptControl = operation.controls.concepts.valueChanges.pipe(startWith(''));
       this.filteredConcepts$.push(
         this.concepts$.pipe(
           combineLatestWith(valueOfConceptControl),
@@ -216,5 +222,41 @@ export class OperationsComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result: any) => {
       console.log(result);
     });
+  }
+
+  selected(event: MatAutocompleteSelectedEvent, index: number, target: string, element: any): void {
+    console.log(event);
+    let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
+    concepts.push(new FormControl(event.option.value));
+    this.operation_fields.at(index).get('conceptCtrl')?.setValue(null);
+    console.log(this.operation_fields.value);
+    element.nativeElement.value = ''
+    // this.fruits.push(event.option.viewValue);
+    // this.fruitInput.nativeElement.value = '';
+    // this.fruitCtrl.setValue(null);
+  }
+
+  add(event: MatChipInputEvent, index: number, target: string): void {
+    const value = (event.value || '').trim();
+
+    // Add our fruit
+    if (value) {
+      let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
+      concepts.push(new FormControl(value));
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+
+    // this.fruitCtrl.setValue(null);
+    this.operation_fields.at(index).get('conceptCtrl')?.setValue(null);
+    console.log(this.operation_fields.value);
+  }
+
+  remove(fruit: string): void {
+    // const index = this.fruits.indexOf(fruit);
+    // if (index >= 0) {
+    // this.fruits.splice(index, 1);
+    // }
   }
 }

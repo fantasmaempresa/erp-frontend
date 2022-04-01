@@ -144,6 +144,7 @@ export class DynamicFormCreationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.store.dispatch(emptyForm());
     this.createForm();
     this.addTotalToTemplate();
   }
