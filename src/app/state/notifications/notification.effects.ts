@@ -12,7 +12,7 @@ import {
   startListenNotification,
 } from './notification.actions';
 import { NotificationsService } from '../../data/services/notifications.service';
-import { SocketService } from '../../core/services/socket.service';
+import { NotificationSocketService } from '../../core/services/SocketChannels/notification-socket.service';
 import { Store } from '@ngrx/store';
 import { selectIncomingNotifications, selectUnreadNotifications } from './notification.selector';
 import { NotificationModel } from '../../data/models/Notification.model';
@@ -32,9 +32,7 @@ export class NotificationEffects {
   listenNotifications$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(startListenNotification),
-      mergeMap(() => {
-        return this.socketService.notifications$;
-      }),
+      mergeMap(() => this.socketService.notifications$),
       map((notifications: any) => {
         return incomingNotification({ notifications });
       }),
@@ -81,24 +79,7 @@ export class NotificationEffects {
   constructor(
     private actions$: Actions,
     private notificationsService: NotificationsService,
-    private socketService: SocketService,
+    private socketService: NotificationSocketService,
     private store: Store,
-  ) {
-    //setChanel
-    this.socketService.subscribeToChannel('notification', 'NotificationEvent');
-
-    // this.testNotifications();
-  }
-
-  private testNotifications() {
-    setTimeout(() => {
-      console.log('Creando primeras notificaciones');
-      this.socketService.subscribeToChannelTest();
-    }, 19_000);
-
-    setInterval(() => {
-      console.log('Creando nuevas notificaciones');
-      this.socketService.subscribeToChannelTest();
-    }, 120_000);
-  }
+  ) {}
 }

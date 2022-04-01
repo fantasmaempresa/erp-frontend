@@ -2,7 +2,6 @@ import { ActionReducerMap } from '@ngrx/store';
 import { AuthState, initialState } from './auth/auth.state';
 import { authReducer } from './auth/auth.reducer';
 import { ClientsState, initialState as clientsInitialState } from './clients/clients.state';
-import { clientReducer } from './clients/clients.reducer';
 import { initialState as staffInitialState, StaffState } from './staff/staff.state';
 import { staffReducer } from './staff/staff.reducer';
 import { areasInitialState, AreasState } from './areas/areas.state';
@@ -25,13 +24,17 @@ import {
 import { notificationReducer } from './notifications/notification.reducer';
 import {
   ClientsLinkState,
-  initialState as clientsLinkInitalState,
+  initialState as clientsLinkInitialState,
 } from './clients-link/clients-link.state';
 import { clientsLinkReducer } from './clients-link/clients-link.reducer';
+import { clientReducer } from './clients/clients.reducer';
+import { userReducer } from './users/users.reducer';
+import { initialState as userInitialState, UsersState } from './users/users.state';
 
 export interface AppState {
   auth: AuthState;
   clients: ClientsState;
+  users: UsersState;
   clientsLink: ClientsLinkState;
   staff: StaffState;
   areas: AreasState;
@@ -46,7 +49,8 @@ export const initialAppState: AppState = {
   notifications: notificationInitialState,
   auth: initialState,
   clients: clientsInitialState,
-  clientsLink: clientsLinkInitalState,
+  users: userInitialState,
+  clientsLink: clientsLinkInitialState,
   staff: staffInitialState,
   areas: areasInitialState,
   concepts: conceptsInitialState,
@@ -62,6 +66,7 @@ export function getInitialAppState(): AppState {
 export const reducers: ActionReducerMap<AppState> = {
   auth: authReducer,
   clients: clientReducer,
+  users: userReducer,
   staff: staffReducer,
   areas: areasReducer,
   concepts: conceptReducer,

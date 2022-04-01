@@ -15,7 +15,6 @@ import {
   loadNextPageOfStaff,
   loadStaff,
 } from '../../../../state/staff/staff.actions';
-import { loadClients } from '../../../../state/clients/clients.actions';
 
 @Component({
   selector: 'app-staff-list',
@@ -102,10 +101,10 @@ export class StaffListComponent implements OnInit, AfterViewInit, OnDestroy {
   delete() {
     MessageHelper.decisionMessage(
       `¿Deseas borrar al usuario ${this.selection.selected[0].name}?`,
-      'Una vez borrado no hay marcha atras.',
+      'Una vez borrado no hay marcha atrás.',
       () => {
         this.staffService.delete(this.selection.selected[0].id).subscribe({
-          next: () => this.store.dispatch(loadClients()),
+          // next: () => this.store.dispatch(loadClients()),
         });
       },
     );

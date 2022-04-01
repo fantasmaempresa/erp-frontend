@@ -30,5 +30,15 @@
   >
     <mat-icon>person_remove</mat-icon>
   </button>
+
+  <button
+    [matTooltipPosition]="'below'"
+    aria-label="Agregar Cliente"
+    mat-icon-button
+    matTooltip="Agregar Cliente"
+    (click)="goToAddForm()"
+  >
+    <mat-icon>person_add</mat-icon>
+  </button>
 </mat-toolbar>
 <app-change-view [actions]="actions" (selectedItem)="setSelectedItem($event)"></app-change-view>
