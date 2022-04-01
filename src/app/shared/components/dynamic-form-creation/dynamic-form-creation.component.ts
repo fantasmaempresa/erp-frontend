@@ -3,12 +3,14 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormFieldClass } from '../../../core/classes/FormFieldClass';
 import { Store } from '@ngrx/store';
 import {
+  emptyForm,
+  loadForm,
   removeField,
   setField,
   updateField,
 } from '../../../state/dynamic-form/dynamic-form.actions';
 import { Formfield } from '../../../data/models/Formfield.model';
-import { lastValueFrom, Observable } from 'rxjs';
+import { lastValueFrom, map, Observable } from 'rxjs';
 import {
   selectDynamicForm,
   selectDynamicFormId,
@@ -85,6 +87,10 @@ export class DynamicFormCreationComponent implements OnInit {
 
   form!: FormGroup;
 
+  templateControl = new FormControl(null);
+
+  templates!: TemplateQuotes[];
+
   get f() {
     return this.form.controls;
   }
@@ -96,6 +102,19 @@ export class DynamicFormCreationComponent implements OnInit {
   errorMessage$: Observable<string>;
 
   constructor(private store: Store, private templateQuotesService: TemplateQuotesService) {
+    this.getTemplates();
+    this.templateControl.valueChanges.subscribe({
+      next: (value) => {
+        if (value) {
+          this.store.dispatch(emptyForm());
+          this.store.dispatch(loadForm({ form: value.form, id: value.id, name: value.name }));
+        } else {
+          this.store.dispatch(emptyForm());
+          this.addTotalToTemplate();
+        }
+      },
+    });
+
     this.errorMessage$ = store.select(selectErrorMessage);
     this.formFields$ = store.select(selectDynamicForm);
     this.formFields$.subscribe((data) => {
@@ -126,6 +145,18 @@ export class DynamicFormCreationComponent implements OnInit {
 
   ngOnInit(): void {
     this.createForm();
+    this.addTotalToTemplate();
+  }
+
+  getTemplates() {
+    this.templateQuotesService
+      .fetchAll()
+      .pipe(
+        map((templates) => {
+          return templates.data;
+        }),
+      )
+      .subscribe((data) => (this.templates = data));
   }
 
   createForm() {
@@ -202,8 +233,31 @@ export class DynamicFormCreationComponent implements OnInit {
       form: this.formFields,
     };
     if (this.templateId !== 0) {
-      this.templateQuotesService.update(template).subscribe((data) => console.log(data));
-      return;
+      Swal.fire({
+        title: 'Actualizar plantilla',
+        icon: 'question',
+        input: 'text',
+        inputValue: this.templateName,
+        text: 'Ponle un titulo a la plantilla',
+        confirmButtonColor: '#dfc356',
+        focusConfirm: false,
+        confirmButtonText: 'Guardar',
+        preConfirm: (name) => {
+          template.name = name;
+          let request = this.templateQuotesService.update(template);
+          return lastValueFrom(request);
+        },
+      })
+        .then((result) => {
+          if (result) {
+            MessageHelper.successMessage('Exito', 'Plantilla guardada con éxito');
+            this.getTemplates();
+          }
+        })
+        .catch(({ error }) => {
+          console.log(error);
+          MessageHelper.errorMessage(error.error);
+        });
     }
 
     if (this.templateId === 0) {
@@ -212,6 +266,7 @@ export class DynamicFormCreationComponent implements OnInit {
         title: 'Guardar plantilla',
         icon: 'question',
         input: 'text',
+        inputValue: this.templateName,
         text: 'Ponle un titulo a la plantilla',
         confirmButtonColor: '#dfc356',
         focusConfirm: false,
@@ -221,18 +276,37 @@ export class DynamicFormCreationComponent implements OnInit {
           let request = this.templateQuotesService.save(template);
           return lastValueFrom(request);
         },
-      }).then(() => {
-        MessageHelper.successMessage('Exito', 'Plantilla guardada con éxito');
+      }).then((result) => {
+        if (result) {
+          MessageHelper.successMessage('Exito', 'Plantilla guardada con éxito');
+          this.getTemplates();
+        }
       });
     }
   }
 
+  deleteTemplate() {
+    MessageHelper.decisionMessage(
+      `¿Deseas borrar la plantilla ${this.templateName}?`,
+      'Una vez borrada no hay marcha atras.',
+      () => {
+        this.templateQuotesService.delete(this.templateId).subscribe({
+          next: () => {
+            MessageHelper.successMessage('Éxito', 'Se ha eliminado correctamente');
+            this.store.dispatch(emptyForm());
+            this.addTotalToTemplate();
+          },
+          error: ({ error }) => {
+            MessageHelper.errorMessage(error.error);
+          },
+        });
+      },
+    );
+  }
+
   drop(event: CdkDragDrop<Formfield<any>[]>) {
-    console.log(event);
-    console.log('FORMFIELDS => ', this.formFields);
     moveItemInArray(this.formFields, event.previousIndex, event.currentIndex);
     this.formFields.forEach((field, index) => {
-      console.log(field, index);
       const updatedForm: Update<Formfield<any>> = {
         id: field.id,
         changes: {
@@ -251,5 +325,20 @@ export class DynamicFormCreationComponent implements OnInit {
   cancelEditField() {
     this.isEdit = false;
     this.createForm();
+  }
+
+  addTotalToTemplate() {
+    const form: Formfield<number> = {
+      id: uuidv4(),
+      required: true,
+      controlType: 'number',
+      label: 'Total',
+      value: 0,
+      options: [],
+      key: 'total',
+      type: 'number',
+      order: 0,
+    };
+    this.store.dispatch(setField({ form }));
   }
 }

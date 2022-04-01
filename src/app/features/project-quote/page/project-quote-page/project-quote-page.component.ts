@@ -1,16 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TemplateQuotesService } from '../../../../data/services/template-quotes.service';
-import { combineLatest, map, Observable, take } from 'rxjs';
-import { TemplateQuotes } from '../../../../data/models/TemplateQuotes.model';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import {
-  changeStatus,
-  emptyForm,
-  loadForm,
-  setField,
-} from '../../../../state/dynamic-form/dynamic-form.actions';
+import { combineLatest, Observable, take } from 'rxjs';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { changeStatus } from '../../../../state/dynamic-form/dynamic-form.actions';
 import { Formfield } from '../../../../data/models/Formfield.model';
 import {
   selectDynamicForm,
@@ -19,14 +13,13 @@ import {
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import faker from '@faker-js/faker';
-import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-project-quote-page',
   templateUrl: './project-quote-page.component.html',
   styleUrls: ['./project-quote-page.component.scss'],
 })
-export class ProjectQuotePageComponent implements OnInit {
+export class ProjectQuotePageComponent {
   headerForm = new FormGroup({
     name: new FormControl(faker.datatype.uuid(), [Validators.required]),
     addressee: new FormControl(`${faker.name.firstName()} ${faker.name.lastName()}`, [
@@ -37,7 +30,6 @@ export class ProjectQuotePageComponent implements OnInit {
     status_quote_id: new FormControl(null),
     client: new FormControl({ value: null, disabled: true }),
     client_id: new FormControl({ value: null, disabled: true }),
-    concepts: new FormArray([new FormControl({})]),
   });
 
   quoteForm = new FormGroup({
@@ -48,11 +40,7 @@ export class ProjectQuotePageComponent implements OnInit {
 
   operationsForm = new FormGroup({});
 
-  templateControl = new FormControl(null);
-
   step = 1;
-
-  templates!: TemplateQuotes[];
 
   constructor(
     private router: Router,
@@ -68,30 +56,6 @@ export class ProjectQuotePageComponent implements OnInit {
         this.formFields = fields;
       }
     });
-    templateQuotesService
-      .fetchAll()
-      .pipe(
-        map((templates) => {
-          return templates.data;
-        }),
-      )
-      .subscribe((data) => (this.templates = data));
-
-    this.templateControl.valueChanges.subscribe({
-      next: (value) => {
-        if (value) {
-          this.store.dispatch(emptyForm());
-          this.store.dispatch(loadForm({ form: value.form, id: value.id, name: value.name }));
-        } else {
-          this.store.dispatch(emptyForm());
-          this.addTotalToTemplate();
-        }
-      },
-    });
-  }
-
-  ngOnInit() {
-    this.addTotalToTemplate();
   }
 
   async backToListUsers() {
@@ -122,28 +86,13 @@ export class ProjectQuotePageComponent implements OnInit {
     this.store.dispatch(changeStatus({ status: 'NEW' }));
   }
 
-  addTotalToTemplate() {
-    const form: Formfield<number> = {
-      id: uuidv4(),
-      required: true,
-      controlType: 'number',
-      label: 'Total',
-      value: 0,
-      options: [],
-      key: 'total',
-      type: 'number',
-      order: 0,
-    };
-    this.store.dispatch(setField({ form }));
-  }
-
   async saveQuote() {
     this.store
       .select(selectDynamicForm)
       .pipe(take(1))
       .subscribe((form) => {
         const quote = {
-          ...this.quoteForm.getRawValue(),
+          ...this.headerForm.getRawValue(),
           quote: {
             form: {
               ...form,

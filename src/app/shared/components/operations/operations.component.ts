@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { combineLatestWith, map, Observable, startWith, tap } from 'rxjs';
+import { combineLatestWith, map, Observable, startWith, take, tap } from 'rxjs';
 import { Formfield } from '../../../data/models/Formfield.model';
 import { selectDynamicForm } from '../../../state/dynamic-form/dynamic-form.selector';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
@@ -8,6 +8,7 @@ import { ConceptService } from '../../../data/services/concept.service';
 import { Concept } from '../../../data/models/Concept.model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConceptFormComponent } from '../../../features/concepts/page/concept-form/concept-form.component';
+import { ProjectQuoteService } from '../../../data/services/project-quote.service';
 
 @Component({
   selector: 'app-operations',
@@ -47,6 +48,7 @@ export class OperationsComponent implements OnInit {
     private store: Store,
     private conceptService: ConceptService,
     public dialog: MatDialog,
+    private projectQuoteService: ProjectQuoteService,
   ) {
     this.formFields$ = store.select(selectDynamicForm);
     this.concepts$ = this.conceptService.fetchAll().pipe(map((concepts) => concepts.data));
@@ -79,13 +81,17 @@ export class OperationsComponent implements OnInit {
     this.operationsForm.valueChanges.subscribe(() => this.form.emit(this.operationsForm));
   }
 
-  createOperationGroup(key: string, target: string): FormGroup {
+  createOperationGroup(field: Formfield<any>, target: string): FormGroup {
+    console.log(field);
     let operation = new FormGroup({
-      key: new FormControl({ value: key, disabled: true }),
+      label: new FormControl(field.label),
+      value: new FormControl({ value: field.value, disabled: true }),
+      key: new FormControl(field.key),
       concept: new FormControl(''),
     });
 
     if (target === 'total') {
+      operation.get('value')?.patchValue('Valor por calcular');
       let valueOfConceptControl = operation.controls.concept.valueChanges.pipe(startWith(''));
       this.filteredConceptsTotal$.push(
         this.concepts$.pipe(
@@ -116,10 +122,10 @@ export class OperationsComponent implements OnInit {
     }
     if (item.key === 'total') {
       const control = this.operationsForm.get('operation_total') as FormArray;
-      control.push(this.createOperationGroup(item.key, 'total'));
+      control.push(this.createOperationGroup(item, 'total'));
     } else {
       const control = this.operationsForm.get('operation_fields') as FormArray;
-      control.push(this.createOperationGroup(item.key, 'other'));
+      control.push(this.createOperationGroup(item, 'other'));
     }
     // this.autocompleteControl = new FormControl();
   }
@@ -181,6 +187,24 @@ export class OperationsComponent implements OnInit {
   }
 
   calculateOperations() {
+    this.store
+      .select(selectDynamicForm)
+      .pipe(take(1))
+      .subscribe((form) => {
+        const quote = {
+          quote: {
+            form: {
+              ...form,
+            },
+            operations: {
+              ...this.operationsForm.getRawValue(),
+            },
+          },
+        };
+        this.projectQuoteService
+          .calculateOperations({ ...quote })
+          .subscribe((resp) => console.log(resp));
+      });
     console.log(this.operationsForm.getRawValue());
   }
 

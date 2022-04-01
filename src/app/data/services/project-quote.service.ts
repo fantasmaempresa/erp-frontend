@@ -21,4 +21,8 @@ export class ProjectQuoteService extends CrudService<ProjectQuote> {
       params,
     });
   }
+
+  calculateOperations(form: any) {
+    return this._http.post(`${environment.base_url}/projectQuotes/calculate/reactive`, form);
+  }
 }

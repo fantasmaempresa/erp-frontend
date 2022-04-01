@@ -1,5 +1,5 @@
-.example-list {
-  width: 500px;
+.draggable-list {
+  //width: 500px;
   max-width: 100%;
   border: solid 1px #ccc;
   min-height: 60px;
@@ -7,19 +7,20 @@
   background: white;
   border-radius: 4px;
   overflow: hidden;
+  margin: 1rem;
 }
 
 .example-box {
   padding: 20px 10px;
   border-bottom: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
+  color: #000;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
   box-sizing: border-box;
   cursor: move;
-  background: white;
+  background: var(--color-secondary-200);
   font-size: 14px;
 }
 
