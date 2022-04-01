@@ -1,5 +1,39 @@
 <mat-toolbar>
   <button
+    *ngIf="selectedItem && selectedItem.id !== (currentUser$ | async)?.id"
+    [matTooltipPosition]="'below'"
+    aria-label="Bloquear Usuario"
+    mat-icon-button
+    color="warn"
+    matTooltip="Bloquear Usuario"
+    (click)="blockUser()"
+  >
+    <mat-icon>lock</mat-icon>
+  </button>
+  <button
+    *ngIf="selectedItem && selectedItem.id !== (currentUser$ | async)?.id"
+    [matTooltipPosition]="'below'"
+    aria-label="Desbloquear Usuario"
+    mat-icon-button
+    color="warn"
+    matTooltip="Desbloquear Usuario"
+    (click)="unlockUser()"
+  >
+    <mat-icon>lock_open</mat-icon>
+  </button>
+  <button
+    *ngIf="selectedItem && selectedItem.id !== (currentUser$ | async)?.id"
+    [matTooltipPosition]="'below'"
+    aria-label="Expulsar Usuario"
+    mat-icon-button
+    color="warn"
+    matTooltip="Expulsar Usuario"
+    (click)="powerOff()"
+  >
+    <mat-icon>power_off</mat-icon>
+  </button>
+
+  <button
     *ngIf="selectedItem"
     [matTooltipPosition]="'below'"
     aria-label="Editar usuario"

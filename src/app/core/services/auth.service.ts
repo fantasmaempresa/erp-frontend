@@ -74,4 +74,12 @@ export class AuthService {
   statusOffline(status: 'online' | 'offline' = 'offline') {
     this.http.get(`${this._base}${status}`).pipe(take(1)).subscribe();
   }
+
+  setLockStatus(id: number, action: 'locked' | 'unlocked') {
+    return this.http.get(`${this._base}user/${action}/${id}`).pipe(take(1));
+  }
+
+  closeSystem(id: number, locked: boolean) {
+    return this.http.post(`${this._base}user/closeSystem/${id}`, { locked }).pipe(take(1));
+  }
 }

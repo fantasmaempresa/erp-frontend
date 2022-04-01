@@ -30,8 +30,19 @@ export class User extends EntityModel {
   })
   online: number;
 
+  @printLabel('Acceso a la plataforma')
+  @mapToHTML((online) => {
+    const status = {
+      1: '#f91a1a', //Desconectado
+      0: '#3be30e', //Conectado
+    };
+    // @ts-ignore
+    return `<div style=" display: inline-block ;padding: 1.25rem; background: ${status[online]};margin-top: 1rem; border-radius: 50%"></div>`;
+  })
+  locked: number;
+
   @printLabel('Rol')
-  @mapToLabel((value) => value.name)
+  @mapToLabel((value) => value?.name)
   role: Role;
 
   constructor(
@@ -43,6 +54,7 @@ export class User extends EntityModel {
     config: object,
     role_id: number,
     online: number,
+    locked: number,
     role: Role,
   ) {
     super(id, created_at, updated_at);
@@ -51,6 +63,7 @@ export class User extends EntityModel {
     this.config = config;
     this.role_id = role_id;
     this.online = online;
+    this.locked = locked;
     this.role = role;
   }
 }
