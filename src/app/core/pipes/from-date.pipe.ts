@@ -1,15 +1,16 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import * as moment from 'moment';
+import { formatDistanceToNow } from 'date-fns';
+import { es } from 'date-fns/locale';
 
 @Pipe({
   name: 'fromDate',
 })
 export class FromDatePipe implements PipeTransform {
-  transform(_date: Date | undefined): string {
+  transform(_date: Date | string | undefined): string {
     if (typeof _date === 'undefined') {
       return '';
     }
-    const m = moment(_date).locale('es');
-    return m.fromNow();
+
+    return formatDistanceToNow(new Date(_date), { locale: es });
   }
 }

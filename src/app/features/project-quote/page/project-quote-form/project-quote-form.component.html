@@ -6,12 +6,7 @@
 <!--      </button>-->
 <!--    </div>-->
 <!--  </mat-toolbar>-->
-<form
-  class="row justify-content-center"
-  [formGroup]="quoteForm"
-  (ngSubmit)="onSubmit()"
-  (blur)="logValidationErrors()"
->
+<form class="row justify-content-center" [formGroup]="form" (ngSubmit)="onSubmit()">
   <div class="col-6 d-flex flex-column pe-0">
     <!--      <mat-form-field appearance="outline">-->
     <!--        <mat-label>Estado de la cotización</mat-label>-->
@@ -24,32 +19,20 @@
 
     <mat-form-field appearance="outline">
       <mat-label>Tipo de cotización</mat-label>
-      <input
-        matInput
-        type="text"
-        autocomplete="off"
-        formControlName="name"
-        (blur)="logValidationErrors()"
-      />
-      <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
+      <input matInput type="text" autocomplete="off" formControlName="name" />
+      <mat-error appErrorMessage></mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>A quien va dirigido</mat-label>
-      <input
-        matInput
-        type="text"
-        autocomplete="off"
-        formControlName="addressee"
-        (blur)="logValidationErrors()"
-      />
-      <mat-error *ngIf="formErrors.name">{{ formErrors.name }}</mat-error>
+      <input matInput type="text" autocomplete="off" formControlName="addressee" />
+      <mat-error appErrorMessage></mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Descripción</mat-label>
-      <textarea matInput formControlName="description" (blur)="logValidationErrors()"> </textarea>
-      <mat-error *ngIf="formErrors.description">{{ formErrors.description }}</mat-error>
+      <textarea matInput formControlName="description"> </textarea>
+      <mat-error appErrorMessage></mat-error>
     </mat-form-field>
 
     <div class="d-flex flex-row">

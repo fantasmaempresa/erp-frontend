@@ -2,7 +2,11 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormFieldClass } from '../../../core/classes/FormFieldClass';
 import { Store } from '@ngrx/store';
-import { removeField, setField } from '../../../state/dynamic-form/dynamic-form.actions';
+import {
+  removeField,
+  setField,
+  updateField,
+} from '../../../state/dynamic-form/dynamic-form.actions';
 import { Formfield } from '../../../data/models/Formfield.model';
 import { lastValueFrom, Observable } from 'rxjs';
 import {
@@ -10,12 +14,15 @@ import {
   selectDynamicFormId,
   selectDynamicFormName,
   selectErrorMessage,
+  selectIsEditable,
 } from '../../../state/dynamic-form/dynamic-form.selector';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TemplateQuotes } from '../../../data/models/TemplateQuotes.model';
 import Swal from 'sweetalert2';
 import { MessageHelper } from '../../helpers/MessageHelper';
 import { TemplateQuotesService } from '../../../data/services/template-quotes.service';
+import { Update } from '@ngrx/entity';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-dynamic-form-creation',
@@ -36,6 +43,12 @@ export class DynamicFormCreationComponent implements OnInit {
   dynamicFormId$!: Observable<number>;
 
   dynamicFormName$!: Observable<string>;
+
+  isEditable$: Observable<boolean>;
+
+  isEdit = false;
+
+  saveMessageButtonLabel = '';
 
   types = [
     {
@@ -86,13 +99,29 @@ export class DynamicFormCreationComponent implements OnInit {
     this.errorMessage$ = store.select(selectErrorMessage);
     this.formFields$ = store.select(selectDynamicForm);
     this.formFields$.subscribe((data) => {
-      this.formFields = data;
+      this.formFields = data.sort((a, b) => {
+        // @ts-ignore
+        if (a.order < b.order) {
+          return -1;
+        }
+        // @ts-ignore
+        if (a.order > b.order) {
+          return 1;
+        }
+        return 0;
+      });
     });
 
     this.dynamicFormId$ = store.select(selectDynamicFormId);
     this.dynamicFormId$.subscribe((id) => (this.templateId = id));
     this.dynamicFormName$ = store.select(selectDynamicFormName);
     this.dynamicFormName$.subscribe((name) => (this.templateName = name));
+    this.isEditable$ = store.select(selectIsEditable);
+    // this.isEditable$.subscribe({
+    //   next: (isEditable) => {
+    //     isEditable ? this.saveMessageButtonLabel = ''
+    //   }
+    // })
   }
 
   ngOnInit(): void {
@@ -101,12 +130,14 @@ export class DynamicFormCreationComponent implements OnInit {
 
   createForm() {
     this.form = new FormGroup({
+      id: new FormControl(uuidv4()),
       controlType: new FormControl('', [Validators.required]),
       key: new FormControl(''),
       label: new FormControl('', [Validators.required]),
       required: new FormControl(false),
       options: new FormArray([]),
       value: new FormControl(''),
+      order: new FormControl(0),
     });
 
     this.f.controlType.valueChanges.subscribe((value) => {
@@ -146,16 +177,22 @@ export class DynamicFormCreationComponent implements OnInit {
   onSubmit() {
     this.form.markAllAsTouched();
     if (this.form.invalid) {
-      console.log(this.form.status);
       return;
     }
     const options: Formfield<any> = { ...this.form.value };
-    if (!options.controlType || !options.label) {
-      return;
-    }
     options.key = options.label.toLowerCase();
-    this.store.dispatch(setField({ form: options }));
+    if (this.isEdit) {
+      const updatedField: Update<Formfield<any>> = {
+        id: options.id,
+        changes: { ...options },
+      };
+      this.store.dispatch(updateField({ form: updatedField }));
+    } else {
+      options.order = this.formFields.length;
+      this.store.dispatch(setField({ form: options }));
+    }
     this.createForm();
+    this.isEdit = false;
   }
 
   saveTemplate() {
@@ -191,6 +228,28 @@ export class DynamicFormCreationComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<Formfield<any>[]>) {
+    console.log(event);
+    console.log('FORMFIELDS => ', this.formFields);
     moveItemInArray(this.formFields, event.previousIndex, event.currentIndex);
+    this.formFields.forEach((field, index) => {
+      console.log(field, index);
+      const updatedForm: Update<Formfield<any>> = {
+        id: field.id,
+        changes: {
+          order: index,
+        },
+      };
+      this.store.dispatch(updateField({ form: updatedForm }));
+    });
+  }
+
+  setDataInForm(field: Formfield<any>) {
+    this.isEdit = true;
+    this.form.patchValue(field);
+  }
+
+  cancelEditField() {
+    this.isEdit = false;
+    this.createForm();
   }
 }

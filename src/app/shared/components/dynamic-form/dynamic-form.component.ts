@@ -1,18 +1,19 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormfieldControlService } from '../../../core/services/formfield-control.service';
 import { Store } from '@ngrx/store';
 import { selectDynamicForm, selectStatus } from '../../../state/dynamic-form/dynamic-form.selector';
 import { Observable, Subscription } from 'rxjs';
 import { Formfield } from '../../../data/models/Formfield.model';
-import { setValuesToFields } from '../../../state/dynamic-form/dynamic-form.actions';
+import { updateField } from '../../../state/dynamic-form/dynamic-form.actions';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'app-dynamic-form',
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.scss'],
 })
-export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
+export class DynamicFormComponent implements OnInit, OnChanges {
   @Input() formFields!: Formfield<any>[];
 
   form: FormGroup = new FormGroup({});
@@ -71,21 +72,41 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     this.formChangesSubscription = this.form.valueChanges.subscribe((val) => {
-      this.store.dispatch(setValuesToFields({ fields: val }));
+      let formUpdate: Update<Formfield<any>>;
+      for (const field in val) {
+        for (const item of this.formFields) {
+          if (item.key === field) {
+            formUpdate = {
+              id: item.id,
+              changes: {
+                value: val[field],
+              },
+            };
+            this.store.dispatch(updateField({ form: formUpdate }));
+          }
+        }
+      }
     });
   }
 
-  ngOnDestroy(): void {}
-
   ngOnChanges(changes: SimpleChanges) {
     // if (!changes.formFields.firstChange) {
-    this.createForm(this.formFields);
+    this.form = this.createForm(this.formFields);
+    // this.createForm(this.formFields);
     // }
   }
 
-  createForm(controls: Formfield<any>[]) {
+  createForm(controls: Formfield<any>[]): FormGroup {
+    const group: any = {};
     for (const control of controls) {
-      this.form.addControl(control.key, new FormControl(control.value));
+      if (control.key === 'total') {
+        group[control.key] = new FormControl({ value: null, disabled: true });
+      } else {
+        group[control.key] = control.required
+          ? new FormControl(control.value || '', [Validators.required])
+          : new FormControl(control.value || '');
+      }
     }
+    return new FormGroup(group);
   }
 }

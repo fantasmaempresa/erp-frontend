@@ -1,4 +1,6 @@
 export interface Formfield<T> {
+  id: string;
+
   value: T | undefined;
 
   key: string;
@@ -9,7 +11,7 @@ export interface Formfield<T> {
 
   validator?: string;
 
-  order?: number;
+  order: number;
 
   controlType: string;
 

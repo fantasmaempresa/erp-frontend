@@ -1,28 +1,44 @@
 <div class="row">
   <div class="col-4">
-    <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-      <div class="example-box" *ngFor="let field of formFields$ | async" cdkDrag>
+    <div
+      cdkDropList
+      class="example-list"
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListData]="formFields"
+    >
+      <div class="example-box" *ngFor="let field of formFields" cdkDrag>
         <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
         <div class="d-flex justify-content-between w-100">
           <span class="d-flex align-items-center"
             >{{ field.key }} - Tipo: {{ field.controlType }}</span
           >
 
-          <button
-            type="button"
-            mat-icon-button
-            matTooltip="Eliminar opción"
-            *ngIf="field.key !== 'total'"
-            (click)="removeField(field)"
-          >
-            <mat-icon>remove</mat-icon>
-          </button>
+          <div>
+            <button
+              type="button"
+              mat-icon-button
+              matTooltip="Editar opción"
+              *ngIf="field.key !== 'total'"
+              (click)="setDataInForm(field)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              type="button"
+              mat-icon-button
+              matTooltip="Eliminar opción"
+              *ngIf="field.key !== 'total'"
+              (click)="removeField(field)"
+            >
+              <mat-icon>remove</mat-icon>
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-8">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="col-8 mat-elevation-z5">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="m-1">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Tipo de dato</mat-label>
         <mat-select formControlName="controlType">
@@ -39,6 +55,10 @@
         <input matInput type="text" autocomplete="off" formControlName="label" />
         <mat-error *ngIf="f.controlType.hasError">Requerido</mat-error>
       </mat-form-field>
+
+      <div class="row">
+        <mat-checkbox color="primary" class="checkbox"> ¿Es requerido? </mat-checkbox>
+      </div>
 
       <p class="row" *ngIf="errorMessage$ | async as message" style="color: red">{{ message }}</p>
 
@@ -85,18 +105,38 @@
           </div>
         </div>
       </div>
-      <button mat-flat-button color="primary">Crear campo</button>
+      <div class="row justify-content-between">
+        <button mat-flat-button color="primary" class="col-4">
+          {{ isEdit ? 'Modificar' : 'Crear' }} campo
+        </button>
+        <button
+          *ngIf="isEdit"
+          mat-flat-button
+          type="button"
+          color="accent"
+          class="col-4"
+          (click)="cancelEditField()"
+        >
+          Cancelar
+        </button>
+      </div>
     </form>
   </div>
   <ng-container *ngIf="formFields$ | async as fields">
-    <button
-      mat-flat-button
-      color="primary"
-      class="w-100 mt-5"
-      (click)="saveTemplate()"
-      *ngIf="fields.length > 1"
-    >
-      Guardar plantilla
-    </button>
+    <div class="d-flex justify-content-between">
+      <button
+        mat-flat-button
+        color="primary"
+        class="col-5 mt-5"
+        (click)="saveTemplate()"
+        *ngIf="fields.length > 1"
+      >
+        Guardar plantilla
+      </button>
+
+      <button mat-flat-button color="warn" class="col-5 mt-5" *ngIf="isEditable$ | async">
+        Eliminar plantilla
+      </button>
+    </div>
   </ng-container>
 </div>

@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TemplateQuotesService } from '../../../../data/services/template-quotes.service';
-import { combineLatest, map, Observable } from 'rxjs';
+import { combineLatest, map, Observable, take } from 'rxjs';
 import { TemplateQuotes } from '../../../../data/models/TemplateQuotes.model';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import {
   changeStatus,
   emptyForm,
@@ -18,6 +18,8 @@ import {
 } from '../../../../state/dynamic-form/dynamic-form.selector';
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import faker from '@faker-js/faker';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-project-quote-page',
@@ -25,7 +27,22 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
   styleUrls: ['./project-quote-page.component.scss'],
 })
 export class ProjectQuotePageComponent implements OnInit {
-  quoteForm = new FormGroup({});
+  headerForm = new FormGroup({
+    name: new FormControl(faker.datatype.uuid(), [Validators.required]),
+    addressee: new FormControl(`${faker.name.firstName()} ${faker.name.lastName()}`, [
+      Validators.required,
+    ]),
+    description: new FormControl(faker.lorem.lines(2), [Validators.required]),
+    date_end: new FormControl({ value: faker.date.soon(5), disabled: true }),
+    status_quote_id: new FormControl(null),
+    client: new FormControl({ value: null, disabled: true }),
+    client_id: new FormControl({ value: null, disabled: true }),
+    concepts: new FormArray([new FormControl({})]),
+  });
+
+  quoteForm = new FormGroup({
+    headerForm: this.headerForm,
+  });
 
   formFields!: Formfield<any>[];
 
@@ -33,9 +50,9 @@ export class ProjectQuotePageComponent implements OnInit {
 
   templateControl = new FormControl(null);
 
-  step = 0;
+  step = 1;
 
-  templates$!: TemplateQuotes[];
+  templates!: TemplateQuotes[];
 
   constructor(
     private router: Router,
@@ -58,13 +75,12 @@ export class ProjectQuotePageComponent implements OnInit {
           return templates.data;
         }),
       )
-      .subscribe((data) => (this.templates$ = data));
+      .subscribe((data) => (this.templates = data));
 
     this.templateControl.valueChanges.subscribe({
       next: (value) => {
         if (value) {
           this.store.dispatch(emptyForm());
-          this.addTotalToTemplate();
           this.store.dispatch(loadForm({ form: value.form, id: value.id, name: value.name }));
         } else {
           this.store.dispatch(emptyForm());
@@ -87,9 +103,14 @@ export class ProjectQuotePageComponent implements OnInit {
   }
 
   nextStep() {
+    this.quoteForm.markAllAsTouched();
+    if (this.quoteForm.invalid) {
+      return;
+    }
+
     this.step++;
+
     if (this.step === 2) {
-      console.log(this.formFields);
       this.store.dispatch(changeStatus({ status: 'EDITABLE' }));
     }
     if (this.step === 3) {
@@ -103,37 +124,40 @@ export class ProjectQuotePageComponent implements OnInit {
 
   addTotalToTemplate() {
     const form: Formfield<number> = {
-      required: false,
+      id: uuidv4(),
+      required: true,
       controlType: 'number',
       label: 'Total',
       value: 0,
       options: [],
       key: 'total',
       type: 'number',
+      order: 0,
     };
     this.store.dispatch(setField({ form }));
   }
 
-  getDynamicForm() {}
-
   async saveQuote() {
-    this.store.select(selectDynamicForm).subscribe((form) => {
-      const quote = {
-        ...this.quoteForm.getRawValue(),
-        quote: {
-          form: {
-            ...form,
+    this.store
+      .select(selectDynamicForm)
+      .pipe(take(1))
+      .subscribe((form) => {
+        const quote = {
+          ...this.quoteForm.getRawValue(),
+          quote: {
+            form: {
+              ...form,
+            },
+            operations: {
+              ...this.operationsForm.getRawValue(),
+            },
           },
-          operations: {
-            ...this.operationsForm.getRawValue(),
-          },
-        },
-      };
-      console.log(quote);
-      this.projectQuoteService.save(quote).subscribe((val) => {
-        console.log(val);
-        MessageHelper.successMessage('Éxito', 'Cotización guardada');
+        };
+        console.log(quote);
+        this.projectQuoteService.save(quote).subscribe((val) => {
+          console.log(val);
+          MessageHelper.successMessage('Éxito', 'Cotización guardada');
+        });
       });
-    });
   }
 }

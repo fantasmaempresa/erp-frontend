@@ -1,19 +1,29 @@
 import { Formfield } from '../../data/models/Formfield.model';
+import { createEntityAdapter, EntityState } from '@ngrx/entity';
 
-export interface DynamicFormState {
+export interface DynamicFormState extends EntityState<Formfield<any>> {
   id: number;
   name: string;
-  formFields: Formfield<any>[];
   errorMessage: string;
   isEditable: boolean;
   status: 'EDITABLE' | 'NEW';
 }
 
-export const dynamicFormInitialState: DynamicFormState = {
+export const dynamicFormAdapter = createEntityAdapter<Formfield<any>>();
+
+export const initialState: DynamicFormState = dynamicFormAdapter.getInitialState({
   id: 0,
   name: '',
-  formFields: [],
   errorMessage: '',
-  isEditable: true,
+  isEditable: false,
   status: 'NEW',
-};
+});
+
+// export const dynamicFormInitialState: DynamicFormState = {
+//   id: 0,
+//   name: '',
+//   formFields: [],
+//   errorMessage: '',
+//   isEditable: true,
+//   status: 'NEW',
+// };

@@ -1,18 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormValidationService } from '../../../../shared/services/form-validation.service';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { ConceptService } from '../../../../data/services/concept.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Concept } from '../../../../data/models/Concept.model';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 @Component({
   selector: 'app-concept-form',
   templateUrl: './concept-form.component.html',
   styleUrls: ['./concept-form.component.scss'],
 })
-export class ConceptFormComponent {
+export class ConceptFormComponent implements OnInit {
+  isEdit = false;
+
   conceptForm = new FormGroup({
     name: new FormControl('', Validators.required),
     description: new FormControl(''),
@@ -22,10 +23,6 @@ export class ConceptFormComponent {
       percentage: new FormControl(null),
     }),
   });
-
-  isEdit = false;
-
-  formErrors: any = {};
 
   operations: { value: string; label: string }[] = [
     { value: '+', label: 'Suma' },
@@ -38,25 +35,19 @@ export class ConceptFormComponent {
   ];
 
   constructor(
+    private conceptService: ConceptService,
     private router: Router,
     private route: ActivatedRoute,
-    private formValidationService: FormValidationService,
-    private conceptService: ConceptService,
   ) {
-    if (this.route.snapshot.queryParams.id) {
-      this.isEdit = true;
-      conceptService.fetch(this.route.snapshot.queryParams.id).subscribe({
-        next: (user) => {
-          this.conceptForm.addControl('id', new FormControl(''));
-          this.conceptForm.patchValue(user);
-        },
-      });
-    }
+    conceptService.fetch(this.route.snapshot.queryParams.id).subscribe({
+      next: (user) => {
+        this.conceptForm.addControl('id', new FormControl(''));
+        this.conceptForm.patchValue(user);
+      },
+    });
   }
 
-  async backToListConcept() {
-    await this.router.navigate(['../'], { relativeTo: this.route });
-  }
+  ngOnInit(): void {}
 
   onSubmit() {
     let request$: Observable<Concept>;
@@ -71,7 +62,7 @@ export class ConceptFormComponent {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         this.isEdit ? (message = 'actualizado') : (message = 'registrado');
         MessageHelper.successMessage('¡Éxito!', `El concepto ha sido ${message} correctamente.`);
-        await this.backToListConcept();
+        await this.router.navigate(['../'], { relativeTo: this.route });
       },
     });
   }
