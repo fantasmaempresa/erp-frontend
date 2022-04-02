@@ -67,7 +67,9 @@
       </mat-form-field>
 
       <div class="row">
-        <mat-checkbox color="primary" class="checkbox"> ¿Es requerido? </mat-checkbox>
+        <mat-checkbox color="primary" class="checkbox" formControlName="required">
+          ¿Es requerido?
+        </mat-checkbox>
       </div>
 
       <p class="row" *ngIf="errorMessage$ | async as message" style="color: red">{{ message }}</p>

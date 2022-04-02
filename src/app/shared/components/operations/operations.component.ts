@@ -59,6 +59,8 @@ export class OperationsComponent implements OnInit {
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
+  preview!: any;
+
   constructor(
     private store: Store,
     private conceptService: ConceptService,
@@ -237,13 +239,37 @@ export class OperationsComponent implements OnInit {
         };
         this.projectQuoteService
           .calculateOperations({ ...quote })
-          .subscribe((resp) => console.log(resp));
+          .pipe(
+            map((resp: any) => {
+              const operation_fields: [] = resp.operation_fields;
+              const operation_total = resp.operation_total;
+              const concepts: any[] = [];
+              for (const opt in operation_fields) {
+                // for(const field in resp[opt]) {
+                //   console.log(resp[opt][field]);
+                const data: any = operation_fields[opt];
+                data.name = opt;
+                concepts.push(data);
+                // }
+              }
+              concepts.push({
+                name: 'total',
+                total: operation_total.total,
+              });
+              console.log(concepts);
+              return concepts;
+            }),
+          )
+          .subscribe((resp) => {
+            this.preview = resp;
+          });
       });
     console.log(this.operationsForm.getRawValue());
   }
 
   createNewConcept() {
     const dialogRef = this.dialog.open(ConceptFormComponent, {
+      data: { isModal: true },
       width: '50vw',
     });
 
@@ -254,6 +280,13 @@ export class OperationsComponent implements OnInit {
 
   selected(event: MatAutocompleteSelectedEvent, index: number, target: string): void {
     if (target === 'total') {
+      if (event.option.value === 'create') {
+        this.createNewConcept();
+        // @ts-ignore
+        this.conceptTotalInput.get(index).nativeElement.value = '';
+        this.operation_total.at(index).get('conceptCtrl')?.setValue(null);
+        return;
+      }
       let concepts = this.operation_total.at(index).get('concepts') as FormArray;
       const conceptsArray: Concept[] = concepts.value;
       let isInArray = false;
@@ -273,6 +306,13 @@ export class OperationsComponent implements OnInit {
       this.operation_total.at(index).get('conceptCtrl')?.setValue(null);
     }
     if (target === 'fields') {
+      if (event.option.value === 'create') {
+        this.createNewConcept();
+        // @ts-ignore
+        this.conceptFieldsInput.get(index).nativeElement.value = '';
+        this.operation_fields.at(index).get('conceptCtrl')?.setValue(null);
+        return;
+      }
       let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
       const conceptsArray: Concept[] = concepts.value;
       let isInArray = false;

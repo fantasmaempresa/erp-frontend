@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConceptService } from '../../../../data/services/concept.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { Concept } from '../../../../data/models/Concept.model';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-concept-form',
@@ -38,13 +39,17 @@ export class ConceptFormComponent implements OnInit {
     private conceptService: ConceptService,
     private router: Router,
     private route: ActivatedRoute,
+    public dialogRef: MatDialogRef<ConceptFormComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any,
   ) {
-    conceptService.fetch(this.route.snapshot.queryParams.id).subscribe({
-      next: (user) => {
-        this.conceptForm.addControl('id', new FormControl(''));
-        this.conceptForm.patchValue(user);
-      },
-    });
+    if (this.route.snapshot.queryParams.id) {
+      conceptService.fetch(this.route.snapshot.queryParams.id).subscribe({
+        next: (user) => {
+          this.conceptForm.addControl('id', new FormControl(''));
+          this.conceptForm.patchValue(user);
+        },
+      });
+    }
   }
 
   ngOnInit(): void {}
@@ -62,8 +67,19 @@ export class ConceptFormComponent implements OnInit {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         this.isEdit ? (message = 'actualizado') : (message = 'registrado');
         MessageHelper.successMessage('¡Éxito!', `El concepto ha sido ${message} correctamente.`);
-        await this.router.navigate(['../'], { relativeTo: this.route });
+        if (this.data.isModal) {
+          this.close(true);
+          return;
+        }
+        if (!this.data) {
+          await this.router.navigate(['../'], { relativeTo: this.route });
+        }
       },
     });
+  }
+
+  public close(value: boolean) {
+    console.log(value);
+    this.dialogRef.close(value);
   }
 }
