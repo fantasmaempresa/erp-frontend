@@ -43,16 +43,16 @@
             <mat-label>Conceptos</mat-label>
             <mat-chip-list #chipList aria-label="Concept selection">
               <mat-chip
-                *ngFor="let field of operation_fields.controls[i].value.concepts"
-                (removed)="remove(field)"
+                *ngFor="let concept of operation_fields.controls[i].value.concepts"
+                (removed)="remove(concept, i, 'fields')"
               >
-                {{ field.name }}
+                {{ concept.name }}
                 <button matChipRemove>
                   <mat-icon>cancel</mat-icon>
                 </button>
               </mat-chip>
               <input
-                placeholder="New fruit..."
+                placeholder="Agregar concepto"
                 #conceptFieldInput
                 formControlName="conceptCtrl"
                 [matAutocomplete]="autoConcept"
@@ -63,7 +63,7 @@
             </mat-chip-list>
             <mat-autocomplete
               #autoConcept="matAutocomplete"
-              (optionSelected)="selected($event, i, 'fields', conceptFieldInput)"
+              (optionSelected)="selected($event, i, 'fields')"
               [displayWith]="displayConceptFn"
             >
               <mat-option
@@ -75,17 +75,17 @@
             </mat-autocomplete>
           </mat-form-field>
           <!--          <mat-form-field class="w-100" appearance="outline">-->
-<!--            <mat-label>Concepto</mat-label>-->
-<!--            <input type="text" matInput formControlName="concept" [matAutocomplete]="autoConcept" />-->
-<!--            <mat-autocomplete #autoConcept="matAutocomplete" [displayWith]="displayConceptFn">-->
-<!--              <mat-option-->
-<!--                *ngFor="let concept of filteredConcepts$[i] | async; trackBy: trackConceptsByFn"-->
-<!--                [value]="concept"-->
-<!--              >-->
-<!--                {{ concept.name }}-->
-<!--              </mat-option>-->
-<!--            </mat-autocomplete>-->
-<!--          </mat-form-field>-->
+          <!--            <mat-label>Concepto</mat-label>-->
+          <!--            <input type="text" matInput formControlName="concept" [matAutocomplete]="autoConcept" />-->
+          <!--            <mat-autocomplete #autoConcept="matAutocomplete" [displayWith]="displayConceptFn">-->
+          <!--              <mat-option-->
+          <!--                *ngFor="let concept of filteredConcepts$[i] | async; trackBy: trackConceptsByFn"-->
+          <!--                [value]="concept"-->
+          <!--              >-->
+          <!--                {{ concept.name }}-->
+          <!--              </mat-option>-->
+          <!--            </mat-autocomplete>-->
+          <!--          </mat-form-field>-->
         </div>
         <!--        TODO: Cambiar por un boton para eliminar el concepto-->
         <div class="col-1 d-flex align-items-center" style="margin-top: -20px">
@@ -121,10 +121,31 @@
         </div>
         <div class="col-5">
           <mat-form-field class="w-100" appearance="outline">
-            <mat-label>Concepto</mat-label>
-            <input type="text" matInput formControlName="concept" [matAutocomplete]="autoConcept" />
-            <mat-autocomplete #autoConcept="matAutocomplete" [displayWith]="displayConceptFn">
-              <mat-option (click)="createNewConcept()">Crear concepto nuevo</mat-option>
+            <mat-label>Conceptos</mat-label>
+            <mat-chip-list #chipListTotal aria-label="Concept selection">
+              <mat-chip
+                *ngFor="let concept of operation_total.controls[i].value.concepts"
+                (removed)="remove(concept, i, 'total')"
+              >
+                {{ concept.name }}
+                <button matChipRemove>
+                  <mat-icon>cancel</mat-icon>
+                </button>
+              </mat-chip>
+              <input
+                placeholder="Agregar concepto"
+                #conceptTotalInput
+                formControlName="conceptCtrl"
+                [matAutocomplete]="autoConcept"
+                [matChipInputFor]="chipListTotal"
+                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+              />
+            </mat-chip-list>
+            <mat-autocomplete
+              #autoConcept="matAutocomplete"
+              (optionSelected)="selected($event, i, 'total')"
+              [displayWith]="displayConceptFn"
+            >
               <mat-option
                 *ngFor="
                   let concept of filteredConceptsTotal$[i] | async;
@@ -136,6 +157,22 @@
               </mat-option>
             </mat-autocomplete>
           </mat-form-field>
+          <!--          <mat-form-field class="w-100" appearance="outline">-->
+          <!--            <mat-label>Concepto</mat-label>-->
+          <!--            <input type="text" matInput formControlName="concept" [matAutocomplete]="autoConcept" />-->
+          <!--            <mat-autocomplete #autoConcept="matAutocomplete" [displayWith]="displayConceptFn">-->
+          <!--              <mat-option (click)="createNewConcept()">Crear concepto nuevo</mat-option>-->
+          <!--              <mat-option-->
+          <!--                *ngFor="-->
+          <!--                  let concept of filteredConceptsTotal$[i] | async;-->
+          <!--                  trackBy: trackConceptsByFn-->
+          <!--                "-->
+          <!--                [value]="concept"-->
+          <!--              >-->
+          <!--                {{ concept.name }}-->
+          <!--              </mat-option>-->
+          <!--            </mat-autocomplete>-->
+          <!--          </mat-form-field>-->
         </div>
         <div class="col-1 d-flex align-items-center" style="margin-top: -20px">
           <button

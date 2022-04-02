@@ -1,4 +1,12 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { combineLatestWith, map, Observable, startWith, take, tap } from 'rxjs';
 import { Formfield } from '../../../data/models/Formfield.model';
@@ -21,7 +29,9 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 export class OperationsComponent implements OnInit {
   @Output() form = new EventEmitter();
 
-  @ViewChild('fieldInput') fieldInput!: ElementRef;
+  @ViewChildren('conceptTotalInput') conceptTotalInput!: QueryList<ElementRef<HTMLInputElement>>;
+
+  @ViewChildren('conceptFieldInput') conceptFieldsInput!: QueryList<ElementRef<HTMLInputElement>>;
 
   autocompleteControl = new FormControl();
 
@@ -87,7 +97,6 @@ export class OperationsComponent implements OnInit {
   }
 
   createOperationGroup(field: Formfield<any>, target: string): FormGroup {
-    console.log(field);
     let operation = new FormGroup({
       label: new FormControl(field.label),
       value: new FormControl({ value: field.value, disabled: true }),
@@ -98,7 +107,7 @@ export class OperationsComponent implements OnInit {
 
     if (target === 'total') {
       operation.get('value')?.patchValue('Valor por calcular');
-      let valueOfConceptControl = operation.controls.concept.valueChanges.pipe(startWith(''));
+      let valueOfConceptControl = operation.controls.conceptCtrl.valueChanges.pipe(startWith(''));
       this.filteredConceptsTotal$.push(
         this.concepts$.pipe(
           combineLatestWith(valueOfConceptControl),
@@ -108,7 +117,7 @@ export class OperationsComponent implements OnInit {
         ),
       );
     } else {
-      let valueOfConceptControl = operation.controls.concepts.valueChanges.pipe(startWith(''));
+      let valueOfConceptControl = operation.controls.conceptCtrl.valueChanges.pipe(startWith(''));
       this.filteredConcepts$.push(
         this.concepts$.pipe(
           combineLatestWith(valueOfConceptControl),
@@ -122,15 +131,34 @@ export class OperationsComponent implements OnInit {
   }
 
   addOperation(item: Formfield<any>) {
-    this.fieldInput.nativeElement.blur();
     if (!item) {
       return;
     }
+    let exists = false;
     if (item.key === 'total') {
       const control = this.operationsForm.get('operation_total') as FormArray;
+      const controlArray: [] = control.value;
+      controlArray.forEach((ctrl: any) => {
+        if (ctrl.key === item.key) {
+          exists = true;
+        }
+      });
+      if (exists) {
+        return;
+      }
+
       control.push(this.createOperationGroup(item, 'total'));
     } else {
       const control = this.operationsForm.get('operation_fields') as FormArray;
+      const controlArray: [] = control.value;
+      controlArray.forEach((ctrl: any) => {
+        if (ctrl.key === item.key) {
+          exists = true;
+        }
+      });
+      if (exists) {
+        return;
+      }
       control.push(this.createOperationGroup(item, 'other'));
     }
     // this.autocompleteControl = new FormControl();
@@ -224,16 +252,45 @@ export class OperationsComponent implements OnInit {
     });
   }
 
-  selected(event: MatAutocompleteSelectedEvent, index: number, target: string, element: any): void {
-    console.log(event);
-    let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
-    concepts.push(new FormControl(event.option.value));
-    this.operation_fields.at(index).get('conceptCtrl')?.setValue(null);
-    console.log(this.operation_fields.value);
-    element.nativeElement.value = ''
-    // this.fruits.push(event.option.viewValue);
-    // this.fruitInput.nativeElement.value = '';
-    // this.fruitCtrl.setValue(null);
+  selected(event: MatAutocompleteSelectedEvent, index: number, target: string): void {
+    if (target === 'total') {
+      let concepts = this.operation_total.at(index).get('concepts') as FormArray;
+      const conceptsArray: Concept[] = concepts.value;
+      let isInArray = false;
+      conceptsArray.forEach((value) => {
+        if (value.id === event.option.value.id) {
+          isInArray = true;
+        }
+      });
+      if (isInArray) {
+        // @ts-ignore
+        this.conceptTotalInput.get(index).nativeElement.value = '';
+        return;
+      }
+      concepts.push(new FormControl(event.option.value));
+      // @ts-ignore
+      this.conceptTotalInput.get(index).nativeElement.value = '';
+      this.operation_total.at(index).get('conceptCtrl')?.setValue(null);
+    }
+    if (target === 'fields') {
+      let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
+      const conceptsArray: Concept[] = concepts.value;
+      let isInArray = false;
+      conceptsArray.forEach((value) => {
+        if (value.id === event.option.value.id) {
+          isInArray = true;
+        }
+      });
+      if (isInArray) {
+        // @ts-ignore
+        this.conceptFieldsInput.get(index).nativeElement.value = '';
+        return;
+      }
+      concepts.push(new FormControl(event.option.value));
+      // @ts-ignore
+      this.conceptFieldsInput.get(index).nativeElement.value = '';
+      this.operation_fields.at(index).get('conceptCtrl')?.setValue(null);
+    }
   }
 
   add(event: MatChipInputEvent, index: number, target: string): void {
@@ -253,10 +310,24 @@ export class OperationsComponent implements OnInit {
     console.log(this.operation_fields.value);
   }
 
-  remove(fruit: string): void {
-    // const index = this.fruits.indexOf(fruit);
-    // if (index >= 0) {
-    // this.fruits.splice(index, 1);
-    // }
+  remove(concept: Concept, index: number, target: string): void {
+    if (target === 'total') {
+      const concepts = this.operation_total.at(index).get('concepts') as FormArray;
+      const conceptsArray: Concept[] = concepts.value;
+      conceptsArray.forEach((value, i) => {
+        if (value.id === concept.id) {
+          concepts.removeAt(i);
+        }
+      });
+    }
+    if (target === 'fields') {
+      const concepts = this.operation_fields.at(index).get('concepts') as FormArray;
+      const conceptsArray: Concept[] = concepts.value;
+      conceptsArray.forEach((value, i) => {
+        if (value.id === concept.id) {
+          concepts.removeAt(i);
+        }
+      });
+    }
   }
 }
