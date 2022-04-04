@@ -6,44 +6,28 @@
       </button>
     </div>
   </mat-toolbar>
-  <form
-    (ngSubmit)="onSubmit()"
-    [formGroup]="userForm"
-    class="row justify-content-center"
-  >
+  <form (ngSubmit)="onSubmit()" [formGroup]="userForm" class="row justify-content-center">
     <div class="col-6 d-flex flex-column">
       <mat-form-field appearance="outline">
         <mat-label>Rol</mat-label>
         <mat-select formControlName="role_id">
           <mat-option>Ninguno</mat-option>
-          <mat-option
-            *ngFor="let role of roles$ | async"
-            [value]="role.id"
-          >{{ role.name }}</mat-option
-          >
+          <mat-option *ngFor="let role of roles$ | async" [value]="role.id">{{
+            role.name
+          }}</mat-option>
         </mat-select>
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input
-          autocomplete="off"
-          formControlName="name"
-          matInput
-          type="text"
-        />
+        <input autocomplete="off" formControlName="name" matInput type="text" />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Correo</mat-label>
-        <input
-          formControlName="email"
-          matInput
-          placeholder="ejemplo@email.com"
-          type="email"
-        />
+        <input formControlName="email" matInput placeholder="ejemplo@email.com" type="email" />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 

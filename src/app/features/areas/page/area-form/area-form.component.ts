@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import {FormControl, FormGroup, Validator, Validators} from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormValidationService } from '../../../../shared/services/form-validation.service';
 import { AreaService } from '../../../../data/services/area.service';
 import { Observable } from 'rxjs';
@@ -15,7 +15,7 @@ import { WorkArea } from '../../../../data/models/WorkArea.model';
 })
 export class AreaFormComponent {
   areaForm = new FormGroup({
-    name: new FormControl('',[Validators.required]),
+    name: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
     config: new FormControl({ test: 'test' }),
   });

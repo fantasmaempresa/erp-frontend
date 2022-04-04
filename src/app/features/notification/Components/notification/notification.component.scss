@@ -35,14 +35,14 @@
     background: var(--accent-color);
     color: var(--primary-color);
     border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, .215);
+    border: 2px solid rgba(255, 255, 255, 0.215);
     z-index: 2;
 
     &--entry {
       animation: numberSpanEntry 550ms ease-in, heartBeating 900ms infinite ease-in-out 1s;
 
       & + .notifications__icon {
-        animation: shake-top 1200ms cubic-bezier(0.600, 0.040, 0.980, 0.335) infinite alternate;
+        animation: shake-top 1200ms cubic-bezier(0.6, 0.04, 0.98, 0.335) infinite alternate;
       }
     }
   }
@@ -58,7 +58,7 @@
     transform: translate(-50%, calc(100% + #{$sizeBox} / 3 + 10rem));
     cursor: auto;
     border-radius: 4px;
-    box-shadow: 8px 8px 4px 4px rgba(0, 0, 0, .225);
+    box-shadow: 8px 8px 4px 4px rgba(0, 0, 0, 0.225);
     overflow: hidden;
     pointer-events: none;
     transition: 450ms;
@@ -85,7 +85,8 @@
   }
 
   &--visible {
-    & .notifications__container, &::before {
+    & .notifications__container,
+    &::before {
       pointer-events: auto;
       opacity: 1;
     }
@@ -213,4 +214,3 @@
     transform: rotate(2deg);
   }
 }
-

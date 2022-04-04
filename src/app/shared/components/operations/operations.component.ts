@@ -15,7 +15,6 @@ import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ConceptService } from '../../../data/services/concept.service';
 import { Concept } from '../../../data/models/Concept.model';
 import { MatDialog } from '@angular/material/dialog';
-import { ConceptFormComponent } from '../../../features/concepts/page/concept-form/concept-form.component';
 import { ProjectQuoteService } from '../../../data/services/project-quote.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -58,6 +57,8 @@ export class OperationsComponent implements OnInit {
   }
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
+
+  preview!: any;
 
   constructor(
     private store: Store,
@@ -237,19 +238,29 @@ export class OperationsComponent implements OnInit {
         };
         this.projectQuoteService
           .calculateOperations({ ...quote })
-          .subscribe((resp) => console.log(resp));
+          .pipe(
+            map((resp: any) => {
+              const operationFields: [] = resp.operation_fields;
+              const operationTotal = resp.operation_total;
+              const concepts: any[] = [];
+              for (const opt in operationFields) {
+                const data: any = operationFields[opt];
+                data.name = opt;
+                concepts.push(data);
+              }
+              concepts.push({
+                name: 'total',
+                total: operationTotal.total,
+              });
+              console.log(concepts);
+              return concepts;
+            }),
+          )
+          .subscribe((resp) => {
+            this.preview = resp;
+          });
       });
     console.log(this.operationsForm.getRawValue());
-  }
-
-  createNewConcept() {
-    const dialogRef = this.dialog.open(ConceptFormComponent, {
-      width: '50vw',
-    });
-
-    dialogRef.afterClosed().subscribe((result: any) => {
-      console.log(result);
-    });
   }
 
   selected(event: MatAutocompleteSelectedEvent, index: number, target: string): void {
@@ -293,19 +304,16 @@ export class OperationsComponent implements OnInit {
     }
   }
 
-  add(event: MatChipInputEvent, index: number, target: string): void {
+  add(event: MatChipInputEvent, index: number): void {
     const value = (event.value || '').trim();
 
-    // Add our fruit
     if (value) {
       let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
       concepts.push(new FormControl(value));
     }
 
-    // Clear the input value
     event.chipInput!.clear();
 
-    // this.fruitCtrl.setValue(null);
     this.operation_fields.at(index).get('conceptCtrl')?.setValue(null);
     console.log(this.operation_fields.value);
   }

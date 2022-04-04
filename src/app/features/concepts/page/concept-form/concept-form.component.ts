@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConceptService } from '../../../../data/services/concept.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
   templateUrl: './concept-form.component.html',
   styleUrls: ['./concept-form.component.scss'],
 })
-export class ConceptFormComponent implements OnInit {
+export class ConceptFormComponent {
   isEdit = false;
 
   conceptForm = new FormGroup({
@@ -39,15 +39,15 @@ export class ConceptFormComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
   ) {
-    conceptService.fetch(this.route.snapshot.queryParams.id).subscribe({
-      next: (user) => {
-        this.conceptForm.addControl('id', new FormControl(''));
-        this.conceptForm.patchValue(user);
-      },
-    });
+    if (this.route.snapshot.queryParams.id) {
+      conceptService.fetch(this.route.snapshot.queryParams.id).subscribe({
+        next: (user) => {
+          this.conceptForm.addControl('id', new FormControl(''));
+          this.conceptForm.patchValue(user);
+        },
+      });
+    }
   }
-
-  ngOnInit(): void {}
 
   onSubmit() {
     let request$: Observable<Concept>;
