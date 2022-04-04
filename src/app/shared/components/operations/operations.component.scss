@@ -1,4 +1,4 @@
-:host{
+:host {
   .mat-menu-panel {
     max-width: none !important;
   }
@@ -10,12 +10,13 @@ table {
   width: 100%;
 }
 
-td, th {
+td,
+th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
 }
 
 tr:nth-child(even) {
-  background-color: var(--accent-color);;
+  background-color: var(--accent-color);
 }

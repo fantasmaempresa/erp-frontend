@@ -7,51 +7,40 @@
     </div>
   </mat-toolbar>
 
-  <form
-    class="row justify-content-center"
-    [formGroup]="staffMemberForm"
-    (ngSubmit)="onSubmit()"
-  >
+  <form class="row justify-content-center" [formGroup]="staffMemberForm" (ngSubmit)="onSubmit()">
     <div class="col-6 d-flex flex-column">
       <mat-form-field appearance="outline">
         <mat-label>Area</mat-label>
         <mat-select formControlName="work_area_id">
           <mat-option>Ninguna</mat-option>
-          <mat-option
-            *ngFor="let area of workAreas$ | async"
-            [value]="area.id"
-          >{{ area.name }}</mat-option
-          >
+          <mat-option *ngFor="let area of workAreas$ | async" [value]="area.id">{{
+            area.name
+          }}</mat-option>
         </mat-select>
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input matInput type="text" formControlName="name"/>
+        <input matInput type="text" formControlName="name" />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Correo</mat-label>
-        <input
-          matInput
-          type="email"
-          placeholder="ejemplo@ejemplo.com"
-          formControlName="email"
-        />
+        <input matInput type="email" placeholder="ejemplo@ejemplo.com" formControlName="email" />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Teléfono</mat-label>
-        <input matInput type="tel" formControlName="phone"/>
+        <input matInput type="tel" formControlName="phone" />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Alias/Apodo</mat-label>
-        <input matInput type="text" formControlName="nickname"/>
+        <input matInput type="text" formControlName="nickname" />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 

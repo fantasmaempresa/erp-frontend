@@ -1,16 +1,15 @@
-.close-button{
+.close-button {
   float: right;
-  top:-15px;
-  right:-15px;
+  top: -15px;
+  right: -15px;
 }
 
-
-::ng-deep .icon-outside .close-button{
+::ng-deep .icon-outside .close-button {
   float: right;
-  top:-52px;
-  right:-52px;
+  top: -52px;
+  right: -52px;
 }
 
 ::ng-deep .icon-outside .mat-dialog-container {
-  overflow: unset
+  overflow: unset;
 }
