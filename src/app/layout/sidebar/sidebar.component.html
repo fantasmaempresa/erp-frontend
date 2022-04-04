@@ -1,5 +1,18 @@
 <div class="sidebar-container">
-  <nav class="sidebar">
+  <div class="sidebar__button">
+    <input
+      type="checkbox"
+      name="navi-toggle"
+      id="navi-toggle"
+      #naviToggle
+      class="sidebar__checkbox"
+    />
+    <label for="navi-toggle" class="sidebar__button">
+      <span class="sidebar__icon">&nbsp;</span>
+    </label>
+  </div>
+
+  <nav class="sidebar" [class.sidebar--extended]="naviToggle.checked">
     <div class="sidebar-header" *ngIf="user$ | async as user">
       <img
         alt=""

@@ -1,4 +1,4 @@
-<div class="slider-container">
+<div class="slider-container" *ngIf="!hiddenSelector">
   <mat-button-toggle-group [(ngModel)]="isSelected">
     <mat-button-toggle [value]="true" matTooltip="Vista de Cartas">
       <mat-icon>drag_indicator</mat-icon>

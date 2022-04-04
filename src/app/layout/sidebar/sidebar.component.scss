@@ -1,25 +1,115 @@
+@import '~src/assets/styles/abstracts/mixins';
+@import '~src/theme';
+
 .sidebar-container {
-  display: flex;
-  justify-content: flex-end;
+  position: relative;
   height: 100%;
+
+  @include respond(tabLand) {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+  }
 }
 
 .sidebar {
   $top: 4.5rem;
   position: relative;
-  margin-top: -$top;
+  margin-left: auto;
+  margin-right: 0;
+  top: -$top;
   right: 0;
+  color: var(--primary-color);
 
   width: 85%;
-  //height: calc(100% + #{$top});
+  min-height: calc(100% + #{$top});
   background: var(--color-primary-sidebar);
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 4rem 1rem 2rem;
-  box-shadow: 8px 0 16px 8px rgb(0 0 0 / 30%);
-  color: #dfc356;
+  box-shadow: 8px 8px 16px 8px rgba(0, 0, 0, 0.125);
+
+  @include respond(tabLand) {
+    top: $headerHeight/2;
+    min-height: auto;
+    width: 30rem;
+    transition: transform 550ms ease-in-out;
+    transform: translateX(-100%);
+  }
+
+  @include respond {
+    width: 66.66vw;
+  }
+
+  //region sidebar-toggle
+  // only when the checkbox is checked
+  &--extended {
+    transform: translateX(0);
+  }
+
+  &__button {
+    position: absolute;
+    left: 1.2rem;
+    top: 5.5rem;
+    display: none;
+    z-index: 2000;
+
+    @include respond(tabLand) {
+      display: block;
+    }
+  }
+
+  &__checkbox {
+    display: none;
+  }
+
+  &__icon {
+    position: relative;
+
+    &,
+    &::after,
+    &::before {
+      width: 3rem;
+      height: 2px;
+      background-color: #fff;
+      display: inline-block;
+    }
+
+    &::after,
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      transition: all 250ms ease;
+    }
+
+    &::before {
+      top: -0.85rem;
+    }
+
+    &::after {
+      top: 0.85rem;
+    }
+  }
+
+  &__checkbox:checked + &__button &__icon {
+    background-color: transparent;
+
+    &::before {
+      top: 0;
+      transform: rotate(135deg);
+    }
+
+    &::after {
+      top: 0;
+      transform: rotate(-135deg);
+    }
+  }
+
+  //endregion
 
   &-header {
     width: 100%;
@@ -34,6 +124,7 @@
       font-size: var(--text-400);
       font-weight: 400;
     }
+
     &__profile-place {
       margin-top: 0.3rem;
       color: var(--color-secondary-400);
@@ -207,10 +298,12 @@
       background: var(--primary-color);
     }
   }
+
   &__dropdown-back-label-icon {
     font-size: var(--text-400);
     justify-self: end;
   }
+
   &__dropdown-back-label {
     font-size: var(--text-400);
     font-weight: 400;
