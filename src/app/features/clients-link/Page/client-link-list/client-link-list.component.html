@@ -1,4 +1,8 @@
 <mat-toolbar>
+  <button class="btn-back" (click)="back()" aria-label="Regresar" mat-icon-button>
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
   <button
     *ngIf="selectedItem"
     [matTooltipPosition]="'below'"

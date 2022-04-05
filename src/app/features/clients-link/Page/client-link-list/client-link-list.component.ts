@@ -68,4 +68,8 @@ export class ClientLinkListComponent {
   ];
 
   constructor(private route: ActivatedRoute, private router: Router) {}
+
+  async back() {
+    await this.router.navigate(['../../../'], { relativeTo: this.route });
+  }
 }
