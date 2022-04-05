@@ -21,9 +21,11 @@ import faker from '@faker-js/faker';
 })
 export class ProjectQuotePageComponent {
   headerForm = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    addressee: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
+    name: new FormControl(faker.datatype.uuid(), [Validators.required]),
+    addressee: new FormControl(`${faker.name.firstName()} ${faker.name.lastName()}`, [
+      Validators.required,
+    ]),
+    description: new FormControl(faker.lorem.lines(2), [Validators.required]),
     date_end: new FormControl({ value: faker.date.soon(5), disabled: true }),
     status_quote_id: new FormControl(null),
     client: new FormControl({ value: null, disabled: true }),
