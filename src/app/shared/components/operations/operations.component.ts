@@ -276,12 +276,13 @@ export class OperationsComponent implements OnInit {
       if (isInArray) {
         // @ts-ignore
         this.conceptTotalInput.get(index).nativeElement.value = '';
+        this.operation_total.at(index).get('conceptCtrl')?.setValue('');
         return;
       }
       concepts.push(new FormControl(event.option.value));
       // @ts-ignore
       this.conceptTotalInput.get(index).nativeElement.value = '';
-      this.operation_total.at(index).get('conceptCtrl')?.setValue(null);
+      this.operation_total.at(index).get('conceptCtrl')?.setValue('');
     }
     if (target === 'fields') {
       let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
@@ -295,12 +296,13 @@ export class OperationsComponent implements OnInit {
       if (isInArray) {
         // @ts-ignore
         this.conceptFieldsInput.get(index).nativeElement.value = '';
+        this.operation_fields.at(index).get('conceptCtrl')?.setValue('');
         return;
       }
       concepts.push(new FormControl(event.option.value));
       // @ts-ignore
       this.conceptFieldsInput.get(index).nativeElement.value = '';
-      this.operation_fields.at(index).get('conceptCtrl')?.setValue(null);
+      this.operation_fields.at(index).get('conceptCtrl')?.setValue('');
     }
   }
 
