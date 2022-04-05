@@ -19,6 +19,7 @@ import { ProjectQuoteService } from '../../../data/services/project-quote.servic
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { ConceptFormDialogComponent } from '../../../features/concepts/dialog/concept-form-dialog/concept-form-dialog.component';
 
 @Component({
   selector: 'app-operations',
@@ -264,6 +265,20 @@ export class OperationsComponent implements OnInit {
   }
 
   selected(event: MatAutocompleteSelectedEvent, index: number, target: string): void {
+    if (event.option.value === 'new' && target === 'total') {
+      this.openDialog(index, target);
+      // @ts-ignore
+      this.conceptTotalInput.get(index).nativeElement.value = '';
+      this.operation_total.at(index).get('conceptCtrl')?.setValue('');
+      return;
+    }
+    if (event.option.value === 'new' && target === 'fields') {
+      this.openDialog(index, target);
+      // @ts-ignore
+      this.conceptFieldsInput.get(index).nativeElement.value = '';
+      this.operation_fields.at(index).get('conceptCtrl')?.setValue('');
+      return;
+    }
     if (target === 'total') {
       let concepts = this.operation_total.at(index).get('concepts') as FormArray;
       const conceptsArray: Concept[] = concepts.value;
@@ -339,5 +354,50 @@ export class OperationsComponent implements OnInit {
         }
       });
     }
+  }
+
+  openDialog(index: number, target: string): void {
+    const dialogRef = this.dialog.open(ConceptFormDialogComponent, {
+      width: '50vw',
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (!result) return;
+      this.concepts$ = this.conceptService.fetchAll().pipe(map((concepts) => concepts.data));
+      if (target === 'fields') {
+        // @ts-ignore
+        let valueOfConceptControl = this.operation_fields
+          .at(index)
+          .get('conceptCtrl')
+          .valueChanges.pipe(startWith(''));
+        const filter = this.concepts$.pipe(
+          combineLatestWith(valueOfConceptControl),
+          map((data) => {
+            return this._filterConcepts(data[1], data[0]);
+          }),
+        );
+        this.filteredConcepts$.splice(index, 1, filter);
+        let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
+        concepts.push(new FormControl(result));
+        return;
+      }
+      if (target === 'total') {
+        // @ts-ignore
+        let valueOfConceptControl = this.operation_total
+          .at(index)
+          .get('conceptCtrl')
+          .valueChanges.pipe(startWith(''));
+        const filter = this.concepts$.pipe(
+          combineLatestWith(valueOfConceptControl),
+          map((data) => {
+            return this._filterConcepts(data[1], data[0]);
+          }),
+        );
+        this.filteredConceptsTotal$.splice(index, 1, filter);
+        let concepts = this.operation_total.at(index).get('concepts') as FormArray;
+        concepts.push(new FormControl(result));
+        return;
+      }
+    });
   }
 }
