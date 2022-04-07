@@ -27,6 +27,7 @@ export class SidebarComponent {
           icon: 'rule_folder',
           isOpen: false,
           dropdowns: [
+            { label: 'Nueva Cotización', route: './project-quote/new', icon: 'add_circle' },
             { label: 'Lista de cotizaciones', route: './project-quote', icon: 'group_work' },
             { label: 'Estados de la cotización', route: './quote-statuses', icon: 'group_work' },
           ],
