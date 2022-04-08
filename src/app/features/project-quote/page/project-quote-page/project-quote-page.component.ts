@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 import { TemplateQuotesService } from '../../../../data/services/template-quotes.service';
 import { combineLatest, Observable, take } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { changeStatus } from '../../../../state/dynamic-form/dynamic-form.actions';
 import { Formfield } from '../../../../data/models/Formfield.model';
 import {
   selectDynamicForm,
@@ -20,6 +19,18 @@ import faker from '@faker-js/faker';
   styleUrls: ['./project-quote-page.component.scss'],
 })
 export class ProjectQuotePageComponent {
+  HEADER_STEP = 0;
+
+  FORM_BUILD_STEP = 1;
+
+  FORM_FILL_STEP = 2;
+
+  OPERATIONS_FORM_STEP = 3;
+
+  PREVIEW_STEP = 4;
+
+  saveState = false;
+
   headerForm = new FormGroup({
     name: new FormControl(faker.datatype.uuid(), [Validators.required]),
     addressee: new FormControl(`${faker.name.firstName()} ${faker.name.lastName()}`, [
@@ -74,16 +85,50 @@ export class ProjectQuotePageComponent {
 
     this.step++;
 
-    if (this.step === 2) {
-      this.store.dispatch(changeStatus({ status: 'EDITABLE' }));
+    // if (!this.isOperationGroupValid()) {
+    //   return;
+    // }
+    //
+    // if (this.step === 2) {
+    //   this.store.dispatch(changeStatus({ status: 'EDITABLE' }));
+    // }
+  }
+
+  goToHeaderForm() {
+    this.step = this.HEADER_STEP;
+  }
+
+  goToFormBuildStep() {
+    this.step = this.FORM_BUILD_STEP;
+  }
+
+  goToFormFill() {
+    this.saveState = false;
+    this.step = this.FORM_FILL_STEP;
+    // this.store.dispatch(changeStatus({ status: 'EDITABLE' }));
+  }
+
+  goToOperationsForm() {
+    this.step = this.OPERATIONS_FORM_STEP;
+  }
+
+  goToPreview() {
+    this.step = this.PREVIEW_STEP;
+  }
+
+  isOperationGroupValid() {
+    if (this.step !== 3) {
+      return true;
     }
-    if (this.step === 3) {
-    }
+
+    console.log('Validando operation form');
+    this.operationsForm.markAllAsTouched();
+
+    return !this.operationsForm.invalid;
   }
 
   prevStep() {
     this.step--;
-    this.store.dispatch(changeStatus({ status: 'NEW' }));
   }
 
   async saveQuote() {
