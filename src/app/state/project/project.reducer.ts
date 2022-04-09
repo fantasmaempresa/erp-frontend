@@ -16,6 +16,6 @@ const ProjectReducer = createReducer(
   }),
 );
 
-export function clientReducer(state = initialState, action: Action) {
+export function projectReducer(state = initialState, action: Action) {
   return ProjectReducer(state, action);
 }

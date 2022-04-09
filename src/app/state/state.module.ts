@@ -17,6 +17,8 @@ import { localStorageSync } from 'ngrx-store-localstorage';
 import { DynamicFormEffects } from './dynamic-form/dynamic-form.effects';
 import { ClientsLinkEffects } from './clients-link/clients-link.effects';
 import { ClientsEffects } from './clients/clients.effects';
+import { ProcessPhaseEffects } from './process-phase/processPhase.effects';
+import { ProjectEffects } from './project/project.effects';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({ keys: ['auth'], rehydrate: true })(reducer);
@@ -41,6 +43,8 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       NotificationEffects,
       DynamicFormEffects,
       ClientsLinkEffects,
+      ProcessPhaseEffects,
+      ProjectEffects,
     ]),
     StoreDevtoolsModule.instrument({ name: 'ERP', maxAge: 25, logOnly: environment.production }),
   ],

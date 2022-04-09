@@ -30,6 +30,13 @@ import { clientsLinkReducer } from './clients-link/clients-link.reducer';
 import { clientReducer } from './clients/clients.reducer';
 import { userReducer } from './users/users.reducer';
 import { initialState as userInitialState, UsersState } from './users/users.state';
+import {
+  initialState as processPhaseState,
+  ProcessPhaseState,
+} from './process-phase/processPhase.state';
+import { initialState as projectState, ProjectState } from './project/project.state';
+import { processPhaseReducer } from './process-phase/processPhase.reducer';
+import { projectReducer } from './project/project.reducer';
 
 export interface AppState {
   auth: AuthState;
@@ -43,9 +50,13 @@ export interface AppState {
   quotes: QuotesState;
   notifications: NotificationState;
   dynamicForm: DynamicFormState;
+  processPhases: ProcessPhaseState;
+  projects: ProjectState;
 }
 
 export const initialAppState: AppState = {
+  processPhases: processPhaseState,
+  projects: projectState,
   notifications: notificationInitialState,
   auth: initialState,
   clients: clientsInitialState,
@@ -64,6 +75,8 @@ export function getInitialAppState(): AppState {
 }
 
 export const reducers: ActionReducerMap<AppState> = {
+  processPhases: processPhaseReducer,
+  projects: projectReducer,
   auth: authReducer,
   clients: clientReducer,
   users: userReducer,

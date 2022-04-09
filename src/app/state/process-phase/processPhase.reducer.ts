@@ -17,6 +17,6 @@ const ProcessPhaseReducer = createReducer(
   }),
 );
 
-export function clientReducer(state = initialState, action: Action) {
+export function processPhaseReducer(state = initialState, action: Action) {
   return ProcessPhaseReducer(state, action);
 }

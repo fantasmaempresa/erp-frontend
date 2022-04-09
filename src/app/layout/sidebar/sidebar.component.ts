@@ -37,8 +37,8 @@ export class SidebarComponent {
           icon: 'rule_folder',
           isOpen: false,
           dropdowns: [
-            { label: 'Pendientes', route: './pending_projects', icon: 'pause' },
-            { label: 'En Curso', route: './ongoing_projects', icon: 'play_arrow' },
+            { label: 'Fases', route: './process-phase', icon: 'timeline' },
+            { label: 'Proyectos', route: './project', icon: 'hub' },
           ],
         },
         {

@@ -1,1 +1,31 @@
-<p>process-phase-list works!</p>
+<mat-toolbar>
+  <button
+    *ngIf="selectedItem"
+    [matTooltipPosition]="'below'"
+    aria-label="Editar Fase"
+    mat-icon-button
+    matTooltip="Editar Fase"
+    (click)="goToEditForm()"
+  >
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button
+    *ngIf="selectedItem"
+    [matTooltipPosition]="'below'"
+    aria-label="Eliminar Fase"
+    mat-icon-button
+    matTooltip="Eliminar Fase"
+  >
+    <mat-icon>person_remove</mat-icon>
+  </button>
+  <button
+    [matTooltipPosition]="'below'"
+    aria-label="Agregar Fase"
+    mat-icon-button
+    matTooltip="Agregar Fase"
+    (click)="goToAddForm()"
+  >
+    <mat-icon>person_add</mat-icon>
+  </button>
+</mat-toolbar>
+<app-change-view [actions]="actions" (selectedItem)="setSelectedItem($event)"></app-change-view>
