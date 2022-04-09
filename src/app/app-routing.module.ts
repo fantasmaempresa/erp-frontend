@@ -76,6 +76,18 @@ const routes: Routes = [
         data: { breadcrumb: 'Estado de la cotización' },
       },
       {
+        path: 'process-phase',
+        loadChildren: () =>
+          import('./features/process-phase/process-phase.module').then((m) => m.ProcessPhaseModule),
+        data: { breadcrumb: 'Fases del Proceso' },
+      },
+      {
+        path: 'project',
+        loadChildren: () =>
+          import('./features/projects/projects.module').then((m) => m.ProjectsModule),
+        data: { breadcrumb: 'Proyectos' },
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',
