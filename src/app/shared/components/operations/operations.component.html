@@ -39,7 +39,7 @@
           </mat-form-field>
         </div>
         <div class="col-5">
-          <mat-form-field class="w-100" appearance="outline">
+          <mat-form-field class="w-100" appearance="outline" appChipListAutocompleteFix>
             <mat-label>Conceptos</mat-label>
             <mat-chip-list #chipList aria-label="Concept selection">
               <mat-chip
@@ -66,6 +66,7 @@
               (optionSelected)="selected($event, i, 'fields')"
               [displayWith]="displayConceptFn"
             >
+              <mat-option [value]="'new'">Crear nuevo concepto</mat-option>
               <mat-option
                 *ngFor="let concept of filteredConcepts$[i] | async; trackBy: trackConceptsByFn"
                 [value]="concept"
@@ -108,7 +109,7 @@
           </mat-form-field>
         </div>
         <div class="col-5">
-          <mat-form-field class="w-100" appearance="outline">
+          <mat-form-field class="w-100" appearance="outline" appChipListAutocompleteFix>
             <mat-label>Conceptos</mat-label>
             <mat-chip-list #chipListTotal aria-label="Concept selection">
               <mat-chip
@@ -134,6 +135,7 @@
               (optionSelected)="selected($event, i, 'total')"
               [displayWith]="displayConceptFn"
             >
+              <mat-option [value]="'new'">Crear nuevo concepto</mat-option>
               <mat-option
                 *ngFor="
                   let concept of filteredConceptsTotal$[i] | async;

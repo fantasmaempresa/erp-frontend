@@ -8,12 +8,7 @@
   </mat-toolbar>
   <ng-container [formGroup]="quoteForm">
     <mat-accordion class="example-headers-align">
-      <mat-expansion-panel
-        [expanded]="step === 0"
-        (opened)="setStep(0)"
-        hideToggle
-        [disabled]="step !== 0"
-      >
+      <mat-expansion-panel [expanded]="step === HEADER_STEP" (opened)="goToHeaderForm()" hideToggle>
         <mat-expansion-panel-header>
           <mat-panel-title>Encabezado</mat-panel-title>
           <mat-panel-description>
@@ -22,15 +17,14 @@
         </mat-expansion-panel-header>
         <app-project-quote-form formGroupName="headerForm"></app-project-quote-form>
         <mat-action-row>
-          <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+          <button mat-button color="primary" (click)="goToFormBuildStep()">Siguiente</button>
         </mat-action-row>
       </mat-expansion-panel>
 
       <mat-expansion-panel
-        [expanded]="step === 1"
-        (opened)="setStep(1)"
+        [expanded]="step === FORM_BUILD_STEP"
+        (opened)="goToFormBuildStep()"
         hideToggle
-        [disabled]="step !== 1"
       >
         <mat-expansion-panel-header>
           <mat-panel-title>Cotización</mat-panel-title>
@@ -40,35 +34,34 @@
         <app-dynamic-form-creation></app-dynamic-form-creation>
 
         <mat-action-row>
-          <button mat-button color="warn" (click)="prevStep()">Atras</button>
-          <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+          <button mat-button color="warn" (click)="goToHeaderForm()">Atras</button>
+          <button mat-button color="primary" (click)="goToFormFill()">Siguiente</button>
         </mat-action-row>
       </mat-expansion-panel>
 
       <mat-expansion-panel
-        [expanded]="step === 2"
-        (opened)="setStep(2)"
+        [expanded]="step === FORM_FILL_STEP"
+        (opened)="goToFormFill()"
+        (closed)="saveState = true"
         hideToggle
-        [disabled]="step !== 2"
       >
         <mat-expansion-panel-header>
           <mat-panel-title>Cotización</mat-panel-title>
           <mat-panel-description> Llenado de formulario </mat-panel-description>
         </mat-expansion-panel-header>
 
-        <app-dynamic-form *ngIf="step === 2" [formFields]="formFields"></app-dynamic-form>
+        <app-dynamic-form [save]="saveState" [formFields]="formFields"></app-dynamic-form>
 
         <mat-action-row>
-          <button mat-button color="warn" (click)="prevStep()">Atras</button>
-          <button mat-button color="primary" (click)="nextStep()">Siguiente</button>
+          <button mat-button color="warn" (click)="goToFormBuildStep()">Atras</button>
+          <button mat-button color="primary" (click)="goToOperationsForm()">Siguiente</button>
         </mat-action-row>
       </mat-expansion-panel>
 
       <mat-expansion-panel
-        [expanded]="step === 3"
-        (opened)="setStep(3)"
+        [expanded]="step === OPERATIONS_FORM_STEP"
+        (opened)="goToOperationsForm()"
         hideToggle
-        [disabled]="step !== 3"
       >
         <mat-expansion-panel-header>
           <mat-panel-title> Conceptos </mat-panel-title>
@@ -79,10 +72,21 @@
 
         <app-operations (form)="operationsForm = $event"></app-operations>
 
-        <!--      <app-project-quote-concepts></app-project-quote-concepts>-->
+        <mat-action-row>
+          <button mat-button color="warn" (click)="goToFormFill()">Atras</button>
+          <button mat-button color="primary" (click)="goToPreview()">Siguiente</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <!--      PREVIEW-->
+      <mat-expansion-panel [expanded]="step === PREVIEW_STEP" (opened)="goToPreview()" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title> Vista previa </mat-panel-title>
+          <mat-panel-description> Vista previa de la cotización realizada </mat-panel-description>
+        </mat-expansion-panel-header>
 
         <mat-action-row>
-          <button mat-button color="warn" (click)="prevStep()">Atras</button>
+          <button mat-button color="warn" (click)="goToOperationsForm()">Atras</button>
           <button mat-button color="primary" (click)="saveQuote()">Guardar</button>
         </mat-action-row>
       </mat-expansion-panel>

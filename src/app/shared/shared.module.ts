@@ -19,6 +19,7 @@ import { DynamicFormCreationComponent } from './components/dynamic-form-creation
 import { OperationsComponent } from './components/operations/operations.component';
 import { MapToPipe } from '../core/pipes/map-to.pipe';
 import { GenericAutocompleteChipComponent } from './components/generic-autocomplete-chip/generic-autocomplete-chip.component';
+import { ChipListAutocompleteFixDirective } from '../core/directives/chip-list-autocomplete-fix.directive';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -27,6 +28,7 @@ import { GenericAutocompleteChipComponent } from './components/generic-autocompl
     PageNotFoundComponent,
     ErrorMessageDirective,
     StopPropagationDirective,
+    ChipListAutocompleteFixDirective,
     OutSideClickDirective,
     FromDatePipe,
     MapToPipe,
@@ -57,6 +59,7 @@ import { GenericAutocompleteChipComponent } from './components/generic-autocompl
     HttpClientModule,
     ErrorMessageDirective,
     StopPropagationDirective,
+    ChipListAutocompleteFixDirective,
     OutSideClickDirective,
     FromDatePipe,
     MapToPipe,
