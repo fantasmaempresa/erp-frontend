@@ -18,6 +18,7 @@ import { FromDatePipe } from '../core/pipes/from-date.pipe';
 import { DynamicFormCreationComponent } from './components/dynamic-form-creation/dynamic-form-creation.component';
 import { OperationsComponent } from './components/operations/operations.component';
 import { MapToPipe } from '../core/pipes/map-to.pipe';
+import { GenericAutocompleteChipComponent } from './components/generic-autocomplete-chip/generic-autocomplete-chip.component';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -35,6 +36,7 @@ import { MapToPipe } from '../core/pipes/map-to.pipe';
     DynamicFormComponent,
     DynamicFormCreationComponent,
     OperationsComponent,
+    GenericAutocompleteChipComponent,
   ],
   imports: [
     CommonModule,
@@ -61,6 +63,7 @@ import { MapToPipe } from '../core/pipes/map-to.pipe';
     DynamicFormComponent,
     DynamicFormCreationComponent,
     OperationsComponent,
+    GenericAutocompleteChipComponent,
   ],
 })
 export class SharedModule {}

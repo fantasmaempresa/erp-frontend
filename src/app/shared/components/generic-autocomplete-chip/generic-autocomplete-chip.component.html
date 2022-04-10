@@ -1,0 +1,25 @@
+<mat-form-field appearance="outline" class="custom-control">
+  <mat-label>{{ label }}</mat-label>
+  <mat-chip-list #chipList>
+    <mat-chip *ngFor="let item of data" (removed)="remove(item)">
+      {{ item | mapTo: mapFn }}
+      <button matChipRemove>
+        <mat-icon>cancel</mat-icon>
+      </button>
+    </mat-chip>
+    <input
+      [placeholder]="placeholder"
+      #chipInput
+      [formControl]="control"
+      [matAutocomplete]="auto"
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      (matChipInputTokenEnd)="add($event)"
+    />
+  </mat-chip-list>
+  <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-option *ngFor="let item of filteredData | async" [value]="item">
+      {{ item | mapTo: mapFn }}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

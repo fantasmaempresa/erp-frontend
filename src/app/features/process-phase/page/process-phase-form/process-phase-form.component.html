@@ -30,14 +30,22 @@
 
           <div class="checkbox-container">
             <mat-checkbox color="primary" formControlName="reportable"
-              >¿Debe notificar?</mat-checkbox
-            >
+              >¿Debe notificar?
+            </mat-checkbox>
             <mat-checkbox color="primary" formControlName="payments">¿Requiere Pago?</mat-checkbox>
             <mat-checkbox color="primary" formControlName="admin"
               >¿Requiere supervisión del administrador o notario?
             </mat-checkbox>
           </div>
+          <app-generic-autocomplete-chip
+            [allData]="roles$ | async"
+            formControlName="roles"
+            label="Roles"
+            placeholder="Roles que tienen permiso"
+            [mapFn]="mapRoles"
+          ></app-generic-autocomplete-chip>
         </div>
+
         <mat-action-row>
           <button mat-button color="primary" (click)="nextStep()">Formulario de Fase</button>
         </mat-action-row>
