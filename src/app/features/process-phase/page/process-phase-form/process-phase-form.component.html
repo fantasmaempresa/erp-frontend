@@ -1,1 +1,64 @@
-<p>process-phase-form works!</p>
+<mat-card>
+  <mat-toolbar>
+    <div>
+      <button (click)="back()" aria-label="Regresar" mat-icon-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <mat-accordion>
+      <mat-expansion-panel
+        [expanded]="step === 0"
+        (opened)="setStep(0)"
+        hideToggle
+        [disabled]="step !== 0"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>Datos Generales</mat-panel-title>
+          <mat-panel-description
+            >Nombre, Roles y otras configuraciones sobre la fase
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="d-flex flex-column form-container">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre de la Fase</mat-label>
+            <input formControlName="name" matInput type="text" />
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+
+          <div class="checkbox-container">
+            <mat-checkbox color="primary" formControlName="reportable"
+              >¿Debe notificar?</mat-checkbox
+            >
+            <mat-checkbox color="primary" formControlName="payments">¿Requiere Pago?</mat-checkbox>
+            <mat-checkbox color="primary" formControlName="admin"
+              >¿Requiere supervisión del administrador o notario?
+            </mat-checkbox>
+          </div>
+        </div>
+        <mat-action-row>
+          <button mat-button color="primary" (click)="nextStep()">Formulario de Fase</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+      <mat-expansion-panel
+        [expanded]="step === 1"
+        (opened)="setStep(1)"
+        hideToggle
+        [disabled]="step !== 1"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>Formulario de Fase</mat-panel-title>
+          <mat-panel-description
+            >Nombre, Roles y otras configuraciones sobre la fase
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <mat-action-row>
+          <button mat-button color="primary" (click)="prevStep()">Datos Generales</button>
+          <button mat-flat-button color="primary">Crear Fase</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</mat-card>

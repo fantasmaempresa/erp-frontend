@@ -9,7 +9,7 @@ import { Pagination } from '../../core/interfaces/Pagination.model';
 })
 export class ProcessPhaseService extends CrudService<ProcessPhase> {
   constructor(protected _http: HttpClient) {
-    super('processes', _http);
+    super('phasesProcesses', _http);
   }
 
   changePage(page: number, size: number) {

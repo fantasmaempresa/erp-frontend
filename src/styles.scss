@@ -9,6 +9,11 @@
 @import '~src/assets/styles/components/profile-img';
 @import '~src/assets/styles/components/scrollbar';
 
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+
 :root {
   @each $color, $shades in $colors {
     @each $shade, $value in $shades {
