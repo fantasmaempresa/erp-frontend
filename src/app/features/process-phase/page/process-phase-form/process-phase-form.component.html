@@ -6,7 +6,7 @@
       </button>
     </div>
   </mat-toolbar>
-  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+  <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
     <mat-accordion>
       <mat-expansion-panel
         [expanded]="step === 0"
@@ -38,8 +38,8 @@
             </mat-checkbox>
           </div>
           <app-generic-autocomplete-chip
-            [allData]="roles$ | async"
             formControlName="roles"
+            [allData]="roles$ | async"
             label="Roles"
             placeholder="Roles que tienen permiso"
             [mapFn]="mapRoles"

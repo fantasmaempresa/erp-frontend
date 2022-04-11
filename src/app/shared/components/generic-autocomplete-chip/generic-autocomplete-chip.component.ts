@@ -2,20 +2,16 @@ import {
   Component,
   ElementRef,
   forwardRef,
+  Injector,
   Input,
   OnChanges,
   OnInit,
   ViewChild,
 } from '@angular/core';
-import {
-  ControlContainer,
-  ControlValueAccessor,
-  FormControl,
-  NG_VALUE_ACCESSOR,
-} from '@angular/forms';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
-import { debounceTime, filter, map, Observable, startWith } from 'rxjs';
+import { debounceTime, filter, map, Observable, startWith, Subject } from 'rxjs';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 @Component({
@@ -30,7 +26,7 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
     },
   ],
 })
-export class GenericAutocompleteChipComponent implements ControlValueAccessor, OnInit, OnChanges {
+export class GenericAutocompleteChipComponent implements ControlValueAccessor, OnChanges, OnInit {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onChange = (_: any) => {};
 
@@ -42,9 +38,6 @@ export class GenericAutocompleteChipComponent implements ControlValueAccessor, O
   allData: any[] | null = [];
 
   @Input()
-  formControlName!: string;
-
-  @Input()
   label = '';
 
   @Input()
@@ -53,35 +46,30 @@ export class GenericAutocompleteChipComponent implements ControlValueAccessor, O
   @Input()
   mapFn!: (item: any) => any;
 
-  control!: FormControl;
-
   @ViewChild('chipInput', { static: true }) input!: ElementRef<HTMLInputElement>;
 
   filteredData!: Observable<any>;
 
   separatorKeysCodes = [ENTER, COMMA];
 
-  constructor(private controlContainer: ControlContainer) {}
+  private subject$ = new Subject<any>();
+
+  ngControl!: NgControl;
+
+  constructor(private inj: Injector) {}
+
+  ngOnInit(): void {
+    this.ngControl = this.inj.get(NgControl);
+    this.ngControl.valueAccessor = this;
+  }
 
   ngOnChanges(): void {
-    if (this.control) {
-      this.filteredData = this.control.valueChanges.pipe(
-        startWith(''),
-        debounceTime(200),
-        filter((value) => typeof value === 'string'),
-        map((item: string) => {
-          console.log(!!item);
-          if (!!item) {
-            console.log('Entra en true');
-            return this._filter(item);
-          } else {
-            console.log('Entra en false');
-            console.log(this.excludeLoadedChips());
-            return this.excludeLoadedChips()?.slice();
-          }
-        }),
-      );
-    }
+    this.filteredData = this.subject$.asObservable().pipe(
+      startWith(''),
+      debounceTime(200),
+      filter((value) => typeof value === 'string'),
+      map((item: string) => (!!item ? this._filter(item) : this.excludeLoadedChips()?.slice())),
+    );
   }
 
   registerOnChange(fn: any): void {
@@ -92,39 +80,34 @@ export class GenericAutocompleteChipComponent implements ControlValueAccessor, O
     this.onTouch = fn;
   }
 
-  writeValue(value: any): void {}
-
-  ngOnInit(): void {
-    this.control = this.controlContainer.control?.get(this.formControlName) as FormControl;
+  writeValue(value: any): void {
+    if (value) {
+      this.data = [...value];
+      this.valueChange();
+    }
   }
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
 
-    // Add our fruit
     if (value) {
       this.data.push(value);
     }
-
-    // Clear the input value
-    event.chipInput!.clear();
-
-    this.control.setValue('');
+    this.onTouch();
   }
 
   remove(item: string): void {
     const index = this.data.indexOf(item);
-
     if (index >= 0) {
       this.data.splice(index, 1);
     }
-    this.control.setValue('');
+    this.valueChange();
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
     this.data.push(event.option.value);
     this.input.nativeElement.value = '';
-    this.control.setValue('');
+    this.valueChange();
   }
 
   private _filter(value: any): any[] {
@@ -138,5 +121,17 @@ export class GenericAutocompleteChipComponent implements ControlValueAccessor, O
     return this.allData?.filter(
       (item) => !this.data.some((data) => this.mapFn(item) === this.mapFn(data)),
     );
+  }
+
+  valueChange() {
+    const value = this.input.nativeElement.value;
+    this.subject$.next(value);
+    if (this.data.length > 0) {
+      this.onChange(this.data);
+    } else {
+      this.onChange(null);
+    }
+    this.input.nativeElement.value = '';
+    this.onTouch();
   }
 }
