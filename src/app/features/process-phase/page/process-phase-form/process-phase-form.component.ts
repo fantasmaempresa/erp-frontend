@@ -12,7 +12,7 @@ import { Role } from '../../../../data/models/Role.model';
   styleUrls: ['./process-phase-form.component.scss'],
 })
 export class ProcessPhaseFormComponent {
-  step = 0;
+  step = 1;
 
   form!: FormGroup;
 
@@ -54,5 +54,7 @@ export class ProcessPhaseFormComponent {
     this.step--;
   }
 
-  onSubmit() {}
+  onSubmit() {
+    this.form.markAllAsTouched();
+  }
 }
