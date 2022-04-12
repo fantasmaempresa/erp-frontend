@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TemplateQuotesService } from '../../../../data/services/template-quotes.service';
@@ -18,7 +18,7 @@ import faker from '@faker-js/faker';
   templateUrl: './project-quote-page.component.html',
   styleUrls: ['./project-quote-page.component.scss'],
 })
-export class ProjectQuotePageComponent {
+export class ProjectQuotePageComponent implements OnInit {
   HEADER_STEP = 0;
 
   FORM_BUILD_STEP = 1;
@@ -45,6 +45,7 @@ export class ProjectQuotePageComponent {
 
   quoteForm = new FormGroup({
     headerForm: this.headerForm,
+    formFill: new FormControl(null, [Validators.required]),
   });
 
   formFields!: Formfield<any>[];
@@ -52,6 +53,8 @@ export class ProjectQuotePageComponent {
   operationsForm = new FormGroup({});
 
   step = 0;
+
+  fields$!: Observable<Formfield<any>[]>;
 
   constructor(
     private router: Router,
@@ -61,8 +64,8 @@ export class ProjectQuotePageComponent {
     private projectQuoteService: ProjectQuoteService,
   ) {
     const status$: Observable<'EDITABLE' | 'NEW'> = store.select(selectStatus);
-    const fields$: Observable<Formfield<any>[]> = store.select(selectDynamicForm);
-    combineLatest([fields$, status$]).subscribe(([fields, status]) => {
+    this.fields$ = store.select(selectDynamicForm);
+    combineLatest([this.fields$, status$]).subscribe(([fields, status]) => {
       if (status !== 'EDITABLE') {
         this.formFields = fields;
       }
@@ -105,10 +108,13 @@ export class ProjectQuotePageComponent {
   goToFormFill() {
     this.saveState = false;
     this.step = this.FORM_FILL_STEP;
-    // this.store.dispatch(changeStatus({ status: 'EDITABLE' }));
   }
 
   goToOperationsForm() {
+    this.saveState = true;
+    if (this.quoteForm.get('formFill')?.invalid) {
+      return;
+    }
     this.step = this.OPERATIONS_FORM_STEP;
   }
 
@@ -116,16 +122,16 @@ export class ProjectQuotePageComponent {
     this.step = this.PREVIEW_STEP;
   }
 
-  isOperationGroupValid() {
-    if (this.step !== 3) {
-      return true;
-    }
-
-    console.log('Validando operation form');
-    this.operationsForm.markAllAsTouched();
-
-    return !this.operationsForm.invalid;
-  }
+  // isOperationGroupValid() {
+  //   if (this.step !== 3) {
+  //     return true;
+  //   }
+  //
+  //   console.log('Validando operation form');
+  //   this.operationsForm.markAllAsTouched();
+  //
+  //   return !this.operationsForm.invalid;
+  // }
 
   prevStep() {
     this.step--;
@@ -154,5 +160,13 @@ export class ProjectQuotePageComponent {
           this.router.navigate(['../'], { relativeTo: this.route });
         });
       });
+  }
+
+  ngOnInit(): void {
+    this.fields$.subscribe({
+      next: () => {
+        this.quoteForm.get('formFill')?.reset();
+      },
+    });
   }
 }

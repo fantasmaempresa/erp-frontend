@@ -1,8 +1,105 @@
 <ng-container>
   <form [formGroup]="form">
-    <div class="row" *ngFor="let formField of formFields; index as i">
+    <div class="row" *ngFor="let formField of fields$ | async; index as i">
       <div class="col-10">
-        <app-dynamic-form-input [input]="formField" [form]="form"></app-dynamic-form-input>
+        <!--        <app-dynamic-form-input [input]="formField" [form]="form"></app-dynamic-form-input>-->
+        <div [ngSwitch]="formField.controlType">
+          <mat-form-field appearance="outline" *ngSwitchCase="'textbox'" class="w-100">
+            <mat-label>{{ formField.label }}</mat-label>
+            <input
+              matInput
+              [formControlName]="formField.key"
+              [id]="formField.key"
+              [type]="formField.type"
+              [value]="formField.value"
+              autocomplete="off"
+            />
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" *ngSwitchCase="'number'" class="w-100">
+            <mat-label>{{ formField.label }}</mat-label>
+            <input
+              matInput
+              [formControlName]="formField.key"
+              [value]="formField.value"
+              [id]="formField.key"
+              [type]="'number'"
+              autocomplete="off"
+            />
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+
+          <div *ngSwitchCase="'dropdown'">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ formField.label }}</mat-label>
+              <mat-select [formControlName]="formField.key">
+                <mat-option>Ninguna</mat-option>
+                <mat-option
+                  *ngFor="let option of formField.options; index as i"
+                  [value]="option.value"
+                  >{{ option.value }}</mat-option
+                >
+              </mat-select>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+          </div>
+
+          <div *ngSwitchCase="'checkbox'">
+            <section class="example-section">
+              <mat-checkbox
+                color="primary"
+                [formControlName]="formField.key"
+                [value]="formField.value"
+                >{{ formField.label }}</mat-checkbox
+              >
+            </section>
+          </div>
+
+          <div *ngSwitchCase="'radio'">
+            <label>{{ formField.label }}</label>
+            <mat-radio-group
+              class="radio-group"
+              aria-label="Select an option"
+              [formControlName]="formField.key"
+            >
+              <mat-radio-button
+                class="radio-button"
+                color="primary"
+                *ngFor="let option of formField.options"
+                [value]="option.value"
+              >
+                {{ option.key }}
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+
+          <div *ngSwitchCase="'textarea'">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ formField.label }}</mat-label>
+              <textarea
+                matInput
+                [formControlName]="formField.key"
+                [value]="formField.value"
+              ></textarea>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+          </div>
+
+          <div *ngSwitchCase="'date'">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>{{ formField.label }}</mat-label>
+              <input
+                matInput
+                [matDatepicker]="dateForm"
+                [formControlName]="formField.key"
+                [value]="formField.value"
+              />
+              <mat-datepicker-toggle matSuffix [for]="dateForm"></mat-datepicker-toggle>
+              <mat-datepicker #dateForm disabled="false"></mat-datepicker>
+            </mat-form-field>
+          </div>
+        </div>
       </div>
     </div>
   </form>

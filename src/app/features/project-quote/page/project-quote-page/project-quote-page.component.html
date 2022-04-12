@@ -50,7 +50,11 @@
           <mat-panel-description> Llenado de formulario </mat-panel-description>
         </mat-expansion-panel-header>
 
-        <app-dynamic-form [save]="saveState" [formFields]="formFields"></app-dynamic-form>
+        <app-dynamic-form
+          [save]="saveState"
+          formControlName="formFill"
+          *ngIf="step === FORM_FILL_STEP"
+        ></app-dynamic-form>
 
         <mat-action-row>
           <button mat-button color="warn" (click)="goToFormBuildStep()">Atras</button>
@@ -61,6 +65,7 @@
       <mat-expansion-panel
         [expanded]="step === OPERATIONS_FORM_STEP"
         (opened)="goToOperationsForm()"
+        [disabled]="this.quoteForm.get('formFill')?.invalid"
         hideToggle
       >
         <mat-expansion-panel-header>
@@ -79,7 +84,12 @@
       </mat-expansion-panel>
 
       <!--      PREVIEW-->
-      <mat-expansion-panel [expanded]="step === PREVIEW_STEP" (opened)="goToPreview()" hideToggle>
+      <mat-expansion-panel
+        [expanded]="step === PREVIEW_STEP"
+        (opened)="goToPreview()"
+        [disabled]="this.quoteForm.get('formFill')?.invalid"
+        hideToggle
+      >
         <mat-expansion-panel-header>
           <mat-panel-title> Vista previa </mat-panel-title>
           <mat-panel-description> Vista previa de la cotización realizada </mat-panel-description>

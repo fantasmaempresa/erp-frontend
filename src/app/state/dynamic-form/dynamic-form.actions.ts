@@ -7,6 +7,7 @@ export enum DynamicFormActions {
   LOAD_FORM_SUCCESS = '[Dynamic Form] Load form success',
   SET_FIELD = '[Dynamic Form] Set field',
   UPDATE_FIELD = '[Dynamic Form] Update field',
+  UPDATE_VALUES = '[Dynamic Form] Update values',
   SET_VALUES_TO_FIELDS = '[Dynamic Form] Set value to fields',
   CHANGE_STATUS = '[Dynanic Form] Change status',
   REMOVE_FIELD = '[Dynamic Form] Removing field',
@@ -28,6 +29,10 @@ export const setField = createAction(
 export const updateField = createAction(
   DynamicFormActions.UPDATE_FIELD,
   props<{ form: Update<Formfield<any>> }>(),
+);
+export const updateValues = createAction(
+  DynamicFormActions.UPDATE_VALUES,
+  props<{ form: Update<Formfield<any>>[] }>(),
 );
 export const setValuesToFields = createAction(
   DynamicFormActions.SET_VALUES_TO_FIELDS,
