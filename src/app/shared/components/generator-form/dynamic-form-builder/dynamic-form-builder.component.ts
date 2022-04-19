@@ -1,5 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { Component, forwardRef, Injector, OnInit } from '@angular/core';
+import {
+  ControlValueAccessor,
+  FormArray,
+  FormControl,
+  FormGroup,
+  FormGroupDirective,
+  NG_VALUE_ACCESSOR,
+  NgControl,
+  Validators,
+} from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
 import { Formfield } from '../../../../data/models/Formfield.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -8,9 +17,21 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   selector: 'app-dynamic-form-builder',
   templateUrl: './dynamic-form-builder.component.html',
   styleUrls: ['./dynamic-form-builder.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DynamicFormBuilderComponent),
+      multi: true,
+    },
+  ],
 })
-export class DynamicFormBuilderComponent {
+export class DynamicFormBuilderComponent implements ControlValueAccessor, OnInit {
   form!: FormGroup;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onChange = (_: any) => {};
+
+  onTouch = () => {};
 
   formFields: Formfield<any>[] = [];
 
@@ -52,7 +73,9 @@ export class DynamicFormBuilderComponent {
 
   edit = false;
 
-  constructor() {
+  ngControl!: NgControl;
+
+  constructor(private inj: Injector) {
     this.form = new FormGroup({
       id: new FormControl(uuidv4()),
       controlType: new FormControl('', [Validators.required]),
@@ -73,6 +96,25 @@ export class DynamicFormBuilderComponent {
         }
       },
     });
+  }
+
+  ngOnInit(): void {
+    this.ngControl = this.inj.get(NgControl);
+    this.ngControl.valueAccessor = this;
+  }
+
+  writeValue(formFields: Formfield<any>[]): void {
+    if (formFields) {
+      this.formFields = formFields;
+    }
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouch = fn;
   }
 
   getControlType = (value: any) => this.types.find((type) => type.value === value);
@@ -98,6 +140,13 @@ export class DynamicFormBuilderComponent {
     }
     ngForm.form.markAsPristine();
     ngForm.resetForm();
+
+    this.notifyValueChange();
+  }
+
+  private notifyValueChange() {
+    this.onChange(this.formFields);
+    this.onTouch();
   }
 
   get options() {
@@ -120,10 +169,12 @@ export class DynamicFormBuilderComponent {
   removeFormField(field: Formfield<any>) {
     const index = this.formFields.findIndex((formField) => formField.id === field.id);
     this.formFields.splice(index, 1);
+    this.notifyValueChange();
   }
 
   drop(event: CdkDragDrop<Formfield<any>[]>) {
     moveItemInArray(this.formFields, event.previousIndex, event.currentIndex);
+    this.notifyValueChange();
   }
 
   editFormField(field: Formfield<any>) {
@@ -136,6 +187,8 @@ export class DynamicFormBuilderComponent {
       });
       this.options.patchValue(field.options);
     }
+
+    this.notifyValueChange();
   }
 
   cancelEdit(ngForm: FormGroupDirective) {

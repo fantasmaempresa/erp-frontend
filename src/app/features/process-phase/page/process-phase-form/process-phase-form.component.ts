@@ -35,6 +35,7 @@ export class ProcessPhaseFormComponent {
       payments: new FormControl(false),
       admin: new FormControl(false),
       roles: new FormControl(null, [Validators.required]),
+      form: new FormControl(null, [Validators.required]),
     });
   }
 

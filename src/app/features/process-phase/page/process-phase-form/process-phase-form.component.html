@@ -61,12 +61,14 @@
           <mat-panel-description>Construya el formulario de la fase</mat-panel-description>
         </mat-expansion-panel-header>
 
-        <app-dynamic-form-builder></app-dynamic-form-builder>
+        <app-dynamic-form-builder formControlName="form"></app-dynamic-form-builder>
         <mat-action-row>
           <button mat-button color="primary" (click)="prevStep()">Datos Generales</button>
           <button mat-flat-button color="primary">Crear Fase</button>
         </mat-action-row>
       </mat-expansion-panel>
+
+      {{ form.value | json }}
     </mat-accordion>
   </form>
 </mat-card>
