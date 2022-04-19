@@ -1,44 +1,42 @@
 <div class="form-builder">
   <div class="form-builder__fields">
-    Fields
-    <!--    <div-->
-    <!--      cdkDropList-->
-    <!--      class="draggable-list"-->
-    <!--      (cdkDropListDropped)="drop($event)"-->
-    <!--      [cdkDropListData]="formFields"-->
-    <!--    >-->
-    <!--      <div class="example-box" *ngFor="let field of formFields" cdkDrag>-->
-    <!--        <div class="example-custom-placeholder" *cdkDragPlaceholder></div>-->
-    <!--        <div class="d-flex justify-content-between w-100">-->
-    <!--          <span class="d-flex align-items-center"-->
-    <!--          >{{ field.key }} - Tipo: {{ field.controlType }}</span-->
-    <!--          >-->
+    <div
+      cdkDropList
+      class="draggable-list"
+      (cdkDropListDropped)="drop($event)"
+      [cdkDropListData]="formFields"
+      [class.draggable-list--disabled]="edit"
+    >
+      <div class="draggable-box" *ngFor="let field of formFields" cdkDrag>
+        <div class="draggable-placeholder" *cdkDragPlaceholder></div>
+        <div class="d-flex justify-content-between w-100">
+          <span class="d-flex align-items-center"
+            >{{ field.key }} - Tipo: {{ field.controlType }}</span
+          >
 
-    <!--          <div>-->
-    <!--            <button-->
-    <!--              type="button"-->
-    <!--              mat-icon-button-->
-    <!--              matTooltip="Editar opción"-->
-    <!--              *ngIf="field.key !== 'total'"-->
-    <!--              (click)="setDataInForm(field)"-->
-    <!--            >-->
-    <!--              <mat-icon>edit</mat-icon>-->
-    <!--            </button>-->
-    <!--            <button-->
-    <!--              type="button"-->
-    <!--              mat-icon-button-->
-    <!--              matTooltip="Eliminar opción"-->
-    <!--              *ngIf="field.key !== 'total'"-->
-    <!--              (click)="removeField(field)"-->
-    <!--            >-->
-    <!--              <mat-icon>remove</mat-icon>-->
-    <!--            </button>-->
-    <!--          </div>-->
-    <!--        </div>-->
-    <!--      </div>-->
-    <!--    </div>-->
+          <div>
+            <button
+              type="button"
+              mat-icon-button
+              matTooltip="Editar opción"
+              (click)="editFormField(field)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              type="button"
+              mat-icon-button
+              matTooltip="Eliminar opción"
+              (click)="removeFormField(field)"
+            >
+              <mat-icon>remove</mat-icon>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-builder__form">
+  <form #f="ngForm" [formGroup]="form" (ngSubmit)="onSubmit(f)" class="form-builder__form">
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Tipo de dato</mat-label>
       <mat-select formControlName="controlType">
@@ -57,53 +55,66 @@
     </mat-form-field>
 
     <div
-      class="form-builder__options"
+      class="form-options"
       formArrayName="options"
       *ngIf="form.get('controlType')?.value | mapTo: canShowOptions"
     >
-      <div class="row" *ngFor="let option of options.controls; index as i" [formGroupName]="i">
-        <div class="col-5">
+      <div
+        class="form-options__row"
+        *ngFor="let option of options.controls; index as i"
+        [formGroupName]="i"
+      >
+        <div class="form-options__key">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Clave</mat-label>
             <input matInput type="text" autocomplete="off" formControlName="key" />
           </mat-form-field>
         </div>
-        <div class="col-5">
+        <div class="form-options__value">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Valor</mat-label>
             <input matInput type="text" autocomplete="off" formControlName="value" />
           </mat-form-field>
         </div>
-        <div>
-          <button
-            *ngIf="options.controls.length > 1"
-            type="button"
-            mat-mini-fab
-            color="warn"
-            class="align-self-center search-button"
-            matTooltip="Eliminar opción"
-          >
-            <mat-icon>remove</mat-icon>
-          </button>
-        </div>
+        <button
+          *ngIf="options.controls.length > 1"
+          type="button"
+          mat-mini-fab
+          color="warn"
+          class="form-options__delete"
+          matTooltip="Eliminar opción"
+          (click)="deleteOption(i)"
+        >
+          <mat-icon>remove</mat-icon>
+        </button>
       </div>
-      <div class="row justify-content-center">
-        <div class="col-1">
-          <button
-            type="button"
-            mat-fab
-            color="primary"
-            class="align-self-center search-button"
-            matTooltip="Agregar otra opción"
-          >
-            <mat-icon>add</mat-icon>
-          </button>
-        </div>
+      <div class="form-options__add">
+        <button
+          type="button"
+          mat-fab
+          color="primary"
+          class="align-self-center search-button"
+          matTooltip="Agregar otra opción"
+          (click)="addOption()"
+        >
+          <mat-icon>add</mat-icon>
+        </button>
       </div>
     </div>
     <div class="row justify-content-between">
-      <button mat-flat-button color="primary" class="col-4">Campo</button>
-      <button mat-flat-button type="button" color="accent" class="col-4">Cancelar</button>
+      <button mat-flat-button color="primary" class="col-4">
+        {{ edit | mapTo: labelButton }} Campo
+      </button>
+      <button
+        (click)="cancelEdit(f)"
+        mat-flat-button
+        type="button"
+        color="accent"
+        class="col-4"
+        *ngIf="edit"
+      >
+        Cancelar
+      </button>
     </div>
   </form>
 </div>

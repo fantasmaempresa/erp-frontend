@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { v4 as uuidv4 } from 'uuid';
+import { Formfield } from '../../../../data/models/Formfield.model';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-dynamic-form-builder',
   templateUrl: './dynamic-form-builder.component.html',
   styleUrls: ['./dynamic-form-builder.component.scss'],
 })
-export class DynamicFormBuilderComponent implements OnInit {
+export class DynamicFormBuilderComponent {
   form!: FormGroup;
+
+  formFields: Formfield<any>[] = [];
 
   types = [
     {
@@ -46,6 +50,8 @@ export class DynamicFormBuilderComponent implements OnInit {
     },
   ];
 
+  edit = false;
+
   constructor() {
     this.form = new FormGroup({
       id: new FormControl(uuidv4()),
@@ -73,9 +79,26 @@ export class DynamicFormBuilderComponent implements OnInit {
 
   canShowOptions = (value: any) => this.getControlType(value)?.options;
 
-  ngOnInit(): void {}
+  labelButton = (edit: boolean) => (edit ? 'Modificar' : 'Crear');
 
-  onSubmit() {}
+  onSubmit(ngForm: FormGroupDirective) {
+    if (this.form.invalid) {
+      return;
+    }
+    const label: string = this.form.get('label')?.value;
+    this.form.get('key')?.setValue(label.toLowerCase());
+    // @ts-ignore
+    const field = this.form.value;
+    if (this.edit) {
+      const index = this.formFields.findIndex((formField) => formField.id === field.id);
+      this.formFields[index] = field;
+      this.edit = false;
+    } else {
+      this.formFields.push(field);
+    }
+    ngForm.form.markAsPristine();
+    ngForm.resetForm();
+  }
 
   get options() {
     return this.form.controls.options as FormArray;
@@ -88,5 +111,36 @@ export class DynamicFormBuilderComponent implements OnInit {
         value: new FormControl('', Validators.required),
       }),
     );
+  }
+
+  deleteOption(index: number) {
+    this.options.removeAt(index);
+  }
+
+  removeFormField(field: Formfield<any>) {
+    const index = this.formFields.findIndex((formField) => formField.id === field.id);
+    this.formFields.splice(index, 1);
+  }
+
+  drop(event: CdkDragDrop<Formfield<any>[]>) {
+    moveItemInArray(this.formFields, event.previousIndex, event.currentIndex);
+  }
+
+  editFormField(field: Formfield<any>) {
+    this.edit = true;
+    this.form.patchValue(field);
+    if (field.options.length > 0) {
+      this.options.clear();
+      field.options.forEach(() => {
+        this.addOption();
+      });
+      this.options.patchValue(field.options);
+    }
+  }
+
+  cancelEdit(ngForm: FormGroupDirective) {
+    ngForm.form.markAsPristine();
+    ngForm.resetForm();
+    this.edit = false;
   }
 }
