@@ -42,7 +42,7 @@
       <mat-expansion-panel
         [expanded]="step === FORM_FILL_STEP"
         (opened)="goToFormFill()"
-        (closed)="saveState = true"
+        (closed)="closingFormFill()"
         hideToggle
       >
         <mat-expansion-panel-header>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TemplateQuotesService } from '../../../../data/services/template-quotes.service';
@@ -62,6 +62,7 @@ export class ProjectQuotePageComponent implements OnInit {
     private store: Store,
     private templateQuotesService: TemplateQuotesService,
     private projectQuoteService: ProjectQuoteService,
+    private cd: ChangeDetectorRef,
   ) {
     const status$: Observable<'EDITABLE' | 'NEW'> = store.select(selectStatus);
     this.fields$ = store.select(selectDynamicForm);
@@ -76,27 +77,6 @@ export class ProjectQuotePageComponent implements OnInit {
     await this.router.navigate(['../'], { relativeTo: this.route });
   }
 
-  setStep(index: number) {
-    this.step = index;
-  }
-
-  nextStep() {
-    this.quoteForm.markAllAsTouched();
-    if (this.quoteForm.invalid) {
-      return;
-    }
-
-    this.step++;
-
-    // if (!this.isOperationGroupValid()) {
-    //   return;
-    // }
-    //
-    // if (this.step === 2) {
-    //   this.store.dispatch(changeStatus({ status: 'EDITABLE' }));
-    // }
-  }
-
   goToHeaderForm() {
     this.step = this.HEADER_STEP;
   }
@@ -106,13 +86,12 @@ export class ProjectQuotePageComponent implements OnInit {
   }
 
   goToFormFill() {
-    this.saveState = false;
     this.step = this.FORM_FILL_STEP;
   }
 
   goToOperationsForm() {
-    this.saveState = true;
     if (this.quoteForm.get('formFill')?.invalid) {
+      this.saveState = true;
       return;
     }
     this.step = this.OPERATIONS_FORM_STEP;
@@ -120,21 +99,6 @@ export class ProjectQuotePageComponent implements OnInit {
 
   goToPreview() {
     this.step = this.PREVIEW_STEP;
-  }
-
-  // isOperationGroupValid() {
-  //   if (this.step !== 3) {
-  //     return true;
-  //   }
-  //
-  //   console.log('Validando operation form');
-  //   this.operationsForm.markAllAsTouched();
-  //
-  //   return !this.operationsForm.invalid;
-  // }
-
-  prevStep() {
-    this.step--;
   }
 
   async saveQuote() {
@@ -165,8 +129,15 @@ export class ProjectQuotePageComponent implements OnInit {
   ngOnInit(): void {
     this.fields$.subscribe({
       next: () => {
-        this.quoteForm.get('formFill')?.reset();
+        if (this.step < this.FORM_FILL_STEP) {
+          this.quoteForm.get('formFill')?.reset();
+        }
       },
     });
+  }
+
+  closingFormFill() {
+    console.log('Cerrando form fill');
+    this.saveState = true;
   }
 }

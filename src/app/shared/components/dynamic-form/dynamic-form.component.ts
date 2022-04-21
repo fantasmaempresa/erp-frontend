@@ -15,7 +15,7 @@ import { Store } from '@ngrx/store';
 import { selectDynamicForm, selectStatus } from '../../../state/dynamic-form/dynamic-form.selector';
 import { Observable, Subscription, take } from 'rxjs';
 import { Formfield } from '../../../data/models/Formfield.model';
-import { updateValues } from '../../../state/dynamic-form/dynamic-form.actions';
+import { updateField } from '../../../state/dynamic-form/dynamic-form.actions';
 import { Update } from '@ngrx/entity';
 
 @Component({
@@ -40,13 +40,13 @@ export class DynamicFormComponent implements OnInit, OnDestroy, ControlValueAcce
 
   @Input()
   public set save(val: boolean) {
-    if (val) {
-      if (this.form.invalid) {
-        this.form.markAllAsTouched();
-        return;
+    if (this.form.status === 'VALID' && this.form.touched) {
+      if (val) {
+        console.log('Formulario valido y save true');
+        this.saveInStore();
       }
-      this.saveInStore();
     }
+    this.form.markAllAsTouched();
   }
 
   onChangeSubs: Subscription[] = [];
@@ -79,6 +79,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy, ControlValueAcce
   }
 
   ngOnDestroy() {
+    this.saveInStore();
     for (let sub of this.onChangeSubs) {
       sub.unsubscribe();
     }
@@ -88,35 +89,33 @@ export class DynamicFormComponent implements OnInit, OnDestroy, ControlValueAcce
     const group: any = {};
     for (const control of controls) {
       if (control.key === 'total') {
-        group[control.key] = new FormControl('', [Validators.required]);
+        group[control.key] = new FormControl({ value: '', disabled: true });
       } else {
         group[control.key] = control.required
-          ? new FormControl(control.value || null, [Validators.required])
-          : new FormControl(control.value || null);
+          ? new FormControl(control.value || '', [Validators.required])
+          : new FormControl(control.value || '');
       }
     }
     return new FormGroup(group);
   }
 
   saveInStore() {
-    console.log('Estoy guardando en el state');
-
-    // @ts-ignore
-    const formUpdate: Update<Formfield<any>>[] = this.formFields.filter((item) => {
-      for (const field in this.form.value) {
+    console.log('Guardando en el store');
+    let formUpdate: Update<Formfield<any>>;
+    for (const field in this.form.value) {
+      for (const item of this.formFields) {
         if (item.key === field) {
-          return {
+          formUpdate = {
             id: item.id,
             changes: {
               value:
                 item.controlType === 'number' ? +this.form.value[field] : this.form.value[field],
             },
           };
+          this.store.dispatch(updateField({ form: formUpdate }));
         }
       }
-    });
-    console.log(formUpdate);
-    this.store.dispatch(updateValues({ form: formUpdate }));
+    }
   }
 
   registerOnChange(onChange: any): void {
@@ -135,8 +134,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy, ControlValueAcce
   }
 
   validate(control: AbstractControl): ValidationErrors | null {
+    console.log(control);
     return this.form.valid
       ? null
-      : { invalidForm: { valid: false, message: 'basicInfoForm fields are invalid' } };
+      : { invalidForm: { valid: false, message: 'Dynamic form fields are invalid' } };
   }
 }
