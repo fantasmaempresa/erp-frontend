@@ -47,7 +47,9 @@
         </div>
 
         <mat-action-row>
-          <button mat-button color="primary" (click)="nextStep()">Formulario de Fase</button>
+          <button type="button" mat-button color="primary" (click)="nextStep()">
+            Formulario de Fase
+          </button>
         </mat-action-row>
       </mat-expansion-panel>
       <mat-expansion-panel
@@ -63,12 +65,33 @@
 
         <app-dynamic-form-builder formControlName="form"></app-dynamic-form-builder>
         <mat-action-row>
-          <button mat-button color="primary" (click)="prevStep()">Datos Generales</button>
-          <button mat-flat-button color="primary">Crear Fase</button>
+          <button type="button" mat-button color="primary" (click)="prevStep()">
+            Datos Generales
+          </button>
+          <button type="button" mat-button color="primary" (click)="nextStep()">
+            Vista Previa
+          </button>
         </mat-action-row>
       </mat-expansion-panel>
 
-      {{ form.value | json }}
+      <mat-expansion-panel
+        [expanded]="step === 2"
+        (opened)="setStep(2)"
+        hideToggle
+        [disabled]="step !== 2"
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>Vista Previa</mat-panel-title>
+          <mat-panel-description>Visualice el formulario de la fase</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <mat-action-row>
+          <button type="button" mat-button color="primary" (click)="prevStep()">
+            Formulario de Fase
+          </button>
+          <button mat-flat-button color="primary">Crear Fase</button>
+        </mat-action-row>
+      </mat-expansion-panel>
     </mat-accordion>
   </form>
 </mat-card>
