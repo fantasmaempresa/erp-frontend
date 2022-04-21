@@ -145,7 +145,11 @@ export class DynamicFormBuilderComponent implements ControlValueAccessor, OnInit
   }
 
   private notifyValueChange() {
-    this.onChange(this.formFields);
+    if (this.formFields.length > 0) {
+      this.onChange(this.formFields);
+    } else {
+      this.onChange(null);
+    }
     this.onTouch();
   }
 

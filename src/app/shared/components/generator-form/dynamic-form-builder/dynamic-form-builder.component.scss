@@ -1,17 +1,43 @@
 .form-builder {
+  position: relative;
   margin-top: 1rem;
   width: 100%;
   display: flex;
+  padding: 2rem 2rem 3rem;
   column-gap: 1.5rem;
+  border-radius: 4px;
+  border: 3px dashed transparent;
+  transition: 300ms border-color;
+
+  &--invalid {
+    border-color: red;
+  }
+
+  &__error {
+    bottom: 0;
+    left: 1rem;
+    position: absolute;
+    color: red;
+    font-size: 1.35rem;
+    font-weight: 600;
+    opacity: 0;
+    transition: 450ms;
+    transform: translateX(-3rem);
+
+    .form-builder--invalid & {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
 
   &__fields {
-    flex: 0 0 35%;
+    flex: 0 0 34%;
   }
 
   &__form {
     margin-left: auto;
-    flex: 0 0 65%;
-    padding: 2.5rem 4rem;
+    flex: 0 0 64%;
+    padding: 2.5rem 3rem;
     border-radius: 8px;
     box-shadow: 0 0 24px 4px rgba(0, 0, 0, .25);
     display: flex;
@@ -19,7 +45,7 @@
   }
 }
 
-.form-options{
+.form-options {
   padding: 1.5rem;
   background: rgba(0, 0, 0, 0.125);
   display: flex;
@@ -27,23 +53,26 @@
   border-radius: 12px;
   margin-bottom: 2rem;
 
-  &__row{
+  &__row {
     display: flex;
     column-gap: 2rem;
     align-items: center;
   }
 
-  &__key{
+  &__key {
     flex: 1 1 30%;
   }
-  &__value{
+
+  &__value {
     flex: 1 1 30%;
   }
-  &__delete{
+
+  &__delete {
     flex: 0 0 4rem;
     height: 4rem;
   }
-  &__add{
+
+  &__add {
     margin-right: 4rem;
     margin-left: auto;
   }
@@ -60,7 +89,7 @@
   border-radius: 4px;
   overflow: hidden;
 
-  &--disabled{
+  &--disabled {
     pointer-events: none;
     opacity: .45;
   }
@@ -78,7 +107,7 @@
   font-size: 1.4rem;
 }
 
-.draggable-box:hover{
+.draggable-box:hover {
   filter: brightness(110%);
 }
 

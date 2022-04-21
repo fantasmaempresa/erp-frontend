@@ -1,4 +1,4 @@
-<div class="form-builder">
+<div class="form-builder" [class.form-builder--invalid]="ngControl?.touched && ngControl?.invalid">
   <div class="form-builder__fields">
     <div
       cdkDropList
@@ -117,4 +117,5 @@
       </button>
     </div>
   </form>
+  <span class="form-builder__error">Debe haber un elemento al menos</span>
 </div>
