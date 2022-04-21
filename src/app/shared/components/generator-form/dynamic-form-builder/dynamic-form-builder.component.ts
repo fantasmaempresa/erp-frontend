@@ -68,6 +68,18 @@ export class DynamicFormBuilderComponent implements ControlValueAccessor, OnInit
       value: 'checkbox',
       label: 'Checkbox',
     },
+    {
+      value: 'file',
+      label: 'Archivo',
+    },
+    {
+      value: 'image',
+      label: 'Imagen',
+    },
+    {
+      value: 'coordinate',
+      label: 'Coordenada',
+    },
   ];
 
   edit = false;
