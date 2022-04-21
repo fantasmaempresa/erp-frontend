@@ -64,6 +64,8 @@
         </mat-expansion-panel-header>
 
         <app-dynamic-form-builder formControlName="form"></app-dynamic-form-builder>
+        {{ form.get('form')?.value | json }}
+
         <mat-action-row>
           <button type="button" mat-button color="primary" (click)="prevStep()">
             Datos Generales
@@ -84,6 +86,8 @@
           <mat-panel-title>Vista Previa</mat-panel-title>
           <mat-panel-description>Visualice el formulario de la fase</mat-panel-description>
         </mat-expansion-panel-header>
+
+        <app-preview-form-builder [formFields]="form$ | async"></app-preview-form-builder>
 
         <mat-action-row>
           <button type="button" mat-button color="primary" (click)="prevStep()">

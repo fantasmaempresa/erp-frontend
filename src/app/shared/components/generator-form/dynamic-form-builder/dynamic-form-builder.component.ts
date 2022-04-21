@@ -9,9 +9,9 @@ import {
   NgControl,
   Validators,
 } from '@angular/forms';
-import { v4 as uuidv4 } from 'uuid';
 import { Formfield } from '../../../../data/models/Formfield.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-dynamic-form-builder',
@@ -67,7 +67,6 @@ export class DynamicFormBuilderComponent implements ControlValueAccessor, OnInit
     {
       value: 'checkbox',
       label: 'Checkbox',
-      options: true,
     },
   ];
 
@@ -77,7 +76,7 @@ export class DynamicFormBuilderComponent implements ControlValueAccessor, OnInit
 
   constructor(private inj: Injector) {
     this.form = new FormGroup({
-      id: new FormControl(uuidv4()),
+      id: new FormControl(),
       controlType: new FormControl('', [Validators.required]),
       key: new FormControl(''),
       label: new FormControl('', [Validators.required]),
@@ -132,10 +131,14 @@ export class DynamicFormBuilderComponent implements ControlValueAccessor, OnInit
     // @ts-ignore
     const field = this.form.value;
     if (this.edit) {
+      console.log(this.formFields);
       const index = this.formFields.findIndex((formField) => formField.id === field.id);
+      console.log(index);
       this.formFields[index] = field;
+      console.log(this.formFields[index]);
       this.edit = false;
     } else {
+      field.id = uuidv4(); //generate a new id for new fields
       this.formFields.push(field);
     }
     ngForm.form.markAsPristine();

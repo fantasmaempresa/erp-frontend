@@ -1,9 +1,9 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProcessPhaseService } from '../../../../data/services/process-phase.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RoleService } from '../../../../data/services/role.service';
-import { Observable, pluck } from 'rxjs';
+import { map, Observable, pluck, startWith } from 'rxjs';
 import { Role } from '../../../../data/models/Role.model';
 
 @Component({
@@ -12,7 +12,7 @@ import { Role } from '../../../../data/models/Role.model';
   styleUrls: ['./process-phase-form.component.scss'],
 })
 export class ProcessPhaseFormComponent {
-  step = 1;
+  step = 2;
 
   form!: FormGroup;
 
@@ -20,9 +20,12 @@ export class ProcessPhaseFormComponent {
 
   mapRoles = (role: Role) => role.name;
 
+  form$!: Observable<any> | undefined;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
+    private detectorRef: ChangeDetectorRef,
     private processPhaseService: ProcessPhaseService,
     private roleService: RoleService,
   ) {
@@ -35,8 +38,113 @@ export class ProcessPhaseFormComponent {
       payments: new FormControl(false),
       admin: new FormControl(false),
       roles: new FormControl(null, [Validators.required]),
-      form: new FormControl(null, [Validators.required]),
+      form: new FormControl(
+        [
+          {
+            id: '05013ee2-9db3-4c9b-82f6-b19ddef023a7',
+            controlType: 'textbox',
+            key: 'de texto',
+            label: 'De texto',
+            required: false,
+            options: [],
+            value: '',
+            order: 0,
+          },
+          {
+            id: 'bfe8f4fa-19e8-42e5-b777-3acdd62b5bd9',
+            controlType: 'number',
+            key: 'de tipo numerico',
+            label: 'De tipo numerico',
+            required: null,
+            options: [],
+            value: null,
+            order: null,
+          },
+          {
+            id: '8081086e-271d-4542-8f9d-af93cdd1ee37',
+            controlType: 'textarea',
+            key: 'area de texto',
+            label: 'Area de Texto',
+            required: null,
+            options: [],
+            value: null,
+            order: null,
+          },
+          {
+            id: '0537ddf3-27ae-4dce-87df-d2b623432069',
+            controlType: 'dropdown',
+            key: 'de selección',
+            label: 'De selección',
+            required: null,
+            options: [
+              { key: 'test1', value: '2' },
+              {
+                key: 'super super super super',
+                value: '3',
+              },
+              { key: 'super super', value: '6' },
+              { key: 'Ya con esto no falla', value: '1' },
+            ],
+            value: null,
+            order: null,
+          },
+          {
+            id: 'ce902091-8a9a-4a3f-8752-a3c473534f51',
+            controlType: 'date',
+            key: 'fecha',
+            label: 'Fecha',
+            required: null,
+            options: [],
+            value: null,
+            order: null,
+          },
+          {
+            id: '2ceabd00-1c00-477b-954e-b008e10e0d1e',
+            controlType: 'radio',
+            key: 'de tipo radio',
+            label: 'De tipo Radio',
+            required: null,
+            options: [
+              { key: 'prueba 1', value: '1' },
+              {
+                key: 'prueba 2',
+                value: '2',
+              },
+              { key: 'prueba 3 si que si', value: '3' },
+              {
+                key: 'probando la loongitud de esta madre',
+                value: '4',
+              },
+              { key: 'probando hasta que punto se puede romper el radio', value: '5' },
+            ],
+            value: null,
+            order: null,
+          },
+          {
+            id: 'd3277991-2c65-49a8-91e4-695b1cd5d590',
+            controlType: 'checkbox',
+            key: 'de tipo checkbox',
+            label: 'De tipo Checkbox',
+            required: null,
+            options: [
+              { key: 'Probando que sea de tipo checkbox', value: '1' },
+              {
+                key: 'probando 2',
+                value: '2',
+              },
+            ],
+            value: null,
+            order: null,
+          },
+        ],
+        Validators.required,
+      ),
     });
+
+    this.form$ = this.form.get('form')?.valueChanges.pipe(
+      startWith(this.form.get('form')?.value),
+      map((array: any[]) => [...array]),
+    );
   }
 
   async back() {
