@@ -83,6 +83,11 @@
           <mat-datepicker-toggle matSuffix [for]="dateForm"></mat-datepicker-toggle>
           <mat-datepicker #dateForm></mat-datepicker>
         </mat-form-field>
+
+        <ng-container *ngSwitchCase="'image'">
+          <!--          {{ formField | json }}-->
+          <app-input-image [label]="formField.label"></app-input-image>
+        </ng-container>
       </ng-container>
     </ng-container>
   </ng-container>

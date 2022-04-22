@@ -20,6 +20,8 @@ import { OperationsComponent } from './components/operations/operations.componen
 import { MapToPipe } from '../core/pipes/map-to.pipe';
 import { GenericAutocompleteChipComponent } from './components/generic-autocomplete-chip/generic-autocomplete-chip.component';
 import { ChipListAutocompleteFixDirective } from '../core/directives/chip-list-autocomplete-fix.directive';
+import { DragFileDirective } from '../core/directives/drag-file.directive';
+import { InputImageComponent } from './components/input-image/input-image.component';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -29,6 +31,7 @@ import { ChipListAutocompleteFixDirective } from '../core/directives/chip-list-a
     ErrorMessageDirective,
     StopPropagationDirective,
     ChipListAutocompleteFixDirective,
+    DragFileDirective,
     OutSideClickDirective,
     FromDatePipe,
     MapToPipe,
@@ -39,6 +42,7 @@ import { ChipListAutocompleteFixDirective } from '../core/directives/chip-list-a
     DynamicFormCreationComponent,
     OperationsComponent,
     GenericAutocompleteChipComponent,
+    InputImageComponent,
   ],
   imports: [
     CommonModule,
@@ -67,6 +71,7 @@ import { ChipListAutocompleteFixDirective } from '../core/directives/chip-list-a
     DynamicFormCreationComponent,
     OperationsComponent,
     GenericAutocompleteChipComponent,
+    InputImageComponent,
   ],
 })
 export class SharedModule {}
