@@ -18,11 +18,32 @@ export class ConceptFormComponent {
     name: new FormControl('', Validators.required),
     description: new FormControl(''),
     amount: new FormControl(null),
+    operationType: new FormControl('import'),
     formula: new FormGroup({
       operation: new FormControl(null, Validators.required),
       percentage: new FormControl(null),
+      operable: new FormControl(false),
+      validity: new FormGroup({
+        apply: new FormControl(''),
+        is_date: new FormControl(false),
+        is_range: new FormControl(false),
+        type: new FormControl('date'),
+        amount: new FormControl(''),
+      }),
+      range: new FormGroup({
+        apply: new FormControl(false),
+      }),
     }),
   });
+
+  get operationType() {
+    return this.conceptForm.get('operationType') as FormControl;
+  }
+
+  get validityType() {
+    // @ts-ignore
+    return this.conceptForm.get('formula').get('validity').get('type') as FormControl;
+  }
 
   operations: { value: string; label: string }[] = [
     { value: '+', label: 'Suma' },
@@ -31,7 +52,11 @@ export class ConceptFormComponent {
       label: 'Resta',
     },
     { value: '*', label: 'Multiplicación' },
+    { value: '+/', label: 'Multiplicar y sumar al resultado' },
+    { value: '-/', label: 'Multiplicar y restar al resultado' },
     { value: '/', label: 'División' },
+    { value: '+/', label: 'Dividir y sumar al resultado' },
+    { value: '-/', label: 'Dividir y restar al resultado' },
   ];
 
   constructor(

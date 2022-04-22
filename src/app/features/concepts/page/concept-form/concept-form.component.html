@@ -12,16 +12,141 @@
       <mat-error appErrorMessage></mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Importe</mat-label>
-      <input matInput type="number" formControlName="amount" />
-      <mat-error appErrorMessage></mat-error>
-    </mat-form-field>
-
-    <div formGroupName="formula" class="w-100">
-      <mat-checkbox formControlName="percentage" color="primary" class="mb-4">
+    <section formGroupName="formula" class="mb-5">
+      <mat-checkbox color="primary" formControlName="percentage" class="me-5">
         ¿Es porcentaje?
       </mat-checkbox>
+      <mat-checkbox color="primary" formControlName="operable">¿Es operable?</mat-checkbox>
+    </section>
+
+    <mat-radio-group formControlName="operationType" class="d-flex justify-content-between">
+      <mat-radio-button value="import" color="primary">Solo es un importe</mat-radio-button>
+      <mat-radio-button value="validity" color="primary">Vigencia</mat-radio-button>
+      <mat-radio-button value="range" color="primary">Rango numérico</mat-radio-button>
+    </mat-radio-group>
+
+    <div [ngSwitch]="operationType.value" class="row mt-5">
+      <ng-container *ngSwitchCase="'validity'" formGroupName="formula">
+        <div formGroupName="validity">
+          <mat-radio-group formControlName="type" class="d-flex justify-content-between">
+            <mat-radio-button value="date" color="primary">Fecha</mat-radio-button>
+            <mat-radio-button value="range" color="primary">Rango de fechas</mat-radio-button>
+          </mat-radio-group>
+
+          <div [ngSwitch]="validityType.value" class="mt-3">
+            <ng-container *ngSwitchCase="'date'">
+              <mat-form-field appearance="outline" class="col-6">
+                <mat-label>Cantidad</mat-label>
+                <input matInput type="text" autocomplete="off" formControlName="amount" />
+                <mat-error appErrorMessage></mat-error>
+              </mat-form-field>
+
+              <mat-checkbox color="primary" formControlName="is_date" class="ms-5">
+                Es una cantidad de años
+              </mat-checkbox>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'range'">
+              <div class="row">
+                <mat-form-field appearance="outline" class="col-3">
+                  <mat-label>Inicio</mat-label>
+                  <input matInput type="text" autocomplete="off" />
+                  <mat-error appErrorMessage></mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-3">
+                  <mat-label>Fin</mat-label>
+                  <input matInput type="text" autocomplete="off" />
+                  <mat-error appErrorMessage></mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="col-4">
+                  <mat-label>Monto</mat-label>
+                  <input matInput type="text" autocomplete="off" />
+                  <mat-error appErrorMessage></mat-error>
+                </mat-form-field>
+                <div class="col-2 d-flex align-items-center" style="margin-top: -20px">
+                  <button
+                    type="button"
+                    mat-mini-fab
+                    color="warn"
+                    class="align-self-center search-button"
+                    matTooltip="Eliminar opción"
+                  >
+                    <mat-icon>remove</mat-icon>
+                  </button>
+                </div>
+              </div>
+              <div class="row justify-content-center">
+                <div class="col-1">
+                  <button
+                    type="button"
+                    mat-fab
+                    color="primary"
+                    class="align-self-center search-button"
+                    matTooltip="Agregar otro rango"
+                  >
+                    <mat-icon>add</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'range'">
+        <div class="row">
+          <mat-form-field appearance="outline" class="col-3">
+            <mat-label>Inicio</mat-label>
+            <input matInput type="text" autocomplete="off" />
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="col-3">
+            <mat-label>Fin</mat-label>
+            <input matInput type="text" autocomplete="off" />
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="col-4">
+            <mat-label>Monto</mat-label>
+            <input matInput type="text" autocomplete="off" />
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+          <div class="col-2 d-flex align-items-center" style="margin-top: -20px">
+            <button
+              type="button"
+              mat-mini-fab
+              color="warn"
+              class="align-self-center search-button"
+              matTooltip="Eliminar opción"
+            >
+              <mat-icon>remove</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-1">
+            <button
+              type="button"
+              mat-fab
+              color="primary"
+              class="align-self-center search-button"
+              matTooltip="Agregar otro rango"
+            >
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'import'">
+        <mat-form-field appearance="outline">
+          <mat-label>Importe</mat-label>
+          <input matInput type="number" formControlName="amount" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </ng-container>
+    </div>
+
+    <div formGroupName="formula" class="w-100">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Tipo de Operación</mat-label>
         <mat-select formControlName="operation">
@@ -32,7 +157,5 @@
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
     </div>
-
-    <button mat-flat-button color="primary">Guardar</button>
   </div>
 </form>
