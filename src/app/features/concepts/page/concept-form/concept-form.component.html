@@ -21,8 +21,8 @@
 
     <mat-radio-group formControlName="operationType" class="d-flex justify-content-between">
       <mat-radio-button value="import" color="primary">Solo es un importe</mat-radio-button>
-      <mat-radio-button value="validity" color="primary">Vigencia</mat-radio-button>
-      <mat-radio-button value="range" color="primary">Rango numérico</mat-radio-button>
+      <mat-radio-button value="validity" color="primary" [disabled]="isPercentage.value || isOperable.value">Vigencia</mat-radio-button>
+      <mat-radio-button value="range" color="primary" [disabled]="isPercentage.value || isOperable.value">Rango numérico</mat-radio-button>
     </mat-radio-group>
 
     <div [ngSwitch]="operationType.value" class="row mt-5">
@@ -46,18 +46,33 @@
               </mat-checkbox>
             </ng-container>
 
-            <ng-container *ngSwitchCase="'range'">
-              <div class="row">
+            <ng-container *ngSwitchCase="'range'" formArrayName="between">
+              <div
+                class="row"
+                *ngFor="let _ of betweenValidity.controls; index as i"
+                [formGroupName]="i"
+              >
                 <mat-form-field appearance="outline" class="col-3">
                   <mat-label>Inicio</mat-label>
-                  <input matInput type="text" autocomplete="off" />
+                  <mat-select formControlName="min">
+                    <mat-option>-- None --</mat-option>
+                    <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                  </mat-select>
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-3">
                   <mat-label>Fin</mat-label>
-                  <input matInput type="text" autocomplete="off" />
+                  <mat-select formControlName="max">
+                    <mat-option>-- None --</mat-option>
+                    <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                  </mat-select>
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
+<!--                <mat-form-field appearance="outline" class="col-3">-->
+<!--                  <mat-label>Fin</mat-label>-->
+<!--                  <input matInput type="text" autocomplete="off" />-->
+<!--                  <mat-error appErrorMessage></mat-error>-->
+<!--                </mat-form-field>-->
                 <mat-form-field appearance="outline" class="col-4">
                   <mat-label>Monto</mat-label>
                   <input matInput type="text" autocomplete="off" />
@@ -70,6 +85,8 @@
                     color="warn"
                     class="align-self-center search-button"
                     matTooltip="Eliminar opción"
+                    (click)="removeRange('validity', i)"
+                    *ngIf="i !== 0"
                   >
                     <mat-icon>remove</mat-icon>
                   </button>
@@ -83,6 +100,7 @@
                     color="primary"
                     class="align-self-center search-button"
                     matTooltip="Agregar otro rango"
+                    (click)="addRange('validity')"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
@@ -93,58 +111,69 @@
         </div>
       </ng-container>
 
-      <ng-container *ngSwitchCase="'range'">
-        <div class="row">
-          <mat-form-field appearance="outline" class="col-3">
-            <mat-label>Inicio</mat-label>
-            <input matInput type="text" autocomplete="off" />
-            <mat-error appErrorMessage></mat-error>
-          </mat-form-field>
-          <mat-form-field appearance="outline" class="col-3">
-            <mat-label>Fin</mat-label>
-            <input matInput type="text" autocomplete="off" />
-            <mat-error appErrorMessage></mat-error>
-          </mat-form-field>
-          <mat-form-field appearance="outline" class="col-4">
-            <mat-label>Monto</mat-label>
-            <input matInput type="text" autocomplete="off" />
-            <mat-error appErrorMessage></mat-error>
-          </mat-form-field>
-          <div class="col-2 d-flex align-items-center" style="margin-top: -20px">
-            <button
-              type="button"
-              mat-mini-fab
-              color="warn"
-              class="align-self-center search-button"
-              matTooltip="Eliminar opción"
+      <ng-container *ngSwitchCase="'range'" formGroupName="formula">
+        <div formGroupName="range">
+          <div formGroupName="between">
+            <div
+              class="row"
+              *ngFor="let _ of betweenRange.controls; index as i"
+              [formGroupName]="i"
             >
-              <mat-icon>remove</mat-icon>
-            </button>
+              <mat-form-field appearance="outline" class="col-3">
+                <mat-label>Inicio</mat-label>
+                <input matInput type="text" autocomplete="off" />
+                <mat-error appErrorMessage></mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="col-3">
+                <mat-label>Fin</mat-label>
+                <input matInput type="text" autocomplete="off" />
+                <mat-error appErrorMessage></mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="col-4">
+                <mat-label>Monto</mat-label>
+                <input matInput type="text" autocomplete="off" />
+                <mat-error appErrorMessage></mat-error>
+              </mat-form-field>
+              <div class="col-2 d-flex align-items-center" style="margin-top: -20px">
+                <button
+                  type="button"
+                  mat-mini-fab
+                  color="warn"
+                  class="align-self-center search-button"
+                  matTooltip="Eliminar opción"
+                  (click)="removeRange('range', i)"
+                  *ngIf="i !== 0"
+                >
+                  <mat-icon>remove</mat-icon>
+                </button>
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-1">
+                <button
+                  type="button"
+                  mat-fab
+                  color="primary"
+                  class="align-self-center search-button"
+                  matTooltip="Agregar otro rango"
+                  (click)="addRange('range')"
+                >
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-        <div class="row justify-content-center">
-          <div class="col-1">
-            <button
-              type="button"
-              mat-fab
-              color="primary"
-              class="align-self-center search-button"
-              matTooltip="Agregar otro rango"
-            >
-              <mat-icon>add</mat-icon>
-            </button>
-          </div>
-        </div>
-      </ng-container>
-
-      <ng-container *ngSwitchCase="'import'">
-        <mat-form-field appearance="outline">
-          <mat-label>Importe</mat-label>
-          <input matInput type="number" formControlName="amount" />
-          <mat-error appErrorMessage></mat-error>
-        </mat-form-field>
       </ng-container>
     </div>
+
+    <ng-container *ngIf="(operationType.value === 'import' || (operationType.value === 'validity' && validityType.value === 'date'))">
+      <mat-form-field appearance="outline">
+        <mat-label>Importe</mat-label>
+        <input matInput type="number" formControlName="amount" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+    </ng-container>
 
     <div formGroupName="formula" class="w-100">
       <mat-form-field appearance="outline" class="w-100">
@@ -157,5 +186,6 @@
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
     </div>
+    <button mat-flat-button color="primary">Guardar</button>
   </div>
 </form>

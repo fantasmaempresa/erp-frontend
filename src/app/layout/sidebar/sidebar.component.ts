@@ -16,8 +16,6 @@ export class SidebarComponent {
       menuName: 'Menu',
       submenus: [
         { label: 'Home', route: './dashboard', icon: 'home' },
-        // { label: 'Usuarios', route: '/clients', icon: 'person' },
-        // { label: 'Roles', route: '/roles', icon: 'verified_user' },
         { label: 'Clientes', route: './clients', icon: 'people' },
         { label: 'Personal', route: './staff', icon: 'groups' },
         { label: 'Áreas', route: './areas', icon: 'group_work' },
