@@ -2,7 +2,22 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 4rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+  padding: 3rem 2rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.input-label {
+  display: block;
+  width: 100%;
+  top: 5px;
+  left: 2rem;
+  position: absolute;
+  font-size: 1.6rem;
+  font-weight: 400;
 }
 
 .input-image {
@@ -11,18 +26,8 @@
   height: 25rem;
   border-radius: 8px;
   background: rgba(0, 0, 0, 0.25);
-  padding: 1rem;
   border: 4px dotted #eee;
-  margin-top: 3rem;
   cursor: pointer;
-
-  &__label {
-    position: absolute;
-    top: -3rem;
-    left: 1rem;
-    font-size: 1.6rem;
-    font-weight: 400;
-  }
 
   &__text {
     position: absolute;
@@ -32,22 +37,25 @@
     top: 65%;
     left: 50%;
     transform: translate(-50%, -50%);
+    text-align: center;
   }
 
   &__icon {
+    height: auto;
+    width: 8rem;
     display: flex;
     position: absolute;
     color: var(--primary-color);
-    top: 25%;
+    top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 6rem;
+    font-size: 8rem;
+    text-align: center;
   }
 }
 
 .img-preview-container {
   position: relative;
-  margin-top: 3rem;
   flex: 1 1 20rem;
   height: 25rem;
   border-radius: 4px;
@@ -67,23 +75,37 @@
 
   &__name {
     display: inline-block;
-    margin-top: 8px;
+    margin-top: 4px;
     color: var(--primary-color);
     font-size: 2rem;
     font-weight: 600;
   }
 }
 
-.placeholder__text {
-  display: inline-block;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-weight: 400;
-  font-size: 3rem;
-  line-height: 1.25;
-  text-align: center;
+.placeholder {
+  &__text {
+    display: inline-block;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 400;
+    font-size: 1.75rem;
+    line-height: 1.25;
+    text-align: center;
+  }
+
+  &__icon {
+    top: 2rem;
+    left: 0;
+    width: 100%;
+    display: block;
+    position: absolute;
+    text-align: center;
+    font-size: 9rem;
+  }
 }
+
+
 
 

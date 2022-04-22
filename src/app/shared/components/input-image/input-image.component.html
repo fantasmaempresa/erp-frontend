@@ -1,10 +1,10 @@
+<span class="input-label">{{ label }}</span>
 <div
   class="input-image"
   (click)="fileInput.click()"
   appDragFile
   (onFileDropped)="uploadFile($event)"
 >
-  <span class="input-image__label">{{ label }}</span>
   <input
     hidden
     type="file"
@@ -12,8 +12,8 @@
     #fileInput
     (change)="uploadFile($any($event.target).files)"
   />
-  <span class="input-image__text">Arrastra la imagen o haz click</span>
   <mat-icon class="input-image__icon">photo_frame</mat-icon>
+  <span class="input-image__text">Arrastra la imagen o haz click</span>
 </div>
 <div class="img-preview-container">
   <div class="img-preview" *ngIf="imgURL; else placeholder">
@@ -23,5 +23,6 @@
 
   <ng-template #placeholder>
     <span class="placeholder__text"> No se ha cargado la imagen aún </span>
+    <mat-icon class="placeholder__icon">hide_image</mat-icon>
   </ng-template>
 </div>
