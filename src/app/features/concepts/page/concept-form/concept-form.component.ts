@@ -113,7 +113,7 @@ export class ConceptFormComponent implements OnInit {
 
     this.operationType.valueChanges.subscribe({
       next: (val) => {
-        // TODO: Dependiendo del tipo de operacion cambiar el valor de apply o reiniciar el formulario lo que sea mas conveniente ja ja xD ese we
+        // Dependiendo del tipo de operacion cambiar el valor de apply o reiniciar el formulario lo que sea mas conveniente ja ja xD ese we
         // this.conceptForm.get('formula')?.reset();
         console.log(this.conceptForm.value);
       },
