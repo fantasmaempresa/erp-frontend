@@ -21,8 +21,18 @@
 
     <mat-radio-group formControlName="operationType" class="d-flex justify-content-between">
       <mat-radio-button value="import" color="primary">Solo es un importe</mat-radio-button>
-      <mat-radio-button value="validity" color="primary" [disabled]="isPercentage.value || isOperable.value">Vigencia</mat-radio-button>
-      <mat-radio-button value="range" color="primary" [disabled]="isPercentage.value || isOperable.value">Rango numérico</mat-radio-button>
+      <mat-radio-button
+        value="validity"
+        color="primary"
+        [disabled]="isPercentage.value || isOperable.value"
+        >Vigencia</mat-radio-button
+      >
+      <mat-radio-button
+        value="range"
+        color="primary"
+        [disabled]="isPercentage.value || isOperable.value"
+        >Rango numérico</mat-radio-button
+      >
     </mat-radio-group>
 
     <div [ngSwitch]="operationType.value" class="row mt-5">
@@ -68,11 +78,11 @@
                   </mat-select>
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
-<!--                <mat-form-field appearance="outline" class="col-3">-->
-<!--                  <mat-label>Fin</mat-label>-->
-<!--                  <input matInput type="text" autocomplete="off" />-->
-<!--                  <mat-error appErrorMessage></mat-error>-->
-<!--                </mat-form-field>-->
+                <!--                <mat-form-field appearance="outline" class="col-3">-->
+                <!--                  <mat-label>Fin</mat-label>-->
+                <!--                  <input matInput type="text" autocomplete="off" />-->
+                <!--                  <mat-error appErrorMessage></mat-error>-->
+                <!--                </mat-form-field>-->
                 <mat-form-field appearance="outline" class="col-4">
                   <mat-label>Monto</mat-label>
                   <input matInput type="text" autocomplete="off" />
@@ -167,7 +177,12 @@
       </ng-container>
     </div>
 
-    <ng-container *ngIf="(operationType.value === 'import' || (operationType.value === 'validity' && validityType.value === 'date'))">
+    <ng-container
+      *ngIf="
+        operationType.value === 'import' ||
+        (operationType.value === 'validity' && validityType.value === 'date')
+      "
+    >
       <mat-form-field appearance="outline">
         <mat-label>Importe</mat-label>
         <input matInput type="number" formControlName="amount" />

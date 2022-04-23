@@ -14,33 +14,17 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 export class ConceptFormComponent implements OnInit {
   isEdit = false;
 
+  years: number[] = [];
+
   conceptForm = new FormGroup({
     name: new FormControl('', Validators.required),
     description: new FormControl(''),
     amount: new FormControl(null),
     operationType: new FormControl('import'),
-    formula: new FormGroup({
-      operation: new FormControl(null, Validators.required),
-      percentage: new FormControl(false),
-      operable: new FormControl(false),
-      validity: new FormGroup({
-        apply: new FormControl(false),
-        is_date: new FormControl(false),
-        is_range: new FormControl(false),
-        type: new FormControl('date'),
-        amount: new FormControl(''),
-        between: new FormArray([this.createRange()]),
-      }),
-      range: new FormGroup({
-        apply: new FormControl(false),
-        between: new FormArray([this.createRange()]),
-      }),
-    }),
+    formula: this.createFormulaForm(),
   });
 
   selectedYear!: number;
-
-  years: number[] = [];
 
   get operationType() {
     return this.conceptForm.get('operationType') as FormControl;
@@ -126,6 +110,14 @@ export class ConceptFormComponent implements OnInit {
         }
       },
     });
+
+    this.operationType.valueChanges.subscribe({
+      next: (val) => {
+        // TODO: Dependiendo del tipo de operacion cambiar el valor de apply o reiniciar el formulario lo que sea mas conveniente ja ja xD ese we
+        // this.conceptForm.get('formula')?.reset();
+        console.log(this.conceptForm.value);
+      },
+    });
   }
 
   onSubmit() {
@@ -167,18 +159,48 @@ export class ConceptFormComponent implements OnInit {
   }
 
   createRange() {
-    return new FormGroup({
+    const form = new FormGroup({
       min: new FormControl('', [Validators.required]),
       max: new FormControl('', [Validators.required]),
       amount: new FormControl('', [Validators.required]),
     });
+
+    form.get('min')?.valueChanges.subscribe({
+      next: (val) => {
+        form.get('max')?.patchValue('');
+        form.get('max')?.setValidators([Validators.required, Validators.min(val)]);
+        form.updateValueAndValidity();
+      },
+    });
+
+    return form;
   }
 
-  createRangeOfYears(min?: number, max?: number) {
+  createRangeOfYears() {
     this.selectedYear = new Date().getFullYear();
 
     for (let year = this.selectedYear; year >= 1900; year--) {
       this.years.push(year);
     }
+  }
+
+  createFormulaForm() {
+    return new FormGroup({
+      operation: new FormControl(null, Validators.required),
+      percentage: new FormControl(false),
+      operable: new FormControl(false),
+      validity: new FormGroup({
+        apply: new FormControl(false),
+        is_date: new FormControl(false),
+        is_range: new FormControl(false),
+        type: new FormControl('date'),
+        amount: new FormControl(''),
+        between: new FormArray([this.createRange()]),
+      }),
+      range: new FormGroup({
+        apply: new FormControl(false),
+        between: new FormArray([this.createRange()]),
+      }),
+    });
   }
 }
