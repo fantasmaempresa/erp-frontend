@@ -1,0 +1,79 @@
+:host {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  position: relative;
+  padding: 3rem 2rem;
+  border: 1px solid #eee;
+  border-radius: 8px;
+}
+
+.input-label {
+  display: block;
+  width: 100%;
+  top: 5px;
+  left: 2rem;
+  position: absolute;
+  font-size: 1.6rem;
+  font-weight: 400;
+}
+
+.input-file {
+  flex: 1 1 20rem;
+  position: relative;
+  height: 25rem;
+  border-radius: 8px;
+  background: rgba(0, 0, 0, 0.25);
+  border: 4px dotted #eee;
+  cursor: pointer;
+
+  &__text {
+    position: absolute;
+    color: var(--primary-color);
+    font-weight: 500;
+    font-size: 2rem;
+    top: 65%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+  }
+
+  &__icon {
+    height: auto;
+    width: 8rem;
+    display: flex;
+    position: absolute;
+    color: var(--primary-color);
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8rem;
+    text-align: center;
+  }
+
+  &__description {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: .5rem 1.5rem;
+  }
+
+  &__name {
+    flex: 1 1;
+    font-weight: 450;
+    color: var(--primary-color);
+    font-size: 1.5rem;
+  }
+
+  &__size {
+    flex: 1 1;
+    font-size: 1.3rem;
+    font-weight: 300;
+  }
+}

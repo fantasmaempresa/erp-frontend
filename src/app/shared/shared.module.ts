@@ -22,6 +22,7 @@ import { GenericAutocompleteChipComponent } from './components/generic-autocompl
 import { ChipListAutocompleteFixDirective } from '../core/directives/chip-list-autocomplete-fix.directive';
 import { DragFileDirective } from '../core/directives/drag-file.directive';
 import { InputImageComponent } from './components/input-image/input-image.component';
+import { InputFileComponent } from './components/input-file/input-file.component';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -43,6 +44,7 @@ import { InputImageComponent } from './components/input-image/input-image.compon
     OperationsComponent,
     GenericAutocompleteChipComponent,
     InputImageComponent,
+    InputFileComponent,
   ],
   imports: [
     CommonModule,
@@ -72,6 +74,7 @@ import { InputImageComponent } from './components/input-image/input-image.compon
     OperationsComponent,
     GenericAutocompleteChipComponent,
     InputImageComponent,
+    InputFileComponent,
   ],
 })
 export class SharedModule {}

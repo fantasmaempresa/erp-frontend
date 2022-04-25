@@ -88,6 +88,10 @@
           <!--          {{ formField | json }}-->
           <app-input-image [label]="formField.label"></app-input-image>
         </ng-container>
+
+        <ng-container *ngSwitchCase="'file'">
+          <app-input-file [label]="formField.label"></app-input-file>
+        </ng-container>
       </ng-container>
     </ng-container>
   </ng-container>
