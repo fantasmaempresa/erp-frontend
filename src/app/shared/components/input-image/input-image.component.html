@@ -18,7 +18,7 @@
 <div class="img-preview-container">
   <div class="img-preview" *ngIf="imgURL; else placeholder">
     <img [src]="imgURL" class="img-preview__img" alt="Visualizar imagen" />
-    <span class="img-preview__name">{{ fileName }}</span>
+    <span class="img-preview__name">{{ imgName }}</span>
   </div>
 
   <ng-template #placeholder>

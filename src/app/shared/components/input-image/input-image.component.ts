@@ -10,14 +10,13 @@ export class InputImageComponent implements ControlValueAccessor {
   @Input()
   label = 'label';
 
-  fileName = '';
+  imgName = '';
 
-  imgURL!: any;
+  imgURL!: string | ArrayBuffer | null;
 
   uploadFile(files: File[]) {
     const [file] = files;
-    console.log(file);
-    this.fileName = file.name;
+    this.imgName = file.name;
     const reader = new FileReader();
     reader.onloadend = this._handleReaderLoaded.bind(this);
     reader.readAsDataURL(file);
@@ -25,7 +24,6 @@ export class InputImageComponent implements ControlValueAccessor {
 
   _handleReaderLoaded(e: Event) {
     const r = e.target as FileReader;
-    console.log(r);
     this.imgURL = r.result;
   }
 
