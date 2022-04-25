@@ -1,11 +1,19 @@
-import { Component, Input } from '@angular/core';
-import { ControlValueAccessor } from '@angular/forms';
+import { Component, forwardRef, Input } from '@angular/core';
+import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-input-image',
   templateUrl: './input-image.component.html',
   styleUrls: ['./input-image.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => InputImageComponent),
+      multi: true,
+    },
+  ],
 })
+//Todo terminar implementación del controlValueAccesor y control de errores
 export class InputImageComponent implements ControlValueAccessor {
   @Input()
   label = 'label';
@@ -13,6 +21,11 @@ export class InputImageComponent implements ControlValueAccessor {
   imgName = '';
 
   imgURL!: string | ArrayBuffer | null;
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onChange = (_: any) => {};
+
+  onTouch = () => {};
 
   uploadFile(files: File[]) {
     const [file] = files;
@@ -27,9 +40,13 @@ export class InputImageComponent implements ControlValueAccessor {
     this.imgURL = r.result;
   }
 
-  registerOnChange(fn: any): void {}
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
 
-  registerOnTouched(fn: any): void {}
+  registerOnTouched(fn: any): void {
+    this.onTouch = fn;
+  }
 
   writeValue(obj: any): void {}
 }
