@@ -23,6 +23,7 @@ import { ChipListAutocompleteFixDirective } from '../core/directives/chip-list-a
 import { DragFileDirective } from '../core/directives/drag-file.directive';
 import { InputImageComponent } from './components/input-image/input-image.component';
 import { InputFileComponent } from './components/input-file/input-file.component';
+import { InputCoordinateComponent } from './components/input-coordinate/input-coordinate.component';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -45,6 +46,7 @@ import { InputFileComponent } from './components/input-file/input-file.component
     GenericAutocompleteChipComponent,
     InputImageComponent,
     InputFileComponent,
+    InputCoordinateComponent,
   ],
   imports: [
     CommonModule,
@@ -75,6 +77,7 @@ import { InputFileComponent } from './components/input-file/input-file.component
     GenericAutocompleteChipComponent,
     InputImageComponent,
     InputFileComponent,
+    InputCoordinateComponent,
   ],
 })
 export class SharedModule {}

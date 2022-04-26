@@ -92,6 +92,10 @@
         <ng-container *ngSwitchCase="'file'">
           <app-input-file [label]="formField.label"></app-input-file>
         </ng-container>
+
+        <ng-container *ngSwitchCase="'coordinate'">
+          <app-input-coordinate [label]="formField.label"></app-input-coordinate>
+        </ng-container>
       </ng-container>
     </ng-container>
   </ng-container>

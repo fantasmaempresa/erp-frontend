@@ -1,0 +1,13 @@
+<form class="coordinate" autocomplete="off" [formGroup]="form">
+  <span class="input-label">{{ label }}</span>
+  <mat-form-field appearance="outline">
+    <mat-label>X</mat-label>
+    <input type="text" matInput formControlName="x" />
+    <mat-error appErrorMessage></mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Y</mat-label>
+    <input type="text" matInput formControlName="y" />
+    <mat-error appErrorMessage></mat-error>
+  </mat-form-field>
+</form>
