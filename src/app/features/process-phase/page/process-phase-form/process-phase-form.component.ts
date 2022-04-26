@@ -5,6 +5,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RoleService } from '../../../../data/services/role.service';
 import { map, Observable, pluck, startWith } from 'rxjs';
 import { Role } from '../../../../data/models/Role.model';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 @Component({
   selector: 'app-process-phase-form',
@@ -21,6 +22,8 @@ export class ProcessPhaseFormComponent {
   mapRoles = (role: Role) => role.name;
 
   form$!: Observable<any> | undefined;
+
+  edit = false;
 
   constructor(
     private router: Router,
@@ -195,5 +198,20 @@ export class ProcessPhaseFormComponent {
 
   onSubmit() {
     this.form.markAllAsTouched();
+    console.log(this.form.value);
+    if (this.form.invalid) {
+      MessageHelper.infoMessage('Revisa los campos que te faltan');
+      return;
+    }
+    this.form.value.payments = [];
+    const message = this.edit ? 'actualizado' : 'registrado';
+    if (!this.edit) {
+      this.processPhaseService.save(this.form.value).subscribe({
+        next: async () => {
+          MessageHelper.successMessage('¡Éxito!', `La fase ha sido ${message} correctamente.`);
+          await this.back();
+        },
+      });
+    }
   }
 }
