@@ -201,6 +201,7 @@ export class ProcessPhaseFormComponent {
     console.log(this.form.value);
     if (this.form.invalid) {
       MessageHelper.infoMessage('Revisa los campos que te faltan');
+      this.setStep(0);
       return;
     }
     this.form.value.payments = [];
