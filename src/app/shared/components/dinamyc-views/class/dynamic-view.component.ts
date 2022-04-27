@@ -1,5 +1,5 @@
 import { MemoizedSelector, Store } from '@ngrx/store';
-import { Component, Inject, Optional } from '@angular/core';
+import { Component, Inject, Injector, Optional } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, shareReplay } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
@@ -58,15 +58,20 @@ export abstract class DynamicViewComponent<T extends EntityModel> {
     @Inject(ACTION_KEY)
     protected actionKey: string,
     protected route: ActivatedRoute,
-    class2View: Class2ViewBuilderService,
+    inj: Injector,
     private sanitizer: DomSanitizer,
   ) {
+    const class2View = inj.get(Class2ViewBuilderService);
     this.labels = class2View.getLabels();
     this.displayedColumns = class2View.getAttrs();
     this.mapToFields = class2View.getMapsFunctions();
     this.mapToHTML = class2View.getHtmlMaps();
     this.data$ = this.store.select(selector).pipe(shareReplay());
     const id = Number(this.route.snapshot.parent?.params.id);
+
+    if (this.doOnConstructor) {
+      this.doOnConstructor();
+    }
 
     if (id && this.actionKey) {
       this.store.dispatch(loadAction({ [actionKey]: id }));
@@ -81,4 +86,6 @@ export abstract class DynamicViewComponent<T extends EntityModel> {
     page = page + 1;
     this.store.dispatch(this.loadNextPageAction({ size, page }));
   }
+
+  protected doOnConstructor() {}
 }
