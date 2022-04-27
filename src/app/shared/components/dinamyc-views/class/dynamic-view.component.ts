@@ -69,9 +69,7 @@ export abstract class DynamicViewComponent<T extends EntityModel> {
     this.data$ = this.store.select(selector).pipe(shareReplay());
     const id = Number(this.route.snapshot.parent?.params.id);
 
-    if (this.doOnConstructor) {
-      this.doOnConstructor();
-    }
+    this.doOnConstructor();
 
     if (id && this.actionKey) {
       this.store.dispatch(loadAction({ [actionKey]: id }));
