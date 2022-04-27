@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProcessPhaseService } from '../../../../data/services/process-phase.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -28,7 +28,6 @@ export class ProcessPhaseFormComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private detectorRef: ChangeDetectorRef,
     private processPhaseService: ProcessPhaseService,
     private roleService: RoleService,
   ) {
