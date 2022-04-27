@@ -37,6 +37,8 @@ import {
 import { initialState as projectState, ProjectState } from './project/project.state';
 import { processPhaseReducer } from './process-phase/processPhase.reducer';
 import { projectReducer } from './project/project.reducer';
+import { initialState as processInitialState, ProcessState } from './process/process.state';
+import { processReducer } from './process/process.reducer';
 
 export interface AppState {
   auth: AuthState;
@@ -51,11 +53,13 @@ export interface AppState {
   notifications: NotificationState;
   dynamicForm: DynamicFormState;
   processPhases: ProcessPhaseState;
+  processes: ProcessState;
   projects: ProjectState;
 }
 
 export const initialAppState: AppState = {
   processPhases: processPhaseState,
+  processes: processInitialState,
   projects: projectState,
   notifications: notificationInitialState,
   auth: initialState,
@@ -76,6 +80,7 @@ export function getInitialAppState(): AppState {
 
 export const reducers: ActionReducerMap<AppState> = {
   processPhases: processPhaseReducer,
+  processes: processReducer,
   projects: projectReducer,
   auth: authReducer,
   clients: clientReducer,

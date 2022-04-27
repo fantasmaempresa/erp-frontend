@@ -82,6 +82,12 @@ const routes: Routes = [
         data: { breadcrumb: 'Fases del Proceso' },
       },
       {
+        path: 'process',
+        loadChildren: () =>
+          import('./features/process/process.module').then((m) => m.ProcessModule),
+        data: { breadcrumb: 'Proceso' },
+      },
+      {
         path: 'project',
         loadChildren: () =>
           import('./features/projects/projects.module').then((m) => m.ProjectsModule),

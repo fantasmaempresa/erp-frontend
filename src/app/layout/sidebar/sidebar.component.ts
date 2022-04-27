@@ -38,6 +38,7 @@ export class SidebarComponent {
           isOpen: false,
           dropdowns: [
             { label: 'Fases', route: './process-phase', icon: 'timeline' },
+            { label: 'Procesos', route: './process', icon: 'pending_actions' },
             { label: 'Proyectos', route: './project', icon: 'hub' },
           ],
         },

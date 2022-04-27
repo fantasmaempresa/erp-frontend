@@ -1,0 +1,31 @@
+<mat-toolbar>
+  <button
+    *ngIf="selectedItem"
+    [matTooltipPosition]="'below'"
+    aria-label="Editar Proceso"
+    mat-icon-button
+    matTooltip="Editar Proceso"
+    (click)="goToEditForm()"
+  >
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button
+    *ngIf="selectedItem"
+    [matTooltipPosition]="'below'"
+    aria-label="Eliminar Proceso"
+    mat-icon-button
+    matTooltip="Eliminar Proceso"
+  >
+    <mat-icon>person_remove</mat-icon>
+  </button>
+  <button
+    [matTooltipPosition]="'below'"
+    aria-label="Agregar Proceso"
+    mat-icon-button
+    matTooltip="Agregar Proceso"
+    (click)="goToAddForm()"
+  >
+    <mat-icon>person_add</mat-icon>
+  </button>
+</mat-toolbar>
+<app-change-view [actions]="actions" (selectedItem)="setSelectedItem($event)"></app-change-view>
