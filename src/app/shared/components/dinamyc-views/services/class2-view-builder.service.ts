@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { CLAZZ } from '../dynamic-views.module';
 import 'reflect-metadata';
 
@@ -8,7 +8,8 @@ import 'reflect-metadata';
 export class Class2ViewBuilderService {
   public readonly objClass: any;
 
-  constructor(@Inject(CLAZZ) clazz: any) {
+  constructor(private inj: Injector) {
+    const clazz = this.inj.get(CLAZZ);
     this.objClass = new clazz();
   }
 
