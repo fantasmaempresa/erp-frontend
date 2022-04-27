@@ -1,5 +1,5 @@
 import { MemoizedSelector, Store } from '@ngrx/store';
-import { Component, Inject, Injector, Optional } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, shareReplay } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
@@ -46,35 +46,37 @@ export abstract class DynamicViewComponent<T extends EntityModel> {
     return !this.mapToHTML[key];
   };
 
+  protected loadAction: any;
+
+  protected selector: MemoizedSelector<any, any>;
+
+  protected loadNextPageAction: (props: { size: number; page: number }) => any;
+
   public constructor(
     protected store: Store,
-    @Inject(SELECTOR)
-    protected selector: MemoizedSelector<any, any>,
-    @Inject(LOAD_ACTION)
-    protected loadAction: any,
-    @Inject(LOAD_NEXT_ACTION)
-    protected loadNextPageAction: (props: { size: number; page: number }) => any,
-    @Optional()
-    @Inject(ACTION_KEY)
-    protected actionKey: string,
     protected route: ActivatedRoute,
-    inj: Injector,
     private sanitizer: DomSanitizer,
+    inj: Injector,
   ) {
+    this.loadNextPageAction = inj.get(LOAD_NEXT_ACTION);
+    const actionKey = inj.get(ACTION_KEY, null);
+    this.selector = inj.get(SELECTOR);
+    this.loadAction = inj.get(LOAD_ACTION);
+
     const class2View = inj.get(Class2ViewBuilderService);
     this.labels = class2View.getLabels();
     this.displayedColumns = class2View.getAttrs();
     this.mapToFields = class2View.getMapsFunctions();
     this.mapToHTML = class2View.getHtmlMaps();
-    this.data$ = this.store.select(selector).pipe(shareReplay());
+    this.data$ = this.store.select(this.selector).pipe(shareReplay());
     const id = Number(this.route.snapshot.parent?.params.id);
 
     this.doOnConstructor();
 
-    if (id && this.actionKey) {
-      this.store.dispatch(loadAction({ [actionKey]: id }));
+    if (id && actionKey) {
+      this.store.dispatch(this.loadAction({ [actionKey]: id }));
     } else {
-      this.store.dispatch(loadAction);
+      this.store.dispatch(this.loadAction);
     }
   }
 
