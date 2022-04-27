@@ -1,6 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  loadNextPageOfProcessPhase,
+  loadProcessPhase,
+} from '../../../../state/process-phase/processPhase.actions';
+import { selectProcessPhase } from '../../../../state/process-phase/processPhase.selector';
+import {
+  CLAZZ,
+  LOAD_ACTION,
+  LOAD_NEXT_ACTION,
+  SELECTOR,
+} from '../../../../shared/components/dinamyc-views/dynamic-views.module';
+import { ProcessPhase } from 'src/app/data/models/ProcessPhase.model';
+import { Class2ViewBuilderService } from '../../../../shared/components/dinamyc-views/services/class2-view-builder.service';
+import { PopupSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-selector/popup-selector.component';
 
 @Component({
   selector: 'app-process-form',
@@ -14,7 +29,12 @@ export class ProcessFormComponent {
 
   form!: FormGroup;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private dialog: MatDialog,
+    private inj: Injector,
+  ) {
     this.form = new FormGroup({
       name: new FormControl(null, Validators.required),
       description: new FormControl(null, Validators.required),
@@ -39,4 +59,24 @@ export class ProcessFormComponent {
   }
 
   onSubmit() {}
+
+  openDialog() {
+    const inj = Injector.create({
+      providers: [
+        { provide: CLAZZ, useValue: ProcessPhase },
+        { provide: LOAD_ACTION, useValue: loadProcessPhase() },
+        { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfProcessPhase },
+        { provide: SELECTOR, useValue: selectProcessPhase },
+        { provide: Class2ViewBuilderService },
+      ],
+      parent: this.inj,
+    });
+
+    const dialogRef = this.dialog.open(PopupSelectorComponent, {
+      data: {
+        title: 'Fases de Proceso',
+        inj,
+      },
+    });
+  }
 }
