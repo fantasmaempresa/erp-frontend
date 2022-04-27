@@ -14,15 +14,11 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 export class ConceptFormComponent implements OnInit {
   isEdit = false;
 
+  isDateInYears = false;
+
   years: number[] = [];
 
-  conceptForm = new FormGroup({
-    name: new FormControl('', Validators.required),
-    description: new FormControl(''),
-    amount: new FormControl(null),
-    operationType: new FormControl('import'),
-    formula: this.createFormulaForm(),
-  });
+  conceptForm = this.createForm();
 
   selectedYear!: number;
 
@@ -55,6 +51,27 @@ export class ConceptFormComponent implements OnInit {
     return this.conceptForm.get('formula').get('percentage') as FormControl;
   }
 
+  get isDateInValidity() {
+    // @ts-ignore
+    return this.conceptForm.get('formula')?.get('validity')?.get('is_date') as FormControl;
+  }
+
+  get applyValidity() {
+    return this.conceptForm.get('formula')?.get('validity')?.get('apply') as FormControl;
+  }
+
+  get applyRange() {
+    return this.conceptForm.get('formula')?.get('range')?.get('apply') as FormControl;
+  }
+
+  get isRangeInValidity() {
+    return this.conceptForm.get('formula')?.get('validity')?.get('is_range') as FormControl;
+  }
+
+  get formula() {
+    return this.conceptForm.get('formula') as FormGroup;
+  }
+
   operations: { value: string; label: string }[] = [
     { value: '+', label: 'Suma' },
     {
@@ -76,10 +93,42 @@ export class ConceptFormComponent implements OnInit {
   ) {
     this.createRangeOfYears();
     if (this.route.snapshot.queryParams.id) {
+      this.isEdit = true;
       conceptService.fetch(this.route.snapshot.queryParams.id).subscribe({
-        next: (user) => {
+        next: (concept) => {
           this.conceptForm.addControl('id', new FormControl(''));
-          this.conceptForm.patchValue(user);
+          this.conceptForm.patchValue(concept);
+          if (concept.formula.validity.apply) {
+            this.operationType.patchValue('validity');
+            this.conceptForm
+              .get('formula')
+              ?.get('validity')
+              ?.get('amount')
+              ?.patchValue(concept.formula.validity.amount);
+            if (concept.formula.validity.between.length > 0) {
+              this.betweenValidity.clear();
+              concept.formula.validity.between.forEach((range) => {
+                console.log(range);
+                this.betweenValidity.push(this.createRange());
+              });
+              this.betweenValidity.patchValue(concept.formula.validity.between);
+            }
+          }
+          if (concept.formula.range.apply) {
+            this.operationType.patchValue('range');
+            if (concept.formula.range.between.length > 0) {
+              this.betweenRange.clear();
+              concept.formula.range.between.forEach((range) => {
+                console.log(range);
+                this.betweenRange.push(this.createRange());
+              });
+              this.betweenRange.patchValue(concept.formula.range.between);
+            }
+          }
+          if (!concept.formula.range.apply && !concept.formula.validity.apply) {
+            this.operationType.patchValue('import');
+          }
+          console.log(this.conceptForm.value);
         },
       });
     }
@@ -91,6 +140,21 @@ export class ConceptFormComponent implements OnInit {
         if (val === 'validity' || val === 'range') {
           this.isOperable.patchValue(false);
           this.isPercentage.patchValue(false);
+        }
+        if (val === 'validity') {
+          this.resetRangeForm();
+          this.applyValidity.patchValue(true);
+          // this.applyRange.patchValue(false);
+        }
+        if (val === 'range') {
+          this.resetValidityForm();
+          this.applyRange.patchValue(true);
+        }
+        if (val === 'import') {
+          this.resetValidityForm();
+          this.resetRangeForm();
+          // this.applyValidity.patchValue(false);
+          // this.applyRange.patchValue(false);
         }
       },
     });
@@ -111,11 +175,23 @@ export class ConceptFormComponent implements OnInit {
       },
     });
 
-    this.operationType.valueChanges.subscribe({
+    this.isDateInValidity.valueChanges.subscribe({
       next: (val) => {
-        // Dependiendo del tipo de operacion cambiar el valor de apply o reiniciar el formulario lo que sea mas conveniente ja ja xD ese we
-        // this.conceptForm.get('formula')?.reset();
-        console.log(this.conceptForm.value);
+        this.isDateInYears = !!val;
+        this.conceptForm.get('formula')?.get('validity')?.get('amount')?.patchValue('');
+      },
+    });
+
+    this.validityType.valueChanges.subscribe({
+      next: (val) => {
+        if (val === 'range') {
+          this.isRangeInValidity.patchValue(true);
+          this.isDateInValidity.patchValue(false);
+        }
+        if (val === 'date') {
+          this.isRangeInValidity.patchValue(false);
+          this.isDateInValidity.patchValue(true);
+        }
       },
     });
   }
@@ -158,18 +234,17 @@ export class ConceptFormComponent implements OnInit {
     }
   }
 
-  createRange() {
+  createRange(value?: any) {
     const form = new FormGroup({
-      min: new FormControl('', [Validators.required]),
-      max: new FormControl('', [Validators.required]),
-      amount: new FormControl('', [Validators.required]),
+      min: new FormControl(value ? value.min : null, [Validators.required]),
+      max: new FormControl(value ? value.max : null, [Validators.required]),
+      amount: new FormControl(value ? value.amount : null, [Validators.required]),
     });
 
     form.get('min')?.valueChanges.subscribe({
       next: (val) => {
-        form.get('max')?.patchValue('');
         form.get('max')?.setValidators([Validators.required, Validators.min(val)]);
-        form.updateValueAndValidity();
+        form.get('max')?.updateValueAndValidity();
       },
     });
 
@@ -184,12 +259,36 @@ export class ConceptFormComponent implements OnInit {
     }
   }
 
-  createFormulaForm() {
+  createForm() {
     return new FormGroup({
-      operation: new FormControl(null, Validators.required),
-      percentage: new FormControl(false),
-      operable: new FormControl(false),
-      validity: new FormGroup({
+      name: new FormControl('', Validators.required),
+      description: new FormControl(''),
+      amount: new FormControl(null),
+      operationType: new FormControl('import'),
+      formula: new FormGroup({
+        operation: new FormControl(null),
+        percentage: new FormControl(false),
+        operable: new FormControl(false),
+        validity: new FormGroup({
+          apply: new FormControl(false),
+          is_date: new FormControl(false),
+          is_range: new FormControl(false),
+          type: new FormControl('date'),
+          amount: new FormControl(''),
+          between: new FormArray(this.isEdit ? [] : [this.createRange()]),
+        }),
+        range: new FormGroup({
+          apply: new FormControl(false),
+          between: new FormArray(this.isEdit ? [] : [this.createRange()]),
+        }),
+      }),
+    });
+  }
+
+  resetValidityForm() {
+    this.formula.setControl(
+      'validity',
+      new FormGroup({
         apply: new FormControl(false),
         is_date: new FormControl(false),
         is_range: new FormControl(false),
@@ -197,10 +296,16 @@ export class ConceptFormComponent implements OnInit {
         amount: new FormControl(''),
         between: new FormArray([this.createRange()]),
       }),
-      range: new FormGroup({
+    );
+  }
+
+  resetRangeForm() {
+    this.formula.setControl(
+      'range',
+      new FormGroup({
         apply: new FormControl(false),
         between: new FormArray([this.createRange()]),
       }),
-    });
+    );
   }
 }

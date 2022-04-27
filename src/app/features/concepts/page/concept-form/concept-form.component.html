@@ -45,9 +45,18 @@
 
           <div [ngSwitch]="validityType.value" class="mt-3">
             <ng-container *ngSwitchCase="'date'">
-              <mat-form-field appearance="outline" class="col-6">
+              <mat-form-field appearance="outline" class="col-6" *ngIf="isDateInYears">
                 <mat-label>Cantidad</mat-label>
                 <input matInput type="text" autocomplete="off" formControlName="amount" />
+                <mat-error appErrorMessage></mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" class="col-6" *ngIf="!isDateInYears">
+                <mat-label>Año</mat-label>
+                <mat-select formControlName="amount">
+                  <mat-option>-- None --</mat-option>
+                  <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                </mat-select>
                 <mat-error appErrorMessage></mat-error>
               </mat-form-field>
 
@@ -85,7 +94,7 @@
                 <!--                </mat-form-field>-->
                 <mat-form-field appearance="outline" class="col-4">
                   <mat-label>Monto</mat-label>
-                  <input matInput type="text" autocomplete="off" />
+                  <input matInput type="text" autocomplete="off" formControlName="amount" />
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
                 <div class="col-2 d-flex align-items-center" style="margin-top: -20px">
@@ -131,17 +140,17 @@
             >
               <mat-form-field appearance="outline" class="col-3">
                 <mat-label>Inicio</mat-label>
-                <input matInput type="text" autocomplete="off" />
+                <input matInput type="text" autocomplete="off" formControlName="min" />
                 <mat-error appErrorMessage></mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="col-3">
                 <mat-label>Fin</mat-label>
-                <input matInput type="text" autocomplete="off" />
+                <input matInput type="text" autocomplete="off" formControlName="max" />
                 <mat-error appErrorMessage></mat-error>
               </mat-form-field>
               <mat-form-field appearance="outline" class="col-4">
                 <mat-label>Monto</mat-label>
-                <input matInput type="text" autocomplete="off" />
+                <input matInput type="text" autocomplete="off" formControlName="amount" />
                 <mat-error appErrorMessage></mat-error>
               </mat-form-field>
               <div class="col-2 d-flex align-items-center" style="margin-top: -20px">
@@ -190,7 +199,7 @@
       </mat-form-field>
     </ng-container>
 
-    <div formGroupName="formula" class="w-100">
+    <div formGroupName="formula" class="w-100" *ngIf="operationType.value === 'import'">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Tipo de Operación</mat-label>
         <mat-select formControlName="operation">
@@ -201,6 +210,11 @@
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
     </div>
-    <button mat-flat-button color="primary">Guardar</button>
+    <div class="row justify-content-between mt-5">
+      <button mat-flat-button color="primary" class="col-4">Guardar</button>
+      <button mat-flat-button color="warn" type="button" class="col-4">Cancelar</button>
+    </div>
+
+    <!--    <p>{{ conceptForm.value | json }}</p>-->
   </div>
 </form>
