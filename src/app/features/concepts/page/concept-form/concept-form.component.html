@@ -203,6 +203,7 @@
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Tipo de Operación</mat-label>
         <mat-select formControlName="operation">
+          <mat-option [value]="null">--Ninguna--</mat-option>
           <mat-option *ngFor="let operation of operations" [value]="operation.value">{{
             operation.label
           }}</mat-option>

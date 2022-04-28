@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TemplateQuotesService } from '../../../../data/services/template-quotes.service';
@@ -12,13 +12,14 @@ import {
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import faker from '@faker-js/faker';
+import { emptyForm } from '../../../../state/dynamic-form/dynamic-form.actions';
 
 @Component({
   selector: 'app-project-quote-page',
   templateUrl: './project-quote-page.component.html',
   styleUrls: ['./project-quote-page.component.scss'],
 })
-export class ProjectQuotePageComponent implements OnInit {
+export class ProjectQuotePageComponent implements OnInit, OnDestroy {
   HEADER_STEP = 0;
 
   FORM_BUILD_STEP = 1;
@@ -73,6 +74,21 @@ export class ProjectQuotePageComponent implements OnInit {
     });
   }
 
+  ngOnInit(): void {
+    this.fields$.subscribe({
+      next: () => {
+        if (this.step < this.FORM_FILL_STEP) {
+          this.quoteForm.get('formFill')?.reset();
+        }
+      },
+    });
+  }
+
+  ngOnDestroy(): void {
+    console.log('Destruyendo project-quote-page');
+    this.store.dispatch(emptyForm());
+  }
+
   async backToListUsers() {
     await this.router.navigate(['../'], { relativeTo: this.route });
   }
@@ -124,16 +140,6 @@ export class ProjectQuotePageComponent implements OnInit {
           this.router.navigate(['../'], { relativeTo: this.route });
         });
       });
-  }
-
-  ngOnInit(): void {
-    this.fields$.subscribe({
-      next: () => {
-        if (this.step < this.FORM_FILL_STEP) {
-          this.quoteForm.get('formFill')?.reset();
-        }
-      },
-    });
   }
 
   closingFormFill() {
