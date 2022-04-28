@@ -51,9 +51,8 @@
     (page)="onPaginateChange($event)"
   ></mat-paginator>
 
-  <div mat-dialog-actions class="d-flex justify-content-end">
-    <button mat-flat-button color="primary" [mat-dialog-close]="optionsSelected" cdkFocusInitial>
-      Agregar Selección
-    </button>
-  </div>
+  <button class="container-dialog__button" mat-flat-button color="primary" [mat-dialog-close]="optionsSelected"
+          cdkFocusInitial>
+    Agregar Selección
+  </button>
 </div>
