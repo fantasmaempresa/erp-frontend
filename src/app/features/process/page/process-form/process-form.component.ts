@@ -3,19 +3,16 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import {
-  loadNextPageOfProcessPhase,
-  loadProcessPhase,
-} from '../../../../state/process-phase/processPhase.actions';
-import { selectProcessPhase } from '../../../../state/process-phase/processPhase.selector';
-import {
   CLAZZ,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { ProcessPhase } from 'src/app/data/models/ProcessPhase.model';
 import { Class2ViewBuilderService } from '../../../../shared/components/dinamyc-views/services/class2-view-builder.service';
 import { PopupSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-selector/popup-selector.component';
+import { Client } from '../../../../data/models/Client.model';
+import { loadClients, loadNextPageOfClients } from '../../../../state/clients/clients.actions';
+import { selectClients } from '../../../../state/clients/clients.selector';
 
 @Component({
   selector: 'app-process-form',
@@ -63,10 +60,10 @@ export class ProcessFormComponent {
   openDialog() {
     const inj = Injector.create({
       providers: [
-        { provide: CLAZZ, useValue: ProcessPhase },
-        { provide: LOAD_ACTION, useValue: loadProcessPhase() },
-        { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfProcessPhase },
-        { provide: SELECTOR, useValue: selectProcessPhase },
+        { provide: CLAZZ, useValue: Client },
+        { provide: LOAD_ACTION, useValue: loadClients() },
+        { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClients },
+        { provide: SELECTOR, useValue: selectClients },
         { provide: Class2ViewBuilderService },
       ],
       parent: this.inj,
@@ -75,6 +72,7 @@ export class ProcessFormComponent {
     const dialogRef = this.dialog.open(PopupSelectorComponent, {
       data: {
         title: 'Fases de Proceso',
+        property: 'name',
         inj,
       },
     });

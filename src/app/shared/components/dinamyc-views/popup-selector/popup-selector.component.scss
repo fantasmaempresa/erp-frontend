@@ -1,7 +1,7 @@
 ::ng-deep .mat-dialog-container {
   width: 80vw;
   border-radius: 8px;
-  height: 75vh;
+  height: 100vh;
 }
 
 .container-dialog {
@@ -16,12 +16,13 @@
   }
 }
 
-table {
-  width: 100%;
-  max-height: 75%;
+.mat-column-select {
+  flex: none;
+  padding: 0 2rem;
+  width: 1rem;
 }
 
-mat-paginator {
+table, mat-paginator {
   width: 100%;
 }
 
@@ -31,5 +32,34 @@ mat-paginator {
 
   &:hover {
     background: rgba(0, 0, 0, 0.215);
+  }
+}
+
+.dialog-results {
+  width: 100%;
+  flex: 0 1 30rem;
+  min-height: 30rem;
+  overflow: auto;
+  background: rgba(238, 238, 238, 0.10);
+  margin: 1rem 0;
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 1.5rem;
+  padding: 1rem;
+
+  &__chip {
+    padding: 2rem;
+    font-size: 1.35rem;
+    background: var(--primary-color);
+    color: black;
+    grid-column: span 1;
+    border-radius: 100px;
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 0 16px 4px rgba(0, 0, 0, .20);
   }
 }

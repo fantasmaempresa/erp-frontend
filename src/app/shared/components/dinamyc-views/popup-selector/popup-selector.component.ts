@@ -1,12 +1,10 @@
 import {
   AfterViewInit,
   Component,
-  EventEmitter,
   Inject,
   Injector,
   OnDestroy,
   OnInit,
-  Output,
   ViewChild,
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -20,8 +18,10 @@ import { MemoizedSelector, Store } from '@ngrx/store';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DynamicViewComponent } from '../class/dynamic-view.component';
 import { ActivatedRoute } from '@angular/router';
+import { MatCheckbox } from '@angular/material/checkbox';
 
 interface PopUpData {
+  property: string;
   title: string;
   selector: MemoizedSelector<any, any>;
   loadAction?: any;
@@ -41,18 +41,19 @@ export class PopupSelectorComponent<T extends EntityModel>
 {
   data$!: Observable<Pagination<T> | null>;
 
-  optionsSelected!: any[];
+  optionsSelected: any[] = [];
 
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
-  @Output()
-  selectedItem = new EventEmitter<T>();
+  @ViewChild('checkAll', { static: false }) matCheckAll!: MatCheckbox;
 
-  selection = new SelectionModel<T>(false, []);
+  selection = new SelectionModel<T>(true, []);
 
   dataSource = new MatTableDataSource<T>();
 
   isLoadingResults = true;
+
+  pageSize = 5;
 
   dataSubscription!: Subscription;
 
@@ -69,9 +70,10 @@ export class PopupSelectorComponent<T extends EntityModel>
   }
 
   isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
+    const arrayDiff = this.dataSource.data.filter(
+      (data: any) => !this.selection.selected.some((select: any) => data.id === select.id),
+    );
+    return arrayDiff.length === 0;
   }
 
   /** The label for the checkbox on the passed row */
@@ -81,8 +83,6 @@ export class PopupSelectorComponent<T extends EntityModel>
     }
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
   }
-
-  getSelectedElement = () => this.selection.selected[0];
 
   ngOnInit(): void {
     this.dataSubscription = this.data$
@@ -109,9 +109,42 @@ export class PopupSelectorComponent<T extends EntityModel>
   setSelectedItem(item: T) {
     this.selection.toggle(item);
     if (this.selection.isSelected(item)) {
-      this.selectedItem.emit(item);
+      this.addOptions();
     } else {
-      this.selectedItem.emit(undefined);
+      this.deleteOptions();
     }
+
+    this.matCheckAll.checked = this.isAllSelected();
+    this.addOptions();
+  }
+
+  toggleAll() {
+    if (this.matCheckAll.checked) {
+      this.selection.deselect(...this.selection.selected);
+      this.deleteOptions();
+    } else {
+      this.selection.select(...this.dataSource.data);
+      this.addOptions();
+    }
+  }
+
+  private addOptions() {
+    const arrayDiff = this.dataSource.data.filter((data: any) =>
+      this.selection.selected.some((select: any) => data.id === select.id),
+    );
+    arrayDiff.forEach((item) => {
+      if (!this.optionsSelected.some((data) => data.id === item.id)) {
+        this.optionsSelected.push(item);
+      }
+    });
+  }
+
+  private deleteOptions() {
+    const arrayDiff = this.optionsSelected.filter(
+      (data: any) => !this.selection.selected.some((select: any) => data.id === select.id),
+    );
+    arrayDiff.forEach((item) => {
+      console.log(item);
+    });
   }
 }
