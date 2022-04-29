@@ -8,7 +8,6 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { Class2ViewBuilderService } from '../../../../shared/components/dinamyc-views/services/class2-view-builder.service';
 import { selectProcessPhase } from '../../../../state/process-phase/processPhase.selector';
 import { ProcessPhase } from '../../../../data/models/ProcessPhase.model';
 import {
@@ -25,7 +24,6 @@ import {
     { provide: CLAZZ, useValue: ProcessPhase },
     { provide: LOAD_ACTION, useValue: loadProcessPhase() },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfProcessPhase },
-    Class2ViewBuilderService,
   ],
 })
 export class ProcessPhaseListComponent {

@@ -9,11 +9,14 @@ export class Class2ViewBuilderService {
   public readonly objClass: any;
 
   constructor(private inj: Injector) {
-    const clazz = this.inj.get(CLAZZ);
-    this.objClass = new clazz();
+    const clazz = this.inj.get(CLAZZ, null);
+    if (clazz) {
+      this.objClass = new clazz();
+    }
   }
 
   getAttrs(): string[] {
+    if (!this.objClass) return [];
     const propertyNames = Object.getOwnPropertyNames(this.objClass);
     return propertyNames
       .filter((key) => Reflect.getMetadataKeys(this.objClass, key).includes('printLabel'))

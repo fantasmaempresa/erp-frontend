@@ -8,7 +8,6 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { Class2ViewBuilderService } from '../../../../shared/components/dinamyc-views/services/class2-view-builder.service';
 import { PopupSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-selector/popup-selector.component';
 import { Client } from '../../../../data/models/Client.model';
 import { loadClients, loadNextPageOfClients } from '../../../../state/clients/clients.actions';
@@ -64,7 +63,6 @@ export class ProcessFormComponent {
         { provide: LOAD_ACTION, useValue: loadClients() },
         { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClients },
         { provide: SELECTOR, useValue: selectClients },
-        { provide: Class2ViewBuilderService },
       ],
       parent: this.inj,
     });

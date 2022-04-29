@@ -5,7 +5,6 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { Class2ViewBuilderService } from '../../../../shared/components/dinamyc-views/services/class2-view-builder.service';
 import { Process } from '../../../../data/models/Process.model';
 import { selectProcess } from '../../../../state/process/process.selector';
 import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
@@ -22,7 +21,6 @@ import { ActivatedRoute, Router } from '@angular/router';
     { provide: CLAZZ, useValue: Process },
     { provide: LOAD_ACTION, useValue: loadProcess() },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfProcess },
-    Class2ViewBuilderService,
   ],
 })
 export class ProcessListComponent {

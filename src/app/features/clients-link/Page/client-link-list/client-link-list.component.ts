@@ -14,7 +14,6 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
-import { Class2ViewBuilderService } from '../../../../shared/components/dinamyc-views/services/class2-view-builder.service';
 import { ClientLink } from '../../../../data/models/ClientLink.model';
 
 @Component({
@@ -27,7 +26,6 @@ import { ClientLink } from '../../../../data/models/ClientLink.model';
     { provide: LOAD_ACTION, useValue: loadClientsLink },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClientsLink },
     { provide: ACTION_KEY, useValue: 'clientId' },
-    Class2ViewBuilderService,
   ],
 })
 export class ClientLinkListComponent {

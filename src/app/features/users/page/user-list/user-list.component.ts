@@ -11,7 +11,6 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { Class2ViewBuilderService } from '../../../../shared/components/dinamyc-views/services/class2-view-builder.service';
 import {
   loadNextPageOfUsers,
   loadUsers,
@@ -33,7 +32,6 @@ import { AuthService } from '../../../../core/services/auth.service';
     { provide: CLAZZ, useValue: User },
     { provide: LOAD_ACTION, useValue: loadUsers() },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfUsers },
-    Class2ViewBuilderService,
   ],
 })
 export class UserListComponent implements OnInit, OnDestroy {
