@@ -76,6 +76,14 @@ const routes: Routes = [
         data: { breadcrumb: 'Estado de la cotización' },
       },
       {
+        path: 'project-quote-template',
+        loadChildren: () =>
+          import('./features/project-quote-template/project-quote-template.module').then(
+            (m) => m.ProjectQuoteTemplateModule,
+          ),
+        data: { breadcrumb: 'Plantillas de cotización' },
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',

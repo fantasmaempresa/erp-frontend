@@ -27,6 +27,7 @@ export class SidebarComponent {
           dropdowns: [
             { label: 'Lista de cotizaciones', route: './project-quote', icon: 'group_work' },
             { label: 'Estados de la cotización', route: './quote-statuses', icon: 'group_work' },
+            { label: 'Plantillas', route: './project-quote-template', icon: 'group_work' },
           ],
         },
         {
