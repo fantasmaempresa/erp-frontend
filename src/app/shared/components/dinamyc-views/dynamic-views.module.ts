@@ -6,19 +6,41 @@ import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { CardViewComponent } from './card-view/card-view.component';
-import { SharedModule } from '../../shared.module';
 import { ChangeViewComponent } from './change-view/change-view.component';
 import { PopupSelectorComponent } from './popup-selector/popup-selector.component';
+import { MapToPipe } from '../../../core/pipes/map-to.pipe';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { FormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
+    MapToPipe,
     TableViewComponent,
     CardViewComponent,
     ChangeViewComponent,
     PopupSelectorComponent,
   ],
-  imports: [CommonModule, MatTableModule, MatCheckboxModule, MatPaginatorModule, SharedModule],
-  exports: [TableViewComponent, CardViewComponent, ChangeViewComponent, PopupSelectorComponent],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatCheckboxModule,
+    MatPaginatorModule,
+    MatIconModule,
+    MatTooltipModule,
+    MatButtonToggleModule,
+    FormsModule,
+    MatDialogModule,
+  ],
+  exports: [
+    TableViewComponent,
+    CardViewComponent,
+    ChangeViewComponent,
+    PopupSelectorComponent,
+    MapToPipe,
+  ],
   entryComponents: [PopupSelectorComponent],
 })
 export class DynamicViewsModule {}
