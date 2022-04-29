@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subscription, tap } from 'rxjs';
@@ -53,9 +53,9 @@ export class PopupSelectorComponent<T extends EntityModel>
 
   isLoadingResults = true;
 
-  pageSize = 5;
-
   dataSubscription!: Subscription;
+
+  private isChangingPaginate = false;
 
   constructor(
     store: Store,
@@ -94,6 +94,14 @@ export class PopupSelectorComponent<T extends EntityModel>
       .subscribe((data: Pagination<T> | null) => {
         if (data) {
           this.dataSource = new MatTableDataSource<T>(data.data);
+          if (this.isChangingPaginate) {
+            this.selection.deselect(...this.selection.selected);
+            const arraySame = data.data.filter((itemData: any) =>
+              this.optionsSelected.some((item: any) => itemData.id === item.id),
+            );
+            this.selection.select(...arraySame);
+            this.matCheckAll.checked = this.isAllSelected();
+          }
         }
       });
   }
@@ -109,42 +117,45 @@ export class PopupSelectorComponent<T extends EntityModel>
   setSelectedItem(item: T) {
     this.selection.toggle(item);
     if (this.selection.isSelected(item)) {
-      this.addOptions();
+      this.addOptionsSelected();
     } else {
-      this.deleteOptions();
+      this.deleteOptionSelected(item);
     }
 
     this.matCheckAll.checked = this.isAllSelected();
-    this.addOptions();
   }
 
   toggleAll() {
     if (this.matCheckAll.checked) {
-      this.selection.deselect(...this.selection.selected);
-      this.deleteOptions();
+      this.selection.selected.forEach((item) => this.deleteOptionSelected(item));
+      this.selection.deselect(...this.dataSource.data);
     } else {
       this.selection.select(...this.dataSource.data);
-      this.addOptions();
+      this.addOptionsSelected();
     }
   }
 
-  private addOptions() {
+  private addOptionsSelected() {
     const arrayDiff = this.dataSource.data.filter((data: any) =>
       this.selection.selected.some((select: any) => data.id === select.id),
     );
     arrayDiff.forEach((item) => {
-      if (!this.optionsSelected.some((data) => data.id === item.id)) {
+      const dontExist = !this.optionsSelected.find((option) => item.id === option.id);
+      if (dontExist) {
         this.optionsSelected.push(item);
       }
     });
   }
 
-  private deleteOptions() {
-    const arrayDiff = this.optionsSelected.filter(
-      (data: any) => !this.selection.selected.some((select: any) => data.id === select.id),
-    );
-    arrayDiff.forEach((item) => {
-      console.log(item);
-    });
+  private deleteOptionSelected(item: any) {
+    const index = this.optionsSelected.findIndex((option) => item.id === option.id);
+    if (!!index || index === 0) {
+      this.optionsSelected.splice(index, 1);
+    }
+  }
+
+  onPaginateChange(event: PageEvent) {
+    super.onPaginateChange(event);
+    this.isChangingPaginate = true;
   }
 }
