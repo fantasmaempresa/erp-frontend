@@ -2,16 +2,6 @@ import { Component, Injector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import {
-  CLAZZ,
-  LOAD_ACTION,
-  LOAD_NEXT_ACTION,
-  SELECTOR,
-} from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { PopupSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-selector/popup-selector.component';
-import { Client } from '../../../../data/models/Client.model';
-import { loadClients, loadNextPageOfClients } from '../../../../state/clients/clients.actions';
-import { selectClients } from '../../../../state/clients/clients.selector';
 
 @Component({
   selector: 'app-process-form',
@@ -55,24 +45,4 @@ export class ProcessFormComponent {
   }
 
   onSubmit() {}
-
-  openDialog() {
-    const inj = Injector.create({
-      providers: [
-        { provide: CLAZZ, useValue: Client },
-        { provide: LOAD_ACTION, useValue: loadClients() },
-        { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClients },
-        { provide: SELECTOR, useValue: selectClients },
-      ],
-      parent: this.inj,
-    });
-
-    const dialogRef = this.dialog.open(PopupSelectorComponent, {
-      data: {
-        title: 'Fases de Proceso',
-        property: 'name',
-        inj,
-      },
-    });
-  }
 }

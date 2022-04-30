@@ -12,7 +12,6 @@
         [expanded]="step === 0"
         (opened)="setStep(0)"
         hideToggle
-        [disabled]="step !== 0"
       >
         <mat-expansion-panel-header>
           <mat-panel-title>Datos Generales</mat-panel-title>
@@ -22,7 +21,7 @@
         <div class="d-flex flex-column form-container">
           <mat-form-field appearance="outline">
             <mat-label>Nombre del Proceso</mat-label>
-            <input formControlName="name" matInput type="text" />
+            <input formControlName="name" matInput type="text"/>
             <mat-error appErrorMessage></mat-error>
           </mat-form-field>
 
@@ -32,11 +31,6 @@
             <mat-error appErrorMessage></mat-error>
           </mat-form-field>
         </div>
-
-        <button mat-flat-button color="primary" type="button" (click)="openDialog()">
-          Abrir Dialogo
-        </button>
-
         <mat-action-row>
           <button type="button" mat-button color="primary" (click)="nextStep()">
             Asignación de Fases
@@ -47,12 +41,13 @@
         [expanded]="step === 1"
         (opened)="setStep(1)"
         hideToggle
-        [disabled]="step !== 1"
       >
         <mat-expansion-panel-header>
           <mat-panel-title>Asignación de Fases</mat-panel-title>
           <mat-panel-description>Configure el flujo de las fases</mat-panel-description>
         </mat-expansion-panel-header>
+
+        <app-build-process></app-build-process>
 
         <mat-action-row>
           <button type="button" mat-button color="primary" (click)="prevStep()">
