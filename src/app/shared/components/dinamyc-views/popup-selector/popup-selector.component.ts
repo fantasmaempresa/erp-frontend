@@ -158,4 +158,8 @@ export class PopupSelectorComponent<T extends EntityModel>
     super.onPaginateChange(event);
     this.isChangingPaginate = true;
   }
+
+  closeDialog() {
+    this.dialogRef.close(this.optionsSelected);
+  }
 }

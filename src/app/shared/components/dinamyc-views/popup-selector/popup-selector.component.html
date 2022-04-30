@@ -62,7 +62,7 @@
   </div>
 
   <button
-    [mat-dialog-close]="optionsSelected"
+    (click)="closeDialog()"
     cdkFocusInitial
     class="container-dialog__button"
     color="primary"
