@@ -8,11 +8,7 @@
   </mat-toolbar>
   <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
     <mat-accordion>
-      <mat-expansion-panel
-        [expanded]="step === 0"
-        (opened)="setStep(0)"
-        hideToggle
-      >
+      <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
         <mat-expansion-panel-header>
           <mat-panel-title>Datos Generales</mat-panel-title>
           <mat-panel-description>Nombre, Descripción del Proceso</mat-panel-description>
@@ -37,17 +33,15 @@
           </button>
         </mat-action-row>
       </mat-expansion-panel>
-      <mat-expansion-panel
-        [expanded]="step === 1"
-        (opened)="setStep(1)"
-        hideToggle
-      >
+      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
         <mat-expansion-panel-header>
           <mat-panel-title>Asignación de Fases</mat-panel-title>
           <mat-panel-description>Configure el flujo de las fases</mat-panel-description>
         </mat-expansion-panel-header>
 
-        <app-build-process></app-build-process>
+        <app-build-process formControlName="config"></app-build-process>
+
+        {{ form.value | json }}
 
         <mat-action-row>
           <button type="button" mat-button color="primary" (click)="prevStep()">

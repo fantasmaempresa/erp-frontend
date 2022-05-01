@@ -34,9 +34,12 @@
             </mat-checkbox>
             <mat-form-field appearance="outline">
               <mat-label>Fase Previa</mat-label>
-              <mat-select formControlName="next">
+              <mat-select formControlName="previous">
                 <mat-option [value]="null">Sin Fase Previa</mat-option>
-                <mat-option *ngFor="let process of processPhases | mapTo:onlyPrevious:i" [value]="process.id">
+                <mat-option
+                  *ngFor="let process of processPhases | mapTo: onlyPrevious:i"
+                  [value]="process.id"
+                >
                   {{ process.name }}
                 </mat-option>
               </mat-select>
@@ -49,7 +52,5 @@
     <ng-template #containerPlaceholder>
       <div class="build-process__placeholder">Selecciona las fases</div>
     </ng-template>
-
-    {{ orderFormArray.value | json }}
   </div>
 </div>
