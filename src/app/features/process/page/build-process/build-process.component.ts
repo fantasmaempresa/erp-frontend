@@ -106,8 +106,10 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
   drop(event: CdkDragDrop<any, any>) {
     moveItemInArray(this.processPhases, event.previousIndex, event.currentIndex);
     const currentGroup = this.orderFormArray.at(event.previousIndex);
+    const nextGroup = this.orderFormArray.at(event.currentIndex);
     this.orderFormArray.removeAt(event.previousIndex);
     currentGroup.get('previous')?.setValue(null);
+    nextGroup.get('previous')?.setValue(null);
     this.orderFormArray.insert(event.currentIndex, currentGroup);
   }
 
