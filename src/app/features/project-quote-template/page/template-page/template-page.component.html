@@ -1,1 +1,67 @@
-<p>template-page works!</p>
+<mat-card>
+  <mat-toolbar>
+    <div>
+      <button aria-label="Regresar" mat-icon-button (click)="back()">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <ng-container [formGroup]="templateForm">
+    <mat-accordion class="example-headers-align">
+      <mat-expansion-panel
+        [expanded]="step === FORM_BUILD_STEP"
+        (opened)="goToFormBuildStep()"
+        hideToggle
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>Cuerpo</mat-panel-title>
+          <mat-panel-description> Creación de la estructura del formulario </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <app-dynamic-form-creation></app-dynamic-form-creation>
+
+        <mat-action-row>
+          <button mat-button color="primary" (click)="goToConceptsAssignment()">Siguiente</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel
+        [expanded]="step === CONCEPTS_ASSIGNMENT"
+        (opened)="goToConceptsAssignment()"
+        [disabled]="this.templateForm.invalid"
+        hideToggle
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title> Asignacion de conceptos </mat-panel-title>
+          <mat-panel-description>
+            Conceptos que se agregaran a la cotización
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <app-operations (form)="operationsForm = $event"></app-operations>
+
+        <mat-action-row>
+          <button mat-button color="warn" (click)="goToFormBuildStep()">Atras</button>
+          <button mat-button color="primary" (click)="goToPreview()">Siguiente</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel [expanded]="step === PREVIEW_STEP" (opened)="goToPreview()" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Resultado</mat-panel-title>
+          <mat-panel-description> Vista preliminar </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <app-dynamic-form
+          formControlName="formFill"
+          *ngIf="step === PREVIEW_STEP"
+        ></app-dynamic-form>
+
+        <mat-action-row>
+          <button mat-button color="warn" (click)="goToConceptsAssignment()">Atras</button>
+          <button mat-button color="primary" (click)="submit()">Guardar</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </ng-container>
+</mat-card>

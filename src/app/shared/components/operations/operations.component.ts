@@ -237,6 +237,7 @@ export class OperationsComponent implements OnInit {
             },
           },
         };
+        // TODO: Validar que el arreglo de operaciones no venga vacio
         this.projectQuoteService
           .calculateOperations({ ...quote })
           .pipe(

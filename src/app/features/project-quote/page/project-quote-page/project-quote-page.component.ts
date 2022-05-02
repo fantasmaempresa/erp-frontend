@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TemplateQuotesService } from '../../../../data/services/template-quotes.service';
@@ -9,10 +9,10 @@ import {
   selectDynamicForm,
   selectStatus,
 } from '../../../../state/dynamic-form/dynamic-form.selector';
+import { emptyForm } from '../../../../state/dynamic-form/dynamic-form.actions';
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import faker from '@faker-js/faker';
-import { emptyForm } from '../../../../state/dynamic-form/dynamic-form.actions';
 
 @Component({
   selector: 'app-project-quote-page',
@@ -29,6 +29,8 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
   OPERATIONS_FORM_STEP = 3;
 
   PREVIEW_STEP = 4;
+
+  step = 0;
 
   saveState = false;
 
@@ -53,8 +55,6 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
 
   operationsForm = new FormGroup({});
 
-  step = 0;
-
   fields$!: Observable<Formfield<any>[]>;
 
   constructor(
@@ -63,7 +63,6 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
     private store: Store,
     private templateQuotesService: TemplateQuotesService,
     private projectQuoteService: ProjectQuoteService,
-    private cd: ChangeDetectorRef,
   ) {
     const status$: Observable<'EDITABLE' | 'NEW'> = store.select(selectStatus);
     this.fields$ = store.select(selectDynamicForm);
