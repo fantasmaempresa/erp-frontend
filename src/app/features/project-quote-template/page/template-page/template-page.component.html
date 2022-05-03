@@ -6,7 +6,7 @@
       </button>
     </div>
   </mat-toolbar>
-  <ng-container [formGroup]="templateForm">
+  <ng-container>
     <mat-accordion class="example-headers-align">
       <mat-expansion-panel
         [expanded]="step === FORM_BUILD_STEP"
@@ -53,7 +53,7 @@
         </mat-expansion-panel-header>
 
         <app-dynamic-form
-          formControlName="formFill"
+          [formControl]="previewForm"
           *ngIf="step === PREVIEW_STEP"
         ></app-dynamic-form>
 
