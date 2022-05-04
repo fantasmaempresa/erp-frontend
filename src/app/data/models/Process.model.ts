@@ -57,9 +57,15 @@ export class Process extends EntityModel {
   }) {
     return {
       order_phases: order_phases.map(
-        ({ end_process, next: { phase } }: { end_process: boolean; next: { phase: any } }) => ({
+        ({
           end_process,
-          next: !!phase ? phase.id : null,
+          previous: { phase },
+        }: {
+          end_process: boolean;
+          previous: { phase: any };
+        }) => ({
+          end_process,
+          previous: !!phase ? phase.id : null,
         }),
       ),
       phases_process,
