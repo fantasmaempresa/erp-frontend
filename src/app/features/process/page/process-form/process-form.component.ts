@@ -63,7 +63,6 @@ export class ProcessFormComponent {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       { phases_process } = config;
     const body = { ...this.form.value, phases_process };
-    console.log(body);
     const request$ = this.edit ? this.processService.update(body) : this.processService.save(body);
     const message = `El proceso se ha ${this.edit ? 'actualizado' : 'creado'} correctamente`;
     request$.subscribe({
