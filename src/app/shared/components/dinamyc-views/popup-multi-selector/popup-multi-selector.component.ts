@@ -14,19 +14,15 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subscription, tap } from 'rxjs';
 import { EntityModel } from '../../../../core/interfaces/EntityModel';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
-import { MemoizedSelector, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DynamicViewComponent } from '../class/dynamic-view.component';
 import { ActivatedRoute } from '@angular/router';
 import { MatCheckbox } from '@angular/material/checkbox';
 
-interface PopUpData {
+interface PopUpMultiData {
   property: string;
   title: string;
-  selector: MemoizedSelector<any, any>;
-  loadAction?: any;
-  loadNextPageAction: (props: { size: number; page: number }) => any;
-  actionKey: string;
   inj: Injector;
 }
 
@@ -62,7 +58,7 @@ export class PopupMultiSelectorComponent<T extends EntityModel>
     sanitizer: DomSanitizer,
     private dialogRef: MatDialogRef<PopupMultiSelectorComponent<T>>,
     @Inject(MAT_DIALOG_DATA)
-    public data: PopUpData,
+    public data: PopUpMultiData,
     route: ActivatedRoute,
   ) {
     super(store, route, sanitizer, data.inj);

@@ -15,14 +15,18 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
+import { PopupSelectorComponent } from './popup-selector/popup-selector.component';
+import { HostDirective } from '../../../core/directives/ad-host.directive';
 
 @NgModule({
   declarations: [
+    HostDirective,
     MapToPipe,
     TableViewComponent,
     CardViewComponent,
     ChangeViewComponent,
     PopupMultiSelectorComponent,
+    PopupSelectorComponent,
   ],
   imports: [
     CommonModule,
@@ -43,7 +47,7 @@ import { MatButtonModule } from '@angular/material/button';
     PopupMultiSelectorComponent,
     MapToPipe,
   ],
-  entryComponents: [PopupMultiSelectorComponent],
+  entryComponents: [PopupMultiSelectorComponent, PopupSelectorComponent],
 })
 export class DynamicViewsModule {}
 

@@ -1,0 +1,12 @@
+<ng-container appHost></ng-container>
+<div class="d-flex justify-content-end">
+  <button
+    type="button"
+    mat-flat-button
+    color="primary"
+    (click)="closeDialog()"
+    [disabled]="!componentRef.instance.getSelectedElement()"
+  >
+    Guardar Selección
+  </button>
+</div>

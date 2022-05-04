@@ -41,8 +41,11 @@
         <mat-datepicker #dateForm></mat-datepicker>
       </mat-form-field>
     </div>
+    <button type="button" mat-flat-button color="primary" (click)="openDialog()">
+      Abrir Dialogo
+    </button>
     <div class="d-flex justify-content-end">
-      <button type="button" mat-flat-button color="primary">
+      <button type="submit" mat-flat-button color="primary">
         {{ edit ? 'Actualizar' : 'Crear' }} Proyecto
       </button>
     </div>
