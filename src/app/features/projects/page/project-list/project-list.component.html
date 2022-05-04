@@ -1,1 +1,31 @@
-<p>project-list works!</p>
+<mat-toolbar>
+  <button
+    *ngIf="selectedItem"
+    [matTooltipPosition]="'below'"
+    aria-label="Editar Proyecto"
+    mat-icon-button
+    matTooltip="Editar Proyecto"
+    (click)="goToEditForm()"
+  >
+    <mat-icon>edit</mat-icon>
+  </button>
+  <button
+    *ngIf="selectedItem"
+    [matTooltipPosition]="'below'"
+    aria-label="Eliminar Proyecto"
+    mat-icon-button
+    matTooltip="Eliminar Proyecto"
+  >
+    <mat-icon>person_remove</mat-icon>
+  </button>
+  <button
+    [matTooltipPosition]="'below'"
+    aria-label="Agregar Proyecto"
+    mat-icon-button
+    matTooltip="Agregar Proyecto"
+    (click)="goToAddForm()"
+  >
+    <mat-icon>person_add</mat-icon>
+  </button>
+</mat-toolbar>
+<app-change-view [actions]="actions" (selectedItem)="setSelectedItem($event)"></app-change-view>
