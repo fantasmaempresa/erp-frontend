@@ -38,9 +38,9 @@ export class ProcessPhaseFormComponent {
     this.form = new FormGroup({
       name: new FormControl(null, [Validators.required]),
       description: new FormControl(null, [Validators.required]),
-      reportable: new FormControl(false),
+      notification: new FormControl(false),
       payments: new FormControl(false),
-      admin: new FormControl(false),
+      supervision: new FormControl(false),
       roles: new FormControl(null, [Validators.required]),
       form: new FormControl([], Validators.required),
     });
@@ -49,6 +49,7 @@ export class ProcessPhaseFormComponent {
       this.edit = true;
       this.processPhaseService.fetch(id).subscribe({
         next: (value: any) => {
+          this.form.addControl('id', new FormControl());
           this.form.patchValue(value);
         },
       });
@@ -78,21 +79,20 @@ export class ProcessPhaseFormComponent {
 
   onSubmit() {
     this.form.markAllAsTouched();
-    console.log(this.form.value);
     if (this.form.invalid) {
       MessageHelper.infoMessage('Revisa los campos que te faltan');
       this.setStep(0);
       return;
     }
-    this.form.value.payments = [];
-    const message = this.edit ? 'actualizado' : 'registrado';
-    if (!this.edit) {
-      this.processPhaseService.save(this.form.value).subscribe({
-        next: async () => {
-          MessageHelper.successMessage('¡Éxito!', `La fase ha sido ${message} correctamente.`);
-          await this.back();
-        },
-      });
-    }
+    const message = this.edit ? 'actualizada' : 'guardada';
+    const request$ = this.edit
+      ? this.processPhaseService.update(this.form.value)
+      : this.processPhaseService.save(this.form.value);
+    request$.subscribe({
+      next: async () => {
+        MessageHelper.successMessage('¡Éxito!', `La fase ha sido ${message} correctamente.`);
+        await this.back();
+      },
+    });
   }
 }
