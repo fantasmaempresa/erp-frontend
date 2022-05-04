@@ -51,6 +51,7 @@ export class TemplatePageComponent implements OnInit {
 
   goToPreview() {
     this.step = this.PREVIEW_STEP;
+    console.log(this.operationsForm.value);
   }
 
   goToConceptsAssignment() {

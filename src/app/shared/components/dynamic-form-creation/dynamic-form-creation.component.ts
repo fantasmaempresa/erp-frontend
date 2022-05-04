@@ -249,7 +249,8 @@ export class DynamicFormCreationComponent implements OnInit {
         },
       })
         .then((result) => {
-          if (result) {
+          console.log(result);
+          if (result.isConfirmed) {
             MessageHelper.successMessage('Exito', 'Plantilla guardada con éxito');
             this.getTemplates();
           }
