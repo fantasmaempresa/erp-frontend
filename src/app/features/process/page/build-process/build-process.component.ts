@@ -6,7 +6,7 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { PopupSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-selector/popup-selector.component';
+import { PopupMultiSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-multi-selector/popup-multi-selector.component';
 import { ProcessPhase } from '../../../../data/models/ProcessPhase.model';
 import {
   loadNextPageOfProcessPhase,
@@ -79,7 +79,7 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
       ],
     });
 
-    const dialogRef = this.dialog.open(PopupSelectorComponent, {
+    const dialogRef = this.dialog.open(PopupMultiSelectorComponent, {
       data: {
         title: 'Fases de Proceso',
         property: 'name',

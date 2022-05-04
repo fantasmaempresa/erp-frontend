@@ -1,20 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PopupSelectorComponent } from './popup-selector.component';
+import { PopupMultiSelectorComponent } from './popup-multi-selector.component';
 
 describe('PopupSelectorComponent', () => {
-  let component: PopupSelectorComponent;
-  let fixture: ComponentFixture<PopupSelectorComponent>;
+  let component: PopupMultiSelectorComponent;
+  let fixture: ComponentFixture<PopupMultiSelectorComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PopupSelectorComponent ]
-    })
-    .compileComponents();
+      declarations: [PopupMultiSelectorComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PopupSelectorComponent);
+    fixture = TestBed.createComponent(PopupMultiSelectorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

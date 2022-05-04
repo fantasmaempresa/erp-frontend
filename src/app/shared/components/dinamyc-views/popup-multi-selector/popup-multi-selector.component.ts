@@ -31,11 +31,11 @@ interface PopUpData {
 }
 
 @Component({
-  selector: 'app-popup-selector',
-  templateUrl: './popup-selector.component.html',
-  styleUrls: ['./popup-selector.component.scss'],
+  selector: 'app-popup-multi-selector',
+  templateUrl: './popup-multi-selector.component.html',
+  styleUrls: ['./popup-multi-selector.component.scss'],
 })
-export class PopupSelectorComponent<T extends EntityModel>
+export class PopupMultiSelectorComponent<T extends EntityModel>
   extends DynamicViewComponent<T>
   implements OnInit, AfterViewInit, OnDestroy
 {
@@ -60,7 +60,7 @@ export class PopupSelectorComponent<T extends EntityModel>
   constructor(
     store: Store,
     sanitizer: DomSanitizer,
-    private dialogRef: MatDialogRef<PopupSelectorComponent<T>>,
+    private dialogRef: MatDialogRef<PopupMultiSelectorComponent<T>>,
     @Inject(MAT_DIALOG_DATA)
     public data: PopUpData,
     route: ActivatedRoute,
