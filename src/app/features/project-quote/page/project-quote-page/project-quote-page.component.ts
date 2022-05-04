@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TemplateQuotesService } from '../../../../data/services/template-quotes.service';
+import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
 import { combineLatest, Observable, take } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Formfield } from '../../../../data/models/Formfield.model';
@@ -61,7 +61,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private store: Store,
-    private templateQuotesService: TemplateQuotesService,
+    private templateQuotesService: QuoteTemplateService,
     private projectQuoteService: ProjectQuoteService,
   ) {
     const status$: Observable<'EDITABLE' | 'NEW'> = store.select(selectStatus);

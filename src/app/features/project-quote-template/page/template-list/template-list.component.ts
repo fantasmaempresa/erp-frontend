@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
-import { ProjectQuote } from '../../../../data/models/ProjectQuote.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
 import { Observable, Subscription, tap } from 'rxjs';
@@ -9,13 +8,15 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { Store } from '@ngrx/store';
-import { selectQuotes } from '../../../../state/quotes/quotes.selector';
 import {
   emptyQuoteList,
   loadNextPageOfQuotes,
   loadQuotes,
 } from '../../../../state/quotes/quotes.actions';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { selectQuoteTemplates } from '../../../../state/quote-template/quote-template.selector';
+import { QuoteTemplate } from '../../../../data/models/QuoteTemplate.model';
+import { loadQuoteTemplates } from '../../../../state/quote-template/quote-template.actions';
 
 @Component({
   selector: 'app-template-list',
@@ -27,13 +28,13 @@ export class TemplateListComponent implements OnInit {
 
   displayedColumns: string[] = ['select', 'name', 'description'];
 
-  selection = new SelectionModel<ProjectQuote>(false, []);
+  selection = new SelectionModel<QuoteTemplate>(false, []);
 
-  dataSource = new MatTableDataSource<QuoteStatus>();
+  dataSource = new MatTableDataSource<QuoteTemplate>();
 
-  quotes$!: Observable<Pagination<QuoteStatus> | null>;
+  templates$!: Observable<Pagination<QuoteTemplate> | null>;
 
-  quotesSubscription!: Subscription;
+  templatesSubscription!: Subscription;
 
   totalItems = 0;
 
@@ -49,12 +50,12 @@ export class TemplateListComponent implements OnInit {
     private quotesService: ProjectQuoteService,
     private store: Store,
   ) {
-    this.quotes$ = store.select(selectQuotes);
-    store.dispatch(loadQuotes());
+    this.templates$ = store.select(selectQuoteTemplates);
+    store.dispatch(loadQuoteTemplates());
   }
 
   ngOnInit() {
-    this.quotesSubscription = this.quotes$
+    this.templatesSubscription = this.templates$
       .pipe(
         tap(() => {
           this.isLoadingResults = false;
@@ -74,7 +75,7 @@ export class TemplateListComponent implements OnInit {
 
   ngOnDestroy() {
     this.store.dispatch(emptyQuoteList());
-    this.quotesSubscription.unsubscribe();
+    this.templatesSubscription.unsubscribe();
   }
 
   /** Whether the number of selected elements matches the total number of rows. */

@@ -22,7 +22,7 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TemplateQuotes } from '../../../data/models/TemplateQuotes.model';
 import Swal from 'sweetalert2';
 import { MessageHelper } from '../../helpers/MessageHelper';
-import { TemplateQuotesService } from '../../../data/services/template-quotes.service';
+import { QuoteTemplateService } from '../../../data/services/quote-template.service';
 import { Update } from '@ngrx/entity';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -101,7 +101,7 @@ export class DynamicFormCreationComponent implements OnInit {
 
   errorMessage$: Observable<string>;
 
-  constructor(private store: Store, private templateQuotesService: TemplateQuotesService) {
+  constructor(private store: Store, private templateQuotesService: QuoteTemplateService) {
     this.getTemplates();
     this.templateControl.valueChanges.subscribe({
       next: (value) => {
