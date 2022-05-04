@@ -21,8 +21,9 @@ import {
   FormGroup,
   NG_VALUE_ACCESSOR,
 } from '@angular/forms';
-import { debounceTime, Subject, take, takeUntil } from 'rxjs';
+import { debounceTime, forkJoin, Subject, take, takeUntil } from 'rxjs';
 import { Process } from '../../../../data/models/Process.model';
+import { ProcessPhaseService } from '../../../../data/services/process-phase.service';
 
 @Component({
   selector: 'app-build-process',
@@ -47,14 +48,14 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
 
   private onDestroy$ = new Subject<number>();
 
-  constructor(private dialog: MatDialog) {
+  constructor(private dialog: MatDialog, private processPhaseService: ProcessPhaseService) {
     this.form.valueChanges
       .pipe(debounceTime(100), takeUntil(this.onDestroy$))
       .subscribe((value) => this.notifyValueChange(value));
   }
 
   private notifyValueChange(value: any) {
-    this.onChange(Process.mapConfig(value, this.processPhases));
+    this.onChange(Process.mapConfigOnChange(value, this.processPhases));
     this.onTouch();
   }
 
@@ -91,16 +92,20 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
       .pipe(take(1))
       .subscribe((processPhases: any[]) => {
         this.processPhases = processPhases;
-        this.orderFormArray.clear();
-        this.processPhases.forEach(() => {
-          this.orderFormArray.push(
-            new FormGroup({
-              end_process: new FormControl(false),
-              previous: new FormControl(),
-            }),
-          );
-        });
+        this.buildOrderFormArray();
       });
+  }
+
+  private buildOrderFormArray() {
+    this.orderFormArray.clear();
+    this.processPhases.forEach(() => {
+      this.orderFormArray.push(
+        new FormGroup({
+          end_process: new FormControl(false),
+          previous: new FormControl(),
+        }),
+      );
+    });
   }
 
   drop(event: CdkDragDrop<any, any>) {
@@ -121,7 +126,18 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
     this.onTouch = fn;
   }
 
-  writeValue(obj: any): void {}
+  writeValue(obj: any): void {
+    if (obj) {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      const { order_phases, phases_process } = Process.mapConfigOnWrite(obj);
+      const arrayRequest$ = phases_process.map(({ id }) => this.processPhaseService.fetch(id));
+      forkJoin(arrayRequest$).subscribe((phasesProcess: ProcessPhase[]) => {
+        this.processPhases = phasesProcess;
+        this.buildOrderFormArray();
+        this.orderFormArray.patchValue(order_phases);
+      });
+    }
+  }
 
   ngOnDestroy(): void {
     this.onDestroy$.next(1);

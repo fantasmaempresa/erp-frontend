@@ -24,7 +24,7 @@ export class Process extends EntityModel {
     this.config = config;
   }
 
-  static mapConfig(order: any, phases_process: any[]) {
+  static mapConfigOnChange(order: any, phases_process: any[]) {
     const { order_phases: orderPhase } = order;
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const order_phases = phases_process.reduce((acc, current, index) => {
@@ -41,9 +41,28 @@ export class Process extends EntityModel {
             phase: previousId ? { id: previousId } : null,
           },
           end_process: orderPhase[index].end_process,
+          order: index + 1,
         },
       ];
     }, []);
     return { order_phases, phases_process: phases_process.map(({ id }) => ({ id })) };
+  }
+
+  static mapConfigOnWrite({
+    order_phases,
+    phases_process,
+  }: {
+    order_phases: any[];
+    phases_process: any[];
+  }) {
+    return {
+      order_phases: order_phases.map(
+        ({ end_process, next: { phase } }: { end_process: boolean; next: { phase: any } }) => ({
+          end_process,
+          next: !!phase ? phase.id : null,
+        }),
+      ),
+      phases_process,
+    };
   }
 }
