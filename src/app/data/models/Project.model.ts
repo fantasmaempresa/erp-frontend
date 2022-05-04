@@ -1,16 +1,21 @@
 import { Client } from './Client.model';
 import { User } from './User.model';
 import { EntityModel } from '../../core/interfaces/EntityModel';
+import { printLabel } from '../../shared/components/dinamyc-views/DynamicViews.decorators';
 
 export class Project extends EntityModel {
+  @printLabel('Nombre')
   name: string;
 
+  @printLabel('Descripción')
   description: string;
 
+  @printLabel('Fecha')
   estimate_end_date: Date;
 
   quotes: string;
 
+  @printLabel('Folio')
   folio: string;
 
   user: User;
