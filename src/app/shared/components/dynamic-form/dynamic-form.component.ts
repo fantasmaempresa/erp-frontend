@@ -36,7 +36,11 @@ import { Update } from '@ngrx/entity';
   ],
 })
 export class DynamicFormComponent implements OnInit, OnDestroy, ControlValueAccessor, Validator {
+  @Input() onlyRead: boolean = false;
+
   formFields!: Formfield<any>[];
+
+  form: FormGroup = new FormGroup({});
 
   @Input()
   public set save(val: boolean) {
@@ -55,8 +59,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy, ControlValueAcce
 
   onChange = () => {};
 
-  form: FormGroup = new FormGroup({});
-
   payLoad = '';
 
   fields$!: Observable<Formfield<any>[]>;
@@ -71,18 +73,24 @@ export class DynamicFormComponent implements OnInit, OnDestroy, ControlValueAcce
   ngOnInit(): void {
     this.fields$.pipe(take(1)).subscribe({
       next: (formFields) => {
-        this.formFields = formFields;
-        this.form = this.createForm(formFields);
-        this.form.updateValueAndValidity();
+        console.log(formFields);
+        if (formFields) {
+          this.formFields = formFields;
+          this.form = this.createForm(formFields);
+          this.form.updateValueAndValidity();
+        }
       },
     });
   }
 
   ngOnDestroy() {
-    this.saveInStore();
     for (let sub of this.onChangeSubs) {
       sub.unsubscribe();
     }
+    if (this.onlyRead) {
+      return;
+    }
+    this.saveInStore();
   }
 
   createForm(controls: Formfield<any>[]): FormGroup {

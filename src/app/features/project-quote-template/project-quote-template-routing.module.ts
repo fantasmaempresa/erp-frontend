@@ -20,6 +20,11 @@ const routes: Routes = [
         data: { breadcrumb: 'Lista de plantillas' },
       },
       {
+        path: 'quote-template',
+        component: TemplatePageComponent,
+        data: { breadcrumb: 'Editar plantilla' },
+      },
+      {
         path: 'new',
         component: TemplatePageComponent,
         data: { breadcrumb: 'Nueva plantilla' },

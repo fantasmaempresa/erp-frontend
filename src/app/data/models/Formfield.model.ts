@@ -1,3 +1,5 @@
+import { Concept } from './Concept.model';
+
 export interface Formfield<T> {
   id: string;
 
@@ -18,4 +20,6 @@ export interface Formfield<T> {
   type: string;
 
   options: { key: string; value: string }[];
+
+  concepts?: Concept[] | null;
 }

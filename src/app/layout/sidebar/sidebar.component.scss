@@ -80,7 +80,7 @@
 
     &::after,
     &::before {
-      content: "";
+      content: '';
       position: absolute;
       left: 0;
       transition: all 250ms ease;

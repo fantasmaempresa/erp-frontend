@@ -6,17 +6,13 @@ import { Observable, Subscription, tap } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { Store } from '@ngrx/store';
-import {
-  emptyQuoteList,
-  loadNextPageOfQuotes,
-  loadQuotes,
-} from '../../../../state/quotes/quotes.actions';
+import { emptyQuoteList, loadNextPageOfQuotes } from '../../../../state/quotes/quotes.actions';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { selectQuoteTemplates } from '../../../../state/quote-template/quote-template.selector';
 import { QuoteTemplate } from '../../../../data/models/QuoteTemplate.model';
 import { loadQuoteTemplates } from '../../../../state/quote-template/quote-template.actions';
+import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
 
 @Component({
   selector: 'app-template-list',
@@ -47,7 +43,7 @@ export class TemplateListComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private quotesService: ProjectQuoteService,
+    private templateService: QuoteTemplateService,
     private store: Store,
   ) {
     this.templates$ = store.select(selectQuoteTemplates);
@@ -99,7 +95,7 @@ export class TemplateListComponent implements OnInit {
   }
 
   async edit() {
-    await this.router.navigate([`../quote-status`], {
+    await this.router.navigate([`../quote-template`], {
       queryParams: { id: this.selection.selected[0].id },
       relativeTo: this.route,
     });
@@ -107,11 +103,14 @@ export class TemplateListComponent implements OnInit {
 
   delete() {
     MessageHelper.decisionMessage(
-      `¿Deseas borrar el concepto ${this.selection.selected[0].name}?`,
+      `¿Deseas borrar la plantilla ${this.selection.selected[0].name}?`,
       'Una vez borrado no hay marcha atras.',
       () => {
-        this.quotesService.delete(this.selection.selected[0].id).subscribe({
-          next: () => this.store.dispatch(loadQuotes()),
+        this.templateService.delete(this.selection.selected[0].id).subscribe({
+          next: () => {
+            this.store.dispatch(loadQuoteTemplates());
+            this.selection.clear();
+          },
         });
       },
     );
@@ -122,15 +121,5 @@ export class TemplateListComponent implements OnInit {
     let size = event.pageSize;
     page = page + 1;
     this.store.dispatch(loadNextPageOfQuotes({ page, size }));
-    // if(this.filterValue == null) {
-    //   page = page +1;
-    //   this.userService.findAll(page, size).pipe(
-    //       map((userData: UserData) => this.dataSource = userData)
-    //   ).subscribe();
-    // } else {
-    //   this.userService.paginateByName(page, size, this.filterValue).pipe(
-    //       map((userData: UserData) => this.dataSource = userData)
-    //   ).subscribe()
-    // }
   }
 }

@@ -5,10 +5,7 @@ import { QuoteTemplateService } from '../../../../data/services/quote-template.s
 import { combineLatest, Observable, take } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Formfield } from '../../../../data/models/Formfield.model';
-import {
-  selectDynamicForm,
-  selectStatus,
-} from '../../../../state/dynamic-form/dynamic-form.selector';
+import { selectDynamicForm, selectStatus } from '../../../../state/dynamic-form/dynamic-form.selector';
 import { emptyForm } from '../../../../state/dynamic-form/dynamic-form.actions';
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
@@ -54,6 +51,8 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
   formFields!: Formfield<any>[];
 
   operationsForm = new FormGroup({});
+
+  previewForm: FormControl = new FormControl(null);
 
   fields$!: Observable<Formfield<any>[]>;
 

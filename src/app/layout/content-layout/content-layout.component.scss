@@ -15,8 +15,8 @@
   @include respond(tabLand) {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "header"
-      "main"
+      'header'
+      'main';
   }
 }
 

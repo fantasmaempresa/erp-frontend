@@ -2,9 +2,9 @@
   <button
     *ngIf="selection.selected.length !== 0"
     [matTooltipPosition]="'below'"
-    aria-label="Editar estado de la cotización"
+    aria-label="Editar plantilla"
     mat-icon-button
-    matTooltip="Editar estado de la cotización"
+    matTooltip="Editar plantilla"
     (click)="edit()"
   >
     <mat-icon>edit</mat-icon>
@@ -12,18 +12,18 @@
   <button
     *ngIf="selection.selected.length !== 0"
     [matTooltipPosition]="'below'"
-    aria-label="Eliminar estado de la cotización"
+    aria-label="Eliminar plantilla"
     mat-icon-button
-    matTooltip="Eliminar estado de la cotización"
+    matTooltip="Eliminar plantilla"
     (click)="delete()"
   >
     <mat-icon>person_remove</mat-icon>
   </button>
   <button
     [matTooltipPosition]="'below'"
-    aria-label="Agregar estado de la cotización"
+    aria-label="Agregar plantilla"
     mat-icon-button
-    matTooltip="Agregar estado de la cotización"
+    matTooltip="Agregar plantilla"
     (click)="goToNewQuote()"
   >
     <mat-icon>person_add</mat-icon>

@@ -1,12 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  OnInit,
-  Output,
-  QueryList,
-  ViewChildren,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { combineLatestWith, map, Observable, startWith, take, tap } from 'rxjs';
 import { Formfield } from '../../../data/models/Formfield.model';
@@ -19,7 +11,9 @@ import { ProjectQuoteService } from '../../../data/services/project-quote.servic
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { ConceptFormDialogComponent } from '../../../features/concepts/dialog/concept-form-dialog/concept-form-dialog.component';
+import {
+  ConceptFormDialogComponent,
+} from '../../../features/concepts/dialog/concept-form-dialog/concept-form-dialog.component';
 
 @Component({
   selector: 'app-operations',
@@ -45,7 +39,10 @@ export class OperationsComponent implements OnInit {
 
   formFields$!: Observable<Formfield<any>[]>;
 
-  operationsForm!: FormGroup;
+  operationsForm: FormGroup = new FormGroup({
+    operation_fields: new FormArray([]),
+    operation_total: new FormArray([]),
+  });
 
   concepts$: Observable<Concept[]>;
 
@@ -60,6 +57,42 @@ export class OperationsComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
   preview!: any;
+
+  _operations!: any;
+
+  @Input() set operations(operations: any) {
+    if (operations) {
+      if (operations.operation_total.length > 0) {
+        this.operation_total.clear();
+        operations.operation_total.forEach((operation: Formfield<any>, index: number) => {
+          this.addOperation(operation);
+          operation.concepts?.forEach((concept: Concept) => {
+            let concepts = this.operation_total.at(index).get('concepts') as FormArray;
+            concepts.push(new FormControl(concept));
+          });
+        });
+        this.operation_total.patchValue(operations.operation_total);
+      }
+
+      if (operations.operation_fields.length > 0) {
+        this.operation_fields.clear();
+        operations.operation_fields.forEach((operation: Formfield<any>, index: number) => {
+          this.addOperation(operation);
+          operation.concepts?.forEach((concept: Concept) => {
+            let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
+            concepts.push(new FormControl(concept));
+          });
+        });
+        this.operation_fields.patchValue(operations.operation_fields);
+      }
+
+      this._operations = operations;
+    }
+  }
+
+  get operations() {
+    return this._operations;
+  }
 
   constructor(
     private store: Store,
@@ -254,7 +287,6 @@ export class OperationsComponent implements OnInit {
                 name: 'total',
                 total: operationTotal.total,
               });
-              console.log(concepts);
               return concepts;
             }),
           )
@@ -262,7 +294,6 @@ export class OperationsComponent implements OnInit {
             this.preview = resp;
           });
       });
-    console.log(this.operationsForm.getRawValue());
   }
 
   selected(event: MatAutocompleteSelectedEvent, index: number, target: string): void {
@@ -333,7 +364,6 @@ export class OperationsComponent implements OnInit {
     event.chipInput!.clear();
 
     this.operation_fields.at(index).get('conceptCtrl')?.setValue(null);
-    console.log(this.operation_fields.value);
   }
 
   remove(concept: Concept, index: number, target: string): void {
