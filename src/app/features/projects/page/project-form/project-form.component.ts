@@ -68,12 +68,9 @@ export class ProjectFormComponent {
   onSubmit() {
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
-
-    const { config } = this.form.value,
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      { phases_process } = config;
-    const body = { ...this.form.value, phases_process };
-    const request$ = this.edit ? this.projectService.update(body) : this.projectService.save(body);
+    const request$ = this.edit
+      ? this.projectService.update(this.form.value)
+      : this.projectService.save(this.form.value);
     const message = `El proyecto se ha ${this.edit ? 'actualizado' : 'creado'} correctamente`;
     request$.subscribe({
       next: async () => {
