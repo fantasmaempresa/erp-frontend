@@ -39,17 +39,7 @@
             >¿Debe notificar?
             </mat-checkbox>
             <mat-checkbox color="primary" formControlName="payments">¿Requiere Pago?</mat-checkbox>
-            <mat-checkbox color="primary" formControlName="supervision"
-            >¿Requiere supervisión del administrador o notario?
-            </mat-checkbox>
           </div>
-          <app-generic-autocomplete-chip
-            formControlName="roles"
-            [allData]="roles$ | async"
-            label="Roles"
-            placeholder="Roles que tienen permiso"
-            [mapFn]="mapRoles"
-          ></app-generic-autocomplete-chip>
         </div>
 
         <mat-action-row>
@@ -70,7 +60,6 @@
         </mat-expansion-panel-header>
 
         <app-dynamic-form-builder formControlName="form"></app-dynamic-form-builder>
-        <!--        {{ form.get('form')?.value | json }}-->
 
         <mat-action-row>
           <button type="button" mat-button color="primary" (click)="prevStep()">

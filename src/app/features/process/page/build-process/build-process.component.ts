@@ -1,4 +1,4 @@
-import { Component, forwardRef, Injector, OnDestroy } from '@angular/core';
+import { Component, forwardRef, Injector, OnDestroy, StaticProvider } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import {
   CLAZZ,
@@ -20,10 +20,15 @@ import {
   FormControl,
   FormGroup,
   NG_VALUE_ACCESSOR,
+  Validators,
 } from '@angular/forms';
 import { debounceTime, forkJoin, Subject, take, takeUntil } from 'rxjs';
 import { Process } from '../../../../data/models/Process.model';
 import { ProcessPhaseService } from '../../../../data/services/process-phase.service';
+import { RoleService } from '../../../../data/services/role.service';
+import { Role } from '../../../../data/models/Role.model';
+import { loadNextPageOfRoles, loadRoles } from '../../../../state/role/role.actions';
+import { selectRoles } from '../../../../state/role/role.selector';
 
 @Component({
   selector: 'app-build-process',
@@ -48,7 +53,11 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
 
   private onDestroy$ = new Subject<number>();
 
-  constructor(private dialog: MatDialog, private processPhaseService: ProcessPhaseService) {
+  constructor(
+    private dialog: MatDialog,
+    private processPhaseService: ProcessPhaseService,
+    public rolesService: RoleService,
+  ) {
     this.form.valueChanges
       .pipe(debounceTime(100), takeUntil(this.onDestroy$))
       .subscribe((value) => this.notifyValueChange(value));
@@ -68,6 +77,13 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
       return i < index ? [...acc, currentItem] : acc;
     }, []);
   };
+
+  rolesProvider: StaticProvider[] = [
+    { provide: SELECTOR, useValue: selectRoles },
+    { provide: CLAZZ, useValue: Role },
+    { provide: LOAD_ACTION, useValue: loadRoles() },
+    { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfRoles },
+  ];
 
   openDialog() {
     const inj = Injector.create({
@@ -105,6 +121,8 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
         new FormGroup({
           end_process: new FormControl(false),
           previous: new FormControl(),
+          roles_supervision: new FormControl(null, Validators.required),
+          roles_team: new FormControl(null, Validators.required),
         }),
       );
     });

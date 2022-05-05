@@ -44,6 +44,30 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Roles Supervisores</mat-label>
+              <input
+                formControlName="roles_supervision"
+                matInput
+                app-bind-multi-popup
+                [service]="rolesService"
+                [providers]="rolesProvider"
+                type="text"
+              />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Equipo de Trabajo</mat-label>
+              <input
+                formControlName="roles_team"
+                matInput
+                app-bind-multi-popup
+                [service]="rolesService"
+                [providers]="rolesProvider"
+                type="text"
+              />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
           </ng-container>
         </div>
       </div>

@@ -40,8 +40,6 @@ export class ProcessPhaseFormComponent {
       description: new FormControl(null, [Validators.required]),
       notification: new FormControl(false),
       payments: new FormControl(false),
-      supervision: new FormControl(false),
-      roles: new FormControl(null, [Validators.required]),
       form: new FormControl([], Validators.required),
     });
 

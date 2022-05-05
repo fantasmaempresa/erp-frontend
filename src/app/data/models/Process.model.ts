@@ -30,13 +30,11 @@ export class Process extends EntityModel {
     const order_phases = phases_process.reduce((acc, current, index) => {
       const { id } = current;
       const previousId = orderPhase[index].previous ?? null;
-      const next = index + 1 <= phases_process.length ? phases_process[index + 1] : null;
 
       return [
         ...acc,
         {
           phase: { id },
-          next: { phase: next ? { id: next.id } : null },
           previous: {
             phase: previousId ? { id: previousId } : null,
           },
