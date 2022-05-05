@@ -39,8 +39,11 @@ import { processPhaseReducer } from './process-phase/processPhase.reducer';
 import { projectReducer } from './project/project.reducer';
 import { initialState as processInitialState, ProcessState } from './process/process.state';
 import { processReducer } from './process/process.reducer';
+import { rolesInitialState, RoleState } from './role/role.state';
+import { roleReducer } from './role/role.reducer';
 
 export interface AppState {
+  roles: RoleState;
   auth: AuthState;
   clients: ClientsState;
   users: UsersState;
@@ -72,6 +75,7 @@ export const initialAppState: AppState = {
   quote_status: quoteStatusInitialState,
   quotes: quotesInitialState,
   dynamicForm: dynamicFormInitialState,
+  roles: rolesInitialState,
 };
 
 export function getInitialAppState(): AppState {
@@ -93,4 +97,5 @@ export const reducers: ActionReducerMap<AppState> = {
   notifications: notificationReducer,
   dynamicForm: dynamicFormReducer,
   clientsLink: clientsLinkReducer,
+  roles: roleReducer,
 };

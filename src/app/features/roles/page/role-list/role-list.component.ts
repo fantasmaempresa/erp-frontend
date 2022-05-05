@@ -1,138 +1,86 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
+import { Component } from '@angular/core';
+import {
+  CLAZZ,
+  LOAD_ACTION,
+  LOAD_NEXT_ACTION,
+  SELECTOR,
+} from '../../../../shared/components/dinamyc-views/dynamic-views.module';
+import { selectRoles } from '../../../../state/role/role.selector';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Role } from '../../../../data/models/Role.model';
-import { MatPaginator } from '@angular/material/paginator';
-import { Observable, switchMap, tap } from 'rxjs';
-import { Pagination } from '../../../../core/interfaces/Pagination.model';
-import { RoleService } from '../../../../data/services/role.service';
+import { Store } from '@ngrx/store';
+import { EntityModel } from '../../../../core/interfaces/EntityModel';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
+import { loadNextPageOfRoles, loadRoles } from '../../../../state/role/role.actions';
+import { RoleService } from '../../../../data/services/role.service';
+import { Role } from '../../../../data/models/Role.model';
 
 @Component({
   selector: 'app-role-list',
   templateUrl: './role-list.component.html',
   styleUrls: ['./role-list.component.scss'],
+  providers: [
+    { provide: SELECTOR, useValue: selectRoles },
+    { provide: CLAZZ, useValue: Role },
+    { provide: LOAD_ACTION, useValue: loadRoles() },
+    { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfRoles },
+  ],
 })
-export class RoleListComponent implements AfterViewInit {
-  @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
-
-  displayedColumns: string[] = ['select', 'name', 'description'];
-
-  selection = new SelectionModel<Role>(false, []);
-
-  dataSource = new MatTableDataSource<Role>();
-
-  dataSource$!: Observable<Pagination<Role>>;
-
-  resultsLength = 0;
-
-  isLoadingResults = true;
-
-  isRateLimitReached = false;
-
-  nextURL!: string;
-
-  prevURL!: string;
-
-  pageIndex = 1;
-
+export class RoleListComponent {
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
+    private router: Router,
     private roleService: RoleService,
-  ) {
-    this.fetchData();
-  }
+    private store: Store,
+  ) {}
 
-  ngAfterViewInit() {
-    let url = '';
-    const paginator$ = this.paginator.page?.pipe(
-      tap(({ pageIndex, previousPageIndex }) => {
-        if (previousPageIndex !== undefined && pageIndex > previousPageIndex) {
-          url = this.nextURL;
-        } else {
-          url = this.prevURL;
-        }
-        this.isLoadingResults = true;
-      }),
-      switchMap(() => this.roleService.changePage(url)),
-    );
-    this.updateTable(paginator$);
-  }
+  selectedItem!: any;
 
-  fetchData() {
-    this.dataSource$ = this.roleService.fetchAll();
-    this.dataSource$.subscribe(() => {
-      this.dataSource.paginator = this.paginator;
-    });
+  setSelectedItem = (item: EntityModel) => {
+    this.selectedItem = item;
+  };
 
-    this.updateTable(this.dataSource$);
-  }
-
-  /** Whether the number of selected elements matches the total number of rows. */
-  isAllSelected() {
-    const numSelected = this.selection.selected.length;
-    const numRows = this.dataSource.data.length;
-    return numSelected === numRows;
-  }
-
-  /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: Role): string {
-    if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
-    }
-    // @ts-ignore
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
-  }
-
-  goToNewRole() {
-    this.router.navigate(['../new'], { relativeTo: this.route });
-  }
-
-  async edit() {
+  goToEditForm = async () => {
     await this.router.navigate([`../role`], {
-      queryParams: { id: this.selection.selected[0].id },
+      queryParams: { id: this.selectedItem.id },
       relativeTo: this.route,
     });
-  }
+  };
 
-  delete() {
+  goToAddForm = async () => {
+    await this.router.navigate(['../new'], {
+      relativeTo: this.route,
+    });
+  };
+
+  delete = () => {
     MessageHelper.decisionMessage(
-      `¿Deseas borrar el rol ${this.selection.selected[0].name}?`,
-      'Una vez borrado no hay marcha atras.',
+      `¿Deseas borrar al Rol ${this.selectedItem.name}?`,
+      'Una vez borrado no hay marcha atrás.',
       () => {
-        this.roleService.delete(this.selection.selected[0].id).subscribe({
-          next: () => this.fetchData(),
-          error: ({ error }) => {
-            console.log(error.error);
-            MessageHelper.errorMessage(error.error);
-          },
+        this.roleService.delete(this.selectedItem.id).subscribe({
+          next: () => this.store.dispatch(loadRoles()),
         });
       },
     );
-  }
+  };
 
-  private updateTable(observable$: Observable<any>) {
-    observable$
-      .pipe(
-        tap(() => {
-          this.isLoadingResults = false;
-        }),
-      )
-      .subscribe((data: any) => {
-        this.pageIndex = data.current_page - 1;
-        this.prevURL = data.prev_page_url;
-        this.nextURL = data.next_page_url;
-        this.resultsLength = data.total;
-
-        this.dataSource.data = data.data;
-
-        this.resultsLength += 1;
-        // fix to solve visual bug;
-        setTimeout(() => {
-          this.resultsLength -= 1;
-        });
-      });
-  }
+  actions: ActionsCard[] = [
+    {
+      icon: 'edit',
+      callback: async (item: any) => {
+        this.selectedItem = item;
+        await this.goToEditForm();
+      },
+      tooltip: 'Editar Rol',
+    },
+    {
+      icon: 'delete',
+      callback: (item: any) => {
+        this.selectedItem = item;
+        this.delete();
+      },
+      tooltip: 'Eliminar Rol',
+    },
+  ];
 }
