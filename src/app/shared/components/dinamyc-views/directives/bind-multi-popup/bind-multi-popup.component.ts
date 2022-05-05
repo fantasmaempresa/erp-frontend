@@ -33,6 +33,9 @@ export class BindMultiPopupComponent implements OnInit {
   providers!: StaticProvider[];
 
   @Input()
+  title = '';
+
+  @Input()
   service!: CrudService<any>;
 
   @HostBinding('style.cursor') cursor = 'pointer';
@@ -81,7 +84,7 @@ export class BindMultiPopupComponent implements OnInit {
   openDialog() {
     const inj = Injector.create(this.providers);
     const dialog = this.dialog.open(PopupMultiSelectorComponent, {
-      data: { inj, title: 'Procesos', property: 'name' },
+      data: { inj, title: this.title, property: this.propertyAccess },
     });
 
     dialog
