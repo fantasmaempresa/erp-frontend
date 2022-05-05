@@ -13,6 +13,10 @@ import { selectClients } from '../../../../state/clients/clients.selector';
 import { Client } from '../../../../data/models/Client.model';
 import { loadClients, loadNextPageOfClients } from '../../../../state/clients/clients.actions';
 import { ClientService } from '../../../../data/services/client.service';
+import { ProcessService } from '../../../../data/services/process.service';
+import { selectProcess } from '../../../../state/process/process.selector';
+import { Process } from '../../../../data/models/Process.model';
+import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
 
 @Component({
   selector: 'app-project-form',
@@ -33,11 +37,19 @@ export class ProjectFormComponent {
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClients },
   ];
 
+  processProvider: StaticProvider[] = [
+    { provide: SELECTOR, useValue: selectProcess },
+    { provide: CLAZZ, useValue: Process },
+    { provide: LOAD_ACTION, useValue: loadProcess() },
+    { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfProcess },
+  ];
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private projectService: ProjectService,
     public clientService: ClientService,
+    public processService: ProcessService,
   ) {
     this.form = new FormGroup({
       name: new FormControl(null, Validators.required),

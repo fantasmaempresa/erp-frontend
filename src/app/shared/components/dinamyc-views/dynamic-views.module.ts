@@ -18,6 +18,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { PopupSelectorComponent } from './popup-selector/popup-selector.component';
 import { HostDirective } from '../../../core/directives/ad-host.directive';
 import { BindPopupDirective } from './directives/bind-popup.directive';
+import { BindMultiPopupComponent } from './directives/bind-multi-popup/bind-multi-popup.component';
+import { MaterialModule } from '../../material.module';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { BindPopupDirective } from './directives/bind-popup.directive';
     PopupMultiSelectorComponent,
     PopupSelectorComponent,
     BindPopupDirective,
+    BindMultiPopupComponent,
   ],
   imports: [
     CommonModule,
@@ -41,6 +44,7 @@ import { BindPopupDirective } from './directives/bind-popup.directive';
     FormsModule,
     MatDialogModule,
     MatButtonModule,
+    MaterialModule,
   ],
   exports: [
     TableViewComponent,
@@ -49,6 +53,7 @@ import { BindPopupDirective } from './directives/bind-popup.directive';
     PopupMultiSelectorComponent,
     MapToPipe,
     BindPopupDirective,
+    BindMultiPopupComponent,
   ],
   entryComponents: [PopupMultiSelectorComponent, PopupSelectorComponent],
 })
