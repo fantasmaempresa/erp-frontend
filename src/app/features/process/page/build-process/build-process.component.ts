@@ -91,8 +91,10 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
       .afterClosed()
       .pipe(take(1))
       .subscribe((processPhases: any[]) => {
-        this.processPhases = processPhases;
-        this.buildOrderFormArray();
+        if (processPhases) {
+          this.processPhases = processPhases;
+          this.buildOrderFormArray();
+        }
       });
   }
 
