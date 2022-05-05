@@ -1,19 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, StaticProvider } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectService } from '../../../../data/services/project.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { MatDialog } from '@angular/material/dialog';
-import { PopupSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-selector/popup-selector.component';
 import {
   CLAZZ,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { selectProcess } from '../../../../state/process/process.selector';
-import { Process } from '../../../../data/models/Process.model';
-import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
+import { selectClients } from '../../../../state/clients/clients.selector';
+import { Client } from '../../../../data/models/Client.model';
+import { loadClients, loadNextPageOfClients } from '../../../../state/clients/clients.actions';
+import { ClientService } from '../../../../data/services/client.service';
 
 @Component({
   selector: 'app-project-form',
@@ -27,11 +26,18 @@ export class ProjectFormComponent {
 
   form!: FormGroup;
 
+  clientProvider: StaticProvider[] = [
+    { provide: SELECTOR, useValue: selectClients },
+    { provide: CLAZZ, useValue: Client },
+    { provide: LOAD_ACTION, useValue: loadClients() },
+    { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClients },
+  ];
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private projectService: ProjectService,
-    private dialog: MatDialog,
+    public clientService: ClientService,
   ) {
     this.form = new FormGroup({
       name: new FormControl(null, Validators.required),
@@ -63,19 +69,5 @@ export class ProjectFormComponent {
         await this.back();
       },
     });
-  }
-
-  openDialog() {
-    const dialog = this.dialog.open(PopupSelectorComponent, {
-      data: {
-        providers: [
-          { provide: SELECTOR, useValue: selectProcess },
-          { provide: CLAZZ, useValue: Process },
-          { provide: LOAD_ACTION, useValue: loadProcess() },
-          { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfProcess },
-        ],
-      },
-    });
-    dialog.afterClosed().subscribe((value) => console.log(value));
   }
 }

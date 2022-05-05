@@ -7,8 +7,6 @@
     </div>
   </mat-toolbar>
   <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
-
-
     <div class="d-flex flex-column form-container">
       <mat-form-field appearance="outline">
         <mat-label>Nombre del Proyecto</mat-label>
@@ -40,10 +38,21 @@
         <mat-datepicker-toggle matSuffix [for]="dateForm"></mat-datepicker-toggle>
         <mat-datepicker #dateForm></mat-datepicker>
       </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Cliente</mat-label>
+        <input
+          appBindPopup
+          [providers]="clientProvider"
+          [service]="clientService"
+          formControlName="client_id"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
     </div>
-    <button type="button" mat-flat-button color="primary" (click)="openDialog()">
-      Abrir Dialogo
-    </button>
     <div class="d-flex justify-content-end">
       <button type="submit" mat-flat-button color="primary">
         {{ edit ? 'Actualizar' : 'Crear' }} Proyecto

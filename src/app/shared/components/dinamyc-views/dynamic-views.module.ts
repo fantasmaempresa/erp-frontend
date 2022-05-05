@@ -17,6 +17,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { PopupSelectorComponent } from './popup-selector/popup-selector.component';
 import { HostDirective } from '../../../core/directives/ad-host.directive';
+import { BindPopupDirective } from './directives/bind-popup.directive';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { HostDirective } from '../../../core/directives/ad-host.directive';
     ChangeViewComponent,
     PopupMultiSelectorComponent,
     PopupSelectorComponent,
+    BindPopupDirective,
   ],
   imports: [
     CommonModule,
@@ -46,6 +48,7 @@ import { HostDirective } from '../../../core/directives/ad-host.directive';
     ChangeViewComponent,
     PopupMultiSelectorComponent,
     MapToPipe,
+    BindPopupDirective,
   ],
   entryComponents: [PopupMultiSelectorComponent, PopupSelectorComponent],
 })
