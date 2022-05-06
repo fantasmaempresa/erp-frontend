@@ -73,7 +73,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy, ControlValueAcce
   ngOnInit(): void {
     this.fields$.pipe(take(1)).subscribe({
       next: (formFields) => {
-        console.log(formFields);
         if (formFields) {
           this.formFields = formFields;
           this.form = this.createForm(formFields);
@@ -142,7 +141,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy, ControlValueAcce
   }
 
   validate(control: AbstractControl): ValidationErrors | null {
-    console.log(control);
     return this.form.valid
       ? null
       : { invalidForm: { valid: false, message: 'Dynamic form fields are invalid' } };

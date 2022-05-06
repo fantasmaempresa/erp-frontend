@@ -1,4 +1,13 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { Store } from '@ngrx/store';
 import { combineLatestWith, map, Observable, startWith, take, tap } from 'rxjs';
 import { Formfield } from '../../../data/models/Formfield.model';
@@ -11,9 +20,7 @@ import { ProjectQuoteService } from '../../../data/services/project-quote.servic
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import {
-  ConceptFormDialogComponent,
-} from '../../../features/concepts/dialog/concept-form-dialog/concept-form-dialog.component';
+import { ConceptFormDialogComponent } from '../../../features/concepts/dialog/concept-form-dialog/concept-form-dialog.component';
 
 @Component({
   selector: 'app-operations',
@@ -432,3 +439,14 @@ export class OperationsComponent implements OnInit {
     });
   }
 }
+
+function listFibonacci(num: number) {
+  let fibonacci = [0, 1];
+  for (let i = 1; i < num; i++) {
+    fibonacci.push(fibonacci[i] + fibonacci[i - 1]);
+  }
+  console.log(fibonacci);
+}
+
+listFibonacci(11);
+// [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
