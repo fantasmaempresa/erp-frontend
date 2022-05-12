@@ -146,10 +146,13 @@ body {
   --primary-color: #dfc356;
   --primary-lighter-color: #f5edcc;
   --primary-darker-color: #d2ae3c;
+  --primary-color-bg: hsl(203, 66%, 20%);
+  --primary-color-bg-dark: hsl(203, 65%, 15%);
   --text-primary-color: #{$dark-primary-text};
   --text-primary-lighter-color: #{$dark-primary-text};
   --text-primary-darker-color: #{$dark-primary-text};
 }
+
 $mat-primary: (
   main: #dfc356,
   lighter: #f5edcc,
@@ -157,11 +160,11 @@ $mat-primary: (
   200: #dfc356,
   // For slide toggle,
   contrast:
-    (
-      main: $dark-primary-text,
-      lighter: $dark-primary-text,
-      darker: $dark-primary-text,
-    ),
+  (
+    main: $dark-primary-text,
+    lighter: $dark-primary-text,
+    darker: $dark-primary-text,
+  ),
 );
 $theme-primary: mat.define-palette($mat-primary, main, lighter, darker);
 
@@ -173,6 +176,7 @@ body {
   --text-accent-lighter-color: #{$dark-primary-text};
   --text-accent-darker-color: #{$light-primary-text};
 }
+
 $mat-accent: (
   main: #0d2b3e,
   lighter: #b6bfc5,
@@ -180,11 +184,11 @@ $mat-accent: (
   200: #0d2b3e,
   // For slide toggle,
   contrast:
-    (
-      main: $light-primary-text,
-      lighter: $dark-primary-text,
-      darker: $light-primary-text,
-    ),
+  (
+    main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text,
+  ),
 );
 $theme-accent: mat.define-palette($mat-accent, main, lighter, darker);
 
@@ -196,6 +200,7 @@ body {
   --text-warn-lighter-color: #{$dark-primary-text};
   --text-warn-darker-color: #{$light-primary-text};
 }
+
 $mat-warn: (
   main: #ed254e,
   lighter: #fabeca,
@@ -203,11 +208,11 @@ $mat-warn: (
   200: #ed254e,
   // For slide toggle,
   contrast:
-    (
-      main: $light-primary-text,
-      lighter: $dark-primary-text,
-      darker: $light-primary-text,
-    ),
+  (
+    main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text,
+  ),
 );
 $theme-warn: mat.define-palette($mat-warn, main, lighter, darker);
 $theme: (
@@ -253,8 +258,9 @@ $altTheme: (
 
 .material-icons {
   font-size: 24px;
-  font-family: 'Material Icons', 'Material Icons';
+  font-family: 'Material Icons', 'Material Icons', sans-serif;
+
   .mat-badge-content {
-    font-family: 'Roboto';
+    font-family: 'Roboto', sans-serif;
   }
 }

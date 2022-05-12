@@ -6,7 +6,7 @@
   display: grid;
   grid-template-rows: 15rem minmax(0, 1fr);
   grid-template-columns: $sidebarContainer repeat(2, 1fr);
-  background-color: var(--color-primary-bg);
+  background-color: var(--primary-color-bg-dark);
 
   grid-template-areas:
     'header header header'

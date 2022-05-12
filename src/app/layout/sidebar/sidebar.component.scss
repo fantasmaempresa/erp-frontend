@@ -24,7 +24,7 @@
 
   width: 85%;
   min-height: calc(100% + #{$top});
-  background: var(--color-primary-sidebar);
+  background: var(--primary-color-bg);
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
@@ -192,7 +192,7 @@
       width: 100%;
       border-radius: 0.5rem;
       transform: scaleX(0);
-      background: var(--color-primary-bg);
+      background: var(--primary-color-bg-dark);
       transition: 360ms all ease-in-out;
       transform-origin: left;
       z-index: 2;
@@ -273,7 +273,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--color-primary-sidebar);
+    background: var(--primary-color-bg);
     border-top: 2px solid rgba(0, 0, 0, 0.325);
     transform: translateX(-100%);
     transition: 450ms transform ease-in-out 300ms;
@@ -282,7 +282,7 @@
   &__dropdown-back {
     //height: 40px;
     width: 4rem;
-    background-color: var(--color-primary-sidebar);
+    background-color: var(--primary-color-bg);
     margin: 1rem 0.5rem;
     padding: 1rem;
     text-decoration: none;
@@ -294,7 +294,7 @@
     border-radius: 0.5rem;
 
     &:hover {
-      color: var(--color-primary-bg);
+      color: var(--primary-color-bg-dark);
       background: var(--primary-color);
     }
   }
