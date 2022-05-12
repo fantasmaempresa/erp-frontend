@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../state';
 import { logout } from '../../state/auth/auth.actions';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -9,10 +11,24 @@ import { logout } from '../../state/auth/auth.actions';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  constructor(private store: Store<AppState>) {}
+  private style: CSSStyleDeclaration;
 
-  logout(event: Event) {
-    event.preventDefault();
+  private defaultStyle: CSSStyleDeclaration;
+
+  constructor(private store: Store<AppState>, @Inject(DOCUMENT) document: Document) {
+    this.style = document.body.style;
+    this.defaultStyle = { ...document.body.style };
+  }
+
+  logout() {
     this.store.dispatch(logout());
+  }
+
+  changeTheme(change: MatSlideToggleChange) {
+    if (change.checked) {
+      this.style.setProperty('--primary-color-bg', 'hsl(203, 66%, 20%)');
+    } else {
+      this.style.setProperty('--primary-color-bg', '#ddd');
+    }
   }
 }
