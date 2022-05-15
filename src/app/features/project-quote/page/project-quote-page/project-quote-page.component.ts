@@ -150,6 +150,10 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
 
   goToPreview() {
     console.log('PREVIEW');
+    if (this.quoteForm.get('formFill')?.invalid) {
+      this.saveState = true;
+      return;
+    }
     this.step = this.PREVIEW_STEP;
     this.calculateOperations();
   }
@@ -190,52 +194,59 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
 
   calculateOperations() {
     const quoteTemplate = this.templateControl.value;
-    this.store
-      .select(selectDynamicForm)
-      .pipe(take(1))
-      .subscribe((form) => {
-        console.log('FORM => ', form);
-        console.log('OPERATIONS => ', quoteTemplate.operations);
-        form.forEach((field) => {
-          if (field.key !== 'total') {
-            quoteTemplate.operations.operation_fields.forEach((x: any) => {
-              if (x.key === field.key) {
-                x.value = field.value;
-              }
-            });
-          }
-        });
-        const quote = {
-          quote: {
-            form: {
-              ...form,
-            },
-            operations: quoteTemplate.operations,
-          },
-        };
-        this.projectQuoteService
-          .calculateOperations({ ...quote })
-          .pipe(
-            map((resp: any) => {
-              const operationFields: [] = resp.operation_fields;
-              const operationTotal = resp.operation_total;
-              const concepts: any[] = [];
-              for (const opt in operationFields) {
-                const data: any = operationFields[opt];
-                data.name = opt;
-                concepts.push(data);
-              }
-              concepts.push({
-                name: 'total',
-                total: operationTotal.total,
-              });
-              return concepts;
-            }),
-          )
-          .subscribe((resp) => {
-            console.log(resp);
+    // @ts-ignore
+    let operationField: never[] = [];
+    this.store.select(selectDynamicForm).subscribe((form) => {
+      console.log('FORM => ', form);
+      console.log('OPERATIONS => ', quoteTemplate.operations);
+      form.forEach((field) => {
+        if (field.key !== 'total') {
+          // field === honorarios
+          operationField = quoteTemplate.operations.operation_fields.map((x: any) => {
+            if (x.key === field.key) {
+              x.value = field.value;
+              return {
+                ...x,
+                value: field.value,
+              };
+            } else {
+              return x;
+            }
           });
+        }
       });
+      console.log(operationField);
+      const quote = {
+        quote: {
+          form: {
+            ...form,
+          },
+          operations: quoteTemplate.operations,
+        },
+      };
+      this.projectQuoteService
+        .calculateOperations({ ...quote })
+        .pipe(
+          map((resp: any) => {
+            const operationFields: [] = resp.operation_fields;
+            const operationTotal = resp.operation_total;
+            const concepts: any[] = [];
+            for (const opt in operationFields) {
+              const data: any = operationFields[opt];
+              data.name = opt;
+              concepts.push(data);
+            }
+            concepts.push({
+              name: 'total',
+              total: operationTotal.total,
+            });
+            return concepts;
+          }),
+        )
+        .subscribe((resp) => {
+          console.log(resp);
+        });
+    });
 
     // TODO: Validar que el arreglo de operaciones no venga vacio
   }

@@ -73,7 +73,7 @@
 
         <mat-action-row>
           <button mat-button color="warn" (click)="goToHeaderForm()">Atras</button>
-          <button mat-button color="primary" (click)="step = PREVIEW_STEP">Siguiente</button>
+          <button mat-button color="primary" (click)="goToPreview()">Siguiente</button>
         </mat-action-row>
       </mat-expansion-panel>
 
@@ -101,7 +101,7 @@
       <!--      PREVIEW-->
       <mat-expansion-panel
         [expanded]="step === PREVIEW_STEP"
-        (opened)="goToPreview()"
+        (opened)="step = PREVIEW_STEP"
         [disabled]="this.quoteForm.get('formFill')?.invalid"
         hideToggle
       >
@@ -119,13 +119,13 @@
             </div>
           </div>
 
-          <div class="mt-3">
-            <app-dynamic-form
-              [formControl]="previewForm"
-              *ngIf="step === PREVIEW_STEP"
-              [onlyRead]="true"
-            ></app-dynamic-form>
-          </div>
+<!--          <div class="mt-3">-->
+<!--            <app-dynamic-form-->
+<!--              [formControl]="previewForm"-->
+<!--              *ngIf="step === PREVIEW_STEP"-->
+<!--              [onlyRead]="true"-->
+<!--            ></app-dynamic-form>-->
+<!--          </div>-->
 
           <div class="row">
             <div class="col-11">

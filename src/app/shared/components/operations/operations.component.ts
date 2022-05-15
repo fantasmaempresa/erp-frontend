@@ -439,14 +439,3 @@ export class OperationsComponent implements OnInit {
     });
   }
 }
-
-function listFibonacci(num: number) {
-  let fibonacci = [0, 1];
-  for (let i = 1; i < num; i++) {
-    fibonacci.push(fibonacci[i] + fibonacci[i - 1]);
-  }
-  console.log(fibonacci);
-}
-
-listFibonacci(11);
-// [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
