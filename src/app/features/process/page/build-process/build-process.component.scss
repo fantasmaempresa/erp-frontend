@@ -24,7 +24,7 @@
     align-items: center;
     border-radius: 16px;
     font-size: 3.5rem;
-    color: var(--primary-color);
+    color: var(--primaryColor);
     background: rgba(0, 0, 0, 0.3);
   }
 
@@ -60,7 +60,7 @@
 
       &__name {
         flex: 1 1 5rem;
-        color: var(--primary-color);
+        color: var(--primaryColor);
         font-weight: 500;
         font-size: 1.6rem;
       }

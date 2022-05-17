@@ -31,7 +31,7 @@
 
   &__text {
     position: absolute;
-    color: var(--primary-color);
+    color: var(--primaryColor);
     font-weight: 500;
     font-size: 2rem;
     top: 65%;
@@ -45,7 +45,7 @@
     width: 8rem;
     display: flex;
     position: absolute;
-    color: var(--primary-color);
+    color: var(--primaryColor);
     top: 30%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -76,7 +76,7 @@
   &__name {
     display: inline-block;
     margin-top: 4px;
-    color: var(--primary-color);
+    color: var(--primaryColor);
     font-size: 2rem;
     font-weight: 600;
   }

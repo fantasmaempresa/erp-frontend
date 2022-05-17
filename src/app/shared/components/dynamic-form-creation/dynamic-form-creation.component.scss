@@ -20,7 +20,7 @@
   justify-content: space-between;
   box-sizing: border-box;
   cursor: move;
-  background: var(--color-secondary-200);
+  background: var(--textColor-200);
   font-size: 14px;
 }
 
@@ -28,7 +28,7 @@
   box-sizing: border-box;
   border-radius: 4px;
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14),
-    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
 .cdk-drag-animating {

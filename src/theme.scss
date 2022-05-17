@@ -143,11 +143,11 @@ $mat-dark-theme-background: (
 // Theme Config
 
 body {
-  --primary-color: #dfc356;
+  --primaryColor: #dfc356;
   --primary-lighter-color: #f5edcc;
   --primary-darker-color: #d2ae3c;
-  --primary-color-bg: hsl(203, 66%, 20%);
-  --primary-color-bg-dark: hsl(203, 65%, 15%);
+  --bgColor: hsl(203, 66%, 20%);
+  --bgColorDark: hsl(203, 65%, 15%);
   --text-primary-color: #{$dark-primary-text};
   --text-primary-lighter-color: #{$dark-primary-text};
   --text-primary-darker-color: #{$dark-primary-text};
@@ -262,5 +262,18 @@ $altTheme: (
 
   .mat-badge-content {
     font-family: 'Roboto', sans-serif;
+  }
+}
+
+
+// add custom theme to our material components
+
+[class^="mat-"] {
+  color: var(--textColor-100) !important;
+}
+
+.mat- {
+  &table, &toolbar, &card, &paginator, &option {
+    background: var(--bgColor) !important;
   }
 }
