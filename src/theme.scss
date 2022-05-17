@@ -267,13 +267,41 @@ $altTheme: (
 
 
 // add custom theme to our material components
-
-[class^="mat-"] {
-  color: var(--textColor-100) !important;
-}
-
 .mat- {
-  &table, &toolbar, &card, &paginator, &option {
+  &table, &toolbar, &card, &paginator, &option, &button-toggle {
+    color: var(--textColor-100) !important;
     background: var(--bgColor) !important;
   }
+
+  &checkbox-frame {
+    border-color: var(--textColor-200);
+  }
+
+  &button-toggle-group {
+    border-color: var(--textColor-700);
+  }
+
+  &row, &header-row, &footer-row, &header-cell, &cell, &footer-cell {
+    color: var(--textColor-100) !important;
+    border-bottom-color: var(--textColor-400) !important;
+  }
+
+  &button-toggle-checked {
+    border-left: 1px var(--textColor-700) solid !important;
+    border-right: 1px var(--textColor-700) solid !important;
+    background: rgba(0, 0, 0, 0.35) !important;
+  }
+
+  &form-field-label, &hint, &form-field-placeholder {
+    color: var(--textColor-200);
+  }
+
+  &input-element::placeholder {
+    color: var(--textColor-500);
+  }
+
+  &form-field-appearance-outline &form-field-outline, &select-arrow, &select-value, &select-placeholder {
+    color: var(--textColor-300);
+  }
 }
+
