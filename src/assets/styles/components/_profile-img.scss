@@ -4,7 +4,7 @@
   width: $size;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid rgba(255, 255, 255, 0.25);
+  border: 3px solid var(--glassColor-500);
 
   &--sidebar-header {
     $size: 8.5rem;
