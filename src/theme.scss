@@ -268,9 +268,25 @@ $altTheme: (
 
 // add custom theme to our material components
 .mat- {
-  &table, &toolbar, &card, &paginator, &option, &button-toggle {
+  &table, &toolbar, &card, &paginator, &option, &button-toggle, &expansion-panel {
     color: var(--textColor-100) !important;
     background: var(--bgColor) !important;
+  }
+
+  &action-row {
+    border-top-color: var(--textColor-500) !important;
+  }
+
+  &expansion-panel-header-title {
+    color: var(--textColor-300) !important;
+  }
+
+  &expansion-panel-header-description {
+    color: var(--textColor-400) !important;
+  }
+
+  &expansion-panel-header[aria-disabled='true'] {
+    opacity: 0.45;
   }
 
   &checkbox-frame {
@@ -281,19 +297,32 @@ $altTheme: (
     border-color: var(--textColor-700);
   }
 
-  &row, &header-row, &footer-row, &header-cell, &cell, &footer-cell {
-    color: var(--textColor-100) !important;
+  &header-row, &footer-row, &header-cell, &footer-cell {
+    color: var(--textColor-300) !important;
     border-bottom-color: var(--textColor-400) !important;
   }
 
+  &row, &cell {
+    color: var(--textColor-200) !important;
+    border-bottom-color: var(--textColor-700) !important;
+  }
+
   &button-toggle-checked {
-    border-left: 1px var(--textColor-700) solid !important;
-    border-right: 1px var(--textColor-700) solid !important;
     background: rgba(0, 0, 0, 0.35) !important;
+  }
+
+  &button-toggle {
+    &:not(:last-child) {
+      border-right: 1px solid var(--textColor-700);
+    }
   }
 
   &form-field-label, &hint, &form-field-placeholder {
     color: var(--textColor-200);
+  }
+
+  &focused &form-field-required-marker {
+    color: var(--primaryColor)
   }
 
   &input-element::placeholder {
@@ -303,5 +332,57 @@ $altTheme: (
   &form-field-appearance-outline &form-field-outline, &select-arrow, &select-value, &select-placeholder {
     color: var(--textColor-300);
   }
+
+  &paginator {
+    & .mat-icon-button {
+      color: var(--textColor-100) !important;
+
+      &.mat-button-disabled.mat-button-disabled {
+        color: var(--textColor-500) !important;
+      }
+    }
+  }
+
+  &form-field-underline {
+    background-color: var(--textColor-200) !important;
+  }
+
+  &calendar-body-selected {
+    background: var(--textColor-500) !important;
+    color: var(--primaryColor) !important;
+  }
+
+  &calendar-body-today {
+    border-color: var(--primaryColor) !important;
+  }
+
+  &datepicker-toggle, &datepicker-content &calendar-next-button,
+  &datepicker-content &calendar-previous-button {
+    color: var(--textColor-300) !important;
+  }
+
+  &calendar-table-header,
+  &calendar-body-label {
+    color: var(--textColor-300) !important;
+  }
+
+  &datepicker-content {
+    color: var(--textColor-200) !important;
+    background: var(--bgColor) !important;
+  }
+
+  &calendar-arrow {
+    fill: var(--textColor-300) !important;
+  }
+
+  &calendar-body-cell-content,
+  &date-range-input-separator {
+    color: var(--textColor-200) !important;
+  }
+
+
+  //&button {
+  //  color: var(--textColor-100) !important;
+  //}
 }
 
