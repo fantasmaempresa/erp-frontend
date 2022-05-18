@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
-import { combineLatest, map, Observable, take } from 'rxjs';
+import { combineLatest, map, Observable, switchMap, take } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Formfield } from '../../../../data/models/Formfield.model';
 import {
@@ -65,6 +65,8 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
   fields$!: Observable<Formfield<any>[]>;
 
   templates!: QuoteTemplate[];
+
+  quote!: any;
 
   constructor(
     private router: Router,
@@ -155,7 +157,9 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
       return;
     }
     this.step = this.PREVIEW_STEP;
-    this.calculateOperations();
+    setTimeout(() => {
+      this.calculateOperations();
+    }, 100);
   }
 
   async saveQuote() {
@@ -165,6 +169,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
       .subscribe((form) => {
         const quote = {
           ...this.headerForm.getRawValue(),
+          template_quote_id: this.templateControl.value.id,
           quote: {
             form: {
               ...form,
@@ -172,6 +177,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
             operations: {
               ...this.operationsForm.getRawValue(),
             },
+            result: this.quote,
           },
         };
         console.log(quote);
@@ -196,58 +202,62 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
     const quoteTemplate = this.templateControl.value;
     // @ts-ignore
     let operationField: never[] = [];
-    this.store.select(selectDynamicForm).subscribe((form) => {
-      console.log('FORM => ', form);
-      console.log('OPERATIONS => ', quoteTemplate.operations);
-      form.forEach((field) => {
-        if (field.key !== 'total') {
-          // field === honorarios
-          operationField = quoteTemplate.operations.operation_fields.map((x: any) => {
-            if (x.key === field.key) {
-              x.value = field.value;
-              return {
-                ...x,
-                value: field.value,
-              };
-            } else {
-              return x;
+    this.store
+      .select(selectDynamicForm)
+      .pipe(
+        take(1),
+        map((form) => {
+          form.forEach((field) => {
+            if (field.key !== 'total') {
+              operationField = quoteTemplate.operations.operation_fields.map((x: any) => {
+                if (x.key === field.key) {
+                  x.value = field.value;
+                  return {
+                    ...x,
+                    value: field.value,
+                  };
+                } else {
+                  return x;
+                }
+              });
             }
           });
-        }
+          console.log(operationField);
+          const quote = {
+            quote: {
+              form: {
+                ...form,
+              },
+              operations: quoteTemplate.operations,
+            },
+          };
+          return quote;
+        }),
+        switchMap((quote) =>
+          this.projectQuoteService.calculateOperations({ ...quote }).pipe(
+            map((resp: any) => {
+              const operationFields: [] = resp.operation_fields;
+              const operationTotal = resp.operation_total;
+              const concepts: any[] = [];
+              for (const opt in operationFields) {
+                const data: any = operationFields[opt];
+                data.name = opt;
+                concepts.push(data);
+              }
+              concepts.push({
+                name: 'total',
+                description: operationTotal.description,
+                total: operationTotal.total,
+              });
+              return concepts;
+            }),
+          ),
+        ),
+      )
+      .subscribe((quote) => {
+        console.log(quote);
+        this.quote = quote;
       });
-      console.log(operationField);
-      const quote = {
-        quote: {
-          form: {
-            ...form,
-          },
-          operations: quoteTemplate.operations,
-        },
-      };
-      this.projectQuoteService
-        .calculateOperations({ ...quote })
-        .pipe(
-          map((resp: any) => {
-            const operationFields: [] = resp.operation_fields;
-            const operationTotal = resp.operation_total;
-            const concepts: any[] = [];
-            for (const opt in operationFields) {
-              const data: any = operationFields[opt];
-              data.name = opt;
-              concepts.push(data);
-            }
-            concepts.push({
-              name: 'total',
-              total: operationTotal.total,
-            });
-            return concepts;
-          }),
-        )
-        .subscribe((resp) => {
-          console.log(resp);
-        });
-    });
-
     // TODO: Validar que el arreglo de operaciones no venga vacio
   }
 }
