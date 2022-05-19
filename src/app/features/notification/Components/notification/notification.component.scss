@@ -151,15 +151,14 @@
     height: 6rem;
     padding: 2rem;
     display: block;
-    background: var(--accent-color);
+    background: var(--glassColor-500);
     text-align: center;
     cursor: pointer;
     font-weight: 600;
     color: var(--primaryColor);
 
     &:hover {
-      color: var(--primary-darker-color);
-      background: var(--accent-darker-color);
+      backdrop-filter: brightness(90%);
     }
   }
 }

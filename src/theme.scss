@@ -380,6 +380,14 @@ $altTheme: (
     color: var(--textColor-200) !important;
   }
 
+  &menu-content {
+    background: var(--bgColor) !important;
+  }
+
+  &menu-item {
+    color: var(--textColor-200) !important;
+  }
+
 
   //&button {
   //  color: var(--textColor-100) !important;
