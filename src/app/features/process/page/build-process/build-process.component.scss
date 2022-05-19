@@ -1,6 +1,6 @@
 .build-process {
   padding: 2rem;
-  background: rgba(0, 0, 0, 0.075);
+  background: var(--glassColor-200);
   border-radius: 8px;
 
   &__dialog-button {
@@ -13,7 +13,7 @@
     padding: 1rem;
     flex-direction: column;
     min-height: 15rem;
-    border: 3px solid #d7d7d7;
+    border: 3px solid var(--textColor-400);
     border-radius: 12px;
   }
 
