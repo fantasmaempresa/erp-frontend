@@ -7,6 +7,7 @@ import { Store } from '@ngrx/store';
 import { loginStart } from '../../../../state/auth/auth.actions';
 import { Observable } from 'rxjs';
 import { selectErrorMessage, selectIsLoading } from '../../../../state/auth/auth.selector';
+import { ThemeManagerService } from '../../../../core/services/theme-manager.service';
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit {
     private formValidationService: FormValidationService,
     private router: Router,
     private store: Store,
+    private themeManager: ThemeManagerService,
   ) {}
 
   signUpForm!: FormGroup;

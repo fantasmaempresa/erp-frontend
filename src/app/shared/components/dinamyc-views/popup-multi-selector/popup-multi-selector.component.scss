@@ -2,6 +2,7 @@
   width: 80vw;
   border-radius: 8px;
   height: 95vh;
+  background: var(--bgColor);
 }
 
 .container-dialog {
@@ -42,7 +43,7 @@ table, mat-paginator {
   flex: 0 1 30rem;
   min-height: 30rem;
   overflow: auto;
-  background: rgba(238, 238, 238, 0.10);
+  background: var(--glassColor-100);
   margin: 1rem 0 2rem;
   border-radius: 16px;
   display: grid;

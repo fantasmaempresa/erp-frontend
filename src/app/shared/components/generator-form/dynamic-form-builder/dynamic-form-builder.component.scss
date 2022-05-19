@@ -84,7 +84,7 @@
   border: solid 1px #ccc;
   min-height: 100%;
   display: block;
-  background: rgba(255, 255, 255, 0.075);
+  background: var(--glassColor-200);
   backdrop-filter: blur(2px);
   border-radius: 4px;
   overflow: hidden;
@@ -98,12 +98,12 @@
 .draggable-box {
   padding: 20px 10px;
   border-bottom: solid 1px #ccc;
-  color: var(--accent-color);
+  color: var(--textColor-800);
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: move;
-  background: var(--textColor-200);
+  background: var(--glassColor-900);
   font-size: 1.4rem;
 }
 
