@@ -58,7 +58,7 @@
     transform: translate(-50%, calc(100% + #{$sizeBox} / 3 + 10rem));
     cursor: auto;
     border-radius: 4px;
-    box-shadow: 8px 8px 4px 4px rgba(0, 0, 0, 0.225);
+    box-shadow: 8px 8px 4px 4px rgba(0, 0, 0, 0.225), 0 0 16px 2px rgba(0, 0, 0, 0.15);
     overflow: hidden;
     pointer-events: none;
     transition: 450ms;
