@@ -15,7 +15,11 @@ export class ClientLinkFormComponent {
   form = new FormGroup({
     name: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [Validators.required]),
+    phone: new FormControl('', [
+      Validators.required,
+      Validators.minLength(10),
+      Validators.maxLength(10),
+    ]),
     nickname: new FormControl(null),
     address: new FormControl(null),
     rfc: new FormControl('', [
@@ -28,6 +32,8 @@ export class ClientLinkFormComponent {
   });
 
   isEdit = false;
+
+  degrees = ['Primaria', 'Secundaría', 'Bachillerato', 'Licenciatura', 'Maestría', 'Doctorado'];
 
   constructor(
     private router: Router,

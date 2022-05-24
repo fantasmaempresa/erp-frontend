@@ -52,7 +52,11 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Grado de Estudios</mat-label>
-        <input formControlName="degree" matInput type="text" />
+        <mat-select formControlName="degree">
+          <mat-option *ngFor="let degree of degrees" [value]="degree">
+            {{ degree }}
+          </mat-option>
+        </mat-select>
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 

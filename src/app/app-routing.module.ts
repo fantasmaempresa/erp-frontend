@@ -84,6 +84,24 @@ const routes: Routes = [
         data: { breadcrumb: 'Plantillas de cotización' },
       },
       {
+        path: 'process-phase',
+        loadChildren: () =>
+          import('./features/process-phase/process-phase.module').then((m) => m.ProcessPhaseModule),
+        data: { breadcrumb: 'Fases del Proceso' },
+      },
+      {
+        path: 'process',
+        loadChildren: () =>
+          import('./features/process/process.module').then((m) => m.ProcessModule),
+        data: { breadcrumb: 'Proceso' },
+      },
+      {
+        path: 'project',
+        loadChildren: () =>
+          import('./features/projects/projects.module').then((m) => m.ProjectsModule),
+        data: { breadcrumb: 'Proyectos' },
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',

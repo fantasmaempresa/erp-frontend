@@ -1,0 +1,76 @@
+<mat-card>
+  <mat-toolbar>
+    <div>
+      <button (click)="back()" aria-label="Regresar" mat-icon-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
+    <div class="d-flex flex-column form-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre del Proyecto</mat-label>
+        <input formControlName="name" matInput type="text"/>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Folio</mat-label>
+        <input formControlName="folio" matInput type="text"/>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <textarea formControlName="description" matInput></textarea>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha Esperada</mat-label>
+        <input
+          class="clickable"
+          matInput
+          [matDatepicker]="dateForm"
+          formControlName="estimate_end_date"
+          (focus)="dateForm.open()"
+        />
+        <mat-datepicker-toggle matSuffix [for]="dateForm"></mat-datepicker-toggle>
+        <mat-datepicker #dateForm></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Cliente</mat-label>
+        <input
+          appBindPopup
+          [providers]="clientProvider"
+          [service]="clientService"
+          formControlName="client_id"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Procesos</mat-label>
+        <input
+          formControlName="processes"
+          matInput
+          app-bind-multi-popup
+          [providers]="processProvider"
+          [service]="processService"
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+    </div>
+    <div class="d-flex justify-content-end">
+      <button type="submit" mat-flat-button color="primary">
+        {{ edit ? 'Actualizar' : 'Crear' }} Proyecto
+      </button>
+    </div>
+  </form>
+</mat-card>

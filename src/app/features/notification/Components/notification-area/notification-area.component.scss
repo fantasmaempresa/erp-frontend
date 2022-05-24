@@ -18,7 +18,7 @@
   padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
-  background: var(--color-primary-sidebar);
+  background: var(--bgColor);
   box-shadow: 0 0 32px 12px rgba(0, 0, 0, 0.325);
   animation: 12s ease-in-out enterToArea;
   animation-fill-mode: forwards;
@@ -45,7 +45,7 @@
     font-size: 2.5rem;
     padding: 1rem;
     cursor: pointer;
-    color: var(--primary-color);
+    color: var(--primaryColor);
   }
 
   &-body {

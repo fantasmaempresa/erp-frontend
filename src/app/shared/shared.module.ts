@@ -17,8 +17,13 @@ import { OutSideClickDirective } from '../core/directives/out-side-click.directi
 import { FromDatePipe } from '../core/pipes/from-date.pipe';
 import { DynamicFormCreationComponent } from './components/dynamic-form-creation/dynamic-form-creation.component';
 import { OperationsComponent } from './components/operations/operations.component';
-import { MapToPipe } from '../core/pipes/map-to.pipe';
+import { GenericAutocompleteChipComponent } from './components/generic-autocomplete-chip/generic-autocomplete-chip.component';
 import { ChipListAutocompleteFixDirective } from '../core/directives/chip-list-autocomplete-fix.directive';
+import { DragFileDirective } from '../core/directives/drag-file.directive';
+import { InputImageComponent } from './components/input-image/input-image.component';
+import { InputFileComponent } from './components/input-file/input-file.component';
+import { InputCoordinateComponent } from './components/input-coordinate/input-coordinate.component';
+import { DynamicViewsModule } from './components/dinamyc-views/dynamic-views.module';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -28,15 +33,19 @@ import { ChipListAutocompleteFixDirective } from '../core/directives/chip-list-a
     ErrorMessageDirective,
     StopPropagationDirective,
     ChipListAutocompleteFixDirective,
+    DragFileDirective,
     OutSideClickDirective,
     FromDatePipe,
-    MapToPipe,
     DialogSearchComponent,
     TableSearchComponent,
     DynamicFormInputComponent,
     DynamicFormComponent,
     DynamicFormCreationComponent,
     OperationsComponent,
+    GenericAutocompleteChipComponent,
+    InputImageComponent,
+    InputFileComponent,
+    InputCoordinateComponent,
   ],
   imports: [
     CommonModule,
@@ -45,11 +54,13 @@ import { ChipListAutocompleteFixDirective } from '../core/directives/chip-list-a
     RouterModule,
     BreadcrumbModule,
     MaterialModule,
+    DynamicViewsModule,
   ],
   exports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    DynamicViewsModule,
     RouterModule,
     MaterialModule,
     BreadcrumbModule,
@@ -60,10 +71,13 @@ import { ChipListAutocompleteFixDirective } from '../core/directives/chip-list-a
     ChipListAutocompleteFixDirective,
     OutSideClickDirective,
     FromDatePipe,
-    MapToPipe,
     DynamicFormComponent,
     DynamicFormCreationComponent,
     OperationsComponent,
+    GenericAutocompleteChipComponent,
+    InputImageComponent,
+    InputFileComponent,
+    InputCoordinateComponent,
   ],
 })
 export class SharedModule {}

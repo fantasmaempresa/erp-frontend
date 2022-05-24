@@ -22,7 +22,7 @@ const routes: Routes = [
       {
         path: 'role',
         component: RoleFormComponent,
-        data: { breadcrumb: 'Editar role' },
+        data: { breadcrumb: 'Editar rol' },
       },
       {
         path: 'new',

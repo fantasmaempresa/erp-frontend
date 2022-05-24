@@ -12,7 +12,6 @@ import {
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
 import { Client } from '../../../../data/models/Client.model';
-import { Class2ViewBuilderService } from '../../../../shared/components/dinamyc-views/services/class2-view-builder.service';
 import { loadClients, loadNextPageOfClients } from '../../../../state/clients/clients.actions';
 import { selectClients } from '../../../../state/clients/clients.selector';
 
@@ -25,7 +24,6 @@ import { selectClients } from '../../../../state/clients/clients.selector';
     { provide: CLAZZ, useValue: Client },
     { provide: LOAD_ACTION, useValue: loadClients() },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClients },
-    Class2ViewBuilderService,
     // { provide: ACTION_KEY, useValue: 'clientId' },
   ],
 })

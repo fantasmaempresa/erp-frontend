@@ -1,0 +1,109 @@
+<form class="form-preview" [formGroup]="form" *ngIf="$any(formFields)?.length > 0; else emptyState">
+  <ng-container *ngFor="let formField of formFields; index as i">
+    <ng-container *ngIf="form.get(formField.key)">
+      <ng-container [ngSwitch]="formField.controlType">
+        <mat-form-field appearance="outline" *ngSwitchCase="'textbox'" class="w-100">
+          <mat-label>{{ formField.label }}</mat-label>
+          <input
+            matInput
+            [formControlName]="formField.key"
+            [id]="formField.key"
+            [type]="formField.type"
+            [value]="formField.value"
+            autocomplete="off"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" *ngSwitchCase="'number'" class="w-100">
+          <mat-label>{{ formField.label }}</mat-label>
+          <input
+            matInput
+            [formControlName]="formField.key"
+            [value]="formField.value"
+            [id]="formField.key"
+            [type]="'number'"
+            autocomplete="off"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100" *ngSwitchCase="'dropdown'">
+          <mat-label>{{ formField.label }}</mat-label>
+          <mat-select [formControlName]="formField.key">
+            <mat-option>Ninguna</mat-option>
+            <mat-option
+              *ngFor="let option of formField.options; index as i"
+              [value]="option.value"
+              >{{ option.value }}</mat-option
+            >
+          </mat-select>
+        </mat-form-field>
+
+        <mat-checkbox
+          class="checkbox-input"
+          *ngSwitchCase="'checkbox'"
+          color="primary"
+          [formControlName]="formField.key"
+          [value]="formField.value"
+          >{{ formField.label }}</mat-checkbox
+        >
+
+        <div class="radio-group" *ngSwitchCase="'radio'">
+          <label class="radio-group__label">{{ formField.label }}</label>
+          <mat-radio-group
+            class="radio-group__container"
+            aria-label="Select an option"
+            [formControlName]="formField.key"
+          >
+            <mat-radio-button
+              class="radio-group__option"
+              color="primary"
+              *ngFor="let option of formField.options"
+              [value]="option.value"
+            >
+              {{ option.key }}
+            </mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <mat-form-field appearance="outline" class="w-100" *ngSwitchCase="'textarea'">
+          <mat-label>{{ formField.label }}</mat-label>
+          <textarea matInput [formControlName]="formField.key" [value]="formField.value"></textarea>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100" *ngSwitchCase="'date'">
+          <mat-label>{{ formField.label }}</mat-label>
+          <input
+            class="clickable"
+            matInput
+            [matDatepicker]="dateForm"
+            [formControlName]="formField.key"
+            [value]="formField.value"
+            (focus)="dateForm.open()"
+          />
+          <mat-datepicker-toggle matSuffix [for]="dateForm"></mat-datepicker-toggle>
+          <mat-datepicker #dateForm></mat-datepicker>
+        </mat-form-field>
+
+        <ng-container *ngSwitchCase="'image'">
+          <!--          {{ formField | json }}-->
+          <app-input-image [label]="formField.label"></app-input-image>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'file'">
+          <app-input-file [label]="formField.label"></app-input-file>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'coordinate'">
+          <app-input-coordinate [label]="formField.label"></app-input-coordinate>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</form>
+
+<ng-template #emptyState>
+  <div class="form-preview-empty">
+    <span class="form-preview-empty__text"> No se han agregado campos </span>
+    <mat-icon class="form-preview-empty__icon"> preview</mat-icon>
+  </div>
+</ng-template>

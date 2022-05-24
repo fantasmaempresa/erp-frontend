@@ -1,0 +1,54 @@
+<mat-card>
+  <mat-toolbar>
+    <div>
+      <button (click)="back()" aria-label="Regresar" mat-icon-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
+    <mat-accordion>
+      <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Datos Generales</mat-panel-title>
+          <mat-panel-description>Nombre, Descripción del Proceso</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="d-flex flex-column form-container">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre del Proceso</mat-label>
+            <input formControlName="name" matInput type="text"/>
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Descripción</mat-label>
+            <textarea formControlName="description" matInput></textarea>
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+        </div>
+        <mat-action-row>
+          <button type="button" mat-button color="primary" (click)="nextStep()">
+            Asignación de Fases
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+        <mat-expansion-panel-header>
+          <mat-panel-title>Asignación de Fases</mat-panel-title>
+          <mat-panel-description>Configure el flujo de las fases</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <app-build-process formControlName="config"></app-build-process>
+
+
+        <mat-action-row>
+          <button type="button" mat-button color="primary" (click)="prevStep()">
+            Datos Generales
+          </button>
+          <button type="submit" mat-flat-button color="primary">Guardar Proceso</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</mat-card>

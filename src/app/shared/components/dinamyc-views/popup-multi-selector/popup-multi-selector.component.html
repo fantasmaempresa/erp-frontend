@@ -1,0 +1,73 @@
+<div class="container-dialog">
+  <h2 mat-dialog-title>{{ data.title }}</h2>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 dialog-table">
+    <!-- Checkbox Column -->
+    <ng-container matColumnDef="select">
+      <th mat-header-cell *matHeaderCellDef>
+        <mat-checkbox #checkAll color="primary" (click)="toggleAll()">
+          Seleccionar Todo
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let row">
+        <mat-checkbox
+          #checkbox
+          (change)="setSelectedItem(row)"
+          [checked]="selection.isSelected(row)"
+          [aria-label]="checkboxLabel(row)"
+          (click)="setSelectedItem(row)"
+          color="primary"
+        >
+        </mat-checkbox>
+      </td>
+    </ng-container>
+
+    <!-- Position Column -->
+    <ng-container
+      *ngFor="let field of labels; let i = index"
+      [matColumnDef]="displayedColumns[i + 1]"
+    >
+      <th mat-header-cell *matHeaderCellDef>{{ field }}</th>
+      <ng-container *ngIf="displayedColumns[i + 1] | mapTo: doesntHaveHtml; else renderHtml">
+        <td mat-cell *matCellDef="let element">{{ element | mapTo: mapToGetKey:i + 1 }}</td>
+      </ng-container>
+
+      <ng-template #renderHtml>
+        <td mat-cell *matCellDef="let element" [innerHTML]="element | mapTo: mapToInnerHtml:i + 1">
+          {{ element }}
+        </td>
+      </ng-template>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: displayedColumns"
+      (click)="setSelectedItem(row)"
+      class="mat-row"
+    ></tr>
+  </table>
+
+  <mat-paginator
+    [length]="(data$ | async)?.total"
+    [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions"
+    (page)="onPaginateChange($event)"
+  ></mat-paginator>
+
+  <div class="dialog-results">
+    <span class="dialog-results__chip" *ngFor="let option of optionsSelected">
+      {{ option[data.property] }}
+    </span>
+  </div>
+
+  <button
+    (click)="closeDialog()"
+    cdkFocusInitial
+    class="container-dialog__button"
+    color="primary"
+    mat-flat-button
+  >
+    Agregar Selección
+  </button>
+</div>

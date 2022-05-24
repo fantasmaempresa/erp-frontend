@@ -1,0 +1,31 @@
+:host {
+  width: 60%;
+}
+
+.custom-container {
+  margin-top: 2rem;
+  position: relative;
+
+  &__error {
+    position: absolute;
+    bottom: 0;
+    left: 1.5rem;
+    color: red;
+    opacity: 0;
+    transform: translateY(-1rem);
+    transition: 450ms;
+    font-size: 1.4rem;
+    font-weight: 300;
+  }
+
+  &--invalid {
+    .custom-container__error {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+mat-form-field.custom-control {
+  width: 100%;
+}

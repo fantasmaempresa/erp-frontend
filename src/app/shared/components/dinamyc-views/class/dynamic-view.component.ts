@@ -1,10 +1,16 @@
 import { MemoizedSelector, Store } from '@ngrx/store';
-import { Component, Inject, Optional } from '@angular/core';
+import { Component, Injector } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, shareReplay } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { EntityModel } from '../../../../core/interfaces/EntityModel';
-import { ACTION_KEY, LOAD_ACTION, LOAD_NEXT_ACTION, SELECTOR } from '../dynamic-views.module';
+import {
+  ACTION_KEY,
+  CLAZZ,
+  LOAD_ACTION,
+  LOAD_NEXT_ACTION,
+  SELECTOR,
+} from '../dynamic-views.module';
 import { PageEvent } from '@angular/material/paginator';
 import { Class2ViewBuilderService } from '../services/class2-view-builder.service';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -46,32 +52,44 @@ export abstract class DynamicViewComponent<T extends EntityModel> {
     return !this.mapToHTML[key];
   };
 
+  protected loadAction: any;
+
+  protected selector: MemoizedSelector<any, any>;
+
+  protected loadNextPageAction: (props: { size: number; page: number }) => any;
+
   public constructor(
     protected store: Store,
-    @Inject(SELECTOR)
-    protected selector: MemoizedSelector<any, any>,
-    @Inject(LOAD_ACTION)
-    protected loadAction: any,
-    @Inject(LOAD_NEXT_ACTION)
-    protected loadNextPageAction: (props: { size: number; page: number }) => any,
-    @Optional()
-    @Inject(ACTION_KEY)
-    protected actionKey: string,
     protected route: ActivatedRoute,
-    class2View: Class2ViewBuilderService,
     private sanitizer: DomSanitizer,
+    inj: Injector,
   ) {
+    const injector = Injector.create([
+      { provide: Class2ViewBuilderService },
+      {
+        provide: CLAZZ,
+        useValue: inj.get(CLAZZ),
+      },
+    ]);
+
+    this.loadNextPageAction = inj.get(LOAD_NEXT_ACTION);
+    const actionKey = inj.get(ACTION_KEY, null);
+    this.selector = inj.get(SELECTOR);
+    this.loadAction = inj.get(LOAD_ACTION);
+    const class2View = injector.get(Class2ViewBuilderService);
     this.labels = class2View.getLabels();
     this.displayedColumns = class2View.getAttrs();
     this.mapToFields = class2View.getMapsFunctions();
     this.mapToHTML = class2View.getHtmlMaps();
-    this.data$ = this.store.select(selector).pipe(shareReplay());
+    this.data$ = this.store.select(this.selector).pipe(shareReplay());
     const id = Number(this.route.snapshot.parent?.params.id);
 
-    if (id && this.actionKey) {
-      this.store.dispatch(loadAction({ [actionKey]: id }));
+    this.doOnConstructor();
+
+    if (id && actionKey) {
+      this.store.dispatch(this.loadAction({ [actionKey]: id }));
     } else {
-      this.store.dispatch(loadAction);
+      this.store.dispatch(this.loadAction);
     }
   }
 
@@ -81,4 +99,6 @@ export abstract class DynamicViewComponent<T extends EntityModel> {
     page = page + 1;
     this.store.dispatch(this.loadNextPageAction({ size, page }));
   }
+
+  protected doOnConstructor() {}
 }

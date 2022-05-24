@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '../../state';
 import { logout } from '../../state/auth/auth.actions';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import { ThemeManagerService } from '../../core/services/theme-manager.service';
 
 @Component({
   selector: 'app-header',
@@ -9,10 +10,17 @@ import { logout } from '../../state/auth/auth.actions';
   styleUrls: ['./header.component.scss'],
 })
 export class HeaderComponent {
-  constructor(private store: Store<AppState>) {}
+  constructor(private store: Store, private themeManager: ThemeManagerService) {}
 
-  logout(event: Event) {
-    event.preventDefault();
+  logout() {
     this.store.dispatch(logout());
+  }
+
+  changeTheme(change: MatSlideToggleChange) {
+    if (change.checked) {
+      this.themeManager.setTheme();
+    } else {
+      this.themeManager.setTheme('light');
+    }
   }
 }

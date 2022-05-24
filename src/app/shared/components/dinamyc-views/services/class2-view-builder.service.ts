@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { CLAZZ } from '../dynamic-views.module';
 import 'reflect-metadata';
 
@@ -8,11 +8,15 @@ import 'reflect-metadata';
 export class Class2ViewBuilderService {
   public readonly objClass: any;
 
-  constructor(@Inject(CLAZZ) clazz: any) {
-    this.objClass = new clazz();
+  constructor(private inj: Injector) {
+    const clazz = this.inj.get(CLAZZ, null);
+    if (clazz) {
+      this.objClass = new clazz();
+    }
   }
 
   getAttrs(): string[] {
+    if (!this.objClass) return [];
     const propertyNames = Object.getOwnPropertyNames(this.objClass);
     return propertyNames
       .filter((key) => Reflect.getMetadataKeys(this.objClass, key).includes('printLabel'))

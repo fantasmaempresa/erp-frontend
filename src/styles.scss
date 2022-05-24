@@ -9,10 +9,15 @@
 @import '~src/assets/styles/components/profile-img';
 @import '~src/assets/styles/components/scrollbar';
 
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+
 :root {
   @each $color, $shades in $colors {
     @each $shade, $value in $shades {
-      --color-#{$color}-#{$shade}: #{$value};
+      --#{$color}-#{$shade}: #{$value};
     }
   }
 
@@ -50,7 +55,7 @@ ul {
   flex-direction: column;
   min-width: 0;
   word-wrap: break-word;
-  background-color: var(--color-primary-sidebar);
+  background-color: var(--bgColor);
   background-clip: border-box;
   border: 0 solid #f6f6f6;
   border-radius: 0.25rem;
@@ -85,12 +90,12 @@ ul {
   color: #8687a7;
 }
 
-.xng-breadcrumb-list {
-  color: white;
+.xng-breadcrumb-link {
+  color: var(--textColor-300) !important;
 }
 
 .xng-breadcrumb-trail {
-  color: var(--color-secondary-200) !important;
+  color: var(--textColor-100) !important;
 }
 
 .input--form {
@@ -122,14 +127,14 @@ ul {
   cursor: pointer;
 
   &--primary {
-    background: var(--primary-color);
+    background: var(--primaryColor);
     color: white;
   }
 
   &--secondary {
     background: none;
-    color: var(--primary-color);
-    border: 2px solid var(--primary-color);
+    color: var(--primaryColor);
+    border: 2px solid var(--primaryColor);
   }
 
   &:hover {

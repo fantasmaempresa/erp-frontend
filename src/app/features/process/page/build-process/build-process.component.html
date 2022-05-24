@@ -1,0 +1,82 @@
+<div class="build-process">
+  <button
+    class="build-process__dialog-button"
+    mat-flat-button
+    color="primary"
+    type="button"
+    (click)="openDialog()"
+  >
+    Seleccionar Fases del proceso
+  </button>
+
+  <div
+    class="build-process__container"
+    cdkDropList
+    (cdkDropListDropped)="drop($event)"
+    [formGroup]="form"
+  >
+    <ng-container *ngIf="processPhases; else containerPlaceholder">
+      <div class="build-process__item" *ngFor="let phase of processPhases; let i = index" cdkDrag>
+        <!--        <div class="placeholder-item" *cdkDragPlaceholder></div>-->
+        <div class="phase-item">
+          <span class="phase-item__name">
+            {{ phase.name }}
+          </span>
+          <span class="phase-item__description">
+            {{ phase.description }}
+          </span>
+        </div>
+        <div class="phase-config" formArrayName="order_phases">
+          <ng-container [formGroupName]="i">
+            <span class="phase-config__title">Configuración de la Fase</span>
+            <mat-checkbox formControlName="end_process" color="primary">
+              ¿Termina el proceso?
+            </mat-checkbox>
+            <mat-form-field appearance="outline">
+              <mat-label>Fase Previa</mat-label>
+              <mat-select formControlName="previous">
+                <mat-option [value]="null">Sin Fase Previa</mat-option>
+                <mat-option
+                  *ngFor="let process of processPhases | mapTo: onlyPrevious:i"
+                  [value]="process.id"
+                >
+                  {{ process.name }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Roles Supervisores</mat-label>
+              <input
+                formControlName="roles_supervision"
+                matInput
+                app-bind-multi-popup
+                [service]="rolesService"
+                [providers]="rolesProvider"
+                type="text"
+                title="Roles Supervisores"
+              />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Equipo de Trabajo</mat-label>
+              <input
+                formControlName="roles_team"
+                matInput
+                app-bind-multi-popup
+                [service]="rolesService"
+                [providers]="rolesProvider"
+                type="text"
+                title="Equipo de Trabajo"
+              />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+
+    <ng-template #containerPlaceholder>
+      <div class="build-process__placeholder">Selecciona las fases</div>
+    </ng-template>
+  </div>
+</div>
