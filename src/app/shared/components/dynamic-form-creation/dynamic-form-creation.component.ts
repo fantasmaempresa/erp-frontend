@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormFieldClass } from '../../../core/classes/FormFieldClass';
 import { Store } from '@ngrx/store';
@@ -22,9 +22,10 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TemplateQuotes } from '../../../data/models/TemplateQuotes.model';
 import Swal from 'sweetalert2';
 import { MessageHelper } from '../../helpers/MessageHelper';
-import { TemplateQuotesService } from '../../../data/services/template-quotes.service';
+import { QuoteTemplateService } from '../../../data/services/quote-template.service';
 import { Update } from '@ngrx/entity';
 import { v4 as uuidv4 } from 'uuid';
+import { QuoteTemplate } from '../../../data/models/QuoteTemplate.model';
 
 @Component({
   selector: 'app-dynamic-form-creation',
@@ -33,6 +34,19 @@ import { v4 as uuidv4 } from 'uuid';
 })
 export class DynamicFormCreationComponent implements OnInit {
   @Output() formField = new EventEmitter<FormFieldClass<string>>();
+
+  _template!: QuoteTemplate;
+
+  @Input() set template(value: QuoteTemplate) {
+    if (value) {
+      this._template = value;
+      this.templateControl.setValue(value);
+    }
+  }
+
+  get template() {
+    return this._template;
+  }
 
   formFields$!: Observable<Formfield<any>[]>;
 
@@ -89,7 +103,7 @@ export class DynamicFormCreationComponent implements OnInit {
 
   templateControl = new FormControl(null);
 
-  templates!: TemplateQuotes[];
+  templates!: QuoteTemplate[];
 
   get f() {
     return this.form.controls;
@@ -101,7 +115,7 @@ export class DynamicFormCreationComponent implements OnInit {
 
   errorMessage$: Observable<string>;
 
-  constructor(private store: Store, private templateQuotesService: TemplateQuotesService) {
+  constructor(private store: Store, private templateQuotesService: QuoteTemplateService) {
     this.getTemplates();
     this.templateControl.valueChanges.subscribe({
       next: (value) => {
@@ -144,7 +158,6 @@ export class DynamicFormCreationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(emptyForm());
     this.createForm();
     this.addTotalToTemplate();
   }
@@ -250,7 +263,7 @@ export class DynamicFormCreationComponent implements OnInit {
         },
       })
         .then((result) => {
-          if (result) {
+          if (result.isConfirmed) {
             MessageHelper.successMessage('Exito', 'Plantilla guardada con éxito');
             this.getTemplates();
           }
@@ -341,5 +354,9 @@ export class DynamicFormCreationComponent implements OnInit {
       order: 0,
     };
     this.store.dispatch(setField({ form }));
+  }
+
+  compareObjects(o1: any, o2: any): boolean {
+    return o1.name === o2.name && o1.id === o2.id;
   }
 }

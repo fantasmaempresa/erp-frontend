@@ -1,6 +1,6 @@
 <mat-form-field appearance="outline" class="w-100">
   <mat-label>Plantilla</mat-label>
-  <mat-select [formControl]="templateControl">
+  <mat-select [formControl]="templateControl" [compareWith]="compareObjects">
     <mat-option>Ninguna</mat-option>
     <mat-option *ngFor="let template of templates; index as i" [value]="template">
       {{ template.name }}
@@ -143,7 +143,7 @@
         (click)="saveTemplate()"
         *ngIf="fields.length > 1"
       >
-        Guardar plantilla
+        Guardar plantilla de formulario
       </button>
 
       <button

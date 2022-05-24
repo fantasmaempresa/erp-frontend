@@ -16,8 +16,6 @@ export class SidebarComponent {
       menuName: 'Menu',
       submenus: [
         { label: 'Home', route: './dashboard', icon: 'home' },
-        // { label: 'Usuarios', route: '/clients', icon: 'person' },
-        // { label: 'Roles', route: '/roles', icon: 'verified_user' },
         { label: 'Clientes', route: './clients', icon: 'people' },
         { label: 'Personal', route: './staff', icon: 'groups' },
         { label: 'Áreas', route: './areas', icon: 'group_work' },
@@ -30,6 +28,7 @@ export class SidebarComponent {
             { label: 'Nueva Cotización', route: './project-quote/new', icon: 'add_circle' },
             { label: 'Lista de cotizaciones', route: './project-quote', icon: 'group_work' },
             { label: 'Estados de la cotización', route: './quote-statuses', icon: 'group_work' },
+            { label: 'Plantillas', route: './project-quote-template', icon: 'group_work' },
           ],
         },
         {

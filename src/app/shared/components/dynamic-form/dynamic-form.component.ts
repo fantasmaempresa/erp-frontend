@@ -1,9 +1,19 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  FormControl,
+  FormGroup,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  ValidationErrors,
+  Validator,
+  Validators,
+} from '@angular/forms';
 import { FormfieldControlService } from '../../../core/services/formfield-control.service';
 import { Store } from '@ngrx/store';
 import { selectDynamicForm, selectStatus } from '../../../state/dynamic-form/dynamic-form.selector';
-import { Observable } from 'rxjs';
+import { Observable, Subscription, take } from 'rxjs';
 import { Formfield } from '../../../data/models/Formfield.model';
 import { updateField } from '../../../state/dynamic-form/dynamic-form.actions';
 import { Update } from '@ngrx/entity';
@@ -12,18 +22,42 @@ import { Update } from '@ngrx/entity';
   selector: 'app-dynamic-form',
   templateUrl: './dynamic-form.component.html',
   styleUrls: ['./dynamic-form.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => DynamicFormComponent),
+      multi: true,
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => DynamicFormComponent),
+      multi: true,
+    },
+  ],
 })
-export class DynamicFormComponent implements OnChanges {
-  @Input() formFields!: Formfield<any>[];
+export class DynamicFormComponent implements OnInit, OnDestroy, ControlValueAccessor, Validator {
+  @Input() onlyRead: boolean = false;
 
-  @Input() public set save(val: boolean) {
-    console.log(val);
-    if (val) {
-      this.saveInStore();
-    }
-  }
+  formFields!: Formfield<any>[];
 
   form: FormGroup = new FormGroup({});
+
+  @Input()
+  public set save(val: boolean) {
+    if (this.form.status === 'VALID' && this.form.touched) {
+      if (val) {
+        console.log('Formulario valido y save true');
+        this.saveInStore();
+      }
+    }
+    this.form.markAllAsTouched();
+  }
+
+  onChangeSubs: Subscription[] = [];
+
+  onTouched = () => {};
+
+  onChange = () => {};
 
   payLoad = '';
 
@@ -36,16 +70,33 @@ export class DynamicFormComponent implements OnChanges {
     this.formStatus$ = store.select(selectStatus);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.form = this.createForm(this.formFields);
+  ngOnInit(): void {
+    this.fields$.pipe(take(1)).subscribe({
+      next: (formFields) => {
+        if (formFields) {
+          this.formFields = formFields;
+          this.form = this.createForm(formFields);
+          this.form.updateValueAndValidity();
+        }
+      },
+    });
+  }
+
+  ngOnDestroy() {
+    for (let sub of this.onChangeSubs) {
+      sub.unsubscribe();
+    }
+    if (this.onlyRead) {
+      return;
+    }
+    this.saveInStore();
   }
 
   createForm(controls: Formfield<any>[]): FormGroup {
     const group: any = {};
-    console.log(controls);
     for (const control of controls) {
       if (control.key === 'total') {
-        group[control.key] = new FormControl({ value: null, disabled: true });
+        group[control.key] = new FormControl({ value: '', disabled: true });
       } else {
         group[control.key] = control.required
           ? new FormControl(control.value || '', [Validators.required])
@@ -56,7 +107,7 @@ export class DynamicFormComponent implements OnChanges {
   }
 
   saveInStore() {
-    console.log('Estoy guardando en el state');
+    console.log('Guardando en el store');
     let formUpdate: Update<Formfield<any>>;
     for (const field in this.form.value) {
       for (const item of this.formFields) {
@@ -72,5 +123,26 @@ export class DynamicFormComponent implements OnChanges {
         }
       }
     }
+  }
+
+  registerOnChange(onChange: any): void {
+    const sub = this.form.valueChanges.subscribe(onChange);
+    this.onChangeSubs.push(sub);
+  }
+
+  registerOnTouched(onTouched: any): void {
+    this.onTouched = onTouched;
+  }
+
+  writeValue(value: any): void {
+    if (value) {
+      this.form.patchValue(value);
+    }
+  }
+
+  validate(control: AbstractControl): ValidationErrors | null {
+    return this.form.valid
+      ? null
+      : { invalidForm: { valid: false, message: 'Dynamic form fields are invalid' } };
   }
 }

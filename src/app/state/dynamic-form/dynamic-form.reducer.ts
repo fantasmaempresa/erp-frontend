@@ -24,6 +24,9 @@ const DynamicFormReducer = createReducer(
   on(DynamicFormActions.updateField, (state, action) => {
     return dynamicFormAdapter.updateOne(action.form, state);
   }),
+  on(DynamicFormActions.updateValues, (state, action) => {
+    return dynamicFormAdapter.updateMany(action.form, state);
+  }),
   on(DynamicFormActions.setValuesToFields, (state, { fields }) => {
     return dynamicFormAdapter.updateMany(fields, state);
   }),

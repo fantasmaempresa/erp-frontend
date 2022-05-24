@@ -1,24 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TemplateQuotesService } from '../../../../data/services/template-quotes.service';
-import { combineLatest, Observable, take } from 'rxjs';
+import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
+import { combineLatest, map, Observable, take } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Formfield } from '../../../../data/models/Formfield.model';
 import {
   selectDynamicForm,
   selectStatus,
 } from '../../../../state/dynamic-form/dynamic-form.selector';
+import { emptyForm, loadForm } from '../../../../state/dynamic-form/dynamic-form.actions';
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import faker from '@faker-js/faker';
+import { QuoteTemplate } from '../../../../data/models/QuoteTemplate.model';
 
 @Component({
   selector: 'app-project-quote-page',
   templateUrl: './project-quote-page.component.html',
   styleUrls: ['./project-quote-page.component.scss'],
 })
-export class ProjectQuotePageComponent {
+export class ProjectQuotePageComponent implements OnInit, OnDestroy {
   HEADER_STEP = 0;
 
   FORM_BUILD_STEP = 1;
@@ -29,10 +31,12 @@ export class ProjectQuotePageComponent {
 
   PREVIEW_STEP = 4;
 
+  step = 0;
+
   saveState = false;
 
   headerForm = new FormGroup({
-    name: new FormControl(faker.datatype.uuid(), [Validators.required]),
+    name: new FormControl(null, [Validators.required]),
     addressee: new FormControl(`${faker.name.firstName()} ${faker.name.lastName()}`, [
       Validators.required,
     ]),
@@ -45,53 +49,80 @@ export class ProjectQuotePageComponent {
 
   quoteForm = new FormGroup({
     headerForm: this.headerForm,
+    formFill: new FormControl(null, [Validators.required]),
   });
+
+  templateControl = new FormControl(null);
 
   formFields!: Formfield<any>[];
 
   operationsForm = new FormGroup({});
 
-  step = 0;
+  operations!: any;
+
+  previewForm: FormControl = new FormControl(null);
+
+  fields$!: Observable<Formfield<any>[]>;
+
+  templates!: QuoteTemplate[];
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private store: Store,
-    private templateQuotesService: TemplateQuotesService,
     private projectQuoteService: ProjectQuoteService,
+    private quoteTemplateService: QuoteTemplateService,
   ) {
+    this.getTemplates();
+    this.templateControl.valueChanges.subscribe({
+      next: (value) => {
+        if (value) {
+          this.headerForm.get('name')?.patchValue(value.name);
+          this.store.dispatch(emptyForm());
+          this.store.dispatch(loadForm({ form: value.form, id: value.id, name: value.name }));
+        } else {
+          this.store.dispatch(emptyForm());
+        }
+      },
+    });
+
     const status$: Observable<'EDITABLE' | 'NEW'> = store.select(selectStatus);
-    const fields$: Observable<Formfield<any>[]> = store.select(selectDynamicForm);
-    combineLatest([fields$, status$]).subscribe(([fields, status]) => {
+    this.fields$ = store.select(selectDynamicForm);
+    combineLatest([this.fields$, status$]).subscribe(([fields, status]) => {
       if (status !== 'EDITABLE') {
         this.formFields = fields;
       }
     });
   }
 
+  ngOnInit(): void {
+    this.fields$.subscribe({
+      next: () => {
+        if (this.step < this.FORM_FILL_STEP) {
+          this.quoteForm.get('formFill')?.reset();
+        }
+      },
+    });
+  }
+
+  ngOnDestroy(): void {
+    console.log('Destruyendo project-quote-page');
+    this.store.dispatch(emptyForm());
+  }
+
+  getTemplates() {
+    this.quoteTemplateService
+      .fetchAll()
+      .pipe(
+        map((templates) => {
+          return templates.data;
+        }),
+      )
+      .subscribe((data) => (this.templates = data));
+  }
+
   async backToListUsers() {
     await this.router.navigate(['../'], { relativeTo: this.route });
-  }
-
-  setStep(index: number) {
-    this.step = index;
-  }
-
-  nextStep() {
-    this.quoteForm.markAllAsTouched();
-    if (this.quoteForm.invalid) {
-      return;
-    }
-
-    this.step++;
-
-    // if (!this.isOperationGroupValid()) {
-    //   return;
-    // }
-    //
-    // if (this.step === 2) {
-    //   this.store.dispatch(changeStatus({ status: 'EDITABLE' }));
-    // }
   }
 
   goToHeaderForm() {
@@ -103,32 +134,24 @@ export class ProjectQuotePageComponent {
   }
 
   goToFormFill() {
-    this.saveState = false;
+    if (this.headerForm.invalid) {
+      return;
+    }
     this.step = this.FORM_FILL_STEP;
-    // this.store.dispatch(changeStatus({ status: 'EDITABLE' }));
   }
 
   goToOperationsForm() {
+    if (this.quoteForm.get('formFill')?.invalid) {
+      this.saveState = true;
+      return;
+    }
     this.step = this.OPERATIONS_FORM_STEP;
   }
 
   goToPreview() {
+    console.log('PREVIEW');
     this.step = this.PREVIEW_STEP;
-  }
-
-  isOperationGroupValid() {
-    if (this.step !== 3) {
-      return true;
-    }
-
-    console.log('Validando operation form');
-    this.operationsForm.markAllAsTouched();
-
-    return !this.operationsForm.invalid;
-  }
-
-  prevStep() {
-    this.step--;
+    this.calculateOperations();
   }
 
   async saveQuote() {
@@ -154,5 +177,66 @@ export class ProjectQuotePageComponent {
           this.router.navigate(['../'], { relativeTo: this.route });
         });
       });
+  }
+
+  closingFormFill() {
+    console.log('Cerrando form fill');
+    this.saveState = true;
+  }
+
+  compareObjects(o1: any, o2: any): boolean {
+    return o1.name === o2.name && o1.id === o2.id;
+  }
+
+  calculateOperations() {
+    const quoteTemplate = this.templateControl.value;
+    this.store
+      .select(selectDynamicForm)
+      .pipe(take(1))
+      .subscribe((form) => {
+        console.log('FORM => ', form);
+        console.log('OPERATIONS => ', quoteTemplate.operations);
+        form.forEach((field) => {
+          if (field.key !== 'total') {
+            quoteTemplate.operations.operation_fields.forEach((x: any) => {
+              if (x.key === field.key) {
+                x.value = field.value;
+              }
+            });
+          }
+        });
+        const quote = {
+          quote: {
+            form: {
+              ...form,
+            },
+            operations: quoteTemplate.operations,
+          },
+        };
+        this.projectQuoteService
+          .calculateOperations({ ...quote })
+          .pipe(
+            map((resp: any) => {
+              const operationFields: [] = resp.operation_fields;
+              const operationTotal = resp.operation_total;
+              const concepts: any[] = [];
+              for (const opt in operationFields) {
+                const data: any = operationFields[opt];
+                data.name = opt;
+                concepts.push(data);
+              }
+              concepts.push({
+                name: 'total',
+                total: operationTotal.total,
+              });
+              return concepts;
+            }),
+          )
+          .subscribe((resp) => {
+            console.log(resp);
+          });
+      });
+
+    // TODO: Validar que el arreglo de operaciones no venga vacio
   }
 }

@@ -2,6 +2,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   QueryList,
@@ -45,7 +46,10 @@ export class OperationsComponent implements OnInit {
 
   formFields$!: Observable<Formfield<any>[]>;
 
-  operationsForm!: FormGroup;
+  operationsForm: FormGroup = new FormGroup({
+    operation_fields: new FormArray([]),
+    operation_total: new FormArray([]),
+  });
 
   concepts$: Observable<Concept[]>;
 
@@ -60,6 +64,42 @@ export class OperationsComponent implements OnInit {
   separatorKeysCodes: number[] = [ENTER, COMMA];
 
   preview!: any;
+
+  _operations!: any;
+
+  @Input() set operations(operations: any) {
+    if (operations) {
+      if (operations.operation_total.length > 0) {
+        this.operation_total.clear();
+        operations.operation_total.forEach((operation: Formfield<any>, index: number) => {
+          this.addOperation(operation);
+          operation.concepts?.forEach((concept: Concept) => {
+            let concepts = this.operation_total.at(index).get('concepts') as FormArray;
+            concepts.push(new FormControl(concept));
+          });
+        });
+        this.operation_total.patchValue(operations.operation_total);
+      }
+
+      if (operations.operation_fields.length > 0) {
+        this.operation_fields.clear();
+        operations.operation_fields.forEach((operation: Formfield<any>, index: number) => {
+          this.addOperation(operation);
+          operation.concepts?.forEach((concept: Concept) => {
+            let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
+            concepts.push(new FormControl(concept));
+          });
+        });
+        this.operation_fields.patchValue(operations.operation_fields);
+      }
+
+      this._operations = operations;
+    }
+  }
+
+  get operations() {
+    return this._operations;
+  }
 
   constructor(
     private store: Store,
@@ -237,6 +277,7 @@ export class OperationsComponent implements OnInit {
             },
           },
         };
+        // TODO: Validar que el arreglo de operaciones no venga vacio
         this.projectQuoteService
           .calculateOperations({ ...quote })
           .pipe(
@@ -253,7 +294,6 @@ export class OperationsComponent implements OnInit {
                 name: 'total',
                 total: operationTotal.total,
               });
-              console.log(concepts);
               return concepts;
             }),
           )
@@ -261,7 +301,6 @@ export class OperationsComponent implements OnInit {
             this.preview = resp;
           });
       });
-    console.log(this.operationsForm.getRawValue());
   }
 
   selected(event: MatAutocompleteSelectedEvent, index: number, target: string): void {
@@ -332,7 +371,6 @@ export class OperationsComponent implements OnInit {
     event.chipInput!.clear();
 
     this.operation_fields.at(index).get('conceptCtrl')?.setValue(null);
-    console.log(this.operation_fields.value);
   }
 
   remove(concept: Concept, index: number, target: string): void {
@@ -401,3 +439,14 @@ export class OperationsComponent implements OnInit {
     });
   }
 }
+
+function listFibonacci(num: number) {
+  let fibonacci = [0, 1];
+  for (let i = 1; i < num; i++) {
+    fibonacci.push(fibonacci[i] + fibonacci[i - 1]);
+  }
+  console.log(fibonacci);
+}
+
+listFibonacci(11);
+// [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]

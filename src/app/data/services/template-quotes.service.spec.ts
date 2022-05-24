@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { TemplateQuotesService } from './template-quotes.service';
+import { QuoteTemplateService } from './quote-template.service';
 
 describe('TemplateQuotesService', () => {
-  let service: TemplateQuotesService;
+  let service: QuoteTemplateService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(TemplateQuotesService);
+    service = TestBed.inject(QuoteTemplateService);
   });
 
   it('should be created', () => {
