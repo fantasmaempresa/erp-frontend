@@ -244,12 +244,16 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
                 data.name = opt;
                 concepts.push(data);
               }
-              concepts.push({
+              let operation_total = {
                 name: 'total',
                 description: operationTotal.description,
+                subtotal: operationTotal.subtotal,
                 total: operationTotal.total,
-              });
-              return concepts;
+              };
+              return {
+                operation_fields: concepts,
+                operation_total,
+              };
             }),
           ),
         ),
