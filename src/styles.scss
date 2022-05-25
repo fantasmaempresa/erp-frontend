@@ -169,3 +169,17 @@ td.mat-cell:first-of-type {
   margin: 0.25em 0;
   padding-bottom: 1.34375em;
 }
+
+.cdk-overlay-pane.my-dialog {
+  position: relative !important;
+}
+
+.close.mat-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  padding: 5px;
+  line-height: 2rem;
+  min-width: auto;
+  font-size: 2rem;
+}

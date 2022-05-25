@@ -1,0 +1,133 @@
+<button class="close" mat-button (click)="onNoClick()">X</button>
+
+<h2 mat-dialog-title>Cotización</h2>
+
+<div mat-dialog-content>
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel [expanded]="step === HEADER_STEP" (opened)="goToHeaderForm()" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Encabezado</mat-panel-title>
+        <mat-panel-description> Datos acerca de la cotización y el cliente </mat-panel-description>
+      </mat-expansion-panel-header>
+      <form class="row justify-content-center mt-3" [formGroup]="headerForm">
+        <div class="col-6 d-flex flex-column pe-0">
+          <mat-form-field appearance="outline">
+            <mat-label>Estado de la cotización</mat-label>
+            <mat-select formControlName="status_quote_id">
+              <mat-option
+                *ngFor="let quoteStatus of quoteStatuses$ | async"
+                [value]="quoteStatus.id"
+                >{{ quoteStatus.name }}</mat-option
+              >
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>A quien va dirigido</mat-label>
+            <input matInput type="text" autocomplete="off" formControlName="addressee" />
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Descripción</mat-label>
+            <textarea matInput formControlName="description"> </textarea>
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+
+          <div class="d-flex flex-row">
+            <div class="col-12">
+              <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Cliente</mat-label>
+                <input type="text" matInput formControlName="client" />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </form>
+      <mat-action-row>
+        <button mat-button color="primary" (click)="goToFormFill()">Siguiente</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+    <mat-expansion-panel [expanded]="step === FORM_FILL_STEP" (opened)="goToFormFill()" hideToggle>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Cotización</mat-panel-title>
+        <mat-panel-description> Llenado de formulario</mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <app-dynamic-form
+        [onlyRead]="true"
+        [formControl]="formFill"
+        *ngIf="step === FORM_FILL_STEP"
+      ></app-dynamic-form>
+
+      <mat-action-row>
+        <button mat-button color="warn" (click)="goToHeaderForm()">Atras</button>
+        <button mat-button color="primary" (click)="goToPreview()">Siguiente</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel
+      [expanded]="step === PREVIEW_STEP"
+      (opened)="step = PREVIEW_STEP"
+      hideToggle
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title> Vista previa</mat-panel-title>
+        <mat-panel-description> Vista previa de la cotización realizada</mat-panel-description>
+      </mat-expansion-panel-header>
+
+      <div class="container-fluid mat-elevation-z5">
+        <div class="row">
+          <div class="col-11">
+            <mat-toolbar color="primary">
+              <span>Conceptos</span>
+            </mat-toolbar>
+            <div class="row mt-3 ps-3" *ngIf="data.projectQuote.quote as quote">
+              <div *ngFor="let field of quote.result.operation_fields">
+                <h3>{{ field.name | titlecase }}</h3>
+                <ul class="px-5">
+                  <li class="d-flex justify-content-between">
+                    <span>{{ field.name === 'total' ? 'Subtotal' : 'Valor inicial' }}</span>
+                    <span>{{ field.original_value }}</span>
+                  </li>
+                  <li
+                    *ngFor="let concept of field.description"
+                    class="d-flex justify-content-between"
+                  >
+                    <span>{{ concept.concept.description }}</span>
+                    <span>{{ concept.value_concept | currency }}</span>
+                  </li>
+                </ul>
+                <div class="d-flex justify-content-between px-5 my-3 upper-dotted">
+                  <span class="mt-3">Subtotal: </span>
+                  <span class="mt-3"> {{ field.total | currency }}</span>
+                </div>
+              </div>
+
+              <div *ngIf="quote.result.operation_total as total">
+                <h3>{{ total.name | titlecase }}</h3>
+                <ul class="px-5">
+                  <li class="d-flex justify-content-between">
+                    <span>Suma de subtotales: </span>
+                    <span>{{ total.subtotal | currency }}</span>
+                  </li>
+                  <li
+                    *ngFor="let concept of total.description"
+                    class="d-flex justify-content-between"
+                  >
+                    <span>{{ concept.concept.description }}</span>
+                    <span>{{ concept.value_concept | currency }}</span>
+                  </li>
+                </ul>
+                <div class="d-flex justify-content-between px-5 my-3 upper-dotted">
+                  <span class="mt-3">Subtotal: </span>
+                  <span class="mt-3"> {{ total.total | currency }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

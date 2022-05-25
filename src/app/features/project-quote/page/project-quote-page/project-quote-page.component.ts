@@ -163,6 +163,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
   }
 
   async saveQuote() {
+    const quoteTemplate = this.templateControl.value;
     this.store
       .select(selectDynamicForm)
       .pipe(take(1))
@@ -174,9 +175,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
             form: {
               ...form,
             },
-            operations: {
-              ...this.operationsForm.getRawValue(),
-            },
+            operations: quoteTemplate.operations,
             result: this.quote,
           },
         };

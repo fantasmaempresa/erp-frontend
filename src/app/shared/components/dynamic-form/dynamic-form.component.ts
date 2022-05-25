@@ -77,6 +77,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy, ControlValueAcce
           this.formFields = formFields;
           this.form = this.createForm(formFields);
           this.form.updateValueAndValidity();
+          if (this.onlyRead) {
+            this.form.disable();
+          }
         }
       },
     });

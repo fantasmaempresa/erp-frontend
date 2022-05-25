@@ -6,6 +6,7 @@ import { ProjectQuoteFormComponent } from './page/project-quote-form/project-quo
 import { SharedModule } from '../../shared/shared.module';
 import { ProjectQuotePageComponent } from './page/project-quote-page/project-quote-page.component';
 import { ProjectQuoteConceptsComponent } from './page/project-quote-concepts/project-quote-concepts.component';
+import { ProjectQuotePreviewComponent } from './dialog/project-quote-preview/project-quote-preview.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { ProjectQuoteConceptsComponent } from './page/project-quote-concepts/pro
     ProjectQuoteFormComponent,
     ProjectQuotePageComponent,
     ProjectQuoteConceptsComponent,
+    ProjectQuotePreviewComponent,
   ],
   imports: [SharedModule, ProjectQuoteRoutingModule],
 })
