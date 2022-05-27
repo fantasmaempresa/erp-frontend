@@ -40,7 +40,7 @@
         </mat-expansion-panel-header>
 
         <app-build-process formControlName="config"></app-build-process>
-
+        {{form.get('config')?.value | json}}
 
         <mat-action-row>
           <button type="button" mat-button color="primary" (click)="prevStep()">

@@ -40,6 +40,12 @@ export class Process extends EntityModel {
           },
           end_process: orderPhase[index].end_process,
           order: index + 1,
+          involved: {
+            supervisor: orderPhase[index].roles_supervision
+              ? orderPhase[index].roles_supervision
+              : [],
+            work_group: orderPhase[index].roles_team ? orderPhase[index].roles_team : [],
+          },
         },
       ];
     }, []);
@@ -53,17 +59,22 @@ export class Process extends EntityModel {
     order_phases: any[];
     phases_process: any[];
   }) {
+    console.log(order_phases);
     return {
       order_phases: order_phases.map(
         ({
           end_process,
           previous: { phase },
+          involved: { supervisor, work_group },
         }: {
           end_process: boolean;
           previous: { phase: any };
+          involved: { supervisor: any[]; work_group: any[] };
         }) => ({
           end_process,
           previous: !!phase ? phase.id : null,
+          roles_supervision: supervisor,
+          roles_team: work_group,
         }),
       ),
       phases_process,
