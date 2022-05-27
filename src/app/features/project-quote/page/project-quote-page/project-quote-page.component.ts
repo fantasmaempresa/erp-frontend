@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
-import { combineLatest, map, Observable, switchMap, take } from 'rxjs';
+import { combineLatest, delay, map, Observable, switchMap, take } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Formfield } from '../../../../data/models/Formfield.model';
 import {
@@ -12,7 +12,6 @@ import {
 import { emptyForm, loadForm } from '../../../../state/dynamic-form/dynamic-form.actions';
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import faker from '@faker-js/faker';
 import { QuoteTemplate } from '../../../../data/models/QuoteTemplate.model';
 
 @Component({
@@ -21,6 +20,8 @@ import { QuoteTemplate } from '../../../../data/models/QuoteTemplate.model';
   styleUrls: ['./project-quote-page.component.scss'],
 })
 export class ProjectQuotePageComponent implements OnInit, OnDestroy {
+  quoteId!: number;
+
   HEADER_STEP = 0;
 
   FORM_BUILD_STEP = 1;
@@ -37,11 +38,9 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
 
   headerForm = new FormGroup({
     name: new FormControl(null, [Validators.required]),
-    addressee: new FormControl(`${faker.name.firstName()} ${faker.name.lastName()}`, [
-      Validators.required,
-    ]),
-    description: new FormControl(faker.lorem.lines(2), [Validators.required]),
-    date_end: new FormControl({ value: faker.date.soon(5), disabled: true }),
+    addressee: new FormControl('', [Validators.required]),
+    description: new FormControl('', [Validators.required]),
+    date_end: new FormControl({ value: '', disabled: true }),
     status_quote_id: new FormControl(null),
     client: new FormControl({ value: null, disabled: true }),
     client_id: new FormControl({ value: null, disabled: true }),
@@ -49,7 +48,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
 
   quoteForm = new FormGroup({
     headerForm: this.headerForm,
-    formFill: new FormControl(null, [Validators.required]),
+    formFill: new FormControl(null),
   });
 
   templateControl = new FormControl(null);
@@ -66,7 +65,9 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
 
   templates!: QuoteTemplate[];
 
-  quote!: any;
+  quote: any = null;
+
+  isEdit = false;
 
   constructor(
     private router: Router,
@@ -95,6 +96,33 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
         this.formFields = fields;
       }
     });
+
+    if (this.route.snapshot.queryParams.id) {
+      this.quoteId = +this.route.snapshot.queryParams.id;
+      this.isEdit = true;
+      this.headerForm.addControl('id', new FormControl(''));
+      projectQuoteService
+        .fetch(this.route.snapshot.queryParams.id)
+        .pipe(delay(250))
+        .subscribe({
+          next: (quote) => {
+            let quoteTemplate = this.templates.find(
+              (template) => template.id === quote.template_quote_id,
+            );
+            this.templateControl.patchValue(quoteTemplate);
+            this.headerForm.get('');
+            this.store.dispatch(
+              loadForm({
+                form: quote.quote.form,
+                id: quote.id,
+                name: quote.name,
+              }),
+            );
+            console.log(quote);
+            this.headerForm.patchValue(quote);
+          },
+        });
+    }
   }
 
   ngOnInit(): void {
@@ -151,15 +179,43 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
   }
 
   goToPreview() {
-    console.log('PREVIEW');
+    this.quoteForm.get('formFill')?.markAsTouched();
+    this.quoteForm.get('formFill')?.markAsDirty();
     if (this.quoteForm.get('formFill')?.invalid) {
-      this.saveState = true;
+      this.closingFormFill();
       return;
     }
     this.step = this.PREVIEW_STEP;
     setTimeout(() => {
       this.calculateOperations();
-    }, 100);
+    }, 200);
+  }
+
+  async updateQuote() {
+    const quoteTemplate = this.templateControl.value;
+    this.store
+      .select(selectDynamicForm)
+      .pipe(take(1))
+      .subscribe((form) => {
+        const quote = {
+          ...this.headerForm.getRawValue(),
+          client_id: this.headerForm.getRawValue().client.id,
+          template_quote_id: this.templateControl.value.id,
+          quote: {
+            form: {
+              ...form,
+            },
+            operations: quoteTemplate.operations,
+            result: this.quote,
+          },
+        };
+        console.log(quote);
+        this.projectQuoteService.update(quote).subscribe((val) => {
+          console.log(val);
+          MessageHelper.successMessage('Éxito', 'Cotización actualizada');
+          this.router.navigate(['../'], { relativeTo: this.route });
+        });
+      });
   }
 
   async saveQuote() {
@@ -170,6 +226,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
       .subscribe((form) => {
         const quote = {
           ...this.headerForm.getRawValue(),
+          client_id: this.headerForm.getRawValue().client.id,
           template_quote_id: this.templateControl.value.id,
           quote: {
             form: {
@@ -194,6 +251,9 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
   }
 
   compareObjects(o1: any, o2: any): boolean {
+    if (!o1 || !o2) {
+      return false;
+    }
     return o1.name === o2.name && o1.id === o2.id;
   }
 
@@ -206,8 +266,10 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
       .pipe(
         take(1),
         map((form) => {
+          console.log(form);
           form.forEach((field) => {
             if (field.key !== 'total') {
+              console.log(quoteTemplate);
               operationField = quoteTemplate.operations.operation_fields.map((x: any) => {
                 if (x.key === field.key) {
                   x.value = field.value;

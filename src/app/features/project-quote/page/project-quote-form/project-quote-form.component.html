@@ -46,12 +46,12 @@
       </div>
     </div>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Fecha de expiración</mat-label>
-      <input matInput [matDatepicker]="dp_end" formControlName="date_end" />
-      <mat-datepicker-toggle matSuffix [for]="dp_end"></mat-datepicker-toggle>
-      <mat-datepicker #dp_end disabled="false"></mat-datepicker>
-      <mat-error *ngIf="formErrors.date_end">{{ formErrors.date_end }}</mat-error>
-    </mat-form-field>
+    <!--    <mat-form-field appearance="outline">-->
+    <!--      <mat-label>Fecha de expiración</mat-label>-->
+    <!--      <input matInput [matDatepicker]="dp_end" formControlName="date_end" />-->
+    <!--      <mat-datepicker-toggle matSuffix [for]="dp_end"></mat-datepicker-toggle>-->
+    <!--      <mat-datepicker #dp_end disabled="false"></mat-datepicker>-->
+    <!--      <mat-error *ngIf="formErrors.date_end">{{ formErrors.date_end }}</mat-error>-->
+    <!--    </mat-form-field>-->
   </div>
 </form>

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
+import { FormGroup, FormGroupDirective } from '@angular/forms';
 import { map, Observable, startWith, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from '../../../../shared/services/form-validation.service';
@@ -71,19 +71,18 @@ export class ProjectQuoteFormComponent implements OnInit {
       ),
     );
 
-    if (this.route.snapshot.queryParams.id) {
-      this.isEdit = true;
-      clientService.fetch(this.route.snapshot.queryParams.id).subscribe({
-        next: (user) => {
-          this.form.addControl('id', new FormControl(''));
-          this.form.patchValue(user);
-        },
-      });
-    }
+    // if (this.route.snapshot.queryParams.id) {
+    //   this.isEdit = true;
+    //   clientService.fetch(this.route.snapshot.queryParams.id).subscribe({
+    //     next: (user) => {
+    //       this.form.addControl('id', new FormControl(''));
+    //       this.form.patchValue(user);
+    //     },
+    //   });
+    // }
   }
 
   ngOnInit(): void {
-    console.log(this.rootFormGroup.control.value);
     this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
   }
 

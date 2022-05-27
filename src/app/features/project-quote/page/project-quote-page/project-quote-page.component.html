@@ -20,7 +20,6 @@
             <mat-form-field appearance="outline">
               <mat-label>Tipo de servicio</mat-label>
               <mat-select [formControl]="templateControl" [compareWith]="compareObjects">
-                <mat-option>Ninguna</mat-option>
                 <mat-option *ngFor="let template of templates; index as i" [value]="template">
                   {{ template.name }}
                 </mat-option>
@@ -165,7 +164,9 @@
 
         <mat-action-row>
           <button mat-button color="warn" (click)="goToFormFill()">Atras</button>
-          <button mat-button color="primary" (click)="saveQuote()">Guardar</button>
+          <button mat-button color="primary" (click)="isEdit ? updateQuote() : saveQuote()">
+            Guardar
+          </button>
         </mat-action-row>
       </mat-expansion-panel>
     </mat-accordion>

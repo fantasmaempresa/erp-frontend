@@ -103,7 +103,7 @@ export class ProjectQuoteListComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   async edit() {
-    await this.router.navigate([`../quote-status`], {
+    await this.router.navigate([`../quote`], {
       queryParams: { id: this.selection.selected[0].id },
       relativeTo: this.route,
     });
