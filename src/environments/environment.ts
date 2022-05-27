@@ -5,8 +5,8 @@
 export const environment = {
   production: false,
   base_url: 'http://174.138.49.219:8080/api',
-  client_id: '9636a59c-f693-4728-82fc-1f8a821e6af2',
-  client_secret: 'EjUqrhHdE1Hp3WQBZRz5UTRu9qNBJ3YI8UVgRa6W',
+  client_id: '966518ab-d828-408f-a5e9-80ddd4dcd28b',
+  client_secret: 'rH6LzvSZpmuw7FaclVEirZts7n5Vd8LTawt7XLMo',
   grant_type: 'password',
   mix_pusher_app_key: '1234567',
   mix_pusher_app_cluster: 'mt1',
