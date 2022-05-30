@@ -8,7 +8,7 @@
   </mat-toolbar>
   <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
     <mat-accordion>
-      <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)" hideToggle>
+      <mat-expansion-panel (opened)="setStep(0)" [expanded]="step === 0" hideToggle>
         <mat-expansion-panel-header>
           <mat-panel-title>Datos Generales</mat-panel-title>
           <mat-panel-description>Nombre, Descripción del Proceso</mat-panel-description>
@@ -17,7 +17,7 @@
         <div class="d-flex flex-column form-container">
           <mat-form-field appearance="outline">
             <mat-label>Nombre del Proceso</mat-label>
-            <input formControlName="name" matInput type="text"/>
+            <input formControlName="name" matInput type="text" />
             <mat-error appErrorMessage></mat-error>
           </mat-form-field>
 
@@ -28,25 +28,25 @@
           </mat-form-field>
         </div>
         <mat-action-row>
-          <button type="button" mat-button color="primary" (click)="nextStep()">
+          <button (click)="nextStep()" color="primary" mat-button type="button">
             Asignación de Fases
           </button>
         </mat-action-row>
       </mat-expansion-panel>
-      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" hideToggle>
+      <mat-expansion-panel (opened)="setStep(1)" [expanded]="step === 1" hideToggle>
         <mat-expansion-panel-header>
           <mat-panel-title>Asignación de Fases</mat-panel-title>
           <mat-panel-description>Configure el flujo de las fases</mat-panel-description>
         </mat-expansion-panel-header>
 
         <app-build-process formControlName="config"></app-build-process>
-        {{form.get('config')?.value | json}}
+        <!--        {{form.get('config')?.value | json}}-->
 
         <mat-action-row>
-          <button type="button" mat-button color="primary" (click)="prevStep()">
+          <button (click)="prevStep()" color="primary" mat-button type="button">
             Datos Generales
           </button>
-          <button type="submit" mat-flat-button color="primary">Guardar Proceso</button>
+          <button color="primary" mat-flat-button type="submit">Guardar Proceso</button>
         </mat-action-row>
       </mat-expansion-panel>
     </mat-accordion>
