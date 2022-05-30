@@ -1,0 +1,43 @@
+<div class="build-project">
+  <button
+    (click)="openDialog()"
+    class="build-project__dialog-button"
+    color="primary"
+    mat-flat-button
+    type="button"
+  >
+    Seleccionar Procesos
+  </button>
+
+  <div class="build-project-container">
+    <ng-container *ngIf="processes.length > 0; else containerPlaceholder">
+      <div *ngFor="let process of processes; let i = index" class="process">
+        <div class="process__header">
+          {{ process.name }}
+          <span class="process__header-description">{{ process.description }}</span>
+        </div>
+        <div *ngIf="process.config.order_phases as phases" class="process__body">
+          {{ phases | json }}
+          <div *ngFor="let processPhase of $any(phases)" class="process-phase">
+            <ng-container *ngIf="processPhase | mapTo: mapProcess | async as phase">
+              <div class="process-phase__name">
+                {{ $any(phase).name }}
+              </div>
+            </ng-container>
+            <div class="process-phase__involved">
+              <mat-radio-group aria-label="Selecciona Rol o usuarios">
+                <mat-radio-button value="true">Rol</mat-radio-button>
+                <mat-radio-button value="false">Usuarios</mat-radio-button>
+              </mat-radio-group>
+              {{ processPhase | json }}
+              <!--              <mat-checkbox color="primary">¿Supervisión Obligatoria?</mat-checkbox>-->
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <ng-template #containerPlaceholder>
+      <div class="build-project__placeholder">Selecciona los procesos</div>
+    </ng-template>
+  </div>
+</div>

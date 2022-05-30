@@ -1,0 +1,82 @@
+.build-project {
+  padding: 2rem;
+  background: var(--glassColor-200);
+  border-radius: 8px;
+  margin-bottom: 2rem;
+
+  &__dialog-button {
+    margin-bottom: 2rem;
+  }
+
+  &-container {
+    display: flex;
+    padding: 1rem;
+    flex-direction: column;
+    min-height: 15rem;
+    border: 3px solid var(--textColor-400);
+    border-radius: 12px;
+  }
+
+  &__placeholder {
+    display: flex;
+    min-height: 15rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 16px;
+    font-size: 3.5rem;
+    color: var(--primaryColor);
+    background: rgba(0, 0, 0, 0.3);
+  }
+
+}
+
+.process {
+  background: rgba(0, 0, 0, .33);
+  min-height: 15rem;
+  padding: 1rem;
+  border-radius: 4px;
+
+  &:not(:last-of-type) {
+    margin-bottom: 2rem;
+  }
+
+  &__header {
+    font-size: var(--text-500);
+    color: var(--textColor-100);
+    font-weight: 600;
+    padding-left: 0.5rem;
+    margin-bottom: 2.5rem;
+
+    &-description {
+      display: block;
+      color: var(--textColor-400);
+      font-size: var(--text-300);
+    }
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: column;
+    min-height: 10rem;
+  }
+}
+
+.process-phase {
+  background: var(--glassColor-300);
+  border-radius: 8px;
+  min-height: 6rem;
+  padding: 1rem;
+
+  &:not(:last-child) {
+    margin-bottom: .5rem;
+  }
+
+  &__name {
+    color: var(--textColor-200);
+    margin-bottom: 1.25rem;
+  }
+
+  &__involved {
+    background: #000;
+  }
+}
