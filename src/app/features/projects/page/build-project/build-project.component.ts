@@ -47,10 +47,6 @@ export class BuildProjectComponent implements ControlValueAccessor {
 
   involvedFormArray = new FormArray([]);
 
-  form = new FormGroup({
-    order_phases: this.involvedFormArray,
-  });
-
   processes: any[] = [];
 
   mapProcess = (process: any): Observable<ProcessPhase> =>
@@ -108,11 +104,30 @@ export class BuildProjectComponent implements ControlValueAccessor {
   }
 
   private buildInvolvedFormArray() {
+    this.involvedFormArray.clear();
     for (let i = 0; i < this.processes.length; i++) {
       this.involvedFormArray.push(
         new FormGroup({
-          supervisor: new FormControl(),
-          team: new FormControl(),
+          supervision: new FormGroup({
+            rol: new FormGroup({
+              group: new FormControl(),
+              mandatory: new FormControl(),
+            }),
+            user: new FormGroup({
+              group: new FormControl(),
+              mandatory: new FormControl(),
+            }),
+          }),
+          work_group: new FormGroup({
+            rol: new FormGroup({
+              group: new FormControl(),
+              mandatory: new FormControl(),
+            }),
+            user: new FormGroup({
+              group: new FormControl(),
+              mandatory: new FormControl(),
+            }),
+          }),
         }),
       );
     }
