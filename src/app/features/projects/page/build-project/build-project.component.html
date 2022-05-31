@@ -17,7 +17,6 @@
           <span class="process__header-description">{{ process.description }}</span>
         </div>
         <div *ngIf="process.config.order_phases as phases" class="process__body">
-          {{ phases | json }}
           <div *ngFor="let processPhase of $any(phases)" class="process-phase">
             <ng-container *ngIf="processPhase | mapTo: mapProcess | async as phase">
               <div class="process-phase__name">
@@ -25,12 +24,32 @@
               </div>
             </ng-container>
             <div class="process-phase__involved">
-              <mat-radio-group aria-label="Selecciona Rol o usuarios">
-                <mat-radio-button value="true">Rol</mat-radio-button>
-                <mat-radio-button value="false">Usuarios</mat-radio-button>
-              </mat-radio-group>
+              <div class="process-phase__groups">
+                <span class="process-phase__groups-title">Supervisores</span>
+                <div class="process-phase__container">
+                  <app-generic-autocomplete-chip
+                    [allData]="processPhase.involved.supervisor | mapTo: roleGroup | async"
+                    [mapFn]="nameMapFn"
+                    label="Roles"
+                    placeholder="¿Que roles revisaran el proyecto?"
+                  ></app-generic-autocomplete-chip>
+                  <div class="process-phase__config">
+                    <div class="process-phase__config-row">
+                      <span class="process-phase__config-name">Nombre</span>
+                      <mat-checkbox color="primary">¿Supervisión Obligatoria?</mat-checkbox>
+                    </div>
+                  </div>
+                </div>
+                <div class="process-phase__container">
+                  <app-generic-autocomplete-chip
+                    [allData]="processPhase.involved.supervisor | mapTo: userGroup | async"
+                    [mapFn]="nameMapFn"
+                    label="Usuarios"
+                    placeholder="¿Que usuarios revisaran el proyecto?"
+                  ></app-generic-autocomplete-chip>
+                </div>
+              </div>
               {{ processPhase | json }}
-              <!--              <mat-checkbox color="primary">¿Supervisión Obligatoria?</mat-checkbox>-->
             </div>
           </div>
         </div>

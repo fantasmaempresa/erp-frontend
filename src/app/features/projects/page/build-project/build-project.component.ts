@@ -14,12 +14,13 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { PopupMultiSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-multi-selector/popup-multi-selector.component';
-import { Observable, shareReplay, take } from 'rxjs';
+import { forkJoin, map, Observable, shareReplay, take } from 'rxjs';
 import { Process } from '../../../../data/models/Process.model';
 import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
 import { selectProcess } from '../../../../state/process/process.selector';
 import { ProcessPhaseService } from '../../../../data/services/process-phase.service';
 import { ProcessPhase } from '../../../../data/models/ProcessPhase.model';
+import { RoleService } from '../../../../data/services/role.service';
 
 @Component({
   selector: 'app-build-project',
@@ -34,7 +35,11 @@ import { ProcessPhase } from '../../../../data/models/ProcessPhase.model';
   ],
 })
 export class BuildProjectComponent implements ControlValueAccessor {
-  constructor(private dialog: MatDialog, private processPhaseService: ProcessPhaseService) {}
+  constructor(
+    private dialog: MatDialog,
+    private processPhaseService: ProcessPhaseService,
+    private roleService: RoleService,
+  ) {}
 
   onChange = (_: any) => {};
 
@@ -50,6 +55,20 @@ export class BuildProjectComponent implements ControlValueAccessor {
 
   mapProcess = (process: any): Observable<ProcessPhase> =>
     this.processPhaseService.fetch(process.phase.id).pipe(shareReplay());
+
+  nameMapFn = (value: any) => value.name;
+
+  roleGroup = (groupArray: any[]) => {
+    const group$ = groupArray.map(({ id }) => this.roleService.fetch(id));
+    return forkJoin(group$).pipe(shareReplay());
+  };
+
+  userGroup = (groupArray: any[]) =>
+    this.roleGroup(groupArray).pipe(
+      map((roles: any[]) =>
+        roles.map((rol) => rol.user).reduce((prev, curr) => [...prev, ...curr], []),
+      ),
+    );
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
