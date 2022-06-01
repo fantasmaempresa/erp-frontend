@@ -9,47 +9,70 @@
     Seleccionar Procesos
   </button>
 
-  <div class="build-project-container">
+  <div [formGroup]="form" class="build-project-container">
     <ng-container *ngIf="processes.length > 0; else containerPlaceholder">
       <div *ngFor="let process of processes; let i = index" class="process">
         <div class="process__header">
           {{ process.name }}
           <span class="process__header-description">{{ process.description }}</span>
         </div>
-        <div *ngIf="process.config.order_phases as phases" class="process__body">
-          <div *ngFor="let processPhase of $any(phases)" class="process-phase">
+        <div
+          *ngIf="process.config.order_phases as phases"
+          class="process__body"
+          formArrayName="involved"
+        >
+          <div
+            *ngFor="let processPhase of $any(phases); let j = index"
+            class="process-phase"
+            formGroupName="{{ i }}"
+          >
             <ng-container *ngIf="processPhase | mapTo: mapProcess | async as phase">
               <div class="process-phase__name">
                 {{ $any(phase).name }}
               </div>
             </ng-container>
-            <div class="process-phase__involved">
-              <div class="process-phase__groups">
-                <span class="process-phase__groups-title">Supervisores</span>
-                <div class="process-phase__container">
-                  <app-generic-autocomplete-chip
-                    [allData]="processPhase.involved.supervisor | mapTo: roleGroup | async"
-                    [mapFn]="nameMapFn"
-                    label="Roles"
-                    placeholder="¿Que roles revisaran el proyecto?"
-                  ></app-generic-autocomplete-chip>
-                  <div class="process-phase__config">
-                    <div class="process-phase__config-row">
-                      <span class="process-phase__config-name">Nombre</span>
-                      <mat-checkbox color="primary">¿Supervisión Obligatoria?</mat-checkbox>
+            <div class="process-phase__involved" formArrayName="phases">
+              <ng-container formGroupName="{{ j }}">
+                <div class="process-phase__groups">
+                  <span class="process-phase__groups-title">Supervisores</span>
+                  <div class="process-phase__container">
+                    <div class="process-phase__config">
+                      <div
+                        *ngFor="
+                          let role of processPhase.involved.supervisor | mapTo: roleGroup | async
+                        "
+                        class="process-phase__config-row"
+                      >
+                        <span class="process-phase__config-name">{{ role?.name }}</span>
+                        <mat-checkbox color="primary">¿Supervisión Obligatoria?</mat-checkbox>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="process-phase__container">
+                    <app-generic-autocomplete-chip
+                      [allData]="processPhase.involved.supervisor | mapTo: userGroup | async"
+                      [mapFn]="nameMapFn"
+                      formControlName="supervisor_reference"
+                      label="Usuarios"
+                      placeholder="¿Que usuarios revisaran el proyecto?"
+                    ></app-generic-autocomplete-chip>
+                    <div class="process-phase__config">
+                      <div
+                        *ngFor="
+                          let user of $any(involvedFormArray.controls[i].get('phases')).controls[
+                            j
+                          ].get('supervisor_reference').valueChanges | mapTo: users
+                        "
+                        class="process-phase__config-row"
+                      >
+                        <span class="process-phase__config-name"> {{ user.name }}</span>
+                        <mat-checkbox color="primary">¿Supervisión Obligatoria?</mat-checkbox>
+                        <!--                      {{ k + $any(autocomplete?.allData?.length) - 1 }}-->
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div class="process-phase__container">
-                  <app-generic-autocomplete-chip
-                    [allData]="processPhase.involved.supervisor | mapTo: userGroup | async"
-                    [mapFn]="nameMapFn"
-                    label="Usuarios"
-                    placeholder="¿Que usuarios revisaran el proyecto?"
-                  ></app-generic-autocomplete-chip>
-                </div>
-              </div>
-              {{ involvedFormArray.value | json }}
+              </ng-container>
             </div>
           </div>
         </div>

@@ -92,6 +92,7 @@
     position: relative;
     display: flex;
     column-gap: 2rem;
+    padding-top: 2rem;
 
     &-title {
       position: absolute;
@@ -106,9 +107,15 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    justify-content: flex-end;
 
     & > * {
       width: 100%;
+    }
+
+    & app-generic-autocomplete-chip {
+      margin-top: -2rem;
+      margin-bottom: auto;
     }
   }
 
@@ -122,7 +129,7 @@
       row-gap: 1rem;
       align-items: center;
       padding: 1rem 1.5rem;
-      min-height: 4rem;
+      min-height: 5rem;
       border-radius: 4px;
       color: var(--textColor-800);
       background: var(--glassColor-300);

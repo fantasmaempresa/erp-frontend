@@ -14,7 +14,7 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { PopupMultiSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-multi-selector/popup-multi-selector.component';
-import { forkJoin, map, Observable, shareReplay, take } from 'rxjs';
+import { forkJoin, map, Observable, shareReplay, take, tap } from 'rxjs';
 import { Process } from '../../../../data/models/Process.model';
 import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
 import { selectProcess } from '../../../../state/process/process.selector';
@@ -47,6 +47,8 @@ export class BuildProjectComponent implements ControlValueAccessor {
 
   involvedFormArray = new FormArray([]);
 
+  form = new FormGroup({ involved: this.involvedFormArray });
+
   processes: any[] = [];
 
   mapProcess = (process: any): Observable<ProcessPhase> =>
@@ -65,6 +67,32 @@ export class BuildProjectComponent implements ControlValueAccessor {
         roles.map((rol) => rol.user).reduce((prev, curr) => [...prev, ...curr], []),
       ),
     );
+
+  users = (users$: Observable<any[]>, [size, i, j]: [number, number, number]) => {
+    return users$.pipe(
+      tap((users) => {
+        console.log(users, size, i, j);
+        if (size) {
+          const phasesArray = (this.form.get('involved') as FormArray).controls[i].get(
+            'phases',
+          ) as FormArray;
+          const teamArray = (phasesArray.controls[j] as FormGroup).get('supervisor') as FormArray;
+          console.log(teamArray);
+          for (let index = 0; index < teamArray.controls.length; index++) {
+            if (index >= size) {
+              teamArray.removeAt(index);
+            }
+          }
+          for (const user of users) {
+            teamArray.push(
+              this.createMandatoryConfig('mandatory_supervision', { id: user.id, user: true }),
+            );
+          }
+          console.log(teamArray);
+        }
+      }),
+    );
+  };
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -98,38 +126,62 @@ export class BuildProjectComponent implements ControlValueAccessor {
       .afterClosed()
       .pipe(take(1))
       .subscribe((processes: any[]) => {
+        this.buildInvolvedFormArray(processes);
         this.processes = processes;
-        this.buildInvolvedFormArray();
       });
   }
 
-  private buildInvolvedFormArray() {
+  private buildInvolvedFormArray(processes: any[]) {
     this.involvedFormArray.clear();
-    for (let i = 0; i < this.processes.length; i++) {
+    for (const process of processes) {
       this.involvedFormArray.push(
         new FormGroup({
-          supervision: new FormGroup({
-            rol: new FormGroup({
-              group: new FormControl(),
-              mandatory: new FormControl(),
-            }),
-            user: new FormGroup({
-              group: new FormControl(),
-              mandatory: new FormControl(),
-            }),
-          }),
-          work_group: new FormGroup({
-            rol: new FormGroup({
-              group: new FormControl(),
-              mandatory: new FormControl(),
-            }),
-            user: new FormGroup({
-              group: new FormControl(),
-              mandatory: new FormControl(),
-            }),
-          }),
+          process: new FormControl({ id: process.id }),
+          phases: new FormArray([]),
         }),
       );
+      for (const phase of process.config.order_phases) {
+        const phasesArrayControl = this.involvedFormArray
+          .at(this.involvedFormArray.length - 1)
+          .get('phases') as FormArray;
+        phasesArrayControl.push(
+          new FormGroup({
+            phase: new FormControl({ id: phase.phase.id }),
+            supervisor_reference: new FormControl(),
+            supervisor: new FormArray([
+              ...phase.involved.supervisor.map(({ id }: { id: number }) =>
+                this.createMandatoryConfig('mandatory_supervision', {
+                  id,
+                  user: false,
+                }),
+              ),
+            ]),
+            work_reference: new FormControl(),
+            work_group: new FormArray([
+              ...phase.involved.work_group.map(({ id }: { id: number }) =>
+                this.createMandatoryConfig('mandatory_work', {
+                  id,
+                  user: false,
+                }),
+              ),
+            ]),
+          }),
+        );
+      }
     }
+  }
+
+  private createMandatoryConfig(
+    keyType: 'mandatory_supervision' | 'mandatory_work',
+    { id, user } = {
+      id: 0,
+      user: false,
+    },
+  ) {
+    return new FormGroup({
+      id: new FormControl(id),
+      [keyType]: new FormControl(false),
+      user: new FormControl(user),
+    });
   }
 }
