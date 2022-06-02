@@ -1,25 +1,25 @@
 <div
-  class="custom-container"
   [class.custom-container--invalid]="ngControl?.touched && ngControl.control?.invalid"
+  class="custom-container"
 >
-  <mat-form-field appearance="outline" class="custom-control" appChipListAutocompleteFix>
+  <mat-form-field appChipListAutocompleteFix appearance="outline" class="custom-control">
     <mat-label>{{ label }}</mat-label>
     <mat-chip-list #chipList>
-      <mat-chip *ngFor="let item of data" (removed)="remove(item)">
+      <mat-chip (removed)="remove(item)" *ngFor="let item of data">
         {{ item | mapTo: mapFn }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>
       </mat-chip>
       <input
-        [placeholder]="placeholder"
         #chipInput
+        (blur)="onTouch()"
         (input)="valueChange()"
-        (blur)="valueChange()"
+        (matChipInputTokenEnd)="add($event)"
         [matAutocomplete]="auto"
         [matChipInputFor]="chipList"
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-        (matChipInputTokenEnd)="add($event)"
+        [placeholder]="placeholder"
       />
     </mat-chip-list>
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">

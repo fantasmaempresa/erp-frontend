@@ -14,7 +14,7 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { PopupMultiSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-multi-selector/popup-multi-selector.component';
-import { forkJoin, map, Observable, shareReplay, take, tap } from 'rxjs';
+import { debounceTime, forkJoin, map, Observable, shareReplay, take, tap } from 'rxjs';
 import { Process } from '../../../../data/models/Process.model';
 import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
 import { selectProcess } from '../../../../state/process/process.selector';
@@ -84,27 +84,34 @@ export class BuildProjectComponent implements ControlValueAccessor {
 
   users = (users$: Observable<any[]>, [size, i, j]: [number, number, number]) => {
     return users$.pipe(
+      debounceTime(100),
       tap((users) => {
-        console.log(users, size, i, j);
         if (size) {
           const phasesArray = (this.form.get('involved') as FormArray).controls[i].get(
             'phases',
           ) as FormArray;
           const teamArray = (phasesArray.controls[j] as FormGroup).get('supervisor') as FormArray;
-          for (let index = 0; index < teamArray.controls.length; index++) {
+          const length = teamArray.controls.length;
+          for (let index = 0; index < length; index++) {
+            console.log({ users, size, index });
             if (index >= size) {
+              console.log('Eliminado', { size, index });
               teamArray.removeAt(index);
             }
           }
-          for (const user of users) {
-            teamArray.push(
-              BuildProjectComponent.createMandatoryConfig('mandatory_supervision', {
-                id: user.id,
-                user: true,
-              }),
-            );
+          console.log('Limpiados', teamArray.value);
+          if (users) {
+            for (const user of users) {
+              console.log({ user });
+              teamArray.push(
+                BuildProjectComponent.createMandatoryConfig('mandatory_supervision', {
+                  id: user.id,
+                  user: true,
+                }),
+              );
+            }
           }
-          // console.log(teamArray);
+          console.log('ArrayActual', teamArray.value);
         }
       }),
     );
