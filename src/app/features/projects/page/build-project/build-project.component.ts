@@ -35,21 +35,35 @@ import { RoleService } from '../../../../data/services/role.service';
   ],
 })
 export class BuildProjectComponent implements ControlValueAccessor {
+  involvedFormArray = new FormArray([]);
+
+  form = new FormGroup({ involved: this.involvedFormArray });
+
+  processes: any[] = [];
+
   constructor(
     private dialog: MatDialog,
     private processPhaseService: ProcessPhaseService,
     private roleService: RoleService,
   ) {}
 
+  private static createMandatoryConfig(
+    keyType: 'mandatory_supervision' | 'mandatory_work',
+    { id, user } = {
+      id: 0,
+      user: false,
+    },
+  ) {
+    return new FormGroup({
+      id: new FormControl(id),
+      [keyType]: new FormControl(false),
+      user: new FormControl(user),
+    });
+  }
+
   onChange = (_: any) => {};
 
   onTouch = () => {};
-
-  involvedFormArray = new FormArray([]);
-
-  form = new FormGroup({ involved: this.involvedFormArray });
-
-  processes: any[] = [];
 
   mapProcess = (process: any): Observable<ProcessPhase> =>
     this.processPhaseService.fetch(process.phase.id).pipe(shareReplay());
@@ -77,7 +91,6 @@ export class BuildProjectComponent implements ControlValueAccessor {
             'phases',
           ) as FormArray;
           const teamArray = (phasesArray.controls[j] as FormGroup).get('supervisor') as FormArray;
-          console.log(teamArray);
           for (let index = 0; index < teamArray.controls.length; index++) {
             if (index >= size) {
               teamArray.removeAt(index);
@@ -85,10 +98,13 @@ export class BuildProjectComponent implements ControlValueAccessor {
           }
           for (const user of users) {
             teamArray.push(
-              this.createMandatoryConfig('mandatory_supervision', { id: user.id, user: true }),
+              BuildProjectComponent.createMandatoryConfig('mandatory_supervision', {
+                id: user.id,
+                user: true,
+              }),
             );
           }
-          console.log(teamArray);
+          // console.log(teamArray);
         }
       }),
     );
@@ -150,7 +166,7 @@ export class BuildProjectComponent implements ControlValueAccessor {
             supervisor_reference: new FormControl(),
             supervisor: new FormArray([
               ...phase.involved.supervisor.map(({ id }: { id: number }) =>
-                this.createMandatoryConfig('mandatory_supervision', {
+                BuildProjectComponent.createMandatoryConfig('mandatory_supervision', {
                   id,
                   user: false,
                 }),
@@ -159,7 +175,7 @@ export class BuildProjectComponent implements ControlValueAccessor {
             work_reference: new FormControl(),
             work_group: new FormArray([
               ...phase.involved.work_group.map(({ id }: { id: number }) =>
-                this.createMandatoryConfig('mandatory_work', {
+                BuildProjectComponent.createMandatoryConfig('mandatory_work', {
                   id,
                   user: false,
                 }),
@@ -169,19 +185,5 @@ export class BuildProjectComponent implements ControlValueAccessor {
         );
       }
     }
-  }
-
-  private createMandatoryConfig(
-    keyType: 'mandatory_supervision' | 'mandatory_work',
-    { id, user } = {
-      id: 0,
-      user: false,
-    },
-  ) {
-    return new FormGroup({
-      id: new FormControl(id),
-      [keyType]: new FormControl(false),
-      user: new FormControl(user),
-    });
   }
 }

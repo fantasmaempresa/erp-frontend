@@ -61,7 +61,14 @@
                         *ngFor="
                           let user of $any(involvedFormArray.controls[i].get('phases')).controls[
                             j
-                          ].get('supervisor_reference').valueChanges | mapTo: users
+                          ].get('supervisor_reference').valueChanges
+                            | mapTo
+                              : users
+                              : $any(processPhase.involved.supervisor | mapTo: roleGroup | async)
+                                  ?.length
+                              : i
+                              : j
+                            | async
                         "
                         class="process-phase__config-row"
                       >
