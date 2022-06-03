@@ -118,11 +118,7 @@ export class GenericAutocompleteChipComponent implements ControlValueAccessor, O
 
   private excludeLoadedChips(): any {
     return this.allData?.filter(
-      (item) =>
-        !this.data.some((data) => {
-          console.log(this.mapFn(item), this.mapFn(data));
-          return this.mapFn(item) === this.mapFn(data);
-        }),
+      (item) => !this.data.some((data) => this.mapFn(item) === this.mapFn(data)),
     );
   }
 
