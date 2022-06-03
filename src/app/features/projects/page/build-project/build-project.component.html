@@ -69,12 +69,22 @@
                             j
                           ].get('supervisor_reference').valueChanges
                             | mapTo: users:i:j
-                            | async
+                            | async;
+                          let k = index
                         "
                         class="process-phase__config-row"
+                        formGroupName="supervisor"
                       >
-                        <span class="process-phase__config-name"> {{ user.name }}</span>
-                        <mat-checkbox color="primary">¿Supervisión Obligatoria?</mat-checkbox>
+                        <ng-container
+                          [formGroupName]="k + $any(processPhase.involved.supervisor)?.length"
+                        >
+                          {{ k + $any(processPhase.involved.supervisor)?.length }}
+                          <br />
+                          <span class="process-phase__config-name"> {{ user.name }}</span>
+                          <mat-checkbox color="primary" formControlName="mandatory_supervision"
+                            >¿Supervisión Obligatoria?
+                          </mat-checkbox>
+                        </ng-container>
                         <!--                      {{ k + $any(autocomplete?.allData?.length) - 1 }}-->
                       </div>
                       <div style="display: block">

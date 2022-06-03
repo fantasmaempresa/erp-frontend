@@ -14,7 +14,7 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { PopupMultiSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-multi-selector/popup-multi-selector.component';
-import { debounceTime, forkJoin, map, Observable, shareReplay, take, tap } from 'rxjs';
+import { forkJoin, map, Observable, shareReplay, take, tap } from 'rxjs';
 import { Process } from '../../../../data/models/Process.model';
 import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
 import { selectProcess } from '../../../../state/process/process.selector';
@@ -84,7 +84,6 @@ export class BuildProjectComponent implements ControlValueAccessor {
 
   users = (users$: Observable<any[]>, [i, j]: [number, number]) => {
     return users$.pipe(
-      debounceTime(100),
       tap((users) => {
         console.count('Comienza');
         const phasesArray = (this.form.get('involved') as FormArray).controls[i].get(
@@ -93,7 +92,7 @@ export class BuildProjectComponent implements ControlValueAccessor {
         const teamArray = (phasesArray.controls[j] as FormGroup).get('supervisor') as FormArray;
         const auxControls = teamArray.controls.filter((ctrl) => !ctrl.value.user);
         teamArray.clear();
-        teamArray.controls = [...auxControls];
+        teamArray.controls = auxControls;
         teamArray.setValue([...auxControls.map((ctrl) => ctrl.value)]);
 
         if (users) {
@@ -108,8 +107,8 @@ export class BuildProjectComponent implements ControlValueAccessor {
           }
         }
         console.log('ArrayActual', teamArray.value);
+        console.log(teamArray.controls);
       }),
-      debounceTime(100),
     );
   };
 
