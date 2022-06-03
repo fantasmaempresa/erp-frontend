@@ -22,7 +22,11 @@
         [placeholder]="placeholder"
       />
     </mat-chip-list>
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="selected($event)"
+      autoActiveFirstOption
+    >
       <mat-option *ngFor="let item of filteredData | async" [value]="item">
         {{ item | mapTo: mapFn }}
       </mat-option>

@@ -83,7 +83,7 @@ export class GenericAutocompleteChipComponent implements ControlValueAccessor, O
   writeValue(value: any): void {
     if (value) {
       this.data = [...value];
-      this.valueChange();
+      this.notifyValue();
     }
   }
 
@@ -101,13 +101,12 @@ export class GenericAutocompleteChipComponent implements ControlValueAccessor, O
     if (index >= 0) {
       this.data.splice(index, 1);
     }
-    this.valueChange();
+    this.notifyValue();
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
     this.data.push(event.option.value);
-    this.input.nativeElement.value = '';
-    this.valueChange();
+    this.notifyValue();
   }
 
   private _filter(value: any): any[] {
@@ -126,6 +125,9 @@ export class GenericAutocompleteChipComponent implements ControlValueAccessor, O
   valueChange() {
     const value = this.input.nativeElement.value;
     this.subject$.next(value);
+  }
+
+  private notifyValue() {
     if (this.data.length > 0) {
       this.onChange(this.data);
     } else {
