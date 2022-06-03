@@ -39,12 +39,18 @@
                     <div class="process-phase__config">
                       <div
                         *ngFor="
-                          let role of processPhase.involved.supervisor | mapTo: roleGroup | async
+                          let role of processPhase.involved.supervisor | mapTo: roleGroup | async;
+                          let k = index
                         "
                         class="process-phase__config-row"
+                        formGroupName="supervisor"
                       >
-                        <span class="process-phase__config-name">{{ role?.name }}</span>
-                        <mat-checkbox color="primary">¿Supervisión Obligatoria?</mat-checkbox>
+                        <ng-container formGroupName="{{ k }}"
+                          ><span class="process-phase__config-name">{{ role?.name }}</span>
+                          <mat-checkbox color="primary" formControlName="mandatory_supervision"
+                            >¿Supervisión Obligatoria?
+                          </mat-checkbox>
+                        </ng-container>
                       </div>
                     </div>
                   </div>
@@ -62,12 +68,7 @@
                           let user of $any(involvedFormArray.controls[i].get('phases')).controls[
                             j
                           ].get('supervisor_reference').valueChanges
-                            | mapTo
-                              : users
-                              : $any(processPhase.involved.supervisor | mapTo: roleGroup | async)
-                                  ?.length
-                              : i
-                              : j
+                            | mapTo: users:i:j
                             | async
                         "
                         class="process-phase__config-row"
@@ -75,6 +76,13 @@
                         <span class="process-phase__config-name"> {{ user.name }}</span>
                         <mat-checkbox color="primary">¿Supervisión Obligatoria?</mat-checkbox>
                         <!--                      {{ k + $any(autocomplete?.allData?.length) - 1 }}-->
+                      </div>
+                      <div style="display: block">
+                        {{
+                          $any(involvedFormArray.controls[i].get('phases')).controls[j].get(
+                            'supervisor'
+                          ).value | json
+                        }}
                       </div>
                     </div>
                   </div>

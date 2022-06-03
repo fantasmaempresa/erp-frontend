@@ -82,38 +82,34 @@ export class BuildProjectComponent implements ControlValueAccessor {
       ),
     );
 
-  users = (users$: Observable<any[]>, [size, i, j]: [number, number, number]) => {
+  users = (users$: Observable<any[]>, [i, j]: [number, number]) => {
     return users$.pipe(
       debounceTime(100),
       tap((users) => {
-        if (size) {
-          const phasesArray = (this.form.get('involved') as FormArray).controls[i].get(
-            'phases',
-          ) as FormArray;
-          const teamArray = (phasesArray.controls[j] as FormGroup).get('supervisor') as FormArray;
-          const length = teamArray.controls.length;
-          for (let index = 0; index < length; index++) {
-            console.log({ users, size, index });
-            if (index >= size) {
-              console.log('Eliminado', { size, index });
-              teamArray.removeAt(index);
-            }
+        console.count('Comienza');
+        const phasesArray = (this.form.get('involved') as FormArray).controls[i].get(
+          'phases',
+        ) as FormArray;
+        const teamArray = (phasesArray.controls[j] as FormGroup).get('supervisor') as FormArray;
+        const auxControls = teamArray.controls.filter((ctrl) => !ctrl.value.user);
+        teamArray.clear();
+        teamArray.controls = [...auxControls];
+        teamArray.setValue([...auxControls.map((ctrl) => ctrl.value)]);
+
+        if (users) {
+          console.log({ users });
+          for (const user of users) {
+            teamArray.push(
+              BuildProjectComponent.createMandatoryConfig('mandatory_supervision', {
+                id: user.id,
+                user: true,
+              }),
+            );
           }
-          console.log('Limpiados', teamArray.value);
-          if (users) {
-            for (const user of users) {
-              console.log({ user });
-              teamArray.push(
-                BuildProjectComponent.createMandatoryConfig('mandatory_supervision', {
-                  id: user.id,
-                  user: true,
-                }),
-              );
-            }
-          }
-          console.log('ArrayActual', teamArray.value);
         }
+        console.log('ArrayActual', teamArray.value);
       }),
+      debounceTime(100),
     );
   };
 
