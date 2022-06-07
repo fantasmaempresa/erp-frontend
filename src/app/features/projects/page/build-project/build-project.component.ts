@@ -14,7 +14,7 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { PopupMultiSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-multi-selector/popup-multi-selector.component';
-import { forkJoin, map, Observable, shareReplay, take, tap } from 'rxjs';
+import { delay, forkJoin, map, Observable, shareReplay, take, tap } from 'rxjs';
 import { Process } from '../../../../data/models/Process.model';
 import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
 import { selectProcess } from '../../../../state/process/process.selector';
@@ -89,12 +89,10 @@ export class BuildProjectComponent implements ControlValueAccessor {
         const phasesArray = (this.form.get('involved') as FormArray).controls[i].get(
           'phases',
         ) as FormArray;
-        const teamArray = (phasesArray.controls[j] as FormGroup).get('supervisor') as FormArray;
-        const auxControls = teamArray.controls.filter((ctrl) => !ctrl.value.user);
-        teamArray.clear();
-        teamArray.controls = auxControls;
-        teamArray.setValue([...auxControls.map((ctrl) => ctrl.value)]);
 
+        const formGroup = phasesArray.controls[j] as FormGroup;
+
+        const teamArray = new FormArray([]);
         if (users) {
           console.log({ users });
           for (const user of users) {
@@ -106,9 +104,11 @@ export class BuildProjectComponent implements ControlValueAccessor {
             );
           }
         }
+        formGroup.setControl('supervisor_user', teamArray);
         console.log('ArrayActual', teamArray.value);
-        console.log(teamArray.controls);
+        console.count('Termina este pedo');
       }),
+      delay(10),
     );
   };
 
@@ -174,6 +174,7 @@ export class BuildProjectComponent implements ControlValueAccessor {
                 }),
               ),
             ]),
+            supervisor_user: new FormArray([]),
             work_reference: new FormControl(),
             work_group: new FormArray([
               ...phase.involved.work_group.map(({ id }: { id: number }) =>
@@ -183,9 +184,13 @@ export class BuildProjectComponent implements ControlValueAccessor {
                 }),
               ),
             ]),
+            work_user: new FormArray([]),
           }),
         );
       }
     }
+    this.involvedFormArray.valueChanges.subscribe((value) => {
+      console.log(value);
+    });
   }
 }

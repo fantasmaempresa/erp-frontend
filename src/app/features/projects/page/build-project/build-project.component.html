@@ -73,14 +73,10 @@
                           let k = index
                         "
                         class="process-phase__config-row"
-                        formGroupName="supervisor"
+                        formGroupName="supervisor_user"
                       >
-                        <ng-container
-                          [formGroupName]="k + $any(processPhase.involved.supervisor)?.length"
-                        >
-                          {{ k + $any(processPhase.involved.supervisor)?.length }}
-                          <br />
-                          <span class="process-phase__config-name"> {{ user.name }}</span>
+                        <ng-container formGroupName="{{ k }}">
+                          <span class="process-phase__config-name"> {{ user.name }} {{ k }}</span>
                           <mat-checkbox color="primary" formControlName="mandatory_supervision"
                             >¿Supervisión Obligatoria?
                           </mat-checkbox>
@@ -89,7 +85,7 @@
                       <div style="display: block">
                         {{
                           $any(involvedFormArray.controls[i].get('phases')).controls[j].get(
-                            'supervisor'
+                            'supervisor_user'
                           ).value | json
                         }}
                       </div>
