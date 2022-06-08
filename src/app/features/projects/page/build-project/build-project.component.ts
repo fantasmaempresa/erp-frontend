@@ -197,8 +197,5 @@ export class BuildProjectComponent implements ControlValueAccessor {
         );
       }
     }
-    this.involvedFormArray.valueChanges.subscribe((value) => {
-      console.log(value);
-    });
   }
 }

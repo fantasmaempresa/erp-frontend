@@ -10,11 +10,8 @@
 
   &-container {
     display: flex;
-    padding: 1rem;
     flex-direction: column;
     min-height: 15rem;
-    border: 3px solid var(--textColor-400);
-    border-radius: 12px;
   }
 
   &__placeholder {
