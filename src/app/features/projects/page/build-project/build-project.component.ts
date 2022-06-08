@@ -1,4 +1,4 @@
-import { Component, forwardRef, Injector } from '@angular/core';
+import { Component, forwardRef, Injector, OnDestroy } from '@angular/core';
 import {
   ControlValueAccessor,
   FormArray,
@@ -14,7 +14,7 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { PopupMultiSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-multi-selector/popup-multi-selector.component';
-import { forkJoin, map, Observable, shareReplay, take, tap } from 'rxjs';
+import { forkJoin, map, Observable, shareReplay, Subject, take, takeUntil, tap } from 'rxjs';
 import { Process } from '../../../../data/models/Process.model';
 import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
 import { selectProcess } from '../../../../state/process/process.selector';
@@ -34,18 +34,25 @@ import { RoleService } from '../../../../data/services/role.service';
     },
   ],
 })
-export class BuildProjectComponent implements ControlValueAccessor {
+export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
   involvedFormArray = new FormArray([]);
 
   form = new FormGroup({ involved: this.involvedFormArray });
 
   processes: any[] = [];
 
+  private destroy$ = new Subject<boolean>();
+
   constructor(
     private dialog: MatDialog,
     private processPhaseService: ProcessPhaseService,
     private roleService: RoleService,
-  ) {}
+  ) {
+    this.involvedFormArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
+      this.onChange(value);
+      this.onTouch();
+    });
+  }
 
   private static createMandatoryConfig(
     keyType: 'mandatory_supervision' | 'mandatory_work',
@@ -197,5 +204,10 @@ export class BuildProjectComponent implements ControlValueAccessor {
         );
       }
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.complete();
   }
 }
