@@ -90,21 +90,34 @@ export class BuildProjectComponent implements ControlValueAccessor {
           'phases',
         ) as FormArray;
 
-        const formGroup = phasesArray.controls[j] as FormGroup;
+        const teamArray = (phasesArray.controls[j] as FormGroup).get(
+          'supervisor_user',
+        ) as FormArray;
 
-        const teamArray = new FormArray([]);
         if (users) {
           console.log({ users });
-          for (const user of users) {
+          if (teamArray.length < users.length) {
+            console.log('Aumenta el tamaño');
+            const user = users[users.length - 1];
             teamArray.push(
               BuildProjectComponent.createMandatoryConfig('mandatory_supervision', {
                 id: user.id,
                 user: true,
               }),
             );
+          } else {
+            console.log('Disminuye el tamaño');
+            teamArray.removeAt(teamArray.length - 1);
           }
+          // for (const user of users) {
+          //   teamArray.push(
+          //     BuildProjectComponent.createMandatoryConfig('mandatory_supervision', {
+          //       id: user.id,
+          //       user: true,
+          //     }),
+          //   );
+          // }
         }
-        formGroup.setControl('supervisor_user', teamArray);
         console.log('ArrayActual', teamArray.value);
         console.count('Termina este pedo');
       }),
