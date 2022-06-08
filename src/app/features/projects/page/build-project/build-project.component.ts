@@ -82,23 +82,25 @@ export class BuildProjectComponent implements ControlValueAccessor {
       ),
     );
 
-  users = (users$: Observable<any[]>, [i, j]: [number, number]) => {
+  users = (users$: Observable<any[]>, [i, j, type]: [number, number, string]) => {
     return users$.pipe(
       tap((users) => {
         const phasesArray = (this.form.get('involved') as FormArray).controls[i].get(
           'phases',
         ) as FormArray;
 
-        const teamArray = (phasesArray.controls[j] as FormGroup).get(
-          'supervisor_user',
-        ) as FormArray;
+        const arrayKey = type === 'work' ? 'work_user' : 'supervisor_user';
+        console.log(arrayKey);
+        const teamArray = (phasesArray.controls[j] as FormGroup).get(arrayKey) as FormArray;
 
         if (users) {
           console.log({ users });
+          const configType = type === 'work' ? 'mandatory_work' : 'mandatory_supervision';
+
           if (teamArray.length < users.length) {
             const user = users[users.length - 1];
             teamArray.push(
-              BuildProjectComponent.createMandatoryConfig('mandatory_supervision', {
+              BuildProjectComponent.createMandatoryConfig(configType, {
                 id: user.id,
                 user: true,
               }),
