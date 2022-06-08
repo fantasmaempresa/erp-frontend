@@ -76,18 +76,11 @@
                         formGroupName="supervisor_user"
                       >
                         <ng-container formGroupName="{{ k }}">
-                          <span class="process-phase__config-name"> {{ user.name }} {{ k }}</span>
+                          <span class="process-phase__config-name"> {{ user.name }}</span>
                           <mat-checkbox color="primary" formControlName="mandatory_supervision"
                             >¿Supervisión Obligatoria?
                           </mat-checkbox>
                         </ng-container>
-                      </div>
-                      <div style="display: block">
-                        {{
-                          $any(involvedFormArray.controls[i].get('phases')).controls[j].get(
-                            'supervisor_user'
-                          ).value | json
-                        }}
                       </div>
                     </div>
                   </div>

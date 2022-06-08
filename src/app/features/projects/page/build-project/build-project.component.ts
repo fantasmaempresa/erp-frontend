@@ -14,7 +14,7 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { PopupMultiSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-multi-selector/popup-multi-selector.component';
-import { delay, forkJoin, map, Observable, shareReplay, take, tap } from 'rxjs';
+import { forkJoin, map, Observable, shareReplay, take, tap } from 'rxjs';
 import { Process } from '../../../../data/models/Process.model';
 import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
 import { selectProcess } from '../../../../state/process/process.selector';
@@ -96,7 +96,6 @@ export class BuildProjectComponent implements ControlValueAccessor {
         if (users) {
           console.log({ users });
           if (teamArray.length < users.length) {
-            console.log('Aumenta el tamaño');
             const user = users[users.length - 1];
             teamArray.push(
               BuildProjectComponent.createMandatoryConfig('mandatory_supervision', {
@@ -105,14 +104,17 @@ export class BuildProjectComponent implements ControlValueAccessor {
               }),
             );
           } else {
-            console.log('Disminuye el tamaño');
-            teamArray.removeAt(teamArray.length - 1);
+            const auxControls = teamArray.controls.filter((ctrl) =>
+              users.some((user) => user.id === ctrl.value.id),
+            );
+            teamArray.clear();
+            teamArray.controls = auxControls;
+            teamArray.updateValueAndValidity();
           }
         } else {
           teamArray.clear();
         }
       }),
-      delay(10),
     );
   };
 

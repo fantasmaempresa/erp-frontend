@@ -77,6 +77,7 @@
   }
 
   &__involved {
+
     & mat-radio-group {
       display: block;
 
@@ -92,7 +93,7 @@
     position: relative;
     display: flex;
     column-gap: 2rem;
-    padding-top: 2rem;
+    padding-top: 7.5rem;
 
     &-title {
       position: absolute;
@@ -107,15 +108,16 @@
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    min-height: 10rem;
+    position: relative;
 
     & > * {
       width: 100%;
     }
 
     & app-generic-autocomplete-chip {
-      margin-top: -2rem;
-      margin-bottom: auto;
+      position: absolute;
+      top: -11rem;
     }
   }
 
