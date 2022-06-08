@@ -85,7 +85,6 @@ export class BuildProjectComponent implements ControlValueAccessor {
   users = (users$: Observable<any[]>, [i, j]: [number, number]) => {
     return users$.pipe(
       tap((users) => {
-        console.count('Comienza');
         const phasesArray = (this.form.get('involved') as FormArray).controls[i].get(
           'phases',
         ) as FormArray;
@@ -109,17 +108,9 @@ export class BuildProjectComponent implements ControlValueAccessor {
             console.log('Disminuye el tamaño');
             teamArray.removeAt(teamArray.length - 1);
           }
-          // for (const user of users) {
-          //   teamArray.push(
-          //     BuildProjectComponent.createMandatoryConfig('mandatory_supervision', {
-          //       id: user.id,
-          //       user: true,
-          //     }),
-          //   );
-          // }
+        } else {
+          teamArray.clear();
         }
-        console.log('ArrayActual', teamArray.value);
-        console.count('Termina este pedo');
       }),
       delay(10),
     );
