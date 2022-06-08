@@ -109,7 +109,7 @@ export class MessageHelper {
       text,
       allowOutsideClick: false,
       allowEscapeKey: false,
-      onOpen() {
+      didOpen() {
         Swal.showLoading();
       },
     }).then();
