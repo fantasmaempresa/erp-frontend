@@ -14,13 +14,26 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { PopupMultiSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-multi-selector/popup-multi-selector.component';
-import { forkJoin, map, Observable, shareReplay, Subject, take, takeUntil, tap } from 'rxjs';
+import {
+  filter,
+  forkJoin,
+  map,
+  Observable,
+  shareReplay,
+  Subject,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { Process } from '../../../../data/models/Process.model';
 import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
 import { selectProcess } from '../../../../state/process/process.selector';
 import { ProcessPhaseService } from '../../../../data/services/process-phase.service';
 import { ProcessPhase } from '../../../../data/models/ProcessPhase.model';
 import { RoleService } from '../../../../data/services/role.service';
+import { Project } from '../../../../data/models/Project.model';
+import { ProcessService } from '../../../../data/services/process.service';
 
 @Component({
   selector: 'app-build-project',
@@ -46,10 +59,11 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private processPhaseService: ProcessPhaseService,
+    private processService: ProcessService,
     private roleService: RoleService,
   ) {
     this.involvedFormArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
-      this.onChange(value);
+      this.onChange(Project.mapToProcessOnChange(value));
       this.onTouch();
     });
   }
@@ -72,7 +86,7 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
 
   onTouch = () => {};
 
-  mapProcess = (process: any): Observable<ProcessPhase> =>
+  mapProcessPhase = (process: any): Observable<ProcessPhase> =>
     this.processPhaseService.fetch(process.phase.id).pipe(shareReplay());
 
   nameMapFn = (value: any) => value.name;
@@ -97,11 +111,9 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
         ) as FormArray;
 
         const arrayKey = type === 'work' ? 'work_user' : 'supervisor_user';
-        console.log(arrayKey);
         const teamArray = (phasesArray.controls[j] as FormGroup).get(arrayKey) as FormArray;
 
         if (users) {
-          console.log({ users });
           const configType = type === 'work' ? 'mandatory_work' : 'mandatory_supervision';
 
           if (teamArray.length < users.length) {
@@ -135,7 +147,37 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
     this.onTouch = fn;
   }
 
-  writeValue(obj: any) {}
+  writeValue(
+    configProcess: {
+      process: { id: number };
+      phases: { phase: { id: number }; involved: any }[];
+    }[],
+  ) {
+    if (configProcess) {
+      const requests$: Observable<Process>[] = configProcess.map(({ process: { id } }) =>
+        this.processService.fetch(id),
+      );
+      forkJoin(requests$).subscribe((processes: Process[]) => {
+        this.processes = processes;
+        this.buildInvolvedFormArray(processes);
+        console.log(processes);
+        const valueToPatch = Project.mapToProcessOnWrite(configProcess);
+        const processPhase$ = processes.map(({ config }: any) => [
+          config.order_phases.map((phase: any) => this.mapProcessPhase(phase)),
+        ]);
+        forkJoin(processPhase$)
+          .pipe(
+            switchMap((phases$) => {
+              console.log(phases$);
+              return forkJoin(phases$);
+            }),
+          )
+          .subscribe((value) => {
+            console.log(value);
+          });
+      });
+    }
+  }
 
   openDialog() {
     const inj = Injector.create({
@@ -157,8 +199,12 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
 
     dialogRef
       .afterClosed()
-      .pipe(take(1))
+      .pipe(
+        take(1),
+        filter((value: any[]) => !!value),
+      )
       .subscribe((processes: any[]) => {
+        console.log('Entra');
         this.buildInvolvedFormArray(processes);
         this.processes = processes;
       });

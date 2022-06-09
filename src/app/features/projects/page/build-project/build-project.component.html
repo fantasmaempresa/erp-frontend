@@ -26,7 +26,7 @@
             class="process-phase"
             formGroupName="{{ i }}"
           >
-            <ng-container *ngIf="processPhase | mapTo: mapProcess | async as phase">
+            <ng-container *ngIf="processPhase | mapTo: mapProcessPhase | async as phase">
               <div class="process-phase__name">
                 {{ $any(phase).name }}
               </div>
@@ -46,9 +46,9 @@
                         formGroupName="supervisor"
                       >
                         <ng-container formGroupName="{{ k }}"
-                          ><span class="process-phase__config-name">{{ role?.name }}</span>
+                        ><span class="process-phase__config-name">{{ role?.name }}</span>
                           <mat-checkbox color="primary" formControlName="mandatory_supervision"
-                            >¿Supervisión Obligatoria?
+                          >¿Supervisión Obligatoria?
                           </mat-checkbox>
                         </ng-container>
                       </div>
@@ -78,7 +78,7 @@
                         <ng-container formGroupName="{{ k }}">
                           <span class="process-phase__config-name"> {{ user.name }}</span>
                           <mat-checkbox color="primary" formControlName="mandatory_supervision"
-                            >¿Supervisión Obligatoria?
+                          >¿Supervisión Obligatoria?
                           </mat-checkbox>
                         </ng-container>
                       </div>
@@ -98,9 +98,9 @@
                         formGroupName="work_group"
                       >
                         <ng-container formGroupName="{{ k }}"
-                          ><span class="process-phase__config-name">{{ role?.name }}</span>
+                        ><span class="process-phase__config-name">{{ role?.name }}</span>
                           <mat-checkbox color="primary" formControlName="mandatory_work"
-                            >¿Supervisión Obligatoria?
+                          >¿Supervisión Obligatoria?
                           </mat-checkbox>
                         </ng-container>
                       </div>
@@ -130,7 +130,7 @@
                         <ng-container formGroupName="{{ k }}">
                           <span class="process-phase__config-name"> {{ user.name }}</span>
                           <mat-checkbox color="primary" formControlName="mandatory_work"
-                            >¿Supervisión Obligatoria?
+                          >¿Supervisión Obligatoria?
                           </mat-checkbox>
                         </ng-container>
                       </div>
@@ -147,4 +147,5 @@
       <div class="build-project__placeholder">Selecciona los procesos</div>
     </ng-template>
   </div>
+  {{ involvedFormArray.value | json }}
 </div>

@@ -17,6 +17,7 @@ import { ProcessService } from '../../../../data/services/process.service';
 import { selectProcess } from '../../../../state/process/process.selector';
 import { Process } from '../../../../data/models/Process.model';
 import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-project-form',
@@ -57,8 +58,19 @@ export class ProjectFormComponent {
       description: new FormControl(null, Validators.required),
       estimate_end_date: new FormControl(null, Validators.required),
       client_id: new FormControl(null, Validators.required),
-      processes: new FormControl(null, Validators.required),
+      config: new FormControl(null, Validators.required),
     });
+
+    const id = Number(this.route.snapshot.params.id);
+    if (!isNaN(id)) {
+      this.edit = true;
+      projectService.fetch(id).subscribe({
+        next: (project) => {
+          this.form.addControl('id', new FormControl(''));
+          this.form.patchValue(project);
+        },
+      });
+    }
   }
 
   async back() {
@@ -68,14 +80,20 @@ export class ProjectFormComponent {
   onSubmit() {
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
+    this.form.value.estimate_end_date = format(this.form.value.estimate_end_date, 'yyyy-MM-dd');
+    console.log(this.form.value.estimate_end_date);
     const request$ = this.edit
       ? this.projectService.update(this.form.value)
       : this.projectService.save(this.form.value);
     const message = `El proyecto se ha ${this.edit ? 'actualizado' : 'creado'} correctamente`;
+    MessageHelper.showLoading('Enviando al Servidor...');
     request$.subscribe({
       next: async () => {
         MessageHelper.successMessage('Éxito', message);
         await this.back();
+      },
+      error: () => {
+        MessageHelper.hide();
       },
     });
   }
