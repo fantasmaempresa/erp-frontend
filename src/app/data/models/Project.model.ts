@@ -61,24 +61,27 @@ export class Project extends EntityModel {
     });
   }
 
-  static mapToProcessOnWrite(config: any[]) {
-    return config.map(({ phases }) =>
-      phases.map(({ involved }: any) => {
+  static mapToProcessOnWrite(config: any[], processPhase: any[]) {
+    return config.map(({ phases }, i: number) => ({
+      phases: phases.map(({ involved }: any, j: number) => {
         // eslint-disable-next-line @typescript-eslint/naming-convention
         const { supervisor, work_group } = involved;
+        const { supervisor: supervisorUsers, work_group: workUsers } = processPhase[i][j];
         return {
           supervisor_reference: supervisor
             .filter(({ user }: { user: boolean }) => user)
-            .map(({ id }: { id: number }) => id),
+            .map(({ id }: { id: number }) =>
+              supervisorUsers.find((element: any) => element.id === id),
+            ),
           supervisor: supervisor.filter(({ user }: { user: boolean }) => !user),
           supervisor_user: supervisor.filter(({ user }: { user: boolean }) => user),
           work_reference: work_group
             .filter(({ user }: { user: boolean }) => user)
-            .map(({ id }: { id: number }) => id),
+            .map(({ id }: { id: number }) => workUsers.find((element: any) => element.id === id)),
           work_group: work_group.filter(({ user }: { user: boolean }) => !user),
           work_user: work_group.filter(({ user }: { user: boolean }) => user),
         };
       }),
-    );
+    }));
   }
 }

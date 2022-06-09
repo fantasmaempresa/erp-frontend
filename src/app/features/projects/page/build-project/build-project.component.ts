@@ -17,11 +17,11 @@ import { PopupMultiSelectorComponent } from '../../../../shared/components/dinam
 import {
   filter,
   forkJoin,
+  lastValueFrom,
   map,
   Observable,
   shareReplay,
   Subject,
-  switchMap,
   take,
   takeUntil,
   tap,
@@ -157,24 +157,29 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
       const requests$: Observable<Process>[] = configProcess.map(({ process: { id } }) =>
         this.processService.fetch(id),
       );
-      forkJoin(requests$).subscribe((processes: Process[]) => {
+      forkJoin(requests$).subscribe(async (processes: Process[]) => {
         this.processes = processes;
         this.buildInvolvedFormArray(processes);
-        console.log(processes);
-        const valueToPatch = Project.mapToProcessOnWrite(configProcess);
-        const processPhase$ = processes.map(({ config }: any) => [
-          config.order_phases.map((phase: any) => this.mapProcessPhase(phase)),
-        ]);
-        forkJoin(processPhase$)
-          .pipe(
-            switchMap((phases$) => {
-              console.log(phases$);
-              return forkJoin(phases$);
-            }),
-          )
-          .subscribe((value) => {
-            console.log(value);
-          });
+        const processPhase = await Promise.all(
+          processes.map(async ({ config }: any) =>
+            Promise.all(
+              config.order_phases.map(async (phase: any) => ({
+                supervisor: await lastValueFrom(this.userGroup(phase.involved.supervisor)),
+                work_group: await lastValueFrom(this.userGroup(phase.involved.work_group)),
+              })),
+            ),
+          ),
+        );
+        const valueToPatch = Project.mapToProcessOnWrite(configProcess, processPhase);
+        const references = valueToPatch.map((process) => ({
+          phases: process.phases.map((phase: any) => ({
+            supervisor_reference: phase.supervisor_reference,
+            work_reference: phase.work_reference,
+          })),
+        }));
+        this.involvedFormArray.patchValue(references);
+        this.involvedFormArray.patchValue(valueToPatch);
+        console.log('Ya se visualiza todo', valueToPatch, references);
       });
     }
   }
