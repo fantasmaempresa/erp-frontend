@@ -9,6 +9,7 @@ const DynamicFormReducer = createReducer(
       ...state,
       id: actions.id,
       name: actions.name,
+      description: actions.description,
       isEditable: true,
     });
   }),

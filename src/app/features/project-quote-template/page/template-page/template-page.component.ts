@@ -2,13 +2,14 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { FormControl, FormGroup } from '@angular/forms';
-import { selectDynamicForm } from '../../../../state/dynamic-form/dynamic-form.selector';
+import { selectDynamicFormEssentialData } from '../../../../state/dynamic-form/dynamic-form.selector';
 import { catchError, lastValueFrom, take, throwError } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import Swal from 'sweetalert2';
 import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
 import { QuoteTemplate } from '../../../../data/models/QuoteTemplate.model';
 import { emptyForm } from '../../../../state/dynamic-form/dynamic-form.actions';
+import { FormStructureService } from '../../../../data/services/form-structure.service';
 
 @Component({
   selector: 'app-template-page',
@@ -41,6 +42,7 @@ export class TemplatePageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store,
     private templateQuotesService: QuoteTemplateService,
+    private formStructureService: FormStructureService,
   ) {
     if (this.route.snapshot.queryParams.id) {
       this.isEdit = true;
@@ -80,10 +82,11 @@ export class TemplatePageComponent implements OnInit, OnDestroy {
 
   submit() {
     this.store
-      .select(selectDynamicForm)
+      .select(selectDynamicFormEssentialData)
       .pipe(take(1))
       .subscribe({
         next: (form) => {
+          console.log(form);
           if (this.isEdit) {
             this.updateTemplate(form);
           } else {

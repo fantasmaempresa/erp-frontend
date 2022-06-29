@@ -60,6 +60,7 @@ export class ProjectQuotePreviewComponent implements OnInit {
         form: data.projectQuote.quote.form,
         id: data.projectQuote.id,
         name: data.projectQuote.name,
+        description: data.projectQuote.description,
       }),
     );
   }

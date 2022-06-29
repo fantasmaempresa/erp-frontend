@@ -82,7 +82,14 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
         if (value) {
           this.headerForm.get('name')?.patchValue(value.name);
           this.store.dispatch(emptyForm());
-          this.store.dispatch(loadForm({ form: value.form, id: value.id, name: value.name }));
+          this.store.dispatch(
+            loadForm({
+              form: value.form,
+              id: value.id,
+              name: value.name,
+              description: value.description,
+            }),
+          );
         } else {
           this.store.dispatch(emptyForm());
         }
@@ -116,6 +123,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
                 form: quote.quote.form,
                 id: quote.id,
                 name: quote.name,
+                description: quote.description,
               }),
             );
             console.log(quote);

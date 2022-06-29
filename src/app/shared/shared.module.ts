@@ -24,6 +24,7 @@ import { InputImageComponent } from './components/input-image/input-image.compon
 import { InputFileComponent } from './components/input-file/input-file.component';
 import { InputCoordinateComponent } from './components/input-coordinate/input-coordinate.component';
 import { DynamicViewsModule } from './components/dinamyc-views/dynamic-views.module';
+import { OnSaveDialogComponent } from './components/dynamic-form-creation/on-save-dialog/on-save-dialog.component';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -46,6 +47,7 @@ import { DynamicViewsModule } from './components/dinamyc-views/dynamic-views.mod
     InputImageComponent,
     InputFileComponent,
     InputCoordinateComponent,
+    OnSaveDialogComponent,
   ],
   imports: [
     CommonModule,

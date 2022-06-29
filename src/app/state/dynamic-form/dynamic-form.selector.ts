@@ -6,6 +6,18 @@ export const dynamicFormSelectors = dynamicFormAdapter.getSelectors();
 
 export const selectDynamicForm = createSelector(selectFormState, dynamicFormSelectors.selectAll);
 
+export const selectDynamicFormEssentialData = createSelector(
+  selectFormState,
+  (state: DynamicFormState) => {
+    return {
+      form: dynamicFormSelectors.selectAll(state),
+      name: state.name,
+      description: state.description,
+      id: state.id,
+    };
+  },
+);
+
 export const selectDynamicFormId = createSelector(selectFormState, (state) => {
   return state.id;
 });
