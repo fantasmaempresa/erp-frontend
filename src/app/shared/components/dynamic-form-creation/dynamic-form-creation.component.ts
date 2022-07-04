@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { FormFieldClass } from '../../../core/classes/FormFieldClass';
 import { Store } from '@ngrx/store';
 import {
@@ -10,22 +10,23 @@ import {
   updateField,
 } from '../../../state/dynamic-form/dynamic-form.actions';
 import { Formfield } from '../../../data/models/Formfield.model';
-import { lastValueFrom, map, Observable } from 'rxjs';
+import { map, Observable, of, switchMap } from 'rxjs';
 import {
   selectDynamicForm,
-  selectDynamicFormId,
-  selectDynamicFormName,
+  selectDynamicFormEssentialData,
   selectErrorMessage,
   selectIsEditable,
 } from '../../../state/dynamic-form/dynamic-form.selector';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { TemplateQuotes } from '../../../data/models/TemplateQuotes.model';
-import Swal from 'sweetalert2';
 import { MessageHelper } from '../../helpers/MessageHelper';
 import { QuoteTemplateService } from '../../../data/services/quote-template.service';
 import { Update } from '@ngrx/entity';
 import { v4 as uuidv4 } from 'uuid';
 import { QuoteTemplate } from '../../../data/models/QuoteTemplate.model';
+import { FormStructureService } from '../../../data/services/form-structure.service';
+import { FormStructure } from '../../../data/models/FormStructure.model';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { OnSaveDialogComponent } from './on-save-dialog/on-save-dialog.component';
 
 @Component({
   selector: 'app-dynamic-form-creation',
@@ -33,14 +34,17 @@ import { QuoteTemplate } from '../../../data/models/QuoteTemplate.model';
   styleUrls: ['./dynamic-form-creation.component.scss'],
 })
 export class DynamicFormCreationComponent implements OnInit {
+  templateControl = new FormControl(null);
+
   @Output() formField = new EventEmitter<FormFieldClass<string>>();
 
   _template!: QuoteTemplate;
 
   @Input() set template(value: QuoteTemplate) {
     if (value) {
+      console.log(value);
       this._template = value;
-      this.templateControl.setValue(value);
+      this.templateControl.patchValue(value.form);
     }
   }
 
@@ -56,9 +60,13 @@ export class DynamicFormCreationComponent implements OnInit {
 
   templateName = '';
 
-  dynamicFormId$!: Observable<number>;
+  templateDescription = '';
 
-  dynamicFormName$!: Observable<string>;
+  dynamicFormEssentialData$!: Observable<{ id: number; name: string; description: string }>;
+
+  // dynamicFormId$!: Observable<number>;
+  //
+  // dynamicFormName$!: Observable<string>;
 
   isEditable$: Observable<boolean>;
 
@@ -101,9 +109,7 @@ export class DynamicFormCreationComponent implements OnInit {
 
   form!: FormGroup;
 
-  templateControl = new FormControl(null);
-
-  templates!: QuoteTemplate[];
+  formStructures!: FormStructure[];
 
   get f() {
     return this.form.controls;
@@ -115,13 +121,25 @@ export class DynamicFormCreationComponent implements OnInit {
 
   errorMessage$: Observable<string>;
 
-  constructor(private store: Store, private templateQuotesService: QuoteTemplateService) {
-    this.getTemplates();
+  constructor(
+    private store: Store,
+    private templateQuotesService: QuoteTemplateService,
+    private formStructureService: FormStructureService,
+    public dialog: MatDialog,
+  ) {
+    this.getFormStructures();
     this.templateControl.valueChanges.subscribe({
       next: (value) => {
         if (value) {
           this.store.dispatch(emptyForm());
-          this.store.dispatch(loadForm({ form: value.form, id: value.id, name: value.name }));
+          this.store.dispatch(
+            loadForm({
+              form: value.form,
+              id: value.id,
+              name: value.name,
+              description: value.description,
+            }),
+          );
         } else {
           this.store.dispatch(emptyForm());
           this.addTotalToTemplate();
@@ -133,11 +151,9 @@ export class DynamicFormCreationComponent implements OnInit {
     this.formFields$ = store.select(selectDynamicForm);
     this.formFields$.subscribe((data) => {
       this.formFields = data.sort((a, b) => {
-        // @ts-ignore
         if (a.order < b.order) {
           return -1;
         }
-        // @ts-ignore
         if (a.order > b.order) {
           return 1;
         }
@@ -145,16 +161,14 @@ export class DynamicFormCreationComponent implements OnInit {
       });
     });
 
-    this.dynamicFormId$ = store.select(selectDynamicFormId);
-    this.dynamicFormId$.subscribe((id) => (this.templateId = id));
-    this.dynamicFormName$ = store.select(selectDynamicFormName);
-    this.dynamicFormName$.subscribe((name) => (this.templateName = name));
+    this.dynamicFormEssentialData$ = store.select(selectDynamicFormEssentialData);
+    this.dynamicFormEssentialData$.subscribe((data) => {
+      this.templateId = data.id;
+      this.templateName = data.name;
+      this.templateDescription = data.description;
+    });
+
     this.isEditable$ = store.select(selectIsEditable);
-    // this.isEditable$.subscribe({
-    //   next: (isEditable) => {
-    //     isEditable ? this.saveMessageButtonLabel = ''
-    //   }
-    // })
   }
 
   ngOnInit(): void {
@@ -162,20 +176,20 @@ export class DynamicFormCreationComponent implements OnInit {
     this.addTotalToTemplate();
   }
 
-  getTemplates() {
-    this.templateQuotesService
+  getFormStructures() {
+    this.formStructureService
       .fetchAll()
       .pipe(
-        map((templates) => {
-          return templates.data;
+        map((formStructures) => {
+          return formStructures.data;
         }),
       )
-      .subscribe((data) => (this.templates = data));
+      .subscribe((data) => (this.formStructures = data));
   }
 
   createForm() {
     this.form = new FormGroup({
-      id: new FormControl(uuidv4()),
+      id: new FormControl(),
       controlType: new FormControl('', [Validators.required]),
       key: new FormControl(''),
       label: new FormControl('', [Validators.required]),
@@ -219,7 +233,7 @@ export class DynamicFormCreationComponent implements OnInit {
     this.store.dispatch(removeField({ payload: formField }));
   }
 
-  onSubmit() {
+  onSubmit(ngForm: FormGroupDirective) {
     this.form.markAllAsTouched();
     if (this.form.invalid) {
       return;
@@ -233,79 +247,109 @@ export class DynamicFormCreationComponent implements OnInit {
       };
       this.store.dispatch(updateField({ form: updatedField }));
     } else {
+      options.id = uuidv4();
       options.order = this.formFields.length;
       this.store.dispatch(setField({ form: options }));
     }
-    this.createForm();
+    ngForm.form.markAsPristine();
+    ngForm.resetForm();
+    // this.createForm();
+    // this.form.markAsPristine();
+    // this.form.markAsUntouched();
     this.isEdit = false;
   }
 
   saveTemplate() {
-    const template: TemplateQuotes = {
+    const template: FormStructure = {
       id: this.templateId,
       name: this.templateName,
       form: this.formFields,
+      description: this.templateDescription,
     };
+    let dialogRef: MatDialogRef<any>;
     if (this.templateId !== 0) {
-      Swal.fire({
-        title: 'Actualizar plantilla',
-        icon: 'question',
-        input: 'text',
-        inputValue: this.templateName,
-        text: 'Ponle un titulo a la plantilla',
-        confirmButtonColor: '#dfc356',
-        focusConfirm: false,
-        confirmButtonText: 'Guardar',
-        preConfirm: (name) => {
-          template.name = name;
-          let request = this.templateQuotesService.update(template);
-          return lastValueFrom(request);
+      dialogRef = this.dialog.open(OnSaveDialogComponent, {
+        width: '50vw',
+        data: {
+          title: '¿Desea actualizar la estructura de formulario?',
+          payload: {
+            name: this.templateName,
+            description: this.templateDescription,
+          },
         },
-      })
-        .then((result) => {
-          if (result.isConfirmed) {
-            MessageHelper.successMessage('Exito', 'Plantilla guardada con éxito');
-            this.getTemplates();
-          }
-        })
-        .catch(({ error }) => {
-          console.log(error);
-          MessageHelper.errorMessage(error.error);
+      });
+
+      dialogRef
+        .afterClosed()
+        .pipe(
+          switchMap((result: { name: string; description: string; isConfirmed: boolean }) => {
+            if (result.isConfirmed) {
+              template.name = result.name;
+              template.description = result.description;
+              return this.formStructureService.update(template);
+            } else {
+              return of(false);
+            }
+          }),
+        )
+        .subscribe({
+          next: (resp) => {
+            if (!resp) {
+              return;
+            }
+            MessageHelper.successMessage('Exito', 'Estructura de formulario actualizada con éxito');
+            this.getFormStructures();
+          },
+          error: ({ error }) => {
+            MessageHelper.errorMessage(error.error);
+          },
         });
     }
 
     if (this.templateId === 0) {
-      // TODO: Modificar para utilizar un dialog de angular
-      Swal.fire({
-        title: 'Guardar plantilla',
-        icon: 'question',
-        input: 'text',
-        inputValue: this.templateName,
-        text: 'Ponle un titulo a la plantilla',
-        confirmButtonColor: '#dfc356',
-        focusConfirm: false,
-        confirmButtonText: 'Guardar',
-        preConfirm: (name) => {
-          template.name = name;
-          let request = this.templateQuotesService.save(template);
-          return lastValueFrom(request);
+      dialogRef = this.dialog.open(OnSaveDialogComponent, {
+        width: '50vw',
+        data: {
+          title: '¿Desea guardar la estructura de formulario?',
         },
-      }).then((result) => {
-        if (result) {
-          MessageHelper.successMessage('Exito', 'Plantilla guardada con éxito');
-          this.getTemplates();
-        }
       });
+
+      dialogRef
+        .afterClosed()
+        .pipe(
+          switchMap((result: { name: string; description: string; isConfirmed: boolean }) => {
+            if (result.isConfirmed) {
+              template.name = result.name;
+              template.description = result.description;
+              return this.formStructureService.save(template);
+            } else {
+              return of(false);
+            }
+          }),
+        )
+        .subscribe({
+          next: (resp) => {
+            if (!resp) {
+              return;
+            }
+            MessageHelper.successMessage('Exito', 'Estructura de formulario guardada con éxito');
+            this.getFormStructures();
+          },
+          error: ({ error }) => {
+            MessageHelper.errorMessage(error.error);
+          },
+        });
     }
   }
 
   deleteTemplate() {
     MessageHelper.decisionMessage(
-      `¿Deseas borrar la plantilla ${this.templateName}?`,
+      `¿Deseas borrar la estructura de formulario ${this.templateName}?`,
       'Una vez borrada no hay marcha atras.',
       () => {
-        this.templateQuotesService.delete(this.templateId).subscribe({
+        this.formStructureService.delete(this.templateId).subscribe({
           next: () => {
+            this.getFormStructures();
             MessageHelper.successMessage('Éxito', 'Se ha eliminado correctamente');
             this.store.dispatch(emptyForm());
             this.addTotalToTemplate();
