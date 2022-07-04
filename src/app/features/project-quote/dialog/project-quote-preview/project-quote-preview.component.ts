@@ -26,6 +26,10 @@ export class ProjectQuotePreviewComponent implements OnInit {
 
   step = 0;
 
+  isEditing = false;
+
+  isEditingBodyQuote = false;
+
   headerForm = new FormGroup({
     name: new FormControl(null, [Validators.required]),
     addressee: new FormControl('', [Validators.required]),
@@ -67,7 +71,7 @@ export class ProjectQuotePreviewComponent implements OnInit {
   ngOnInit(): void {
     this.headerForm.patchValue(this.data.projectQuote);
     this.headerForm.get('client')?.patchValue(this.data.projectQuote.addressee);
-    this.headerForm.disable();
+    // this.headerForm.disable();
   }
 
   onNoClick() {

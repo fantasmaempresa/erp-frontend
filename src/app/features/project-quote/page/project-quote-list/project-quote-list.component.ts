@@ -175,12 +175,13 @@ export class ProjectQuoteListComponent implements OnInit, AfterViewInit, OnDestr
     const dialogRef = this.dialog.open(ProjectQuotePreviewComponent, {
       panelClass: 'my-dialog',
       width: '100vw',
+      height: '95vh',
       data: {
         projectQuote: row,
       },
     });
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe(() => {
       console.log('The dialog was closed');
     });
   }

@@ -9,18 +9,6 @@
     <!--        </mat-select>-->
     <!--      </mat-form-field>-->
 
-    <mat-form-field appearance="outline">
-      <mat-label>A quien va dirigido</mat-label>
-      <input matInput type="text" autocomplete="off" formControlName="addressee" />
-      <mat-error appErrorMessage></mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Descripción</mat-label>
-      <textarea matInput formControlName="description"> </textarea>
-      <mat-error appErrorMessage></mat-error>
-    </mat-form-field>
-
     <div class="d-flex flex-row">
       <div class="col-11">
         <mat-form-field class="w-100" appearance="outline">
@@ -45,6 +33,18 @@
         </button>
       </div>
     </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>A quien va dirigido</mat-label>
+      <input matInput type="text" autocomplete="off" formControlName="addressee" />
+      <mat-error appErrorMessage></mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Descripción</mat-label>
+      <textarea matInput formControlName="description"> </textarea>
+      <mat-error appErrorMessage></mat-error>
+    </mat-form-field>
 
     <!--    <mat-form-field appearance="outline">-->
     <!--      <mat-label>Fecha de expiración</mat-label>-->

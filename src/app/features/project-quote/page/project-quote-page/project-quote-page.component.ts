@@ -13,6 +13,8 @@ import { emptyForm, loadForm } from '../../../../state/dynamic-form/dynamic-form
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { QuoteTemplate } from '../../../../data/models/QuoteTemplate.model';
+import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
+import { QuoteStatusService } from '../../../../data/services/quote-status.service';
 
 @Component({
   selector: 'app-project-quote-page',
@@ -31,6 +33,8 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
   OPERATIONS_FORM_STEP = 3;
 
   PREVIEW_STEP = 4;
+
+  STATUS_STEP = 5;
 
   step = 0;
 
@@ -53,6 +57,8 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
 
   templateControl = new FormControl(null);
 
+  status_quote_id = new FormControl(null);
+
   formFields!: Formfield<any>[];
 
   operationsForm = new FormGroup({});
@@ -62,6 +68,8 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
   previewForm: FormControl = new FormControl(null);
 
   fields$!: Observable<Formfield<any>[]>;
+
+  quoteStatuses$!: Observable<QuoteStatus[]>;
 
   templates!: QuoteTemplate[];
 
@@ -75,6 +83,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
     private store: Store,
     private projectQuoteService: ProjectQuoteService,
     private quoteTemplateService: QuoteTemplateService,
+    public quoteStatusService: QuoteStatusService,
   ) {
     this.getTemplates();
     this.templateControl.valueChanges.subscribe({
@@ -98,6 +107,12 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
     });
 
     if (this.route.snapshot.queryParams.id) {
+      this.quoteStatuses$ = quoteStatusService.fetchAll().pipe(
+        map((quoteStatus) => {
+          return quoteStatus.data;
+        }),
+      );
+
       this.quoteId = +this.route.snapshot.queryParams.id;
       this.isEdit = true;
       this.headerForm.addControl('id', new FormControl(''));

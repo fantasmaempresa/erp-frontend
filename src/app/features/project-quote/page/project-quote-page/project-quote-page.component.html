@@ -169,6 +169,28 @@
           </button>
         </mat-action-row>
       </mat-expansion-panel>
+
+      <mat-expansion-panel
+        [expanded]="step === STATUS_STEP"
+        (opened)="step = STATUS_STEP"
+        hideToggle
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>Cambio de estado</mat-panel-title>
+          <mat-panel-description> Cambio de estado de la cotización</mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <!--        <mat-form-field appearance="outline">-->
+        <!--          <mat-label>Estado de la cotización</mat-label>-->
+        <!--          <mat-select formControlName="status_quote_id">-->
+        <!--            <mat-option-->
+        <!--              *ngFor="let quoteStatus of quoteStatuses$ | async"-->
+        <!--              [value]="quoteStatus.id"-->
+        <!--              >{{ quoteStatus.name }}</mat-option-->
+        <!--            >-->
+        <!--          </mat-select>-->
+        <!--        </mat-form-field>-->
+      </mat-expansion-panel>
     </mat-accordion>
   </ng-container>
 </mat-card>

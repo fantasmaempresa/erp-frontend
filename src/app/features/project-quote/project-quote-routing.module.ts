@@ -25,6 +25,11 @@ const routes: Routes = [
         data: { breadcrumb: 'Editar cotización' },
       },
       {
+        path: 'change-status',
+        component: ProjectQuotePageComponent,
+        data: { breadcrumb: 'Editar cotización' },
+      },
+      {
         path: 'new',
         component: ProjectQuotePageComponent,
         data: { breadcrumb: 'Nueva cotización' },
