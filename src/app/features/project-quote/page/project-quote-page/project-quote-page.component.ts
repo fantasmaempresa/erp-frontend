@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
@@ -15,13 +15,16 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { QuoteTemplate } from '../../../../data/models/QuoteTemplate.model';
 import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
 import { QuoteStatusService } from '../../../../data/services/quote-status.service';
+import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
 
 @Component({
   selector: 'app-project-quote-page',
   templateUrl: './project-quote-page.component.html',
   styleUrls: ['./project-quote-page.component.scss'],
 })
-export class ProjectQuotePageComponent implements OnInit, OnDestroy {
+export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewInit {
+  @ViewChild(DynamicFormComponent) formFill!: DynamicFormComponent;
+
   quoteId!: number;
 
   HEADER_STEP = 0;
@@ -50,10 +53,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
     client_id: new FormControl({ value: null, disabled: true }),
   });
 
-  quoteForm = new FormGroup({
-    headerForm: this.headerForm,
-    formFill: new FormControl(null),
-  });
+  quoteForm: FormGroup;
 
   templateControl = new FormControl(null);
 
@@ -85,6 +85,9 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
     private quoteTemplateService: QuoteTemplateService,
     public quoteStatusService: QuoteStatusService,
   ) {
+    this.quoteForm = new FormGroup({
+      headerForm: this.headerForm,
+    });
     this.getTemplates();
     this.templateControl.valueChanges.subscribe({
       next: (value) => {
@@ -152,10 +155,15 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
     this.fields$.subscribe({
       next: () => {
         if (this.step < this.FORM_FILL_STEP) {
-          this.quoteForm.get('formFill')?.reset();
+          // this.quoteForm.get('formFill')?.reset();
         }
       },
     });
+    console.log(this.formFill);
+  }
+
+  ngAfterViewInit() {
+    this.quoteForm.addControl('formFill', this.formFill.getFormGroup());
   }
 
   ngOnDestroy(): void {
@@ -270,7 +278,6 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy {
 
   closingFormFill() {
     console.log('Cerrando form fill');
-    this.saveState = true;
   }
 
   compareObjects(o1: any, o2: any): boolean {

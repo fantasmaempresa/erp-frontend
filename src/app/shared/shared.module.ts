@@ -25,6 +25,8 @@ import { InputFileComponent } from './components/input-file/input-file.component
 import { InputCoordinateComponent } from './components/input-coordinate/input-coordinate.component';
 import { DynamicViewsModule } from './components/dinamyc-views/dynamic-views.module';
 import { OnSaveDialogComponent } from './components/dynamic-form-creation/on-save-dialog/on-save-dialog.component';
+import { ConnectFormDirective } from '../core/directives/connect-form.directive';
+import { SetValueDirective } from '../core/directives/set-value.directive';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -36,6 +38,8 @@ import { OnSaveDialogComponent } from './components/dynamic-form-creation/on-sav
     ChipListAutocompleteFixDirective,
     DragFileDirective,
     OutSideClickDirective,
+    ConnectFormDirective,
+    SetValueDirective,
     FromDatePipe,
     DialogSearchComponent,
     TableSearchComponent,
@@ -72,6 +76,8 @@ import { OnSaveDialogComponent } from './components/dynamic-form-creation/on-sav
     StopPropagationDirective,
     ChipListAutocompleteFixDirective,
     OutSideClickDirective,
+    ConnectFormDirective,
+    SetValueDirective,
     FromDatePipe,
     DynamicFormComponent,
     DynamicFormCreationComponent,

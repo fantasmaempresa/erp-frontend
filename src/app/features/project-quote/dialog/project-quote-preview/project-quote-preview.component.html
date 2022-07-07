@@ -2,7 +2,13 @@
 
 <div mat-dialog-title class="d-flex justify-content-between">
   <h2>Cotización</h2>
-  <button mat-button color="primary" class="me-3">Guardar</button>
+  <div>
+    <button mat-button color="primary" class="me-3">Cambiar estado</button>
+    <button mat-button color="primary" class="me-3" (click)="enableEditing()">
+      Activar edición
+    </button>
+    <button mat-button color="primary" class="me-3">Guardar</button>
+  </div>
 </div>
 
 <div mat-dialog-content>
@@ -58,9 +64,8 @@
       </mat-expansion-panel-header>
 
       <app-dynamic-form
-        [onlyRead]="isEditingBodyQuote"
+        [onlyRead]="isOnlyReadBodyQuote"
         [formControl]="formFill"
-        *ngIf="step === FORM_FILL_STEP"
       ></app-dynamic-form>
 
       <mat-action-row>

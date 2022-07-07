@@ -6,7 +6,7 @@
       </button>
     </div>
   </mat-toolbar>
-  <ng-container [formGroup]="quoteForm">
+  <ng-container [formGroup]="quoteForm" *ngIf="quoteForm">
     <mat-accordion class="example-headers-align">
       <mat-expansion-panel [expanded]="step === HEADER_STEP" (opened)="goToHeaderForm()" hideToggle>
         <mat-expansion-panel-header>
@@ -34,24 +34,6 @@
         </mat-action-row>
       </mat-expansion-panel>
 
-      <!--      <mat-expansion-panel-->
-      <!--        [expanded]="step === FORM_BUILD_STEP"-->
-      <!--        (opened)="goToFormBuildStep()"-->
-      <!--        hideToggle-->
-      <!--      >-->
-      <!--        <mat-expansion-panel-header>-->
-      <!--          <mat-panel-title>Cotización</mat-panel-title>-->
-      <!--          <mat-panel-description> Creación de formulario</mat-panel-description>-->
-      <!--        </mat-expansion-panel-header>-->
-
-      <!--        <app-dynamic-form-creation></app-dynamic-form-creation>-->
-
-      <!--        <mat-action-row>-->
-      <!--          <button mat-button color="warn" (click)="goToHeaderForm()">Atras</button>-->
-      <!--          <button mat-button color="primary" (click)="goToFormFill()">Siguiente</button>-->
-      <!--        </mat-action-row>-->
-      <!--      </mat-expansion-panel>-->
-
       <mat-expansion-panel
         [expanded]="step === FORM_FILL_STEP"
         (opened)="goToFormFill()"
@@ -64,11 +46,9 @@
           <mat-panel-description> Llenado de formulario</mat-panel-description>
         </mat-expansion-panel-header>
 
-        <app-dynamic-form
-          [save]="saveState"
-          formControlName="formFill"
-          *ngIf="step === FORM_FILL_STEP"
-        ></app-dynamic-form>
+        <ng-container [formGroup]="quoteForm">
+          <app-dynamic-form *ngIf="step === FORM_FILL_STEP"></app-dynamic-form>
+        </ng-container>
 
         <mat-action-row>
           <button mat-button color="warn" (click)="goToHeaderForm()">Atras</button>
@@ -76,32 +56,10 @@
         </mat-action-row>
       </mat-expansion-panel>
 
-      <!--      <mat-expansion-panel-->
-      <!--        [expanded]="step === OPERATIONS_FORM_STEP"-->
-      <!--        (opened)="goToOperationsForm()"-->
-      <!--        [disabled]="this.quoteForm.get('formFill')?.invalid"-->
-      <!--        hideToggle-->
-      <!--      >-->
-      <!--        <mat-expansion-panel-header>-->
-      <!--          <mat-panel-title> Conceptos</mat-panel-title>-->
-      <!--          <mat-panel-description>-->
-      <!--            Conceptos que se agregaran a la cotización-->
-      <!--          </mat-panel-description>-->
-      <!--        </mat-expansion-panel-header>-->
-
-      <!--        <app-operations (form)="operationsForm = $event"></app-operations>-->
-
-      <!--        <mat-action-row>-->
-      <!--          <button mat-button color="warn" (click)="goToFormFill()">Atras</button>-->
-      <!--          <button mat-button color="primary" (click)="goToPreview()">Siguiente</button>-->
-      <!--        </mat-action-row>-->
-      <!--      </mat-expansion-panel>-->
-
       <!--      PREVIEW-->
       <mat-expansion-panel
         [expanded]="step === PREVIEW_STEP"
         (opened)="step = PREVIEW_STEP"
-        [disabled]="this.quoteForm.get('formFill')?.invalid"
         hideToggle
       >
         <mat-expansion-panel-header>

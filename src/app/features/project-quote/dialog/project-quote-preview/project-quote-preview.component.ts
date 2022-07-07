@@ -28,7 +28,7 @@ export class ProjectQuotePreviewComponent implements OnInit {
 
   isEditing = false;
 
-  isEditingBodyQuote = false;
+  isOnlyReadBodyQuote = false;
 
   headerForm = new FormGroup({
     name: new FormControl(null, [Validators.required]),
@@ -72,6 +72,8 @@ export class ProjectQuotePreviewComponent implements OnInit {
   ngOnInit(): void {
     this.headerForm.patchValue(this.data.projectQuote);
     this.headerForm.get('client')?.patchValue(this.data.projectQuote.addressee);
+    this.headerForm.disable();
+    this.isOnlyReadBodyQuote = true;
     // this.headerForm.disable();
   }
 
@@ -92,5 +94,16 @@ export class ProjectQuotePreviewComponent implements OnInit {
     setTimeout(() => {
       // this.calculateOperations();
     }, 100);
+  }
+
+  enableEditing() {
+    this.isEditing = !this.isEditing;
+    if (this.isEditing) {
+      this.headerForm.enable();
+      this.isOnlyReadBodyQuote = false;
+    } else {
+      this.headerForm.disable();
+      this.isOnlyReadBodyQuote = true;
+    }
   }
 }

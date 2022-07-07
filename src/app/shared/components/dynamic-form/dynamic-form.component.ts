@@ -1,22 +1,21 @@
 import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
 import {
-  AbstractControl,
   ControlValueAccessor,
   FormControl,
   FormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  ValidationErrors,
   Validator,
   Validators,
 } from '@angular/forms';
 import { FormfieldControlService } from '../../../core/services/formfield-control.service';
 import { Store } from '@ngrx/store';
 import { selectDynamicForm, selectStatus } from '../../../state/dynamic-form/dynamic-form.selector';
-import { Observable, Subscription, take } from 'rxjs';
+import { Observable, Subscription, take, tap, using } from 'rxjs';
 import { Formfield } from '../../../data/models/Formfield.model';
-import { updateField } from '../../../state/dynamic-form/dynamic-form.actions';
+import { updateValues } from '../../../state/dynamic-form/dynamic-form.actions';
 import { Update } from '@ngrx/entity';
+import { AbstractSubformComponent } from './abstract-subform.component';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -35,22 +34,32 @@ import { Update } from '@ngrx/entity';
     },
   ],
 })
-export class DynamicFormComponent implements OnInit, OnDestroy, ControlValueAccessor, Validator {
-  @Input() onlyRead: boolean = false;
+export class DynamicFormComponent
+  extends AbstractSubformComponent
+  implements OnInit, OnDestroy, ControlValueAccessor, Validator
+{
+  @Input()
+  public set onlyRead(val: boolean) {
+    console.log('ONLY READ => ', val);
+    if (val) {
+      this.formGroup.disable();
+      console.log(this.formGroup.disabled);
+    } else {
+      this.formGroup.enable();
+    }
+  }
 
   formFields!: Formfield<any>[];
 
-  form: FormGroup = new FormGroup({});
-
   @Input()
   public set save(val: boolean) {
-    if (this.form.status === 'VALID' && this.form.touched) {
+    if (this.formGroup.status === 'VALID' && this.formGroup.touched) {
       if (val) {
         console.log('Formulario valido y save true');
         this.saveInStore();
       }
     }
-    this.form.markAllAsTouched();
+    this.formGroup.markAllAsTouched();
   }
 
   onChangeSubs: Subscription[] = [];
@@ -65,25 +74,54 @@ export class DynamicFormComponent implements OnInit, OnDestroy, ControlValueAcce
 
   formStatus$!: Observable<'EDITABLE' | 'NEW'>;
 
-  constructor(private formfieldService: FormfieldControlService, private store: Store) {
-    this.fields$ = store.select(selectDynamicForm);
-    this.formStatus$ = store.select(selectStatus);
-  }
+  formValues$ = using(
+    () =>
+      this.formGroup.valueChanges
+        .pipe(
+          tap((formValues) => {
+            let formUpdate: Update<Formfield<any>>[] = [];
+            for (const field in formValues) {
+              for (const item of this.formFields) {
+                if (item.key === field) {
+                  let singleFormUpdate: Update<Formfield<any>> = {
+                    id: item.id,
+                    changes: {
+                      value: item.controlType === 'number' ? +formValues[field] : formValues[field],
+                    },
+                  };
+                  formUpdate.push(singleFormUpdate);
+                }
+              }
+            }
+            this.store.dispatch(updateValues({ form: formUpdate }));
+          }),
+        )
+        .subscribe(),
+    () => this.store.select(selectDynamicForm),
+  );
 
-  ngOnInit(): void {
+  constructor(private formfieldService: FormfieldControlService, private store: Store) {
+    super();
+    this.fields$ = store.select(selectDynamicForm);
+    // .pipe(tap((value) => console.log('fields$ => ', value)));
+    this.formStatus$ = store.select(selectStatus);
+    this.formGroup = new FormGroup({});
     this.fields$.pipe(take(1)).subscribe({
       next: (formFields) => {
+        console.log('===== Creando form!! =====');
         if (formFields) {
           this.formFields = formFields;
-          this.form = this.createForm(formFields);
-          this.form.updateValueAndValidity();
+          this.formGroup = this.createForm(formFields);
+          this.formGroup.updateValueAndValidity();
           if (this.onlyRead) {
-            this.form.disable();
+            this.formGroup.disable();
           }
         }
       },
     });
   }
+
+  ngOnInit(): void {}
 
   ngOnDestroy() {
     for (let sub of this.onChangeSubs) {
@@ -112,40 +150,40 @@ export class DynamicFormComponent implements OnInit, OnDestroy, ControlValueAcce
   saveInStore() {
     console.log('Guardando en el store');
     let formUpdate: Update<Formfield<any>>;
-    for (const field in this.form.value) {
-      for (const item of this.formFields) {
-        if (item.key === field) {
-          formUpdate = {
-            id: item.id,
-            changes: {
-              value:
-                item.controlType === 'number' ? +this.form.value[field] : this.form.value[field],
-            },
-          };
-          this.store.dispatch(updateField({ form: formUpdate }));
-        }
-      }
-    }
+    // for (const field in this.form.value) {
+    //   for (const item of this.formFields) {
+    //     if (item.key === field) {
+    //       formUpdate = {
+    //         id: item.id,
+    //         changes: {
+    //           value:
+    //             item.controlType === 'number' ? +this.form.value[field] : this.form.value[field],
+    //         },
+    //       };
+    //       this.store.dispatch(updateField({ form: formUpdate }));
+    //     }
+    //   }
+    // }
   }
 
   registerOnChange(onChange: any): void {
-    const sub = this.form.valueChanges.subscribe(onChange);
+    const sub = this.formGroup.valueChanges.subscribe(onChange);
     this.onChangeSubs.push(sub);
   }
 
-  registerOnTouched(onTouched: any): void {
-    this.onTouched = onTouched;
-  }
-
-  writeValue(value: any): void {
-    if (value) {
-      this.form.patchValue(value);
-    }
-  }
-
-  validate(control: AbstractControl): ValidationErrors | null {
-    return this.form.valid
-      ? null
-      : { invalidForm: { valid: false, message: 'Dynamic form fields are invalid' } };
-  }
+  // registerOnTouched(onTouched: any): void {
+  //   this.onTouched = onTouched;
+  // }
+  //
+  // writeValue(value: any): void {
+  //   if (value) {
+  //     this.form.patchValue(value);
+  //   }
+  // }
+  //
+  // validate(control: AbstractControl): ValidationErrors | null {
+  //   return this.form.valid
+  //     ? null
+  //     : { invalidForm: { valid: false, message: 'Dynamic form fields are invalid' } };
+  // }
 }
