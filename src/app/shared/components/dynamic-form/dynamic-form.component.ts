@@ -79,12 +79,10 @@ export class DynamicFormComponent
             .subscribe(),
         () => this.store.select(selectDynamicForm),
       );
-      this.formGroupChanges.emit(this.formGroup);
-      // console.log(this.formGroup.parent);
-      // this.formGroup.parent?.updateValueAndValidity();
       if (this.onlyRead) {
         this.formGroup.disable();
       }
+      this.formGroupChanges.emit(this.formGroup);
     }
   }
 
@@ -96,10 +94,18 @@ export class DynamicFormComponent
     if (val) {
       this.formGroup.disable();
       console.log(this.formGroup.disabled);
+      this._onlyRead = val;
     } else {
       this.formGroup.enable();
+      this._onlyRead = val;
     }
   }
+
+  public get onlyRead(): boolean {
+    return this._onlyRead;
+  }
+
+  _onlyRead!: boolean;
 
   formValues$!: Observable<any>;
 
@@ -173,7 +179,14 @@ export class DynamicFormComponent
           : new FormControl(control.value || '');
       }
     }
-    return new FormGroup(group);
+    let formGroup = new FormGroup(group);
+    if (this._onlyRead) {
+      formGroup.disable();
+    } else {
+      formGroup.enable();
+    }
+    // formGroup.disable(); // El formGroup
+    return formGroup;
   }
 
   saveInStore() {

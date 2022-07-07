@@ -1,6 +1,6 @@
 <ng-container>
   <form [formGroup]="formGroup" [connectForm]="formValues$ | async">
-    <div class="row" *ngFor="let formField of formFields; index as i">
+    <div class="row" *ngFor="let formField of fields; index as i">
       <div class="col-10">
         <!--        <app-dynamic-form-input [input]="formField" [form]="form"></app-dynamic-form-input>-->
         <div [ngSwitch]="formField.controlType">

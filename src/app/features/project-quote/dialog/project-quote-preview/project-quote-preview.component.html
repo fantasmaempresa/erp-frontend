@@ -16,7 +16,7 @@
     <mat-expansion-panel [expanded]="step === HEADER_STEP" (opened)="goToHeaderForm()" hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>Encabezado</mat-panel-title>
-        <mat-panel-description> Datos acerca de la cotización y el cliente </mat-panel-description>
+        <mat-panel-description> Datos acerca de la cotización y el cliente</mat-panel-description>
       </mat-expansion-panel-header>
       <form class="row justify-content-center mt-3" [formGroup]="headerForm">
         <div class="col-6 d-flex flex-column pe-0">
@@ -65,7 +65,8 @@
 
       <app-dynamic-form
         [onlyRead]="isOnlyReadBodyQuote"
-        [formControl]="formFill"
+        [formFields]="formFields"
+        (formGroupChanges)="addControlToForm($event)"
       ></app-dynamic-form>
 
       <mat-action-row>

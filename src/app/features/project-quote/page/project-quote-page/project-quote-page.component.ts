@@ -138,7 +138,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
             let quoteTemplate = this.templates.find(
               (template) => template.id === quote.template_quote_id,
             );
-            this.templateControl.patchValue(quoteTemplate);
+            this.templateControl.patchValue(quoteTemplate, { emitEvent: false });
             this.store.dispatch(
               loadForm({
                 form: quote.quote.form,
@@ -147,6 +147,8 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
                 description: quote.description,
               }),
             );
+            this.fields = quote.quote.form;
+            this.headerForm.get('name')?.patchValue(quote.name);
             console.log(quote);
             this.headerForm.patchValue(quote);
           },
@@ -155,13 +157,13 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   ngOnInit(): void {
-    this.fields$.subscribe({
-      next: () => {
-        if (this.step < this.FORM_FILL_STEP) {
-          // this.quoteForm.get('formFill')?.reset();
-        }
-      },
-    });
+    // this.fields$.subscribe({
+    //   next: () => {
+    //     if (this.step < this.FORM_FILL_STEP) {
+    //       // this.quoteForm.get('formFill')?.reset();
+    //     }
+    //   },
+    // });
   }
 
   ngAfterViewInit() {

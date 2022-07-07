@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProjectQuote } from '../../../../data/models/ProjectQuote.model';
@@ -7,6 +7,8 @@ import { map, Observable } from 'rxjs';
 import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
 import { loadForm } from '../../../../state/dynamic-form/dynamic-form.actions';
 import { Store } from '@ngrx/store';
+import { Formfield } from '../../../../data/models/Formfield.model';
+import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
 
 @Component({
   selector: 'app-project-quote-preview',
@@ -14,6 +16,8 @@ import { Store } from '@ngrx/store';
   styleUrls: ['./project-quote-preview.component.scss'],
 })
 export class ProjectQuotePreviewComponent implements OnInit {
+  @ViewChild(DynamicFormComponent) formFill!: DynamicFormComponent;
+
   HEADER_STEP = 0;
 
   FORM_BUILD_STEP = 1;
@@ -40,7 +44,13 @@ export class ProjectQuotePreviewComponent implements OnInit {
     client_id: new FormControl({ value: null, disabled: true }),
   });
 
-  formFill = new FormControl(null);
+  quoteForm = new FormGroup({
+    headerForm: this.headerForm,
+  });
+
+  formFields$!: Observable<any>;
+
+  formFields!: Formfield<any>[];
 
   quoteStatuses$!: Observable<QuoteStatus[]>;
 
@@ -67,6 +77,8 @@ export class ProjectQuotePreviewComponent implements OnInit {
         description: data.projectQuote.description,
       }),
     );
+
+    this.formFields = data.projectQuote.quote.form;
   }
 
   ngOnInit(): void {
@@ -74,7 +86,6 @@ export class ProjectQuotePreviewComponent implements OnInit {
     this.headerForm.get('client')?.patchValue(this.data.projectQuote.addressee);
     this.headerForm.disable();
     this.isOnlyReadBodyQuote = true;
-    // this.headerForm.disable();
   }
 
   onNoClick() {
@@ -90,7 +101,12 @@ export class ProjectQuotePreviewComponent implements OnInit {
   }
 
   goToPreview() {
+    this.formFill.getFormGroup().markAllAsTouched();
+    if (this.formFill.getFormGroup().invalid) {
+      return;
+    }
     this.step = this.PREVIEW_STEP;
+    // TODO: Hacer el calculo de operaciones si esta activada la edicion
     setTimeout(() => {
       // this.calculateOperations();
     }, 100);
@@ -105,5 +121,11 @@ export class ProjectQuotePreviewComponent implements OnInit {
       this.headerForm.disable();
       this.isOnlyReadBodyQuote = true;
     }
+  }
+
+  addControlToForm(formGroup: FormGroup) {
+    this.quoteForm.removeControl('formFill');
+    this.quoteForm.addControl('formFill', formGroup);
+    this.quoteForm.updateValueAndValidity();
   }
 }
