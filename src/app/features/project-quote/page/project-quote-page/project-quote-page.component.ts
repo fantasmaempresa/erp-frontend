@@ -69,6 +69,8 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
 
   fields$!: Observable<Formfield<any>[]>;
 
+  fields!: Formfield<any>[];
+
   quoteStatuses$!: Observable<QuoteStatus[]>;
 
   templates!: QuoteTemplate[];
@@ -92,6 +94,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
     this.templateControl.valueChanges.subscribe({
       next: (value) => {
         if (value) {
+          this.fields = value.form;
           this.headerForm.get('name')?.patchValue(value.name);
           this.store.dispatch(emptyForm());
           this.store.dispatch(
@@ -117,6 +120,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
     });
 
     if (this.route.snapshot.queryParams.id) {
+      // TODO: Arreglar error ExpressionAfterItHasBeenCheckedError
       this.quoteStatuses$ = quoteStatusService.fetchAll().pipe(
         map((quoteStatus) => {
           return quoteStatus.data;
@@ -135,7 +139,6 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
               (template) => template.id === quote.template_quote_id,
             );
             this.templateControl.patchValue(quoteTemplate);
-            this.headerForm.get('');
             this.store.dispatch(
               loadForm({
                 form: quote.quote.form,
@@ -159,11 +162,12 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
         }
       },
     });
-    console.log(this.formFill);
   }
 
   ngAfterViewInit() {
+    console.log(this.formFill);
     this.quoteForm.addControl('formFill', this.formFill.getFormGroup());
+    console.log(this.quoteForm.value);
   }
 
   ngOnDestroy(): void {
@@ -210,8 +214,8 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
   }
 
   goToPreview() {
-    this.quoteForm.get('formFill')?.markAsTouched();
-    this.quoteForm.get('formFill')?.markAsDirty();
+    console.log(this.quoteForm.get('formFill')?.value);
+    this.quoteForm.get('formFill')?.markAllAsTouched();
     if (this.quoteForm.get('formFill')?.invalid) {
       this.closingFormFill();
       return;
@@ -354,5 +358,11 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
         this.quote = quote;
       });
     // TODO: Validar que el arreglo de operaciones no venga vacio
+  }
+
+  addControlToForm(formGroup: FormGroup) {
+    this.quoteForm.removeControl('formFill');
+    this.quoteForm.addControl('formFill', formGroup);
+    this.quoteForm.updateValueAndValidity();
   }
 }

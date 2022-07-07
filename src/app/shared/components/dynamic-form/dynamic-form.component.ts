@@ -1,4 +1,12 @@
-import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   ControlValueAccessor,
   FormControl,
@@ -11,7 +19,7 @@ import {
 import { FormfieldControlService } from '../../../core/services/formfield-control.service';
 import { Store } from '@ngrx/store';
 import { selectDynamicForm, selectStatus } from '../../../state/dynamic-form/dynamic-form.selector';
-import { Observable, Subscription, take, tap, using } from 'rxjs';
+import { Observable, Subscription, tap, using } from 'rxjs';
 import { Formfield } from '../../../data/models/Formfield.model';
 import { updateValues } from '../../../state/dynamic-form/dynamic-form.actions';
 import { Update } from '@ngrx/entity';
@@ -39,6 +47,50 @@ export class DynamicFormComponent
   implements OnInit, OnDestroy, ControlValueAccessor, Validator
 {
   @Input()
+  public set formFields(val: Formfield<any>[]) {
+    if (val) {
+      console.log(val);
+      this.fields = val;
+      this.formGroup = this.createForm(val);
+      this.formGroup.updateValueAndValidity();
+      this.formValues$ = using(
+        () =>
+          this.formGroup.valueChanges
+            .pipe(
+              tap((formValues) => {
+                let formUpdate: Update<Formfield<any>>[] = [];
+                for (const field in formValues) {
+                  for (const item of val) {
+                    if (item.key === field) {
+                      let singleFormUpdate: Update<Formfield<any>> = {
+                        id: item.id,
+                        changes: {
+                          value:
+                            item.controlType === 'number' ? +formValues[field] : formValues[field],
+                        },
+                      };
+                      formUpdate.push(singleFormUpdate);
+                    }
+                  }
+                }
+                this.store.dispatch(updateValues({ form: formUpdate }));
+              }),
+            )
+            .subscribe(),
+        () => this.store.select(selectDynamicForm),
+      );
+      this.formGroupChanges.emit(this.formGroup);
+      // console.log(this.formGroup.parent);
+      // this.formGroup.parent?.updateValueAndValidity();
+      if (this.onlyRead) {
+        this.formGroup.disable();
+      }
+    }
+  }
+
+  @Output() formGroupChanges = new EventEmitter();
+
+  @Input()
   public set onlyRead(val: boolean) {
     console.log('ONLY READ => ', val);
     if (val) {
@@ -49,7 +101,7 @@ export class DynamicFormComponent
     }
   }
 
-  formFields!: Formfield<any>[];
+  formValues$!: Observable<any>;
 
   @Input()
   public set save(val: boolean) {
@@ -61,6 +113,8 @@ export class DynamicFormComponent
     }
     this.formGroup.markAllAsTouched();
   }
+
+  fields!: Formfield<any>[];
 
   onChangeSubs: Subscription[] = [];
 
@@ -74,51 +128,25 @@ export class DynamicFormComponent
 
   formStatus$!: Observable<'EDITABLE' | 'NEW'>;
 
-  formValues$ = using(
-    () =>
-      this.formGroup.valueChanges
-        .pipe(
-          tap((formValues) => {
-            let formUpdate: Update<Formfield<any>>[] = [];
-            for (const field in formValues) {
-              for (const item of this.formFields) {
-                if (item.key === field) {
-                  let singleFormUpdate: Update<Formfield<any>> = {
-                    id: item.id,
-                    changes: {
-                      value: item.controlType === 'number' ? +formValues[field] : formValues[field],
-                    },
-                  };
-                  formUpdate.push(singleFormUpdate);
-                }
-              }
-            }
-            this.store.dispatch(updateValues({ form: formUpdate }));
-          }),
-        )
-        .subscribe(),
-    () => this.store.select(selectDynamicForm),
-  );
-
   constructor(private formfieldService: FormfieldControlService, private store: Store) {
     super();
+    this.formGroup = new FormGroup({});
     this.fields$ = store.select(selectDynamicForm);
     // .pipe(tap((value) => console.log('fields$ => ', value)));
     this.formStatus$ = store.select(selectStatus);
-    this.formGroup = new FormGroup({});
-    this.fields$.pipe(take(1)).subscribe({
-      next: (formFields) => {
-        console.log('===== Creando form!! =====');
-        if (formFields) {
-          this.formFields = formFields;
-          this.formGroup = this.createForm(formFields);
-          this.formGroup.updateValueAndValidity();
-          if (this.onlyRead) {
-            this.formGroup.disable();
-          }
-        }
-      },
-    });
+    // this.fields$.pipe(take(1)).subscribe({
+    //   next: (formFields) => {
+    //     console.log('===== Creando form!! =====');
+    //     if (formFields) {
+    //       this.formFields = formFields;
+    //       this.formGroup = this.createForm(formFields);
+    //       this.formGroup.updateValueAndValidity();
+    //       if (this.onlyRead) {
+    //         this.formGroup.disable();
+    //       }
+    //     }
+    //   },
+    // });
   }
 
   ngOnInit(): void {}
@@ -134,6 +162,7 @@ export class DynamicFormComponent
   }
 
   createForm(controls: Formfield<any>[]): FormGroup {
+    console.log('CREAND FORM');
     const group: any = {};
     for (const control of controls) {
       if (control.key === 'total') {
