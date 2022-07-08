@@ -94,12 +94,12 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
     this.templateControl.valueChanges.subscribe({
       next: (value) => {
         if (value) {
-          this.fields = value.form;
+          this.fields = value.form.form;
           this.headerForm.get('name')?.patchValue(value.name);
           this.store.dispatch(emptyForm());
           this.store.dispatch(
             loadForm({
-              form: value.form,
+              form: value.form.form,
               id: value.id,
               name: value.name,
               description: value.description,
@@ -236,7 +236,9 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
       .subscribe((form) => {
         const quote = {
           ...this.headerForm.getRawValue(),
-          client_id: this.headerForm.getRawValue().client.id,
+          client_id: this.headerForm.getRawValue().client
+            ? this.headerForm.getRawValue().client.id
+            : null,
           template_quote_id: this.templateControl.value.id,
           quote: {
             form: {
@@ -263,7 +265,9 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
       .subscribe((form) => {
         const quote = {
           ...this.headerForm.getRawValue(),
-          client_id: this.headerForm.getRawValue().client.id,
+          client_id: this.headerForm.getRawValue().client
+            ? this.headerForm.getRawValue().client.id
+            : null,
           template_quote_id: this.templateControl.value.id,
           quote: {
             form: {

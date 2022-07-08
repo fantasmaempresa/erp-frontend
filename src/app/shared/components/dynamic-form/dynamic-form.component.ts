@@ -97,6 +97,7 @@ export class DynamicFormComponent
       this._onlyRead = val;
     } else {
       this.formGroup.enable();
+      this.formGroup.controls.total.disable();
       this._onlyRead = val;
     }
   }
@@ -184,6 +185,7 @@ export class DynamicFormComponent
       formGroup.disable();
     } else {
       formGroup.enable();
+      formGroup.controls.total.disable();
     }
     // formGroup.disable(); // El formGroup
     return formGroup;

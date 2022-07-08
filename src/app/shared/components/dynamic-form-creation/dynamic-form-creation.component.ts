@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { FormFieldClass } from '../../../core/classes/FormFieldClass';
 import { Store } from '@ngrx/store';
 import {
   emptyForm,
@@ -36,8 +35,6 @@ import { OnSaveDialogComponent } from './on-save-dialog/on-save-dialog.component
 export class DynamicFormCreationComponent implements OnInit {
   templateControl = new FormControl(null);
 
-  @Output() formField = new EventEmitter<FormFieldClass<string>>();
-
   _template!: QuoteTemplate;
 
   @Input() set template(value: QuoteTemplate) {
@@ -63,10 +60,6 @@ export class DynamicFormCreationComponent implements OnInit {
   templateDescription = '';
 
   dynamicFormEssentialData$!: Observable<{ id: number; name: string; description: string }>;
-
-  // dynamicFormId$!: Observable<number>;
-  //
-  // dynamicFormName$!: Observable<string>;
 
   isEditable$: Observable<boolean>;
 
@@ -401,6 +394,9 @@ export class DynamicFormCreationComponent implements OnInit {
   }
 
   compareObjects(o1: any, o2: any): boolean {
+    if (!o2) {
+      return false;
+    }
     return o1.name === o2.name && o1.id === o2.id;
   }
 }
