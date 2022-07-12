@@ -20,11 +20,7 @@ export class ProjectQuotePreviewComponent implements OnInit {
 
   HEADER_STEP = 0;
 
-  FORM_BUILD_STEP = 1;
-
   FORM_FILL_STEP = 2;
-
-  OPERATIONS_FORM_STEP = 3;
 
   PREVIEW_STEP = 4;
 
@@ -47,8 +43,6 @@ export class ProjectQuotePreviewComponent implements OnInit {
   quoteForm = new FormGroup({
     headerForm: this.headerForm,
   });
-
-  formFields$!: Observable<any>;
 
   formFields!: Formfield<any>[];
 
@@ -116,6 +110,7 @@ export class ProjectQuotePreviewComponent implements OnInit {
     this.isEditing = !this.isEditing;
     if (this.isEditing) {
       this.headerForm.enable();
+      this.headerForm.controls.status_quote_id.disable();
       this.isOnlyReadBodyQuote = false;
     } else {
       this.headerForm.disable();

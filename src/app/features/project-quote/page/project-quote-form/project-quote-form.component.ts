@@ -11,7 +11,6 @@ import { QuoteStatusService } from '../../../../data/services/quote-status.servi
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { ClientService } from '../../../../data/services/client.service';
 import { Client } from '../../../../data/models/Client.model';
-import { FormFieldClass } from '../../../../core/classes/FormFieldClass';
 import { FormfieldControlService } from '../../../../core/services/formfield-control.service';
 import { ConceptService } from '../../../../data/services/concept.service';
 import { format } from 'date-fns';
@@ -26,8 +25,6 @@ export class ProjectQuoteFormComponent implements OnInit {
   @Input() formGroupName!: string;
 
   form!: FormGroup;
-
-  formFields: FormFieldClass<string>[] = [];
 
   isEdit = false;
 
@@ -54,8 +51,6 @@ export class ProjectQuoteFormComponent implements OnInit {
     this.quoteStatuses$ = this.projectQuoteService
       .fetchAll()
       .pipe(map((statuses) => statuses.data));
-    // this.quoteStatuses$ = quoteStatusService.fetchAll().pipe(map((resp) => resp.data));
-    this.formFields.push(this.formfieldService.createFormField('textbox', 'name', 'Nombre', true));
     this.filteredClients$ = clientService.fetchAll().pipe(
       map((clients) => clients.data),
       tap((clients) => {
@@ -65,21 +60,16 @@ export class ProjectQuoteFormComponent implements OnInit {
         // @ts-ignore
         this.form.get('client').valueChanges.pipe(
           startWith(''),
-          map((value) => (typeof value === 'string' ? value : value.name)),
+          map((value) => {
+            if (!value) {
+              return null;
+            }
+            return typeof value === 'string' ? value : value.name;
+          }),
           map((name) => (name ? this._filter(name) : this.clients.slice())),
         ),
       ),
     );
-
-    // if (this.route.snapshot.queryParams.id) {
-    //   this.isEdit = true;
-    //   clientService.fetch(this.route.snapshot.queryParams.id).subscribe({
-    //     next: (user) => {
-    //       this.form.addControl('id', new FormControl(''));
-    //       this.form.patchValue(user);
-    //     },
-    //   });
-    // }
   }
 
   ngOnInit(): void {

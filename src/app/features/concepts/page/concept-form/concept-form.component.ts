@@ -262,7 +262,7 @@ export class ConceptFormComponent implements OnInit {
   createForm() {
     return new FormGroup({
       name: new FormControl('', Validators.required),
-      description: new FormControl(''),
+      description: new FormControl('', [Validators.required]),
       amount: new FormControl(null),
       operationType: new FormControl('import'),
       formula: new FormGroup({

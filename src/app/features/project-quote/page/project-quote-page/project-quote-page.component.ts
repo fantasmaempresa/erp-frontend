@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
@@ -22,26 +22,18 @@ import { DynamicFormComponent } from '../../../../shared/components/dynamic-form
   templateUrl: './project-quote-page.component.html',
   styleUrls: ['./project-quote-page.component.scss'],
 })
-export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ProjectQuotePageComponent implements OnDestroy, AfterViewInit {
   @ViewChild(DynamicFormComponent) formFill!: DynamicFormComponent;
 
   quoteId!: number;
 
   HEADER_STEP = 0;
 
-  FORM_BUILD_STEP = 1;
+  FORM_FILL_STEP = 1;
 
-  FORM_FILL_STEP = 2;
-
-  OPERATIONS_FORM_STEP = 3;
-
-  PREVIEW_STEP = 4;
-
-  STATUS_STEP = 5;
+  PREVIEW_STEP = 2;
 
   step = 0;
-
-  saveState = false;
 
   headerForm = new FormGroup({
     name: new FormControl(null, [Validators.required]),
@@ -57,15 +49,9 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
 
   templateControl = new FormControl(null);
 
-  status_quote_id = new FormControl(null);
-
   formFields!: Formfield<any>[];
 
-  operationsForm = new FormGroup({});
-
   operations!: any;
-
-  previewForm: FormControl = new FormControl(null);
 
   fields$!: Observable<Formfield<any>[]>;
 
@@ -149,31 +135,17 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
             );
             this.fields = quote.quote.form;
             this.headerForm.get('name')?.patchValue(quote.name);
-            console.log(quote);
             this.headerForm.patchValue(quote);
           },
         });
     }
   }
 
-  ngOnInit(): void {
-    // this.fields$.subscribe({
-    //   next: () => {
-    //     if (this.step < this.FORM_FILL_STEP) {
-    //       // this.quoteForm.get('formFill')?.reset();
-    //     }
-    //   },
-    // });
-  }
-
   ngAfterViewInit() {
-    console.log(this.formFill);
     this.quoteForm.addControl('formFill', this.formFill.getFormGroup());
-    console.log(this.quoteForm.value);
   }
 
   ngOnDestroy(): void {
-    console.log('Destruyendo project-quote-page');
     this.store.dispatch(emptyForm());
   }
 
@@ -196,10 +168,6 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
     this.step = this.HEADER_STEP;
   }
 
-  goToFormBuildStep() {
-    this.step = this.FORM_BUILD_STEP;
-  }
-
   goToFormFill() {
     if (this.headerForm.invalid) {
       return;
@@ -207,19 +175,9 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
     this.step = this.FORM_FILL_STEP;
   }
 
-  goToOperationsForm() {
-    if (this.quoteForm.get('formFill')?.invalid) {
-      this.saveState = true;
-      return;
-    }
-    this.step = this.OPERATIONS_FORM_STEP;
-  }
-
   goToPreview() {
-    console.log(this.quoteForm.get('formFill')?.value);
     this.quoteForm.get('formFill')?.markAllAsTouched();
     if (this.quoteForm.get('formFill')?.invalid) {
-      this.closingFormFill();
       return;
     }
     this.step = this.PREVIEW_STEP;
@@ -248,9 +206,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
             result: this.quote,
           },
         };
-        console.log(quote);
-        this.projectQuoteService.update(quote).subscribe((val) => {
-          console.log(val);
+        this.projectQuoteService.update(quote).subscribe(() => {
           MessageHelper.successMessage('Éxito', 'Cotización actualizada');
           this.router.navigate(['../'], { relativeTo: this.route });
         });
@@ -277,17 +233,11 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
             result: this.quote,
           },
         };
-        console.log(quote);
-        this.projectQuoteService.save(quote).subscribe((val) => {
-          console.log(val);
+        this.projectQuoteService.save(quote).subscribe(() => {
           MessageHelper.successMessage('Éxito', 'Cotización guardada');
           this.router.navigate(['../'], { relativeTo: this.route });
         });
       });
-  }
-
-  closingFormFill() {
-    console.log('Cerrando form fill');
   }
 
   compareObjects(o1: any, o2: any): boolean {
@@ -299,18 +249,15 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
 
   calculateOperations() {
     const quoteTemplate = this.templateControl.value;
-    // @ts-ignore
-    let operationField: never[] = [];
     this.store
       .select(selectDynamicForm)
       .pipe(
         take(1),
         map((form) => {
-          console.log(form);
           form.forEach((field) => {
             if (field.key !== 'total') {
               console.log(quoteTemplate);
-              operationField = quoteTemplate.operations.operation_fields.map((x: any) => {
+              quoteTemplate.operations.operation_fields.map((x: any) => {
                 if (x.key === field.key) {
                   x.value = field.value;
                   return {
@@ -323,8 +270,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
               });
             }
           });
-          console.log(operationField);
-          const quote = {
+          return {
             quote: {
               form: {
                 ...form,
@@ -332,7 +278,6 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
               operations: quoteTemplate.operations,
             },
           };
-          return quote;
         }),
         switchMap((quote) =>
           this.projectQuoteService.calculateOperations({ ...quote }).pipe(
@@ -345,7 +290,7 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
                 data.name = opt;
                 concepts.push(data);
               }
-              let operation_total = {
+              let total = {
                 name: 'total',
                 description: operationTotal.description,
                 subtotal: operationTotal.subtotal,
@@ -353,14 +298,13 @@ export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewIn
               };
               return {
                 operation_fields: concepts,
-                operation_total,
+                operation_total: total,
               };
             }),
           ),
         ),
       )
       .subscribe((quote) => {
-        console.log(quote);
         this.quote = quote;
       });
     // TODO: Validar que el arreglo de operaciones no venga vacio

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { FormFieldClass } from '../classes/FormFieldClass';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 import { Formfield } from '../../data/models/Formfield.model';
 
@@ -23,16 +22,5 @@ export class FormfieldControlService {
     });
 
     return new FormGroup(group);
-  }
-
-  createFormField(controlType: string, key: string, label: string, required: boolean) {
-    const input: FormFieldClass<string> = new FormFieldClass<string>({
-      controlType,
-      key,
-      label,
-      required,
-    });
-
-    return input;
   }
 }
