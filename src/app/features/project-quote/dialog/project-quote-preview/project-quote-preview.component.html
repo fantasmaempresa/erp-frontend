@@ -3,11 +3,34 @@
 <div mat-dialog-title class="d-flex justify-content-between">
   <h2>Cotización</h2>
   <div>
-    <button mat-button color="primary" class="me-3">Cambiar estado</button>
-    <button mat-button color="primary" class="me-3" (click)="enableEditing()">
+    <button
+      mat-button
+      color="primary"
+      class="me-3"
+      mat-flat-button
+      [color]="isEnabledChangeQuoteStatus ? 'primary' : 'accent'"
+      (click)="enableChangeStatus()"
+    >
+      Cambiar estado
+    </button>
+    <button
+      class="me-3"
+      mat-flat-button
+      [color]="isEditing ? 'primary' : 'accent'"
+      (click)="enableEditing()"
+    >
       Activar edición
     </button>
-    <button mat-button color="primary" class="me-3">Guardar</button>
+    <button
+      mat-flat-button
+      color="primary"
+      class="me-3"
+      [color]="isEditing || isEnabledChangeQuoteStatus ? 'primary' : 'accent'"
+      [disabled]="!isEditing && !isEnabledChangeQuoteStatus"
+      (click)="save()"
+    >
+      Guardar
+    </button>
   </div>
 </div>
 

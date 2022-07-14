@@ -9,6 +9,7 @@ import { loadForm } from '../../../../state/dynamic-form/dynamic-form.actions';
 import { Store } from '@ngrx/store';
 import { Formfield } from '../../../../data/models/Formfield.model';
 import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
+import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 
 @Component({
   selector: 'app-project-quote-preview',
@@ -30,6 +31,8 @@ export class ProjectQuotePreviewComponent implements OnInit {
 
   isOnlyReadBodyQuote = false;
 
+  isEnabledChangeQuoteStatus = false;
+
   headerForm = new FormGroup({
     name: new FormControl(null, [Validators.required]),
     addressee: new FormControl('', [Validators.required]),
@@ -49,6 +52,7 @@ export class ProjectQuotePreviewComponent implements OnInit {
   quoteStatuses$!: Observable<QuoteStatus[]>;
 
   constructor(
+    private projectQuoteService: ProjectQuoteService,
     public quoteStatusService: QuoteStatusService,
     public dialogRef: MatDialogRef<ProjectQuotePreviewComponent>,
     private store: Store,
@@ -57,6 +61,7 @@ export class ProjectQuotePreviewComponent implements OnInit {
       projectQuote: ProjectQuote;
     },
   ) {
+    console.log(data);
     this.quoteStatuses$ = quoteStatusService.fetchAll().pipe(
       map((quoteStatus) => {
         return quoteStatus.data;
@@ -110,12 +115,34 @@ export class ProjectQuotePreviewComponent implements OnInit {
     this.isEditing = !this.isEditing;
     if (this.isEditing) {
       this.headerForm.enable();
-      this.headerForm.controls.status_quote_id.disable();
+      if (!this.isEnabledChangeQuoteStatus) {
+        this.headerForm.controls.status_quote_id.disable();
+      }
       this.isOnlyReadBodyQuote = false;
     } else {
       this.headerForm.disable();
+      if (this.isEnabledChangeQuoteStatus) {
+        this.headerForm.controls.status_quote_id.enable();
+      }
       this.isOnlyReadBodyQuote = true;
     }
+  }
+
+  enableChangeStatus() {
+    this.isEnabledChangeQuoteStatus = !this.isEnabledChangeQuoteStatus;
+    if (this.isEnabledChangeQuoteStatus) {
+      this.headerForm.controls.status_quote_id.enable();
+    } else {
+      this.headerForm.controls.status_quote_id.disable();
+    }
+  }
+
+  save() {
+    // TODO: Guardar la cotizacion actualizada
+    // this.projectQuoteService.update(quote).subscribe(() => {
+    //   MessageHelper.successMessage('Éxito', 'Cotización actualizada');
+    //   this.dialogRef.close(true);
+    // });
   }
 
   addControlToForm(formGroup: FormGroup) {
