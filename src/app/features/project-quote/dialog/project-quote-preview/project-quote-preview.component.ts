@@ -3,13 +3,17 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProjectQuote } from '../../../../data/models/ProjectQuote.model';
 import { QuoteStatusService } from '../../../../data/services/quote-status.service';
-import { map, Observable } from 'rxjs';
+import { map, Observable, switchMap, take } from 'rxjs';
 import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
 import { loadForm } from '../../../../state/dynamic-form/dynamic-form.actions';
 import { Store } from '@ngrx/store';
 import { Formfield } from '../../../../data/models/Formfield.model';
 import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
+import { QuoteTemplate } from 'src/app/data/models/QuoteTemplate.model';
+import { QuoteTemplateService } from 'src/app/data/services/quote-template.service';
+import { selectDynamicForm } from '../../../../state/dynamic-form/dynamic-form.selector';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 @Component({
   selector: 'app-project-quote-preview',
@@ -33,7 +37,10 @@ export class ProjectQuotePreviewComponent implements OnInit {
 
   isEnabledChangeQuoteStatus = false;
 
+  results: any = null;
+
   headerForm = new FormGroup({
+    id: new FormControl(''),
     name: new FormControl(null, [Validators.required]),
     addressee: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
@@ -51,9 +58,12 @@ export class ProjectQuotePreviewComponent implements OnInit {
 
   quoteStatuses$!: Observable<QuoteStatus[]>;
 
+  quoteTemplate$!: Observable<QuoteTemplate>;
+
   constructor(
     private projectQuoteService: ProjectQuoteService,
-    public quoteStatusService: QuoteStatusService,
+    private quoteStatusService: QuoteStatusService,
+    private quoteTemplateService: QuoteTemplateService,
     public dialogRef: MatDialogRef<ProjectQuotePreviewComponent>,
     private store: Store,
     @Inject(MAT_DIALOG_DATA)
@@ -78,6 +88,7 @@ export class ProjectQuotePreviewComponent implements OnInit {
     );
 
     this.formFields = data.projectQuote.quote.form;
+    this.headerForm.controls.id.patchValue(data.projectQuote.id);
   }
 
   ngOnInit(): void {
@@ -85,6 +96,8 @@ export class ProjectQuotePreviewComponent implements OnInit {
     this.headerForm.get('client')?.patchValue(this.data.projectQuote.addressee);
     this.headerForm.disable();
     this.isOnlyReadBodyQuote = true;
+
+    this.quoteTemplate$ = this.quoteTemplateService.fetch(this.data.projectQuote.template_quote_id);
   }
 
   onNoClick() {
@@ -106,9 +119,17 @@ export class ProjectQuotePreviewComponent implements OnInit {
     }
     this.step = this.PREVIEW_STEP;
     // TODO: Hacer el calculo de operaciones si esta activada la edicion
-    setTimeout(() => {
-      // this.calculateOperations();
-    }, 100);
+    if (this.isEditing && this.formFill.getFormGroup().dirty) {
+      let operations$ = this.quoteTemplate$.pipe(
+        switchMap((quoteTemplate) => {
+          return this.projectQuoteService.resolveOperations(quoteTemplate);
+        }),
+      );
+      operations$.subscribe((operations) => {
+        this.results = operations;
+        console.log(this.results);
+      });
+    }
   }
 
   enableEditing() {
@@ -138,11 +159,37 @@ export class ProjectQuotePreviewComponent implements OnInit {
   }
 
   save() {
-    // TODO: Guardar la cotizacion actualizada
-    // this.projectQuoteService.update(quote).subscribe(() => {
-    //   MessageHelper.successMessage('Éxito', 'Cotización actualizada');
-    //   this.dialogRef.close(true);
-    // });
+    let form$ = this.store.select(selectDynamicForm).pipe(take(1));
+    form$
+      .pipe(
+        map((form) => {
+          return {
+            ...this.headerForm.getRawValue(),
+            client_id: this.headerForm.getRawValue().client
+              ? this.headerForm.getRawValue().client.id
+              : null,
+            template_quote_id: this.data.projectQuote.template_quote_id,
+            quote: {
+              form: {
+                ...form,
+              },
+              operations: this.data.projectQuote.quote.operations,
+              result: this.results ? this.results : this.data.projectQuote.quote.result,
+            },
+          };
+        }),
+        switchMap((projectQuote) => {
+          return this.projectQuoteService.update(projectQuote);
+        }),
+      )
+      .subscribe({
+        next: () => {
+          MessageHelper.successMessage('Éxito', 'Cotización actualizada');
+          this.dialogRef.close(true);
+        },
+        // TODO: Manejar errores
+        error: () => {},
+      });
   }
 
   addControlToForm(formGroup: FormGroup) {
