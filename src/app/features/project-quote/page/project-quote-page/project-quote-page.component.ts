@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
-import { combineLatest, delay, map, Observable, switchMap, take } from 'rxjs';
+import { combineLatest, delay, map, Observable, take } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Formfield } from '../../../../data/models/Formfield.model';
 import {
@@ -249,64 +249,9 @@ export class ProjectQuotePageComponent implements OnDestroy, AfterViewInit {
 
   calculateOperations() {
     const quoteTemplate = this.templateControl.value;
-    this.store
-      .select(selectDynamicForm)
-      .pipe(
-        take(1),
-        map((form) => {
-          form.forEach((field) => {
-            if (field.key !== 'total') {
-              console.log(quoteTemplate);
-              quoteTemplate.operations.operation_fields.map((x: any) => {
-                if (x.key === field.key) {
-                  x.value = field.value;
-                  return {
-                    ...x,
-                    value: field.value,
-                  };
-                } else {
-                  return x;
-                }
-              });
-            }
-          });
-          return {
-            quote: {
-              form: {
-                ...form,
-              },
-              operations: quoteTemplate.operations,
-            },
-          };
-        }),
-        switchMap((quote) =>
-          this.projectQuoteService.calculateOperations({ ...quote }).pipe(
-            map((resp: any) => {
-              const operationFields: [] = resp.operation_fields;
-              const operationTotal = resp.operation_total;
-              const concepts: any[] = [];
-              for (const opt in operationFields) {
-                const data: any = operationFields[opt];
-                data.name = opt;
-                concepts.push(data);
-              }
-              let total = {
-                name: 'total',
-                description: operationTotal.description,
-                subtotal: operationTotal.subtotal,
-                total: operationTotal.total,
-              };
-              return {
-                operation_fields: concepts,
-                operation_total: total,
-              };
-            }),
-          ),
-        ),
-      )
-      .subscribe((quote) => {
-        this.quote = quote;
-      });
+    this.projectQuoteService.resolveOperations(quoteTemplate).subscribe((quote) => {
+      this.quote = quote;
+    });
     // TODO: Validar que el arreglo de operaciones no venga vacio
   }
 

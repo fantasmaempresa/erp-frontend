@@ -1,6 +1,7 @@
 import { EntityModel } from '../../core/interfaces/EntityModel';
 import { Client } from './Client.model';
 import { Formfield } from './Formfield.model';
+import { Operations } from './Operations.model';
 
 export interface ProjectQuote extends EntityModel {
   addressee: string;
@@ -13,6 +14,7 @@ export interface ProjectQuote extends EntityModel {
   status_quote_id: number;
   quote: {
     form: Formfield<any>[];
+    operations?: Operations;
     result: Result;
   };
   template_quote_id: number;
