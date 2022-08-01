@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClientService } from '../../../../data/services/client.service';
 import { Observable } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { Client } from '../../../../data/models/Client.model';
+import { ClientDto } from '../../../../data/dto/Client.dto';
 
 @Component({
   selector: 'app-client-form',
@@ -33,9 +33,10 @@ export class ClientFormComponent {
     private route: ActivatedRoute,
     private clientService: ClientService,
   ) {
-    if (this.route.snapshot.queryParams.id) {
+    const id = Number(this.route.snapshot.params.id);
+    if (!isNaN(id)) {
       this.isEdit = true;
-      clientService.fetch(this.route.snapshot.queryParams.id).subscribe({
+      clientService.fetch(id).subscribe({
         next: (client) => {
           this.clientForm.addControl('id', new FormControl(''));
           this.clientForm.patchValue(client);
@@ -49,7 +50,7 @@ export class ClientFormComponent {
   }
 
   onSubmit() {
-    let request$: Observable<Client>;
+    let request$: Observable<ClientDto>;
     if (!this.isEdit) {
       request$ = this.clientService.save(this.clientForm.value);
     } else {
