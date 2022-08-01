@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { Project } from '../../data/models/Project.model';
+import { ProjectDto } from '../../data/dto/Project.dto';
 
 export enum ProjectActions {
   LOAD_PROJECTS = '[Projects] Load projects',
@@ -13,7 +13,7 @@ export enum ProjectActions {
 export const loadProjects = createAction(ProjectActions.LOAD_PROJECTS);
 export const loadProjectsSuccess = createAction(
   ProjectActions.LOAD_PROJECTS_SUCCESS,
-  props<{ projects: Pagination<Project> }>(),
+  props<{ projects: Pagination<ProjectDto> }>(),
 );
 
 export const loadNextPageOfProjects = createAction(

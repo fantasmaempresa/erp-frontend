@@ -1,8 +1,8 @@
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { Staff } from '../../data/models/Staff.model';
+import { StaffDto } from '../../data/dto/Staff.dto';
 
 export interface StaffState {
-  staff: Pagination<Staff> | null;
+  staff: Pagination<StaffDto> | null;
 }
 
 export const initialState: StaffState = {

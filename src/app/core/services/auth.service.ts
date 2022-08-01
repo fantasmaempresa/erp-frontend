@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { Observable, take, tap } from 'rxjs';
-import { AuthResponse } from '../../data/models/AuthResponse.model';
-import { TokensModel } from '../../data/models/Tokens.model';
+import { AuthResponseDto } from '../../data/dto/AuthResponse.dto';
+import { TokensDto } from '../../data/dto/Tokens.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -19,15 +19,15 @@ export class AuthService {
     this._base = `${environment.base_url}/oauth/`;
   }
 
-  login(username: string, password: string): Observable<AuthResponse> {
+  login(username: string, password: string): Observable<AuthResponseDto> {
     const body = {
       grant_type: environment.grant_type,
       client_id: environment.client_id,
       client_secret: environment.client_secret,
       username,
-      password,
+      passwor,
     };
-    return this.http.post<AuthResponse>(`${this._base}token`, body);
+    return this.http.post<AuthResponseDto>(`${this._base}token`, body);
   }
 
   refreshToken() {
@@ -51,7 +51,7 @@ export class AuthService {
       });
   }
 
-  storeTokens(tokens: TokensModel) {
+  storeTokens(tokens: TokensDto) {
     localStorage.setItem(this.ACCESS_TOKEN, tokens.access_token);
     localStorage.setItem(this.REFRESH_TOKEN, tokens.refresh_token);
   }

@@ -8,12 +8,12 @@ import {
 import { selectRoles } from '../../../../state/role/role.selector';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { EntityModel } from '../../../../core/interfaces/EntityModel';
+import { EntityDto } from '../../../../core/interfaces/Entity.dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
 import { loadNextPageOfRoles, loadRoles } from '../../../../state/role/role.actions';
 import { RoleService } from '../../../../data/services/role.service';
-import { Role } from '../../../../data/models/Role.model';
+import { RoleView } from '../../../../data/Presentation/Role.view';
 
 @Component({
   selector: 'app-role-list',
@@ -21,7 +21,7 @@ import { Role } from '../../../../data/models/Role.model';
   styleUrls: ['./role-list.component.scss'],
   providers: [
     { provide: SELECTOR, useValue: selectRoles },
-    { provide: CLAZZ, useValue: Role },
+    { provide: CLAZZ, useValue: RoleView },
     { provide: LOAD_ACTION, useValue: loadRoles() },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfRoles },
   ],
@@ -36,7 +36,7 @@ export class RoleListComponent {
 
   selectedItem!: any;
 
-  setSelectedItem = (item: EntityModel) => {
+  setSelectedItem = (item: EntityDto) => {
     this.selectedItem = item;
   };
 

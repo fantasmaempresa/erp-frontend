@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormGroup } from '@angular/forms';
-import { Formfield } from '../../../data/models/Formfield.model';
+import { Formfield } from '../../../data/dto/Formfield.dto';
 
 @Component({
   selector: 'app-dynamic-form-input',

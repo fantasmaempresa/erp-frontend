@@ -3,7 +3,7 @@ import { LaravelWebSocket } from '../../classes/laravel-web-socket';
 import { Observable, of, switchMap, withLatestFrom } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { Store } from '@ngrx/store';
-import { User } from '../../../data/models/User.model';
+import { UserDto } from '../../../data/dto/User.dto';
 import { selectUser } from '../../../state/auth/auth.selector';
 import { Router } from '@angular/router';
 
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   providedIn: `root`,
 })
 export class SystemActionSocketService extends LaravelWebSocket {
-  private readonly user$: Observable<User | null>;
+  private readonly user$: Observable<UserDto | null>;
 
   constructor(private authService: AuthService, private store: Store, private router: Router) {
     super();

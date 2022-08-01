@@ -4,8 +4,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StaffService } from '../../../../data/services/staff.service';
 import { map, Observable } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { Staff } from '../../../../data/models/Staff.model';
-import { WorkArea } from '../../../../data/models/WorkArea.model';
+import { StaffDto } from '../../../../data/dto/Staff.dto';
+import { WorkAreaDto } from '../../../../data/dto/WorkArea.dto';
 import { AreaService } from '../../../../data/services/area.service';
 
 @Component({
@@ -32,7 +32,7 @@ export class StaffMemberFormComponent {
 
   formErrors: any = {};
 
-  workAreas$!: Observable<WorkArea[]>;
+  workAreas$!: Observable<WorkAreaDto[]>;
 
   constructor(
     private router: Router,
@@ -57,7 +57,7 @@ export class StaffMemberFormComponent {
   }
 
   onSubmit() {
-    let request$: Observable<Staff>;
+    let request$: Observable<StaffDto>;
     if (!this.isEdit) {
       request$ = this.staffService.save(this.staffMemberForm.value);
     } else {

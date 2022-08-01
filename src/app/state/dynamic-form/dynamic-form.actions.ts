@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Formfield } from '../../data/models/Formfield.model';
+import { Formfield } from '../../data/dto/Formfield.dto';
 import { Update } from '@ngrx/entity';
 
 export enum DynamicFormActions {

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormArray, FormControl } from '@angular/forms';
 import { map, Observable } from 'rxjs';
 import { ConceptService } from '../../../../data/services/concept.service';
-import { Concept } from '../../../../data/models/Concept.model';
+import { ConceptDto } from '../../../../data/dto/Concept.dto';
 
 @Component({
   selector: 'app-project-quote-concepts',
@@ -12,7 +12,7 @@ import { Concept } from '../../../../data/models/Concept.model';
 export class ProjectQuoteConceptsComponent {
   concepts = new FormArray([]);
 
-  concepts$: Observable<Concept[]>;
+  concepts$: Observable<ConceptDto[]>;
 
   constructor(private conceptService: ConceptService) {
     this.concepts$ = this.conceptService.fetchAll().pipe(map((concepts) => concepts.data));

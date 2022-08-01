@@ -1,8 +1,8 @@
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { QuoteStatus } from '../../data/models/QuoteStatus.model';
+import { QuoteStatusDto } from '../../data/dto/QuoteStatus.dto';
 
 export interface QuoteStatusState {
-  quote_status: Pagination<QuoteStatus> | null;
+  quote_status: Pagination<QuoteStatusDto> | null;
 }
 
 export const quoteStatusInitialState: QuoteStatusState = {

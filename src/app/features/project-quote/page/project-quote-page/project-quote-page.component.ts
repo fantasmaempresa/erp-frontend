@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
 import { combineLatest, map, Observable, take } from 'rxjs';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Formfield } from '../../../../data/models/Formfield.model';
+import { Formfield } from '../../../../data/dto/Formfield.dto';
 import {
   selectDynamicForm,
   selectStatus,
@@ -12,8 +12,8 @@ import {
 import { emptyForm, loadForm } from '../../../../state/dynamic-form/dynamic-form.actions';
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import faker from '@faker-js/faker';
-import { QuoteTemplate } from '../../../../data/models/QuoteTemplate.model';
+import faker from"@faker-js/faker"';
+import { QuoteTemplate } from"../../../../data/dto/QuoteTemplate.dto"';
 
 @Component({
   selector: 'app-project-quote-page',

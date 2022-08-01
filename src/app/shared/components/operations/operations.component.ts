@@ -10,11 +10,11 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { combineLatestWith, map, Observable, startWith, take, tap } from 'rxjs';
-import { Formfield } from '../../../data/models/Formfield.model';
+import { Formfield } from '../../../data/dto/Formfield.dto';
 import { selectDynamicForm } from '../../../state/dynamic-form/dynamic-form.selector';
 import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { ConceptService } from '../../../data/services/concept.service';
-import { Concept } from '../../../data/models/Concept.model';
+import { ConceptDto } from '../../../data/dto/Concept.dto';
 import { MatDialog } from '@angular/material/dialog';
 import { ProjectQuoteService } from '../../../data/services/project-quote.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
@@ -40,9 +40,9 @@ export class OperationsComponent implements OnInit {
 
   filteredOptions$!: Observable<Formfield<any>[]>;
 
-  filteredConcepts$: Observable<Concept[]>[] = [];
+  filteredConcepts$: Observable<ConceptDto[]>[] = [];
 
-  filteredConceptsTotal$: Observable<Concept[]>[] = [];
+  filteredConceptsTotal$: Observable<ConceptDto[]>[] = [];
 
   formFields$!: Observable<Formfield<any>[]>;
 
@@ -51,7 +51,7 @@ export class OperationsComponent implements OnInit {
     operation_total: new FormArray([]),
   });
 
-  concepts$: Observable<Concept[]>;
+  concepts$: Observable<ConceptDto[]>;
 
   get operation_fields() {
     return this.operationsForm.controls.operation_fields as FormArray;
@@ -73,7 +73,7 @@ export class OperationsComponent implements OnInit {
         this.operation_total.clear();
         operations.operation_total.forEach((operation: Formfield<any>, index: number) => {
           this.addOperation(operation);
-          operation.concepts?.forEach((concept: Concept) => {
+          operation.concepts?.forEach((concept: ConceptDto) => {
             let concepts = this.operation_total.at(index).get('concepts') as FormArray;
             concepts.push(new FormControl(concept));
           });
@@ -85,7 +85,7 @@ export class OperationsComponent implements OnInit {
         this.operation_fields.clear();
         operations.operation_fields.forEach((operation: Formfield<any>, index: number) => {
           this.addOperation(operation);
-          operation.concepts?.forEach((concept: Concept) => {
+          operation.concepts?.forEach((concept: ConceptDto) => {
             let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
             concepts.push(new FormControl(concept));
           });
@@ -232,14 +232,14 @@ export class OperationsComponent implements OnInit {
     });
   }
 
-  private _filterConcepts(value: string | object, options: Concept[]) {
+  private _filterConcepts(value: string | object, options: ConceptDto[]) {
     if (typeof value !== 'string') {
       return [];
     }
 
     const filterValue = value.toLowerCase();
 
-    return options.filter((option: Concept) => {
+    return options.filter((option: ConceptDto) => {
       return option.name.toLowerCase().includes(filterValue);
     });
   }
@@ -258,7 +258,7 @@ export class OperationsComponent implements OnInit {
     return `concept-${item.id}`;
   }
 
-  displayConceptFn(concept: Concept) {
+  displayConceptFn(concept: ConceptDto) {
     return concept && concept.name ? concept.name : '';
   }
 
@@ -320,7 +320,7 @@ export class OperationsComponent implements OnInit {
     }
     if (target === 'total') {
       let concepts = this.operation_total.at(index).get('concepts') as FormArray;
-      const conceptsArray: Concept[] = concepts.value;
+      const conceptsArray: ConceptDto[] = concepts.value;
       let isInArray = false;
       conceptsArray.forEach((value) => {
         if (value.id === event.option.value.id) {
@@ -340,7 +340,7 @@ export class OperationsComponent implements OnInit {
     }
     if (target === 'fields') {
       let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
-      const conceptsArray: Concept[] = concepts.value;
+      const conceptsArray: ConceptDto[] = concepts.value;
       let isInArray = false;
       conceptsArray.forEach((value) => {
         if (value.id === event.option.value.id) {
@@ -373,10 +373,10 @@ export class OperationsComponent implements OnInit {
     this.operation_fields.at(index).get('conceptCtrl')?.setValue(null);
   }
 
-  remove(concept: Concept, index: number, target: string): void {
+  remove(concept: ConceptDto, index: number, target: string): void {
     if (target === 'total') {
       const concepts = this.operation_total.at(index).get('concepts') as FormArray;
-      const conceptsArray: Concept[] = concepts.value;
+      const conceptsArray: ConceptDto[] = concepts.value;
       conceptsArray.forEach((value, i) => {
         if (value.id === concept.id) {
           concepts.removeAt(i);
@@ -385,7 +385,7 @@ export class OperationsComponent implements OnInit {
     }
     if (target === 'fields') {
       const concepts = this.operation_fields.at(index).get('concepts') as FormArray;
-      const conceptsArray: Concept[] = concepts.value;
+      const conceptsArray: ConceptDto[] = concepts.value;
       conceptsArray.forEach((value, i) => {
         if (value.id === concept.id) {
           concepts.removeAt(i);

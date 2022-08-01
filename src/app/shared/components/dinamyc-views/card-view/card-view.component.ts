@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DynamicViewComponent } from '../class/dynamic-view.component';
-import { EntityModel } from '../../../../core/interfaces/EntityModel';
+import { EntityDto } from '../../../../core/interfaces/Entity.dto';
 
 export interface ActionsCard {
   icon: string;
@@ -14,7 +14,7 @@ export interface ActionsCard {
   templateUrl: './card-view.component.html',
   styleUrls: ['./card-view.component.scss'],
 })
-export class CardViewComponent<T extends EntityModel> extends DynamicViewComponent<T> {
+export class CardViewComponent<T extends EntityDto> extends DynamicViewComponent<T> {
   @Input()
   actions: ActionsCard[] = [];
 

@@ -1,8 +1,8 @@
-import { Client } from '../../data/models/Client.model';
+import { ClientDto } from '../../data/dto/Client.dto';
 import { Pagination } from '../../core/interfaces/Pagination.model';
 
 export interface ClientsState {
-  clients: Pagination<Client> | null;
+  clients: Pagination<ClientDto> | null;
 }
 
 export const initialState: ClientsState = {

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { EntityModel } from '../../../../core/interfaces/EntityModel';
+import { EntityDto } from '../../../../core/interfaces/Entity.dto';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -17,11 +17,12 @@ import {
   startToListenUsers,
   stopToListenUsers,
 } from '../../../../state/users/users.actions';
-import { User } from '../../../../data/models/User.model';
+import { UserDto } from '../../../../data/dto/User.dto';
 import { selectUsers } from '../../../../state/users/users.selector';
 import { selectUser } from '../../../../state/auth/auth.selector';
 import { Observable } from 'rxjs';
-import { AuthService } from '../../../../core/services/auth.service';
+import { AuthService } from"../../../../core/services/auth.service"';
+import { UserView } from"../../../../data/Presentation/User.view"';
 
 @Component({
   selector: 'app-user-list',
@@ -29,15 +30,15 @@ import { AuthService } from '../../../../core/services/auth.service';
   styleUrls: ['./user-list.component.scss'],
   providers: [
     { provide: SELECTOR, useValue: selectUsers },
-    { provide: CLAZZ, useValue: User },
+    { provide: CLAZZ, useValue: UserView },
     { provide: LOAD_ACTION, useValue: loadUsers() },
-    { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfUsers },
+    { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfUsers }
   ],
 })
 export class UserListComponent implements OnInit, OnDestroy {
   selectedItem!: any;
 
-  currentUser$!: Observable<User | null>;
+  currentUser$!: Observable<UserDto | null>;
 
   constructor(
     private route: ActivatedRoute,
@@ -57,7 +58,7 @@ export class UserListComponent implements OnInit, OnDestroy {
     this.store.dispatch(startToListenUsers());
   }
 
-  setSelectedItem = (item: EntityModel) => {
+  setSelectedItem = (item: EntityDto) => {
     this.selectedItem = item;
   };
 

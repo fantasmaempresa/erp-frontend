@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Client } from '../../../../data/models/Client.model';
+import { ClientDto } from '../../../../data/dto/Client.dto';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subscription, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { Concept } from '../../../../data/models/Concept.model';
+import { ConceptDto } from '../../../../data/dto/Concept.dto';
 import { ConceptService } from '../../../../data/services/concept.service';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { Store } from '@ngrx/store';
@@ -27,11 +27,11 @@ export class ConceptListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   displayedColumns: string[] = ['select', 'name', 'description', 'amount'];
 
-  selection = new SelectionModel<Concept>(false, []);
+  selection = new SelectionModel<ConceptDto>(false, []);
 
-  dataSource = new MatTableDataSource<Concept>();
+  dataSource = new MatTableDataSource<ConceptDto>();
 
-  concepts$!: Observable<Pagination<Concept> | null>;
+  concepts$!: Observable<Pagination<ConceptDto> | null>;
 
   conceptSubscription!: Subscription;
 
@@ -85,12 +85,12 @@ export class ConceptListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: Client): string {
+  checkboxLabel(row?: ClientDto): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+      return `${this.isAllSelected() ? "deselect" : "select"} all`;
     }
     // @ts-ignore
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.id + 1}`;
   }
 
   async goToNewConcept() {

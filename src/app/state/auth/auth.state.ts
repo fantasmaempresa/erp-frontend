@@ -1,9 +1,9 @@
-import { UserAuthModel } from '../../data/models/UserAuth.model';
-import { TokensModel } from '../../data/models/Tokens.model';
+import { UserAuthDto } from '../../data/dto/UserAuth.dto';
+import { TokensDto } from '../../data/dto/Tokens.dto';
 
 export interface AuthState {
-  tokens: TokensModel | null;
-  user: UserAuthModel | null;
+  tokens: TokensDto | null;
+  user: UserAuthDto | null;
   isLoading: boolean;
   errorMessage: string | null;
 }

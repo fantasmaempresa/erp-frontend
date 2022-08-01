@@ -1,8 +1,8 @@
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { Concept } from '../../data/models/Concept.model';
+import { ConceptDto } from '../../data/dto/Concept.dto';
 
 export interface ConceptsState {
-  concepts: Pagination<Concept> | null;
+  concepts: Pagination<ConceptDto> | null;
 }
 
 export const conceptsInitialState: ConceptsState = {

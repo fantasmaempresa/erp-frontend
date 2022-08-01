@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AuthState } from './auth.state';
-import { UserAuthModel } from '../../data/models/UserAuth.model';
-import { User } from '../../data/models/User.model';
+import { UserAuthDto } from '../../data/dto/UserAuth.dto';
+import { UserDto } from '../../data/dto/User.dto';
 
 export const AUTH_STATE_NAME = 'auth';
 
@@ -23,9 +23,9 @@ export const selectUser = createSelector(selectAuthState, (state) => {
   if (!state.user) {
     return null;
   }
-  const user: UserAuthModel = state.user;
+  const user: UserAuthDto = state.user;
   const { role, staff, client, ...userData } = user;
-  return userData as unknown as User;
+  return userData as unknown as UserDto;
 });
 
 export const selectRole = createSelector(selectAuthState, (state) => {

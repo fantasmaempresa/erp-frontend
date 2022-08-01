@@ -1,8 +1,8 @@
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { Process } from '../../data/models/Process.model';
+import { ProcessDto } from '../../data/dto/Process.dto';
 
 export interface ProcessState {
-  processes: Pagination<Process> | null;
+  processes: Pagination<ProcessDto> | null;
 }
 
 export const initialState: ProcessState = {

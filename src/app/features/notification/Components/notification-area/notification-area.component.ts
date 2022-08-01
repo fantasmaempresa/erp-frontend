@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectIncomingNotifications } from '../../../../state/notifications/notification.selector';
-import { NotificationPopUpModel } from '../../../../data/models/NotificationPopUp.model';
+import { NotificationPopUpDto } from '../../../../data/dto/NotificationPopUp.dto';
 import { closeIncomingNotification } from '../../../../state/notifications/notification.actions';
 
 @Component({
@@ -11,7 +11,7 @@ import { closeIncomingNotification } from '../../../../state/notifications/notif
   styleUrls: ['./notification-area.component.scss'],
 })
 export class NotificationAreaComponent {
-  notifications$: Observable<NotificationPopUpModel[]>;
+  notifications$: Observable<NotificationPopUpDto[]>;
 
   constructor(private store: Store) {
     this.notifications$ = this.store.select(selectIncomingNotifications);
@@ -19,7 +19,7 @@ export class NotificationAreaComponent {
 
   trackById = (index: number, item: any) => item.id;
 
-  checkIsClose(notification: NotificationPopUpModel) {
+  checkIsClose(notification: NotificationPopUpDto) {
     this.store.dispatch(closeIncomingNotification({ id: notification.id }));
   }
 }

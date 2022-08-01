@@ -4,7 +4,7 @@ import { ProcessPhaseService } from '../../../../data/services/process-phase.ser
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RoleService } from '../../../../data/services/role.service';
 import { map, Observable, pluck, startWith } from 'rxjs';
-import { Role } from '../../../../data/models/Role.model';
+import { RoleDto } from '../../../../data/dto/Role.dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 @Component({
@@ -17,9 +17,9 @@ export class ProcessPhaseFormComponent {
 
   form!: FormGroup;
 
-  roles$: Observable<Role[]>;
+  roles$: Observable<RoleDto[]>;
 
-  mapRoles = (role: Role) => role.name;
+  mapRoles = (role: RoleDto) => role.name;
 
   form$!: Observable<any> | undefined;
 

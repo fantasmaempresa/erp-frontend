@@ -13,14 +13,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Subscription, tap } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { DynamicViewComponent } from '../class/dynamic-view.component';
-import { EntityModel } from '../../../../core/interfaces/EntityModel';
+import { EntityDto } from '../../../../core/interfaces/Entity.dto';
 
 @Component({
   selector: 'app-table-view',
   templateUrl: './table-view.component.html',
   styleUrls: ['./table-view.component.scss'],
 })
-export class TableViewComponent<T extends EntityModel>
+export class TableViewComponent<T extends EntityDto>
   extends DynamicViewComponent<T>
   implements OnInit, AfterViewInit, OnDestroy
 {

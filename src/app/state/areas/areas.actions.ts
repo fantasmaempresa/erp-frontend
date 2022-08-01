@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { WorkArea } from '../../data/models/WorkArea.model';
+import { WorkAreaDto } from '../../data/dto/WorkArea.dto';
 
 export enum AreasActions {
   LOAD_AREAS = '[Areas] Load areas',
@@ -13,7 +13,7 @@ export enum AreasActions {
 export const loadAreas = createAction(AreasActions.LOAD_AREAS);
 export const loadAreasSuccess = createAction(
   AreasActions.LOAD_AREAS_SUCCESS,
-  props<{ areas: Pagination<WorkArea> }>(),
+  props<{ areas: Pagination<WorkAreaDto> }>(),
 );
 
 export const loadNextPageOfAreas = createAction(

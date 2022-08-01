@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EntityModel } from '../../../../core/interfaces/EntityModel';
+import { EntityDto } from '../../../../core/interfaces/Entity.dto';
 import { selectClientsLink } from '../../../../state/clients-link/clients-link.selector';
 import {
   loadClientsLink,
@@ -14,7 +14,7 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
-import { ClientLink } from '../../../../data/models/ClientLink.model';
+import { ClientLinkView } from '../../../../data/Presentation/ClientLink.view';
 
 @Component({
   selector: 'app-client-link-list',
@@ -22,7 +22,7 @@ import { ClientLink } from '../../../../data/models/ClientLink.model';
   styleUrls: ['./client-link-list.component.scss'],
   providers: [
     { provide: SELECTOR, useValue: selectClientsLink },
-    { provide: CLAZZ, useValue: ClientLink },
+    { provide: CLAZZ, useValue: ClientLinkView },
     { provide: LOAD_ACTION, useValue: loadClientsLink },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClientsLink },
     { provide: ACTION_KEY, useValue: 'clientId' },
@@ -31,7 +31,7 @@ import { ClientLink } from '../../../../data/models/ClientLink.model';
 export class ClientLinkListComponent {
   selectedItem!: any;
 
-  setSelectedItem = (item: EntityModel) => {
+  setSelectedItem = (item: EntityDto) => {
     this.selectedItem = item;
   };
 

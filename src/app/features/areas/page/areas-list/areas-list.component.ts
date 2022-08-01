@@ -6,7 +6,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Observable, Subscription, tap } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { AreaService } from '../../../../data/services/area.service';
-import { WorkArea } from '../../../../data/models/WorkArea.model';
+import { WorkAreaDto } from '../../../../data/dto/WorkArea.dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { Store } from '@ngrx/store';
 import { selectAreas } from '../../../../state/areas/areas.selector';
@@ -26,11 +26,11 @@ export class AreasListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   displayedColumns: string[] = ['select', 'name', 'description'];
 
-  selection = new SelectionModel<WorkArea>(false, []);
+  selection = new SelectionModel<WorkAreaDto>(false, []);
 
-  dataSource = new MatTableDataSource<WorkArea>();
+  dataSource = new MatTableDataSource<WorkAreaDto>();
 
-  areas$!: Observable<Pagination<WorkArea> | null>;
+  areas$!: Observable<Pagination<WorkAreaDto> | null>;
 
   areasSubscription!: Subscription;
 
@@ -80,11 +80,11 @@ export class AreasListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: WorkArea): string {
+  checkboxLabel(row?: WorkAreaDto): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+      return `${this.isAllSelected() ? "deselect" : "select"} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.id + 1}`;
   }
 
   async goToNewArea() {

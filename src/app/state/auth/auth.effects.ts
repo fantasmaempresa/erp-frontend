@@ -5,7 +5,7 @@ import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TokensModel } from '../../data/models/Tokens.model';
+import { TokensDto } from '../../data/dto/Tokens.dto';
 
 @Injectable()
 export class AuthEffects {
@@ -22,7 +22,7 @@ export class AuthEffects {
       exhaustMap((action) => {
         return this.authService.login(action.username, action.password).pipe(
           map((resp) => {
-            const tokens: TokensModel = {
+            const tokens: TokensDto = {
               access_token: resp.access_token,
               refresh_token: resp.refresh_token,
               token_type: resp.token_type,

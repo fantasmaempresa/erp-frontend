@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { Role } from '../../data/models/Role.model';
+import { RoleDto } from '../../data/dto/Role.dto';
 
 export enum RolesActions {
   LOAD_ROLES = '[Roles] Load roles',
@@ -13,7 +13,7 @@ export enum RolesActions {
 export const loadRoles = createAction(RolesActions.LOAD_ROLES);
 export const loadRolesSuccess = createAction(
   RolesActions.LOAD_ROLES_SUCCESS,
-  props<{ roles: Pagination<Role> }>(),
+  props<{ roles: Pagination<RoleDto> }>(),
 );
 
 export const loadNextPageOfRoles = createAction(

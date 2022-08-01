@@ -1,28 +1,21 @@
-import { EntityModel } from '../../core/interfaces/EntityModel';
 import {
   mapToHTML,
   mapToLabel,
   printLabel,
 } from '../../shared/components/dinamyc-views/DynamicViews.decorators';
-import { Role } from './Role.model';
+import { RoleDto } from '../dto/Role.dto';
 
-export class User extends EntityModel {
-  @printLabel('Nombre')
-  name: string;
+export class UserView {
+  @printLabel"Nombre"')
+  name!: string;
 
-  @printLabel('Correo')
+  @printLabel"Correo"')
   email: string;
 
-  password?: string;
-
-  config: object;
-
-  role_id: number;
-
-  @printLabel('Estado de Conexión')
+  @printLabel"Estado de Conexión"')
   @mapToHTML((online) => {
     const status = {
-      0: '#f91a1a', //Desconectado
+      0:"#f91a1a"', //Desconectado
       1: '#3be30e', //Conectado
     };
     // @ts-ignore
@@ -41,27 +34,13 @@ export class User extends EntityModel {
   })
   locked: number;
 
-  @printLabel('Rol')
+  @printLabel("Rol")
   @mapToLabel((value) => value?.name)
-  role: Role;
+  role: RoleDto;
 
-  constructor(
-    id: number,
-    created_at: Date,
-    updated_at: Date,
-    name: string,
-    email: string,
-    config: object,
-    role_id: number,
-    online: number,
-    locked: number,
-    role: Role,
-  ) {
-    super(id, created_at, updated_at);
+  constructor(name: string, email: string, online: number, locked: number, role: RoleDto) {
     this.name = name;
     this.email = email;
-    this.config = config;
-    this.role_id = role_id;
     this.online = online;
     this.locked = locked;
     this.role = role;

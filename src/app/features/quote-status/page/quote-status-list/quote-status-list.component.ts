@@ -5,7 +5,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subscription, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
+import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';
 import { QuoteStatusService } from '../../../../data/services/quote-status.service';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { Store } from '@ngrx/store';
@@ -26,11 +26,11 @@ export class QuoteStatusListComponent implements OnInit, AfterViewInit, OnDestro
 
   displayedColumns: string[] = ['select', 'name', 'description'];
 
-  selection = new SelectionModel<QuoteStatus>(false, []);
+  selection = new SelectionModel<QuoteStatusDto>(false, []);
 
-  dataSource = new MatTableDataSource<QuoteStatus>();
+  dataSource = new MatTableDataSource<QuoteStatusDto>();
 
-  quoteStatus$!: Observable<Pagination<QuoteStatus> | null>;
+  quoteStatus$!: Observable<Pagination<QuoteStatusDto> | null>;
 
   quoteStatusSubscription!: Subscription;
 
@@ -84,12 +84,12 @@ export class QuoteStatusListComponent implements OnInit, AfterViewInit, OnDestro
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: QuoteStatus): string {
+  checkboxLabel(row?: QuoteStatusDto): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+      return `${this.isAllSelected() ? "deselect" : "select"} all`;
     }
     // @ts-ignore
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.id + 1}`;
   }
 
   async goToNewQuoteStatus() {

@@ -1,8 +1,8 @@
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { User } from '../../data/models/User.model';
+import { UserDto } from '../../data/dto/User.dto';
 
 export interface UsersState {
-  users: Pagination<User> | null;
+  users: Pagination<UserDto> | null;
 }
 
 export const initialState: UsersState = {

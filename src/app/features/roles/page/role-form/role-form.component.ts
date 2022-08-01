@@ -2,12 +2,10 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { FormValidationService } from '../../../../shared/services/form-validation.service';
 import { UserService } from '../../../../data/services/user.service';
 import { RoleService } from '../../../../data/services/role.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { validationMessages } from '../../../../core/constants/validationMessages';
-import { Role } from '../../../../data/models/Role.model';
+import { RoleDto } from '../../../../data/dto/Role.dto';
 
 @Component({
   selector: 'app-role-form',
@@ -41,7 +39,7 @@ export class RoleFormComponent {
   }
 
   onSubmit() {
-    let request$: Observable<Role>;
+    let request$: Observable<RoleDto>;
     if (!this.isEdit) {
       request$ = this.roleService.save(this.roleForm.value);
     } else {

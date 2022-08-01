@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { CrudService } from '../../core/classes/Crud/CrudService';
-import { NotificationResponse } from '../models/NotificationResponse.model';
+import { NotificationResponseDto } from '../dto/NotificationResponse.dto';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { NotificationModel } from '../models/Notification.model';
+import { NotificationDto } from '../dto/Notification.dto';
 
 @Injectable({
   providedIn: 'root',
 })
-export class NotificationsService extends CrudService<NotificationResponse> {
+export class NotificationsService extends CrudService<NotificationResponseDto> {
   constructor(private http: HttpClient) {
     super('notifications', http);
   }
@@ -25,7 +25,7 @@ export class NotificationsService extends CrudService<NotificationResponse> {
     return this.http.get(`${this._base}/filter/getCheckUserNotifications`);
   }
 
-  readAllNotifications(notifications: NotificationModel[]): Observable<any> {
+  readAllNotifications(notifications: NotificationDto[]): Observable<any> {
     return this.http.put(`${this._base}/0`, { notifications: notifications });
   }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormFieldClass } from '../classes/FormFieldClass';
 import { FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
-import { Formfield } from '../../data/models/Formfield.model';
+import { Formfield } from '../../data/dto/Formfield.dto';
 
 @Injectable({
   providedIn: 'root',

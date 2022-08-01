@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { ClientLink } from '../../../../data/models/ClientLink.model';
+import { ClientLinkDto } from '../../../../data/dto/ClientLink.dto';
 import { ClientLinkService } from '../../../../data/services/client-link.service';
 
 @Component({
@@ -58,7 +58,7 @@ export class ClientLinkFormComponent {
 
   onSubmit() {
     if (this.form.invalid) return;
-    let request$: Observable<ClientLink>;
+    let request$: Observable<ClientLinkDto>;
     const clientId = Number(this.route.snapshot.parent?.params.id);
     if (!this.isEdit) {
       request$ = this.clientLinkService.save({ ...this.form.value, client_id: clientId });

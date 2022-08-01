@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Concept } from '../models/Concept.model';
+import { ConceptDto } from '../dto/Concept.dto';
 import { Pagination } from '../../core/interfaces/Pagination.model';
 
 @Injectable({
@@ -13,20 +13,20 @@ export class ConceptService {
   constructor(private http: HttpClient) {}
 
   fetchAll() {
-    return this.http.get<Pagination<Concept>>(this.endpoint);
+    return this.http.get<Pagination<ConceptDto>>(this.endpoint);
   }
 
   fetch(id: number) {
-    return this.http.get<Concept>(`${this.endpoint}/${id}`);
+    return this.http.get<ConceptDto>(`${this.endpoint}/${id}`);
   }
 
-  create(concept: Concept) {
-    return this.http.post<Concept>(`${this.endpoint}`, concept);
+  create(concept: ConceptDto) {
+    return this.http.post<ConceptDto>(`${this.endpoint}`, concept);
   }
 
-  update(concept: Concept) {
+  update(concept: ConceptDto) {
     let { id } = concept;
-    return this.http.put<Concept>(`${this.endpoint}/${id}`, concept);
+    return this.http.put<ConceptDto>(`${this.endpoint}/${id}`, concept);
   }
 
   delete(id: number | undefined) {
@@ -37,6 +37,6 @@ export class ConceptService {
     let params = new HttpParams();
     params = params.append('page', `${page}`);
     params = params.append('paginate', `${size}`);
-    return this.http.get<Pagination<Concept>>(`${environment.base_url}/concepts`, { params });
+    return this.http.get<Pagination<ConceptDto>>(`${environment.base_url}/concepts`, { params });
   }
 }

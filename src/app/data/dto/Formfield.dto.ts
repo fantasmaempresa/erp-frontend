@@ -1,4 +1,4 @@
-import { Concept } from './Concept.model';
+import { ConceptDto } from './Concept.dto';
 
 export interface Formfield<T> {
   id: string;
@@ -21,5 +21,5 @@ export interface Formfield<T> {
 
   options: { key: string; value: string }[];
 
-  concepts?: Concept[] | null;
+  concepts?: ConceptDto[] | null;
 }

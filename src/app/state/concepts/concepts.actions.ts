@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { Concept } from '../../data/models/Concept.model';
+import { ConceptDto } from '../../data/dto/Concept.dto';
 
 export enum ConceptsActions {
   LOAD_CONCEPTS = '[Concepts] Load concepts',
@@ -13,7 +13,7 @@ export enum ConceptsActions {
 export const loadConcepts = createAction(ConceptsActions.LOAD_CONCEPTS);
 export const loadConceptsSuccess = createAction(
   ConceptsActions.LOAD_CONCEPTS_SUCCESS,
-  props<{ concepts: Pagination<Concept> }>(),
+  props<{ concepts: Pagination<ConceptDto> }>(),
 );
 export const loadNextPageOfConcepts = createAction(
   ConceptsActions.LOAD_NEXT_PAGE,
