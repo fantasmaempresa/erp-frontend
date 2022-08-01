@@ -3,9 +3,9 @@ import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../environments/environment';
 import { Pagination } from '../../interfaces/Pagination.model';
-import { EntityModel } from '../../interfaces/EntityModel';
+import { EntityDto } from '../../interfaces/Entity.dto';
 
-export abstract class CrudService<T extends EntityModel> implements CrudOperations<T> {
+export abstract class CrudService<T extends EntityDto> implements CrudOperations<T> {
   protected constructor(protected _base: string, protected _http: HttpClient) {
     this._base = `${environment.base_url}/` + this._base;
   }
