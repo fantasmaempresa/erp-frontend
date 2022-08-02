@@ -45,7 +45,7 @@
     transform: scale(1.0075) translateY(-1rem);
     border-color: var(--primaryColor);
 
-    & .card__buttons {
+    & .card-view__buttons {
       transform: translateX(0);
       opacity: 1;
     }
@@ -87,7 +87,7 @@
   }
 
   &__button {
-    display: flex;
+    display: flex !important;
     padding: 2.25rem;
     justify-content: center;
     align-items: center;
