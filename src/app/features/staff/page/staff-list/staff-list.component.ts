@@ -7,7 +7,7 @@ import { Observable, Subscription, tap } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { StaffService } from '../../../../data/services/staff.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { Staff } from '../../../../data/models/Staff.model';
+import { StaffDto } from '../../../../data/dto/Staff.dto';
 import { Store } from '@ngrx/store';
 import { selectStaff } from '../../../../state/staff/staff.selector';
 import {
@@ -26,11 +26,11 @@ export class StaffListComponent implements OnInit, AfterViewInit, OnDestroy {
 
   displayedColumns: string[] = ['select', 'name', 'email', 'phone', 'extra_information'];
 
-  selection = new SelectionModel<Staff>(false, []);
+  selection = new SelectionModel<StaffDto>(false, []);
 
-  dataSource = new MatTableDataSource<Staff>();
+  dataSource = new MatTableDataSource<StaffDto>();
 
-  staff$!: Observable<Pagination<Staff> | null>;
+  staff$!: Observable<Pagination<StaffDto> | null>;
 
   totalItems = 0;
 
@@ -80,11 +80,11 @@ export class StaffListComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: Staff): string {
+  checkboxLabel(row?: StaffDto): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+      return `${this.isAllSelected() ? "deselect" : "select"} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.id + 1}`;
   }
 
   async goToNewMemberOfStaff() {

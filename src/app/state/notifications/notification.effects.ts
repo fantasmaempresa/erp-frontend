@@ -15,7 +15,7 @@ import { NotificationsService } from '../../data/services/notifications.service'
 import { NotificationSocketService } from '../../core/services/SocketChannels/notification-socket.service';
 import { Store } from '@ngrx/store';
 import { selectIncomingNotifications, selectUnreadNotifications } from './notification.selector';
-import { NotificationModel } from '../../data/models/Notification.model';
+import { NotificationDto } from '../../data/dto/Notification.dto';
 
 @Injectable()
 export class NotificationEffects {
@@ -55,7 +55,7 @@ export class NotificationEffects {
       ofType(readAllNotificationsServer),
       switchMap(() => this.store.select(selectUnreadNotifications).pipe(take(1))),
       filter((notifications: any) =>
-        notifications.some((notification: NotificationModel) => !notification.check),
+        notifications.some((notification: NotificationDto) => !notification.check),
       ),
       exhaustMap((notifications: any) =>
         this.notificationsService.readAllNotifications(notifications),

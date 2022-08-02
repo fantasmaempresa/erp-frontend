@@ -12,7 +12,7 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subscription, tap } from 'rxjs';
-import { EntityModel } from '../../../../core/interfaces/EntityModel';
+import { EntityDto } from '../../../../core/interfaces/Entity.dto';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { Store } from '@ngrx/store';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -31,7 +31,7 @@ interface PopUpMultiData {
   templateUrl: './popup-multi-selector.component.html',
   styleUrls: ['./popup-multi-selector.component.scss'],
 })
-export class PopupMultiSelectorComponent<T extends EntityModel>
+export class PopupMultiSelectorComponent<T extends EntityDto>
   extends DynamicViewComponent<T>
   implements OnInit, AfterViewInit, OnDestroy
 {

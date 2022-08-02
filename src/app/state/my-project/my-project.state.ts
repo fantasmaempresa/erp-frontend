@@ -1,8 +1,8 @@
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { MyProjectModel } from '../../data/models/MyProject.model';
+import { MyProjectDto } from '../../data/dto/MyProject.dto';
 
 export interface MyProjectState {
-  myProjects: Pagination<MyProjectModel> | null;
+  myProjects: Pagination<MyProjectDto> | null;
 }
 
 export const initialState: MyProjectState = {

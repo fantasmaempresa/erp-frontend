@@ -1,8 +1,8 @@
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { ProjectQuote } from '../../data/models/ProjectQuote.model';
+import { ProjectQuoteDto } from '../../data/dto/ProjectQuote.dto';
 
 export interface QuotesState {
-  quotes: Pagination<ProjectQuote> | null;
+  quotes: Pagination<ProjectQuoteDto> | null;
 }
 
 export const quotesInitialState: QuotesState = {

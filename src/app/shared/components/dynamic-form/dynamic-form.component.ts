@@ -14,7 +14,7 @@ import { FormfieldControlService } from '../../../core/services/formfield-contro
 import { Store } from '@ngrx/store';
 import { selectDynamicForm, selectStatus } from '../../../state/dynamic-form/dynamic-form.selector';
 import { Observable, Subscription, take } from 'rxjs';
-import { Formfield } from '../../../data/models/Formfield.model';
+import { Formfield } from '../../../data/dto/Formfield.dto';
 import { updateField } from '../../../state/dynamic-form/dynamic-form.actions';
 import { Update } from '@ngrx/entity';
 

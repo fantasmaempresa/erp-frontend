@@ -1,10 +1,10 @@
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { NotificationModel } from '../../data/models/Notification.model';
-import { NotificationPopUpModel } from '../../data/models/NotificationPopUp.model';
+import { NotificationDto } from '../../data/dto/Notification.dto';
+import { NotificationPopUpDto } from '../../data/dto/NotificationPopUp.dto';
 
 export interface NotificationState {
-  notifications: Pagination<NotificationModel> | null;
-  incomingNotifications: NotificationPopUpModel[];
+  notifications: Pagination<NotificationDto> | null;
+  incomingNotifications: NotificationPopUpDto[];
 }
 
 export const initialState: NotificationState = {

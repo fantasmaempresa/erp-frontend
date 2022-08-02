@@ -3,14 +3,14 @@ import { FormControl, FormGroup, FormGroupDirective } from '@angular/forms';
 import { map, Observable, startWith, switchMap, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from '../../../../shared/services/form-validation.service';
-import { User } from '../../../../data/models/User.model';
+import { UserDto } from '../../../../data/dto/User.dto';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogSearchComponent } from '../../../../shared/components/dialog-search/dialog-search.component';
-import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
+import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';
 import { QuoteStatusService } from '../../../../data/services/quote-status.service';
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { ClientService } from '../../../../data/services/client.service';
-import { Client } from '../../../../data/models/Client.model';
+import { ClientDto } from '../../../../data/dto/Client.dto';
 import { FormFieldClass } from '../../../../core/classes/FormFieldClass';
 import { FormfieldControlService } from '../../../../core/services/formfield-control.service';
 import { ConceptService } from '../../../../data/services/concept.service';
@@ -33,11 +33,11 @@ export class ProjectQuoteFormComponent implements OnInit {
 
   formErrors: any = {};
 
-  clients!: Client[];
+  clients!: ClientDto[];
 
-  filteredClients$!: Observable<Client[]> | undefined;
+  filteredClients$!: Observable<ClientDto[]> | undefined;
 
-  quoteStatuses$!: Observable<QuoteStatus[]>;
+  quoteStatuses$!: Observable<QuoteStatusDto[]>;
 
   constructor(
     private router: Router,
@@ -121,7 +121,7 @@ export class ProjectQuoteFormComponent implements OnInit {
       height: '75vh',
     });
 
-    dialogRef.afterClosed().subscribe((result: Client) => {
+    dialogRef.afterClosed().subscribe((result: ClientDto) => {
       console.log(result);
       this.form.get('client')?.patchValue(result);
       this.form.get('addressee')?.patchValue(result.name);
@@ -129,11 +129,11 @@ export class ProjectQuoteFormComponent implements OnInit {
     });
   }
 
-  displayFn(user: User): string {
-    return user && user.name ? user.name : '';
+  displayFn(user: UserDto): string {
+    return user && user.name ? user.name : "";
   }
 
-  private _filter(name: string): Client[] {
+  private _filter(name: string): ClientDto[] {
     const filterValue = name.toLowerCase();
 
     return this.clients.filter((option) => option.name.toLowerCase().includes(filterValue));

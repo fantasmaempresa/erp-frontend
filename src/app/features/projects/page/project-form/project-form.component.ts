@@ -10,14 +10,14 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { selectClients } from '../../../../state/clients/clients.selector';
-import { Client } from '../../../../data/models/Client.model';
 import { loadClients, loadNextPageOfClients } from '../../../../state/clients/clients.actions';
 import { ClientService } from '../../../../data/services/client.service';
 import { ProcessService } from '../../../../data/services/process.service';
 import { selectProcess } from '../../../../state/process/process.selector';
-import { Process } from '../../../../data/models/Process.model';
 import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
 import { format } from 'date-fns';
+import { ClientView } from '../../../../data/Presentation/Client.view';
+import { ProcessView } from '../../../../data/Presentation/Process.view';
 
 @Component({
   selector: 'app-project-form',
@@ -33,14 +33,14 @@ export class ProjectFormComponent {
 
   clientProvider: StaticProvider[] = [
     { provide: SELECTOR, useValue: selectClients },
-    { provide: CLAZZ, useValue: Client },
+    { provide: CLAZZ, useValue: ClientView },
     { provide: LOAD_ACTION, useValue: loadClients() },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClients },
   ];
 
   processProvider: StaticProvider[] = [
     { provide: SELECTOR, useValue: selectProcess },
-    { provide: CLAZZ, useValue: Process },
+    { provide: CLAZZ, useValue: ProcessView },
     { provide: LOAD_ACTION, useValue: loadProcess() },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfProcess },
   ];

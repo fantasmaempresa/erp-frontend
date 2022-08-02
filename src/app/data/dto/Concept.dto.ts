@@ -1,6 +1,6 @@
-import { EntityModel } from '../../core/interfaces/EntityModel';
+import { EntityDto } from '../../core/interfaces/Entity.dto';
 
-export interface Concept extends EntityModel {
+export interface ConceptDto extends EntityDto {
   name: string;
   description: string;
   formula: {

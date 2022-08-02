@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Client } from '../../../data/models/Client.model';
+import { ClientDto } from '../../../data/dto/Client.dto';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subscription, tap } from 'rxjs';
 import { ClientService } from '../../../data/services/client.service';
@@ -32,11 +32,11 @@ export class TableSearchComponent implements OnDestroy {
 
   displayedColumns: string[] = ['select', 'name', 'email', 'phone', 'address'];
 
-  selection = new SelectionModel<Client>(false, []);
+  selection = new SelectionModel<ClientDto>(false, []);
 
-  dataSource = new MatTableDataSource<Client>();
+  dataSource = new MatTableDataSource<ClientDto>();
 
-  dataSource$!: Observable<Pagination<Client>>;
+  dataSource$!: Observable<Pagination<ClientDto>>;
 
   resultsLength = 0;
 
@@ -82,11 +82,11 @@ export class TableSearchComponent implements OnDestroy {
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: Client): string {
+  checkboxLabel(row?: ClientDto): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+      return `${this.isAllSelected() ? "deselect" : "select"} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.id + 1}`;
   }
 
   private updateTable(observable$: Observable<any>) {

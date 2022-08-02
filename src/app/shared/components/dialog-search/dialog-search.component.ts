@@ -1,6 +1,6 @@
 import { Component, HostListener, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Client } from '../../../data/models/Client.model';
+import { ClientDto } from '../../../data/dto/Client.dto';
 
 @Component({
   selector: 'app-dialog-search',
@@ -15,7 +15,7 @@ export class DialogSearchComponent {
     this.close(false);
   }
 
-  optionSelected!: Client | null;
+  optionSelected!: ClientDto | null;
 
   constructor(
     public dialogRef: MatDialogRef<DialogSearchComponent>,
@@ -25,7 +25,7 @@ export class DialogSearchComponent {
     this.options = componentOptions;
   }
 
-  public close(value: Client | boolean) {
+  public close(value: ClientDto | boolean) {
     console.log(value);
     // this.dialogRef.close(value);
   }

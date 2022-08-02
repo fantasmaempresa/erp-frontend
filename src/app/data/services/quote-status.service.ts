@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { QuoteStatus } from '../models/QuoteStatus.model';
+import { QuoteStatusDto } from '../dto/QuoteStatus.dto';
 import { Pagination } from '../../core/interfaces/Pagination.model';
 
 @Injectable({
@@ -13,20 +13,20 @@ export class QuoteStatusService {
   constructor(private http: HttpClient) {}
 
   fetchAll() {
-    return this.http.get<Pagination<QuoteStatus>>(this.endpoint);
+    return this.http.get<Pagination<QuoteStatusDto>>(this.endpoint);
   }
 
   fetch(id: number) {
-    return this.http.get<QuoteStatus>(`${this.endpoint}/${id}`);
+    return this.http.get<QuoteStatusDto>(`${this.endpoint}/${id}`);
   }
 
-  create(quoteStatus: QuoteStatus) {
-    return this.http.post<QuoteStatus>(`${this.endpoint}`, quoteStatus);
+  create(quoteStatus: QuoteStatusDto) {
+    return this.http.post<QuoteStatusDto>(`${this.endpoint}`, quoteStatus);
   }
 
-  update(quoteStatus: QuoteStatus) {
+  update(quoteStatus: QuoteStatusDto) {
     let { id } = quoteStatus;
-    return this.http.put<QuoteStatus>(`${this.endpoint}/${id}`, quoteStatus);
+    return this.http.put<QuoteStatusDto>(`${this.endpoint}/${id}`, quoteStatus);
   }
 
   delete(id: number | undefined) {
@@ -37,7 +37,7 @@ export class QuoteStatusService {
     let params = new HttpParams();
     params = params.append('page', `${page}`);
     params = params.append('paginate', `${size}`);
-    return this.http.get<Pagination<QuoteStatus>>(`${environment.base_url}/statusQuotes`, {
+    return this.http.get<Pagination<QuoteStatusDto>>(`${environment.base_url}/statusQuotes`, {
       params,
     });
   }

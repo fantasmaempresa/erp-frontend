@@ -9,7 +9,7 @@ import {
   setField,
   updateField,
 } from '../../../state/dynamic-form/dynamic-form.actions';
-import { Formfield } from '../../../data/models/Formfield.model';
+import { Formfield } from '../../../data/dto/Formfield.dto';
 import { lastValueFrom, map, Observable } from 'rxjs';
 import {
   selectDynamicForm,
@@ -18,14 +18,14 @@ import {
   selectErrorMessage,
   selectIsEditable,
 } from '../../../state/dynamic-form/dynamic-form.selector';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { TemplateQuotes } from '../../../data/models/TemplateQuotes.model';
 import Swal from 'sweetalert2';
 import { MessageHelper } from '../../helpers/MessageHelper';
 import { QuoteTemplateService } from '../../../data/services/quote-template.service';
 import { Update } from '@ngrx/entity';
 import { v4 as uuidv4 } from 'uuid';
-import { QuoteTemplate } from '../../../data/models/QuoteTemplate.model';
+import { QuoteTemplate } from '../../../data/dto/QuoteTemplate.dto';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { TemplateQuotes } from '../../../data/dto/TemplateQuotes.dto';
 
 @Component({
   selector: 'app-dynamic-form-creation',

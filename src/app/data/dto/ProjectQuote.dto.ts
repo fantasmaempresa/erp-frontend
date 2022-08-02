@@ -1,6 +1,6 @@
-import { EntityModel } from '../../core/interfaces/EntityModel';
+import { EntityDto } from '../../core/interfaces/Entity.dto';
 
-export interface ProjectQuote extends EntityModel {
+export interface ProjectQuoteDto extends EntityDto {
   name: string;
   description: string;
   date_end: Date;

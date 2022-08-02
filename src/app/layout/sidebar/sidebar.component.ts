@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { User } from '../../data/models/User.model';
+import { UserDto } from '../../data/dto/User.dto';
 import { selectRole, selectUser } from '../../state/auth/auth.selector';
-import { Role } from '../../data/models/Role.model';
+import { RoleDto } from '../../data/dto/Role.dto';
 
 @Component({
   selector: 'app-sidebar',
@@ -64,9 +64,9 @@ export class SidebarComponent {
     },
   ];
 
-  user$: Observable<User | null>;
+  user$: Observable<UserDto | null>;
 
-  role$: Observable<Role | undefined>;
+  role$: Observable<RoleDto | undefined>;
 
   constructor(private store: Store) {
     this.user$ = store.select(selectUser);

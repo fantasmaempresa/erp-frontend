@@ -4,8 +4,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { UserService } from '../../../../data/services/user.service';
 import { RoleService } from '../../../../data/services/role.service';
 import { map, Observable } from 'rxjs';
-import { Role } from '../../../../data/models/Role.model';
-import { User } from '../../../../data/models/User.model';
+import { RoleDto } from '../../../../data/dto/Role.dto';
+import { UserDto } from '../../../../data/dto/User.dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 @Component({
@@ -26,7 +26,7 @@ export class UserFormComponent {
 
   formErrors: any = {};
 
-  roles$!: Observable<Role[]>;
+  roles$!: Observable<RoleDto[]>;
 
   constructor(
     private router: Router,
@@ -51,7 +51,7 @@ export class UserFormComponent {
   }
 
   onSubmit() {
-    let request$: Observable<User>;
+    let request$: Observable<UserDto>;
     if (!this.isEdit) {
       request$ = this.userService.save(this.userForm.value);
     } else {

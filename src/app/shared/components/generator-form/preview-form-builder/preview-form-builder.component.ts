@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Formfield } from '../../../../data/models/Formfield.model';
+import { Formfield } from '../../../../data/dto/Formfield.dto';
 import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({

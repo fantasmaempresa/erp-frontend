@@ -1,8 +1,8 @@
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { WorkArea } from '../../data/models/WorkArea.model';
+import { WorkAreaDto } from '../../data/dto/WorkArea.dto';
 
 export interface AreasState {
-  areas: Pagination<WorkArea> | null;
+  areas: Pagination<WorkAreaDto> | null;
 }
 
 export const areasInitialState: AreasState = {

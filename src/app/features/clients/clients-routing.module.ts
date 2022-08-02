@@ -20,14 +20,14 @@ const routes: Routes = [
         data: { breadcrumb: 'Lista de clientes' },
       },
       {
-        path: 'client',
-        component: ClientFormComponent,
-        data: { breadcrumb: 'Editar cliente' },
-      },
-      {
         path: 'new',
         component: ClientFormComponent,
         data: { breadcrumb: 'Agregar Cliente' },
+      },
+      {
+        path: ':id',
+        component: ClientFormComponent,
+        data: { breadcrumb: 'Editar cliente' },
       },
       {
         path: ':id/clientsLink',

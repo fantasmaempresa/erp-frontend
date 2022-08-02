@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { User } from '../../data/models/User.model';
+import { UserDto } from '../../data/dto/User.dto';
 
 export enum UsersActions {
   LOAD_USERS = '[Users] Load users',
@@ -17,9 +17,9 @@ export enum UsersActions {
 export const loadUsers = createAction(UsersActions.LOAD_USERS);
 export const loadUsersSuccess = createAction(
   UsersActions.LOAD_USERS_SUCCESS,
-  props<{ users: Pagination<User> }>(),
+  props<{ users: Pagination<UserDto> }>(),
 );
-export const changeUser = createAction(UsersActions.CHANGE_USER, props<{ user: User }>());
+export const changeUser = createAction(UsersActions.CHANGE_USER, props<{ user: UserDto }>());
 
 export const loadNextPageOfUsers = createAction(
   UsersActions.LOAD_NEXT_PAGE,

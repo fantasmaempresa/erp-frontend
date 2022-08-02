@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { validationMessages } from '../../../../core/constants/validationMessages';
 import { QuoteStatusService } from '../../../../data/services/quote-status.service';
-import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
+import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';
 
 @Component({
   selector: 'app-quote-status-form',
@@ -45,7 +45,7 @@ export class QuoteStatusFormComponent {
   }
 
   onSubmit() {
-    let request$: Observable<QuoteStatus>;
+    let request$: Observable<QuoteStatusDto>;
     if (!this.isEdit) {
       request$ = this.quoteStatusService.create(this.quoteStatusForm.value);
     } else {

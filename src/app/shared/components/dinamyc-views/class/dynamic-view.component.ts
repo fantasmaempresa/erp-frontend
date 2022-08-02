@@ -3,7 +3,7 @@ import { Component, Injector } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, shareReplay } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
-import { EntityModel } from '../../../../core/interfaces/EntityModel';
+import { EntityDto } from '../../../../core/interfaces/Entity.dto';
 import {
   ACTION_KEY,
   CLAZZ,
@@ -18,7 +18,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 @Component({
   template: '',
 })
-export abstract class DynamicViewComponent<T extends EntityModel> {
+export abstract class DynamicViewComponent<T extends EntityDto> {
   data$!: Observable<Pagination<T> | null>;
 
   displayedColumns!: string[];

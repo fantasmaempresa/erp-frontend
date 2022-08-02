@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { ClientLink } from '../../data/models/ClientLink.model';
+import { ClientLinkDto } from '../../data/dto/ClientLink.dto';
 
 export enum ClientsLinkActions {
   LOAD_CLIENTS_LINK = '[ClientsLink] Load clients',
@@ -16,7 +16,7 @@ export const loadClientsLink = createAction(
 );
 export const loadClientsLinkSuccess = createAction(
   ClientsLinkActions.LOAD_CLIENTS_LINK_SUCCESS,
-  props<{ clientsLink: Pagination<ClientLink> }>(),
+  props<{ clientsLink: Pagination<ClientLinkDto> }>(),
 );
 
 export const loadNextPageOfClientsLink = createAction(

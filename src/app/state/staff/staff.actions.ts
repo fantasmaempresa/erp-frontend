@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { Staff } from '../../data/models/Staff.model';
+import { StaffDto } from '../../data/dto/Staff.dto';
 
 export enum StaffActions {
   LOAD_STAFF = '[Staff] Load staff',
@@ -12,7 +12,7 @@ export enum StaffActions {
 export const loadStaff = createAction(StaffActions.LOAD_STAFF);
 export const loadStaffSuccess = createAction(
   StaffActions.LOAD_STAFF_SUCCESS,
-  props<{ staff: Pagination<Staff> }>(),
+  props<{ staff: Pagination<StaffDto> }>(),
 );
 
 export const loadNextPageOfStaff = createAction(

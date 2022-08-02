@@ -9,7 +9,7 @@ import {
   NgControl,
   Validators,
 } from '@angular/forms';
-import { Formfield } from '../../../../data/models/Formfield.model';
+import { Formfield } from '../../../../data/dto/Formfield.dto';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { v4 as uuidv4 } from 'uuid';
 

@@ -5,12 +5,12 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { Process } from '../../../../data/models/Process.model';
 import { selectProcess } from '../../../../state/process/process.selector';
 import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
-import { EntityModel } from '../../../../core/interfaces/EntityModel';
+import { EntityDto } from '../../../../core/interfaces/Entity.dto';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProcessView } from '../../../../data/Presentation/Process.view';
 
 @Component({
   selector: 'app-process-list',
@@ -18,7 +18,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./process-list.component.scss'],
   providers: [
     { provide: SELECTOR, useValue: selectProcess },
-    { provide: CLAZZ, useValue: Process },
+    { provide: CLAZZ, useValue: ProcessView },
     { provide: LOAD_ACTION, useValue: loadProcess() },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfProcess },
   ],
@@ -26,7 +26,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ProcessListComponent {
   selectedItem!: any;
 
-  setSelectedItem = (item: EntityModel) => {
+  setSelectedItem = (item: EntityDto) => {
     this.selectedItem = item;
   };
 

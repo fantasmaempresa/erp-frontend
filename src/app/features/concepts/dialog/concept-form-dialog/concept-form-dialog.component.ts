@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { Concept } from '../../../../data/models/Concept.model';
+import { ConceptDto } from '../../../../data/dto/Concept.dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { ConceptService } from '../../../../data/services/concept.service';
 
@@ -153,7 +153,7 @@ export class ConceptFormDialogComponent implements OnInit {
   }
 
   onSubmit() {
-    let request$: Observable<Concept>;
+    let request$: Observable<ConceptDto>;
     request$ = this.conceptService.create(this.conceptForm.value);
 
     request$.subscribe({

@@ -7,7 +7,7 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { PopupMultiSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-multi-selector/popup-multi-selector.component';
-import { ProcessPhase } from '../../../../data/models/ProcessPhase.model';
+import { ProcessPhaseDto } from '../../../../data/dto/ProcessPhase.dto';
 import {
   loadNextPageOfProcessPhase,
   loadProcessPhase,
@@ -23,12 +23,13 @@ import {
   Validators,
 } from '@angular/forms';
 import { debounceTime, forkJoin, Subject, take, takeUntil } from 'rxjs';
-import { Process } from '../../../../data/models/Process.model';
 import { ProcessPhaseService } from '../../../../data/services/process-phase.service';
 import { RoleService } from '../../../../data/services/role.service';
-import { Role } from '../../../../data/models/Role.model';
 import { loadNextPageOfRoles, loadRoles } from '../../../../state/role/role.actions';
 import { selectRoles } from '../../../../state/role/role.selector';
+import { ProcessView } from '../../../../data/Presentation/Process.view';
+import { RoleView } from '../../../../data/Presentation/Role.view';
+import { ProcessPhaseView } from '../../../../data/Presentation/ProcessPhase.view';
 
 @Component({
   selector: 'app-build-process',
@@ -43,7 +44,7 @@ import { selectRoles } from '../../../../state/role/role.selector';
   ],
 })
 export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
-  processPhases!: ProcessPhase[];
+  processPhases!: ProcessPhaseDto[];
 
   orderFormArray = new FormArray([]);
 
@@ -64,7 +65,7 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
   }
 
   private notifyValueChange(value: any) {
-    this.onChange(Process.mapConfigOnChange(value, this.processPhases));
+    this.onChange(ProcessView.mapConfigOnChange(value, this.processPhases));
     this.onTouch();
   }
 
@@ -80,7 +81,7 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
 
   rolesProvider: StaticProvider[] = [
     { provide: SELECTOR, useValue: selectRoles },
-    { provide: CLAZZ, useValue: Role },
+    { provide: CLAZZ, useValue: RoleView },
     { provide: LOAD_ACTION, useValue: loadRoles() },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfRoles },
   ];
@@ -88,7 +89,7 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
   openDialog() {
     const inj = Injector.create({
       providers: [
-        { provide: CLAZZ, useValue: ProcessPhase },
+        { provide: CLAZZ, useValue: ProcessPhaseView },
         { provide: LOAD_ACTION, useValue: loadProcessPhase() },
         { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfProcessPhase },
         { provide: SELECTOR, useValue: selectProcessPhase },
@@ -149,9 +150,9 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
   writeValue(obj: any): void {
     if (obj) {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      const { order_phases, phases_process } = Process.mapConfigOnWrite(obj);
+      const { order_phases, phases_process } = ProcessView.mapConfigOnWrite(obj);
       const arrayRequest$ = phases_process.map(({ id }) => this.processPhaseService.fetch(id));
-      forkJoin(arrayRequest$).subscribe((phasesProcess: ProcessPhase[]) => {
+      forkJoin(arrayRequest$).subscribe((phasesProcess: ProcessPhaseDto[]) => {
         this.processPhases = phasesProcess;
         this.buildOrderFormArray();
         this.orderFormArray.patchValue(order_phases);

@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { CrudService } from '../../core/classes/Crud/CrudService';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { Project } from '../models/Project.model';
+import { ProjectDto } from '../dto/Project.dto';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ProjectService extends CrudService<Project> {
+export class ProjectService extends CrudService<ProjectDto> {
   constructor(protected _http: HttpClient) {
     super('projects', _http);
   }
@@ -16,6 +16,6 @@ export class ProjectService extends CrudService<Project> {
     let params = new HttpParams();
     params = params.append('page', `${page}`);
     params = params.append('paginate', `${size}`);
-    return this._http.get<Pagination<Project>>(`${this._base}`, { params });
+    return this._http.get<Pagination<ProjectDto>>(`${this._base}`, { params });
   }
 }

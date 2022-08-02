@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { MyProjectModel } from '../../data/models/MyProject.model';
 import { Pagination } from '../../core/interfaces/Pagination.model';
+import { MyProjectDto } from '../../data/dto/MyProject.dto';
 
 export enum MyProjectActions {
   LOAD_MY_PROJECTS = '[MyProjects] Load myProjects',
@@ -12,7 +12,7 @@ export enum MyProjectActions {
 export const loadMyProjects = createAction(MyProjectActions.LOAD_MY_PROJECTS);
 export const loadMyProjectsSuccess = createAction(
   MyProjectActions.LOAD_MY_PROJECTS_SUCCESS,
-  props<{ myProjects: Pagination<MyProjectModel> }>(),
+  props<{ myProjects: Pagination<MyProjectDto> }>(),
 );
 
 export const loadNextPageOfMyProjects = createAction(

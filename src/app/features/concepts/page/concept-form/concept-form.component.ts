@@ -3,7 +3,7 @@ import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ConceptService } from '../../../../data/services/concept.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Concept } from '../../../../data/models/Concept.model';
+import { ConceptDto } from '../../../../data/dto/Concept.dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 @Component({
@@ -197,7 +197,7 @@ export class ConceptFormComponent implements OnInit {
   }
 
   onSubmit() {
-    let request$: Observable<Concept>;
+    let request$: Observable<ConceptDto>;
     if (!this.isEdit) {
       request$ = this.conceptService.create(this.conceptForm.value);
     } else {

@@ -1,4 +1,4 @@
-export interface TokensModel {
+export interface TokensDto {
   token_type: string;
   expires_in: number;
   access_token: string;

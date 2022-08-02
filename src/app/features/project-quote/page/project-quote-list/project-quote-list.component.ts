@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
-import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
+import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subscription, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,7 +15,7 @@ import {
   loadQuotes,
 } from '../../../../state/quotes/quotes.actions';
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
-import { ProjectQuote } from '../../../../data/models/ProjectQuote.model';
+import { ProjectQuoteDto } from '../../../../data/dto/ProjectQuote.dto';
 
 @Component({
   selector: 'app-project-quote-list',
@@ -27,11 +27,11 @@ export class ProjectQuoteListComponent implements OnInit, AfterViewInit, OnDestr
 
   displayedColumns: string[] = ['select', 'name', 'description'];
 
-  selection = new SelectionModel<ProjectQuote>(false, []);
+  selection = new SelectionModel<ProjectQuoteDto>(false, []);
 
-  dataSource = new MatTableDataSource<QuoteStatus>();
+  dataSource = new MatTableDataSource<QuoteStatusDto>();
 
-  quotes$!: Observable<Pagination<QuoteStatus> | null>;
+  quotes$!: Observable<Pagination<QuoteStatusDto> | null>;
 
   quotesSubscription!: Subscription;
 
@@ -85,12 +85,12 @@ export class ProjectQuoteListComponent implements OnInit, AfterViewInit, OnDestr
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: QuoteStatus): string {
+  checkboxLabel(row?: QuoteStatusDto): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+      return `${this.isAllSelected() ? "deselect" : "select"} all`;
     }
     // @ts-ignore
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.id + 1}`;
   }
 
   async goToNewQuote() {

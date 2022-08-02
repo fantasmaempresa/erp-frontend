@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { ProcessPhase } from '../../data/models/ProcessPhase.model';
+import { ProcessPhaseDto } from '../../data/dto/ProcessPhase.dto';
 
 export enum ProcessPhaseActions {
   LOAD_PROCESS_PHASE = '[ProcessPhase] Load processPhase',
@@ -13,7 +13,7 @@ export enum ProcessPhaseActions {
 export const loadProcessPhase = createAction(ProcessPhaseActions.LOAD_PROCESS_PHASE);
 export const loadProcessPhaseSuccess = createAction(
   ProcessPhaseActions.LOAD_PROCESS_PHASE_SUCCESS,
-  props<{ processPhases: Pagination<ProcessPhase> }>(),
+  props<{ processPhases: Pagination<ProcessPhaseDto> }>(),
 );
 
 export const loadNextPageOfProcessPhase = createAction(

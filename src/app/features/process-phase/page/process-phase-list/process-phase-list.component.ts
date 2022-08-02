@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { EntityModel } from '../../../../core/interfaces/EntityModel';
+import { EntityDto } from '../../../../core/interfaces/Entity.dto';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -9,11 +9,11 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { selectProcessPhase } from '../../../../state/process-phase/processPhase.selector';
-import { ProcessPhase } from '../../../../data/models/ProcessPhase.model';
 import {
   loadNextPageOfProcessPhase,
   loadProcessPhase,
 } from '../../../../state/process-phase/processPhase.actions';
+import { ProcessPhaseView } from '../../../../data/Presentation/ProcessPhase.view';
 
 @Component({
   selector: 'app-process-phase-list',
@@ -21,7 +21,7 @@ import {
   styleUrls: ['./process-phase-list.component.scss'],
   providers: [
     { provide: SELECTOR, useValue: selectProcessPhase },
-    { provide: CLAZZ, useValue: ProcessPhase },
+    { provide: CLAZZ, useValue: ProcessPhaseView },
     { provide: LOAD_ACTION, useValue: loadProcessPhase() },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfProcessPhase },
   ],
@@ -29,7 +29,7 @@ import {
 export class ProcessPhaseListComponent {
   selectedItem!: any;
 
-  setSelectedItem = (item: EntityModel) => {
+  setSelectedItem = (item: EntityDto) => {
     this.selectedItem = item;
   };
 

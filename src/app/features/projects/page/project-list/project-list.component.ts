@@ -6,11 +6,11 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { selectProjects } from '../../../../state/project/project.selector';
-import { Project } from '../../../../data/models/Project.model';
 import { loadNextPageOfProjects, loadProjects } from '../../../../state/project/project.actions';
-import { EntityModel } from '../../../../core/interfaces/EntityModel';
+import { EntityDto } from '../../../../core/interfaces/Entity.dto';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ProjectView } from '../../../../data/Presentation/Project.view';
 
 @Component({
   selector: 'app-project-list',
@@ -18,7 +18,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./project-list.component.scss'],
   providers: [
     { provide: SELECTOR, useValue: selectProjects },
-    { provide: CLAZZ, useValue: Project },
+    { provide: CLAZZ, useValue: ProjectView },
     { provide: LOAD_ACTION, useValue: loadProjects() },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfProjects },
   ],
@@ -26,7 +26,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class ProjectListComponent {
   selectedItem!: any;
 
-  setSelectedItem = (item: EntityModel) => {
+  setSelectedItem = (item: EntityDto) => {
     this.selectedItem = item;
   };
 

@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
-import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
+import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';
 import { Observable, Subscription, tap } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -10,7 +10,7 @@ import { Store } from '@ngrx/store';
 import { emptyQuoteList, loadNextPageOfQuotes } from '../../../../state/quotes/quotes.actions';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { selectQuoteTemplates } from '../../../../state/quote-template/quote-template.selector';
-import { QuoteTemplate } from '../../../../data/models/QuoteTemplate.model';
+import { QuoteTemplate } from '../../../../data/dto/QuoteTemplate.dto';
 import { loadQuoteTemplates } from '../../../../state/quote-template/quote-template.actions';
 import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
 
@@ -82,12 +82,12 @@ export class TemplateListComponent implements OnInit {
   }
 
   /** The label for the checkbox on the passed row */
-  checkboxLabel(row?: QuoteStatus): string {
+  checkboxLabel(row?: QuoteStatusDto): string {
     if (!row) {
-      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
+      return `${this.isAllSelected() ? "deselect" : "select"} all`;
     }
     // @ts-ignore
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.id + 1}`;
   }
 
   async goToNewQuote() {

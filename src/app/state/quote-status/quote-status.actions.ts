@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Pagination } from '../../core/interfaces/Pagination.model';
-import { QuoteStatus } from '../../data/models/QuoteStatus.model';
+import { QuoteStatusDto } from '../../data/dto/QuoteStatus.dto';
 
 export enum QuoteStatusActions {
   LOAD_QUOTE_STATUS = '[Quote status] Load quote status',
@@ -12,7 +12,7 @@ export enum QuoteStatusActions {
 export const loadQuoteStatuses = createAction(QuoteStatusActions.LOAD_QUOTE_STATUS);
 export const loadQuoteStatusesSucess = createAction(
   QuoteStatusActions.LOAD_QUOTE_STATUS_SUCCESS,
-  props<{ quote_status: Pagination<QuoteStatus> }>(),
+  props<{ quote_status: Pagination<QuoteStatusDto> }>(),
 );
 export const laodNextPageOfQuoteStatus = createAction(
   QuoteStatusActions.LOAD_NEXT_PAGE,

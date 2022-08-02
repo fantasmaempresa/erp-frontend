@@ -7,7 +7,7 @@ import { catchError, lastValueFrom, take, throwError } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import Swal from 'sweetalert2';
 import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
-import { QuoteTemplate } from '../../../../data/models/QuoteTemplate.model';
+import { QuoteTemplate } from '../../../../data/dto/QuoteTemplate.dto';
 import { emptyForm } from '../../../../state/dynamic-form/dynamic-form.actions';
 
 @Component({

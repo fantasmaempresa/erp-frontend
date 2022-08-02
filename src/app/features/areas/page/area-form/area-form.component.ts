@@ -6,7 +6,7 @@ import { AreaService } from '../../../../data/services/area.service';
 import { Observable } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { validationMessages } from '../../../../core/constants/validationMessages';
-import { WorkArea } from '../../../../data/models/WorkArea.model';
+import { WorkAreaDto } from '../../../../data/dto/WorkArea.dto';
 
 @Component({
   selector: 'app-area-form',
@@ -46,7 +46,7 @@ export class AreaFormComponent {
   }
 
   onSubmit() {
-    let request$: Observable<WorkArea>;
+    let request$: Observable<WorkAreaDto>;
     if (!this.isEdit) {
       request$ = this.areaService.save(this.areaForm.value);
     } else {

@@ -26,14 +26,15 @@ import {
   takeUntil,
   tap,
 } from 'rxjs';
-import { Process } from '../../../../data/models/Process.model';
+import { ProcessDto } from '../../../../data/dto/Process.dto';
 import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
 import { selectProcess } from '../../../../state/process/process.selector';
 import { ProcessPhaseService } from '../../../../data/services/process-phase.service';
-import { ProcessPhase } from '../../../../data/models/ProcessPhase.model';
+import { ProcessPhaseDto } from '../../../../data/dto/ProcessPhase.dto';
 import { RoleService } from '../../../../data/services/role.service';
-import { Project } from '../../../../data/models/Project.model';
 import { ProcessService } from '../../../../data/services/process.service';
+import { ProjectView } from '../../../../data/Presentation/Project.view';
+import { ProcessView } from '../../../../data/Presentation/Process.view';
 
 @Component({
   selector: 'app-build-project',
@@ -63,7 +64,7 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
     private roleService: RoleService,
   ) {
     this.involvedFormArray.valueChanges.pipe(takeUntil(this.destroy$)).subscribe((value) => {
-      this.onChange(Project.mapToProcessOnChange(value));
+      this.onChange(ProjectView.mapToProcessOnChange(value));
       this.onTouch();
     });
   }
@@ -86,7 +87,7 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
 
   onTouch = () => {};
 
-  mapProcessPhase = (process: any): Observable<ProcessPhase> =>
+  mapProcessPhase = (process: any): Observable<ProcessPhaseDto> =>
     this.processPhaseService.fetch(process.phase.id).pipe(shareReplay());
 
   nameMapFn = (value: any) => value.name;
@@ -154,10 +155,10 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
     }[],
   ) {
     if (configProcess) {
-      const requests$: Observable<Process>[] = configProcess.map(({ process: { id } }) =>
+      const requests$: Observable<ProcessDto>[] = configProcess.map(({ process: { id } }) =>
         this.processService.fetch(id),
       );
-      forkJoin(requests$).subscribe(async (processes: Process[]) => {
+      forkJoin(requests$).subscribe(async (processes: ProcessDto[]) => {
         this.processes = processes;
         this.buildInvolvedFormArray(processes);
         const processPhase = await Promise.all(
@@ -170,16 +171,15 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
             ),
           ),
         );
-        const valueToPatch = Project.mapToProcessOnWrite(configProcess, processPhase);
+        const valueToPatch = ProjectView.mapToProcessOnWrite(configProcess, processPhase);
         const references = valueToPatch.map((process) => ({
           phases: process.phases.map((phase: any) => ({
             supervisor_reference: phase.supervisor_reference,
-            work_reference: phase.work_reference,
+            work_reference: phase.work_referenc,
           })),
         }));
         this.involvedFormArray.patchValue(references);
         this.involvedFormArray.patchValue(valueToPatch);
-        console.log('Ya se visualiza todo', valueToPatch, references);
       });
     }
   }
@@ -187,7 +187,7 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
   openDialog() {
     const inj = Injector.create({
       providers: [
-        { provide: CLAZZ, useValue: Process },
+        { provide: CLAZZ, useValue: ProcessView },
         { provide: LOAD_ACTION, useValue: loadProcess() },
         { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfProcess },
         { provide: SELECTOR, useValue: selectProcess },
