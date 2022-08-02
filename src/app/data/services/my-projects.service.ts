@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { Pagination } from '../../core/interfaces/Pagination.model';
+import { MyProjectDto } from '../dto/MyProject.dto';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +13,8 @@ export class MyProjectsService {
 
   constructor(private http: HttpClient) {}
 
-  getMyProjects() {
-    return this.http.get(`${this._base}/filter/myProjects`);
+  getMyProjects(): Observable<Pagination<MyProjectDto>> {
+    return this.http.get<Pagination<MyProjectDto>>(`${this._base}/filter/myProjects`);
   }
 
   getCurrentForm(processId: number) {
