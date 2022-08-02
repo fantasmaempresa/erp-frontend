@@ -1,0 +1,22 @@
+.card-view {
+  &__field-container {
+    min-height: 12rem;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+  }
+
+  &__field-row {
+    min-height: 2rem;
+    padding: 1rem;
+    display: flex;
+  }
+
+  &__field-header {
+    flex: 2;
+  }
+
+  &__field-actions {
+    flex: 1;
+  }
+}
+

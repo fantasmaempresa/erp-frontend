@@ -22,6 +22,7 @@ import { ProcessPhaseEffects } from './process-phase/processPhase.effects';
 import { ProjectEffects } from './project/project.effects';
 import { ProcessEffects } from './process/process.effects';
 import { RoleEffects } from './role/role.effects';
+import { MyProjectEffects } from './my-project/my-project.effects';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({ keys: ['auth'], rehydrate: true })(reducer);
@@ -51,6 +52,7 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       ProjectEffects,
       RoleEffects,
       QuoteTemplateEffects,
+      MyProjectEffects,
     ]),
     StoreDevtoolsModule.instrument({ name: 'ERP', maxAge: 25, logOnly: environment.production }),
   ],

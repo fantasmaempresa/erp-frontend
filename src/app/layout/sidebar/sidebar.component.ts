@@ -39,6 +39,7 @@ export class SidebarComponent {
             { label: 'Fases', route: './process-phase', icon: 'timeline' },
             { label: 'Procesos', route: './process', icon: 'pending_actions' },
             { label: 'Proyectos', route: './project', icon: 'hub' },
+            { label: 'Comenzar Proyecto', route: './project-start', icon: 'hub' },
           ],
         },
         {

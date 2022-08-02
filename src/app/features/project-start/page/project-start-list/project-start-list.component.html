@@ -1,0 +1,16 @@
+<div class="card-container" *ngIf="(myProjects$ | async)?.data as projects">
+  <div class="card-view" *ngFor="let project of projects">
+    <ng-container *ngFor="let info of displayedInfo">
+      <span class="card-view__field">{{ info.label }}</span>
+      <span class="card-view__value">{{ project[info.key] }}</span>
+    </ng-container>
+
+    <span class="card-view__field">Procesos</span>
+    <div class="card-view__field-container">
+      <div class="card-view__field-row">
+        <div class="card-view__field-header">Nombre de Proceso</div>
+        <div class="card-view__field-actions">Acciones</div>
+      </div>
+    </div>
+  </div>
+</div>

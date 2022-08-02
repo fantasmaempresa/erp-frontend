@@ -46,6 +46,11 @@ import {
   QuoteTemplateState,
 } from './quote-template/quote-template.state';
 import { quoteTemplateReducer } from './quote-template/quote-template.reducer';
+import {
+  initialState as myProjectInitialState,
+  MyProjectState,
+} from './my-project/my-project.state';
+import { myProjectReducer } from './my-project/my-project.reducer';
 
 export interface AppState {
   roles: RoleState;
@@ -63,6 +68,7 @@ export interface AppState {
   processPhases: ProcessPhaseState;
   processes: ProcessState;
   projects: ProjectState;
+  myProjects: MyProjectState;
   quote_templates: QuoteTemplateState;
 }
 
@@ -70,6 +76,7 @@ export const initialAppState: AppState = {
   processPhases: processPhaseState,
   processes: processInitialState,
   projects: projectState,
+  myProjects: myProjectInitialState,
   notifications: notificationInitialState,
   auth: initialState,
   clients: clientsInitialState,
@@ -93,6 +100,7 @@ export const reducers: ActionReducerMap<AppState> = {
   processPhases: processPhaseReducer,
   processes: processReducer,
   projects: projectReducer,
+  myProjects: myProjectReducer,
   auth: authReducer,
   clients: clientReducer,
   users: userReducer,

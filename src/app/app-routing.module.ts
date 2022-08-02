@@ -102,6 +102,12 @@ const routes: Routes = [
         data: { breadcrumb: 'Proyectos' },
       },
       {
+        path: 'project-start',
+        loadChildren: () =>
+          import('./features/project-start/project-start.module').then((m) => m.ProjectStartModule),
+        data: { breadcrumb: 'Comenzar Proyectos' },
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',
