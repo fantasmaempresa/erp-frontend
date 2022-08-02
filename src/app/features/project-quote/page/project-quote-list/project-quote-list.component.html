@@ -1,4 +1,15 @@
 <mat-toolbar>
+  <mat-chip-list aria-label="Filters" selectable="true" multiple="false">
+    <mat-chip [selected]="isSelectedFilter('all')" (click)="getAllQuotes()"> Todas</mat-chip>
+    <mat-chip
+      *ngFor="let option of filterOptions"
+      [selected]="isSelectedFilter(option.value)"
+      (click)="filterBy(option.value)"
+    >
+      {{ option.name }}
+    </mat-chip>
+  </mat-chip-list>
+  <span class="spacer"></span>
   <button
     *ngIf="selection.selected.length !== 0"
     [matTooltipPosition]="'below'"
@@ -68,6 +79,10 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" colspan="4">Sin resultados</td>
+  </tr>
   <tr
     mat-row
     *matRowDef="let row; columns: displayedColumns"

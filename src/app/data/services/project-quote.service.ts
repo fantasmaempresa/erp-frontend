@@ -34,6 +34,20 @@ export class ProjectQuoteService extends CrudService<ProjectQuote> {
     );
   }
 
+  fetchByStatus(status: string) {
+    let url = `${environment.base_url}/projectQuotes/filter`;
+    if (status === 'review') {
+      url = `${environment.base_url}/projectQuotes/filter/getQuotesReview`;
+    }
+    if (status === 'approved') {
+      url = `${environment.base_url}/projectQuotes/filter/getQuotesApproved`;
+    }
+    if (status === 'rejected') {
+      url = `${environment.base_url}/projectQuotes/filter/getQuotesFinish`;
+    }
+    return this._http.get<Pagination<ProjectQuote>>(url);
+  }
+
   resolveOperations(quoteTemplate: QuoteTemplate) {
     return this.store.select(selectFormToOperations(quoteTemplate)).pipe(
       take(1),

@@ -13,6 +13,7 @@ import {
   emptyQuoteList,
   loadNextPageOfQuotes,
   loadQuotes,
+  loadQuotesByStatus,
 } from '../../../../state/quotes/quotes.actions';
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { ProjectQuote } from '../../../../data/models/ProjectQuote.model';
@@ -25,6 +26,14 @@ import { ProjectQuotePreviewComponent } from '../../dialog/project-quote-preview
   styleUrls: ['./project-quote-list.component.scss'],
 })
 export class ProjectQuoteListComponent implements OnInit, AfterViewInit, OnDestroy {
+  filterOptions = [
+    { name: 'En revisión', value: 'review' },
+    { name: 'Aprobado', value: 'approved' },
+    { name: 'Rechazado', value: 'rejected' },
+  ];
+
+  selectedFilter: string = '';
+
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['select', 'name', 'description'];
@@ -55,22 +64,10 @@ export class ProjectQuoteListComponent implements OnInit, AfterViewInit, OnDestr
     public dialog: MatDialog,
   ) {
     this.quotes$ = store.select(selectQuotes);
-    store.dispatch(loadQuotes());
   }
 
   ngOnInit() {
-    this.quotesSubscription = this.quotes$
-      .pipe(
-        tap(() => {
-          this.isLoadingResults = false;
-        }),
-      )
-      .subscribe((data) => {
-        if (data) {
-          this.totalItems = data.total;
-          this.dataSource = new MatTableDataSource(data.data);
-        }
-      });
+    this.getAllQuotes();
   }
 
   ngAfterViewInit() {
@@ -181,8 +178,49 @@ export class ProjectQuoteListComponent implements OnInit, AfterViewInit, OnDestr
       },
     });
 
-    dialogRef.afterClosed().subscribe(() => {
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.getAllQuotes();
+      }
       console.log('The dialog was closed');
     });
+  }
+
+  isSelectedFilter(filter: string) {
+    return this.selectedFilter === filter;
+  }
+
+  filterBy(option: string) {
+    this.selectedFilter = option;
+    this.store.dispatch(loadQuotesByStatus({ status: option }));
+    this.quotesSubscription = this.quotes$
+      .pipe(
+        tap(() => {
+          this.isLoadingResults = false;
+        }),
+      )
+      .subscribe((data) => {
+        if (data) {
+          this.totalItems = data.total;
+          this.dataSource = new MatTableDataSource(data.data);
+        }
+      });
+  }
+
+  getAllQuotes() {
+    this.selectedFilter = 'all';
+    this.store.dispatch(loadQuotes());
+    this.quotesSubscription = this.quotes$
+      .pipe(
+        tap(() => {
+          this.isLoadingResults = false;
+        }),
+      )
+      .subscribe((data) => {
+        if (data) {
+          this.totalItems = data.total;
+          this.dataSource = new MatTableDataSource(data.data);
+        }
+      });
   }
 }
