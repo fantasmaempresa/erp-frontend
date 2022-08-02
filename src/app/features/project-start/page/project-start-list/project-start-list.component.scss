@@ -13,10 +13,29 @@
 
   &__field-header {
     flex: 2;
+    font-weight: 600;
   }
 
   &__field-actions {
     flex: 1;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+
+    & mat-icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--glassColor-400);
+      padding: 20px;
+      border-radius: 50%;
+      transition: all 300ms;
+
+      &:hover {
+        background: var(--primaryColor);
+        transform: translateY(-2px);
+      }
+    }
   }
 }
 

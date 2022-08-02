@@ -7,9 +7,13 @@
 
     <span class="card-view__field">Procesos</span>
     <div class="card-view__field-container">
-      <div class="card-view__field-row">
-        <div class="card-view__field-header">Nombre de Proceso</div>
-        <div class="card-view__field-actions">Acciones</div>
+      <div class="card-view__field-row" *ngFor="let process of project.process">
+        <div class="card-view__field-header">{{ process.name }}</div>
+        <div class="card-view__field-actions">
+          <mat-icon (click)="startProcess(project, process)" matTooltip="Comenzar Proceso"
+            >start
+          </mat-icon>
+        </div>
       </div>
     </div>
   </div>

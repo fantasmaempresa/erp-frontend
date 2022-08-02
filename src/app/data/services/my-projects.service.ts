@@ -17,8 +17,10 @@ export class MyProjectsService {
     return this.http.get<Pagination<MyProjectDto>>(`${this._base}/filter/myProjects`);
   }
 
-  getCurrentForm(processId: number) {
-    return this.http.get(`${this._base}/filter/project/process/${processId}`);
+  getCurrentForm(projectId: number, processId: number) {
+    return this.http.get(
+      `${this._base}/filter/currentForm/project/${projectId}/process/${processId}`,
+    );
   }
 
   startProcess({
