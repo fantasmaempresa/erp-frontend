@@ -24,7 +24,7 @@ import { ProcessEffects } from './process/process.effects';
 import { RoleEffects } from './role/role.effects';
 
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-  return localStorageSync({ keys: ['auth'], rehydrate: true })(reducer);
+  return localStorageSync({ keys: [{ auth: ['tokens', 'user'] }], rehydrate: true })(reducer);
 }
 
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];

@@ -9,6 +9,8 @@ export enum AuthActions {
   AUTO_LOGIN = '[Auth] Auto login',
   LOGIN_FAIL = '[Auth] Login Fail',
   LOGOUT = '[Auth] Logout',
+  CLEAN_ERROR = '[Auth] Clean error',
+  CLEAN_LOADING = '[Auth] Clean loading',
 }
 
 export const loginStart = createAction(
@@ -26,3 +28,5 @@ export const loginFailure = createAction(
   props<{ isLoading: boolean; errorMessage: string }>(),
 );
 export const logout = createAction(AuthActions.LOGOUT);
+export const cleanError = createAction(AuthActions.CLEAN_ERROR);
+export const cleanLoading = createAction(AuthActions.CLEAN_LOADING);
