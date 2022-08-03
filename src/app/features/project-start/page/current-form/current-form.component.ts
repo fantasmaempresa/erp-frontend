@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MyProjectsService } from '../../../../data/services/my-projects.service';
 import { Observable } from 'rxjs';
-import { FormControl, FormGroup } from '@angular/forms';
-import { Formfield } from '../../../../data/dto/Formfield.dto';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-current-form',
@@ -27,5 +26,21 @@ export class CurrentFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.form$ = this.myProjectService.getCurrentForm(this.projectId, this.processId);
+  }
+
+  nextPhase() {
+    this.myProjectService.nextPhase({
+      projectId: this.projectId,
+      processId: this.processId,
+      comment: 'Comentario random para pasar el proyecto',
+    });
+  }
+
+  prevPhase() {
+    this.myProjectService.prevPhase({
+      projectId: this.projectId,
+      processId: this.processId,
+      comment: 'Comentario random para ir para atrás en el proyecto',
+    });
   }
 }

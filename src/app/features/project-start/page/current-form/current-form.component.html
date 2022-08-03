@@ -3,4 +3,9 @@
   [formFields]="form$ | async"
 ></app-preview-form-builder>
 
-{{ formControl.value | json }}
+<div class="container-buttons">
+  <button mat-flat-button color="accent">Formulario Anterior</button>
+  <button mat-flat-button color="primary">Supervisar</button>
+  <button mat-flat-button color="primary">Guardar Información</button>
+  <button mat-flat-button color="accent">Formulario Siguiente</button>
+</div>

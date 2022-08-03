@@ -4,7 +4,6 @@ import { environment } from '../../../environments/environment';
 import { Pagination } from '../../core/interfaces/Pagination.model';
 import { MyProjectDto } from '../dto/MyProject.dto';
 import { Observable } from 'rxjs';
-import { Formfield } from '../dto/Formfield.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -38,7 +37,7 @@ export class MyProjectsService {
     });
   }
 
-  nextProcess({
+  changeProcess({
     projectId,
     processId,
     comment,
@@ -53,6 +52,30 @@ export class MyProjectsService {
       comment,
       prev,
     });
+  }
+
+  nextPhase({
+    projectId,
+    processId,
+    comment,
+  }: {
+    projectId: number;
+    processId: number;
+    comment: string;
+  }) {
+    return this.changeProcess({ projectId, processId, comment, prev: false });
+  }
+
+  prevPhase({
+    projectId,
+    processId,
+    comment,
+  }: {
+    projectId: number;
+    processId: number;
+    comment: string;
+  }) {
+    return this.changeProcess({ projectId, processId, comment, prev: true });
   }
 
   supervisionProject({

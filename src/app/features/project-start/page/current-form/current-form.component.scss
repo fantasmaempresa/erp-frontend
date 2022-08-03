@@ -3,3 +3,12 @@
   border-radius: 4px;
   background: var(--bgColor);
 }
+
+.container-buttons {
+  display: flex;
+  background: var(--glassColor-200);
+  min-height: 5rem;
+  justify-content: space-evenly;
+  gap: 1rem;
+  align-items: center;
+}
