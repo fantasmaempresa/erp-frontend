@@ -1,17 +1,28 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Formfield } from '../../../../data/dto/Formfield.dto';
-import { FormControl, FormGroup } from '@angular/forms';
+import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
   selector: 'app-preview-form-builder',
   templateUrl: './preview-form-builder.component.html',
   styleUrls: ['./preview-form-builder.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => PreviewFormBuilderComponent),
+      multi: true,
+    },
+  ],
 })
-export class PreviewFormBuilderComponent implements OnChanges {
+export class PreviewFormBuilderComponent implements OnChanges, ControlValueAccessor {
   @Input()
   formFields: Formfield<any>[] = [];
 
   form: FormGroup = new FormGroup({});
+
+  onChange = (_: any) => {};
+
+  onTouch = () => {};
 
   constructor() {}
 
@@ -27,6 +38,30 @@ export class PreviewFormBuilderComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.formFields.currentValue) {
       this.form = this.buildFormGroup();
+      this.checkFormValueChange();
+    }
+  }
+
+  private checkFormValueChange() {
+    this.form.valueChanges.subscribe({
+      next: (value) => {
+        this.onChange(value);
+        this.onTouch();
+      },
+    });
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouch = fn;
+  }
+
+  writeValue(value: Object): void {
+    if (value) {
+      this.form.patchValue({ ...value });
     }
   }
 }
