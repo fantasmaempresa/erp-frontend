@@ -1,2 +1,6 @@
-<p>current-form works!</p>
-{{ form$ | async | json }}
+<app-preview-form-builder
+  [formControl]="formControl"
+  [formFields]="form$ | async"
+></app-preview-form-builder>
+
+{{ formControl.value | json }}
