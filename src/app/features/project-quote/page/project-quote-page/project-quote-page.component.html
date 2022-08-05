@@ -28,7 +28,7 @@
             </mat-form-field>
           </div>
         </div>
-        <app-project-quote-form formGroupName="headerForm"></app-project-quote-form>
+        <app-project-quote-form></app-project-quote-form>
         <mat-action-row>
           <button mat-button color="primary" (click)="goToFormFill()">Siguiente</button>
         </mat-action-row>
@@ -37,7 +37,6 @@
       <mat-expansion-panel
         [expanded]="step === FORM_FILL_STEP"
         (opened)="goToFormFill()"
-        [disabled]="this.headerForm.invalid"
         hideToggle
       >
         <mat-expansion-panel-header>

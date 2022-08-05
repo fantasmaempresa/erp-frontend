@@ -1,4 +1,4 @@
-<form class="row justify-content-center" [formGroup]="form" (ngSubmit)="onSubmit()">
+<form class="row justify-content-center" [formGroup]="formGroup">
   <div class="col-6 d-flex flex-column pe-0">
     <!--      <mat-form-field appearance="outline">-->
     <!--        <mat-label>Estado de la cotización</mat-label>-->
@@ -14,11 +14,7 @@
         <mat-form-field class="w-100" appearance="outline">
           <mat-label>Cliente</mat-label>
           <input type="text" matInput formControlName="client" [matAutocomplete]="auto" />
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-            <mat-option *ngFor="let option of filteredClients$ | async" [value]="option">
-              {{ option.name }}
-            </mat-option>
-          </mat-autocomplete>
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"> </mat-autocomplete>
         </mat-form-field>
       </div>
       <div class="col-1">

@@ -1,9 +1,16 @@
-import { AfterViewInit, Component, OnDestroy, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
 import { combineLatest, delay, map, Observable, take } from 'rxjs';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Formfield } from '../../../../data/models/Formfield.model';
 import {
   selectDynamicForm,
@@ -16,14 +23,17 @@ import { QuoteTemplate } from '../../../../data/models/QuoteTemplate.model';
 import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
 import { QuoteStatusService } from '../../../../data/services/quote-status.service';
 import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
+import { ProjectQuoteFormComponent } from '../project-quote-form/project-quote-form.component';
 
 @Component({
   selector: 'app-project-quote-page',
   templateUrl: './project-quote-page.component.html',
   styleUrls: ['./project-quote-page.component.scss'],
 })
-export class ProjectQuotePageComponent implements OnDestroy, AfterViewInit {
+export class ProjectQuotePageComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild(DynamicFormComponent) formFill!: DynamicFormComponent;
+
+  @ViewChild(ProjectQuoteFormComponent) headerForm!: ProjectQuoteFormComponent;
 
   quoteId!: number;
 
@@ -35,17 +45,7 @@ export class ProjectQuotePageComponent implements OnDestroy, AfterViewInit {
 
   step = 0;
 
-  headerForm = new FormGroup({
-    name: new FormControl(null, [Validators.required]),
-    addressee: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
-    date_end: new FormControl({ value: '', disabled: true }),
-    status_quote_id: new FormControl(null),
-    client: new FormControl({ value: null, disabled: true }),
-    client_id: new FormControl({ value: null, disabled: true }),
-  });
-
-  quoteForm: FormGroup;
+  quoteForm: FormGroup = new FormGroup({});
 
   templateControl = new FormControl(null);
 
@@ -72,16 +72,17 @@ export class ProjectQuotePageComponent implements OnDestroy, AfterViewInit {
     private projectQuoteService: ProjectQuoteService,
     private quoteTemplateService: QuoteTemplateService,
     public quoteStatusService: QuoteStatusService,
-  ) {
-    this.quoteForm = new FormGroup({
-      headerForm: this.headerForm,
-    });
+    private cd: ChangeDetectorRef,
+  ) {}
+
+  ngOnInit() {
     this.getTemplates();
+
     this.templateControl.valueChanges.subscribe({
       next: (value) => {
         if (value) {
           this.fields = value.form.form;
-          this.headerForm.get('name')?.patchValue(value.name);
+          this.headerForm.getFormGroup().get('name')?.patchValue(value.name);
           this.store.dispatch(emptyForm());
           this.store.dispatch(
             loadForm({
@@ -97,26 +98,25 @@ export class ProjectQuotePageComponent implements OnDestroy, AfterViewInit {
       },
     });
 
-    const status$: Observable<'EDITABLE' | 'NEW'> = store.select(selectStatus);
-    this.fields$ = store.select(selectDynamicForm);
+    const status$: Observable<'EDITABLE' | 'NEW'> = this.store.select(selectStatus);
+    this.fields$ = this.store.select(selectDynamicForm);
     combineLatest([this.fields$, status$]).subscribe(([fields, status]) => {
       if (status !== 'EDITABLE') {
         this.formFields = fields;
       }
     });
+  }
+
+  ngAfterViewInit() {
+    this.quoteForm.addControl('headerForm', this.headerForm.getFormGroup());
+    this.quoteForm.addControl('formFill', this.formFill.getFormGroup());
+    this.cd.detectChanges();
 
     if (this.route.snapshot.queryParams.id) {
-      // TODO: Arreglar error ExpressionAfterItHasBeenCheckedError
-      this.quoteStatuses$ = quoteStatusService.fetchAll().pipe(
-        map((quoteStatus) => {
-          return quoteStatus.data;
-        }),
-      );
-
       this.quoteId = +this.route.snapshot.queryParams.id;
       this.isEdit = true;
-      this.headerForm.addControl('id', new FormControl(''));
-      projectQuoteService
+      this.headerForm.getFormGroup().addControl('id', new FormControl(''));
+      this.projectQuoteService
         .fetch(this.route.snapshot.queryParams.id)
         .pipe(delay(250))
         .subscribe({
@@ -134,15 +134,11 @@ export class ProjectQuotePageComponent implements OnDestroy, AfterViewInit {
               }),
             );
             this.fields = quote.quote.form;
-            this.headerForm.get('name')?.patchValue(quote.name);
-            this.headerForm.patchValue(quote);
+            this.headerForm.getFormGroup().get('name')?.patchValue(quote.name);
+            this.headerForm.getFormGroup().patchValue(quote);
           },
         });
     }
-  }
-
-  ngAfterViewInit() {
-    this.quoteForm.addControl('formFill', this.formFill.getFormGroup());
   }
 
   ngOnDestroy(): void {
@@ -169,7 +165,8 @@ export class ProjectQuotePageComponent implements OnDestroy, AfterViewInit {
   }
 
   goToFormFill() {
-    if (this.headerForm.invalid) {
+    this.headerForm.getFormGroup().markAllAsTouched();
+    if (this.headerForm.getFormGroup().invalid) {
       return;
     }
     this.step = this.FORM_FILL_STEP;
@@ -193,9 +190,9 @@ export class ProjectQuotePageComponent implements OnDestroy, AfterViewInit {
       .pipe(take(1))
       .subscribe((form) => {
         const quote = {
-          ...this.headerForm.getRawValue(),
-          client_id: this.headerForm.getRawValue().client
-            ? this.headerForm.getRawValue().client.id
+          ...this.headerForm.getFormGroup().getRawValue(),
+          client_id: this.headerForm.getFormGroup().getRawValue().client
+            ? this.headerForm.getFormGroup().getRawValue().client.id
             : null,
           template_quote_id: this.templateControl.value.id,
           quote: {
@@ -220,9 +217,9 @@ export class ProjectQuotePageComponent implements OnDestroy, AfterViewInit {
       .pipe(take(1))
       .subscribe((form) => {
         const quote = {
-          ...this.headerForm.getRawValue(),
-          client_id: this.headerForm.getRawValue().client
-            ? this.headerForm.getRawValue().client.id
+          ...this.headerForm.getFormGroup().getRawValue(),
+          client_id: this.headerForm.getFormGroup().getRawValue().client
+            ? this.headerForm.getFormGroup().getRawValue().client.id
             : null,
           template_quote_id: this.templateControl.value.id,
           quote: {
@@ -256,6 +253,7 @@ export class ProjectQuotePageComponent implements OnDestroy, AfterViewInit {
   }
 
   addControlToForm(formGroup: FormGroup) {
+    console.log('Agregando controles');
     this.quoteForm.removeControl('formFill');
     this.quoteForm.addControl('formFill', formGroup);
     this.quoteForm.updateValueAndValidity();

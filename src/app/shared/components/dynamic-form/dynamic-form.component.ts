@@ -1,4 +1,13 @@
-import { Component, EventEmitter, forwardRef, Input, OnDestroy, Output } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import {
   ControlValueAccessor,
   FormControl,
@@ -36,7 +45,7 @@ import { AbstractSubformComponent } from './abstract-subform.component';
 })
 export class DynamicFormComponent
   extends AbstractSubformComponent
-  implements OnDestroy, ControlValueAccessor, Validator
+  implements OnInit, OnDestroy, ControlValueAccessor, Validator
 {
   @Output() formGroupChanges = new EventEmitter();
 
@@ -86,7 +95,7 @@ export class DynamicFormComponent
 
   formValues$!: Observable<any>;
 
-  fields!: Formfield<any>[];
+  fields: Formfield<any>[] = [];
 
   onChangeSubs: Subscription[] = [];
 
@@ -94,11 +103,18 @@ export class DynamicFormComponent
 
   formStatus$!: Observable<'EDITABLE' | 'NEW'>;
 
-  constructor(private formfieldService: FormfieldControlService, private store: Store) {
+  constructor(
+    private formfieldService: FormfieldControlService,
+    private store: Store,
+    private cd: ChangeDetectorRef,
+  ) {
     super();
+  }
+
+  ngOnInit() {
     this.formGroup = new FormGroup({});
-    this.fields$ = store.select(selectDynamicForm);
-    this.formStatus$ = store.select(selectStatus);
+    this.fields$ = this.store.select(selectDynamicForm);
+    this.formStatus$ = this.store.select(selectStatus);
   }
 
   ngOnDestroy() {

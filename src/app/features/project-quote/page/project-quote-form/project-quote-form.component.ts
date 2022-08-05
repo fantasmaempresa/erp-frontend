@@ -1,99 +1,114 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup, FormGroupDirective } from '@angular/forms';
-import { map, Observable, startWith, switchMap, tap } from 'rxjs';
+import {
+  AfterContentChecked,
+  ChangeDetectorRef,
+  Component,
+  forwardRef,
+  OnInit,
+} from '@angular/core';
+import {
+  FormControl,
+  FormGroup,
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormValidationService } from '../../../../shared/services/form-validation.service';
 import { User } from '../../../../data/models/User.model';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogSearchComponent } from '../../../../shared/components/dialog-search/dialog-search.component';
-import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
-import { QuoteStatusService } from '../../../../data/services/quote-status.service';
-import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { ClientService } from '../../../../data/services/client.service';
 import { Client } from '../../../../data/models/Client.model';
-import { FormfieldControlService } from '../../../../core/services/formfield-control.service';
-import { ConceptService } from '../../../../data/services/concept.service';
-import { format } from 'date-fns';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { AbstractSubformComponent } from '../../../../shared/components/dynamic-form/abstract-subform.component';
 
 @Component({
   selector: 'app-project-quote-form',
   templateUrl: './project-quote-form.component.html',
   styleUrls: ['./project-quote-form.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ProjectQuoteFormComponent),
+      multi: true,
+    },
+    {
+      provide: NG_VALIDATORS,
+      useExisting: forwardRef(() => ProjectQuoteFormComponent),
+      multi: true,
+    },
+  ],
 })
-export class ProjectQuoteFormComponent implements OnInit {
-  @Input() formGroupName!: string;
-
-  form!: FormGroup;
-
-  isEdit = false;
-
-  formErrors: any = {};
-
+export class ProjectQuoteFormComponent
+  extends AbstractSubformComponent
+  implements OnInit, AfterContentChecked
+{
   clients!: Client[];
-
-  filteredClients$!: Observable<Client[]> | undefined;
-
-  quoteStatuses$!: Observable<QuoteStatus[]>;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private formValidationService: FormValidationService,
     private clientService: ClientService,
-    private quoteStatusService: QuoteStatusService,
-    private conceptService: ConceptService,
-    private projectQuoteService: ProjectQuoteService,
-    private formfieldService: FormfieldControlService,
     public dialog: MatDialog,
-    private rootFormGroup: FormGroupDirective,
+    private readonly cd: ChangeDetectorRef,
   ) {
-    this.quoteStatuses$ = this.projectQuoteService
-      .fetchAll()
-      .pipe(map((statuses) => statuses.data));
-    this.filteredClients$ = clientService.fetchAll().pipe(
-      map((clients) => clients.data),
-      tap((clients) => {
-        this.clients = clients;
-      }),
-      switchMap(() =>
-        // @ts-ignore
-        this.form.get('client').valueChanges.pipe(
-          startWith(''),
-          map((value) => {
-            if (!value) {
-              return null;
-            }
-            return typeof value === 'string' ? value : value.name;
-          }),
-          map((name) => (name ? this._filter(name) : this.clients.slice())),
-        ),
-      ),
-    );
-  }
-
-  ngOnInit(): void {
-    this.form = this.rootFormGroup.control.get(this.formGroupName) as FormGroup;
-  }
-
-  onSubmit() {
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    let { client, date_end, ...projectQuote } = this.form.getRawValue();
-    projectQuote.date_end = format(date_end, 'yyyy-MM-dd');
-    this.projectQuoteService.save(projectQuote).subscribe({
-      next: async () => {
-        MessageHelper.successMessage(
-          '¡La cotización ha sido creada!',
-          `En breve se le notificara a los administradores para que sea verificada`,
-        );
-        await this.backToListQuotes();
-      },
+    super();
+    this.formGroup = new FormGroup({
+      name: new FormControl('', Validators.required),
+      addressee: new FormControl('', Validators.required),
+      description: new FormControl('', Validators.required),
+      date_end: new FormControl({ value: '', disabled: true }),
+      status_quote_id: new FormControl(null),
+      client: new FormControl({ value: null, disabled: true }),
+      client_id: new FormControl({ value: null, disabled: true }),
     });
   }
 
-  backToListQuotes() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+  ngOnInit(): void {
+    // this.quoteStatuses$ = this.projectQuoteService
+    //   .fetchAll()
+    //   .pipe(map((statuses) => statuses.data));
+    // this.filteredClients$ = this.clientService.fetchAll().pipe(
+    //   map((clients) => clients.data),
+    //   tap((clients) => {
+    //     this.clients = clients;
+    //   }),
+    //   switchMap(() =>
+    //     this.formGroup.get('client').valueChanges.pipe(
+    //       startWith(''),
+    //       map((value) => {
+    //         if (!value) {
+    //           return null;
+    //         }
+    //         return typeof value === 'string' ? value : value.name;
+    //       }),
+    //       map((name) => (name ? this._filter(name) : this.clients.slice())),
+    //     ),
+    //   ),
+    // );
   }
+
+  ngAfterContentChecked(): void {
+    // this.formGroup.get('name')?.setValidators([Validators.required]);
+    // this.formGroup.get('addressee')?.setValidators([Validators.required]);
+    // this.formGroup.get('description')?.setValidators([Validators.required]);
+    this.cd.detectChanges();
+  }
+
+  // onSubmit() {
+  //   // eslint-disable-next-line @typescript-eslint/naming-convention
+  //   let { client, date_end, ...projectQuote } = this.formGroup.getRawValue();
+  //   projectQuote.date_end = format(date_end, 'yyyy-MM-dd');
+  //   this.projectQuoteService.save(projectQuote).subscribe({
+  //     next: async () => {
+  //       MessageHelper.successMessage(
+  //         '¡La cotización ha sido creada!',
+  //         `En breve se le notificara a los administradores para que sea verificada`,
+  //       );
+  //       await this.backToListQuotes();
+  //     },
+  //   });
+  // }
 
   openDialog() {
     const dialogRef = this.dialog.open(DialogSearchComponent, {
@@ -112,9 +127,9 @@ export class ProjectQuoteFormComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result: Client) => {
       console.log(result);
-      this.form.get('client')?.patchValue(result);
-      this.form.get('addressee')?.patchValue(result.name);
-      console.log(this.form.getRawValue());
+      this.formGroup.get('client')?.patchValue(result);
+      this.formGroup.get('addressee')?.patchValue(result.name);
+      console.log(this.formGroup.getRawValue());
     });
   }
 
@@ -126,5 +141,10 @@ export class ProjectQuoteFormComponent implements OnInit {
     const filterValue = name.toLowerCase();
 
     return this.clients.filter((option) => option.name.toLowerCase().includes(filterValue));
+  }
+
+  registerOnChange(onChange: any): void {
+    const sub = this.formGroup.valueChanges.subscribe(onChange);
+    this.onChangeSubs.push(sub);
   }
 }
