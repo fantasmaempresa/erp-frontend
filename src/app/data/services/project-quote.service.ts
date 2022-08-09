@@ -18,6 +18,16 @@ export class ProjectQuoteService extends CrudService<ProjectQuote> {
     super('projectQuotes', http);
   }
 
+  fetchAllByRole(role: number) {
+    if (role !== 1) {
+      return this._http.get<Pagination<ProjectQuote>>(
+        `${environment.base_url}/projectQuotes/filter/getQuotesByUser`,
+      );
+    }
+
+    return this._http.get<Pagination<ProjectQuote>>(this._base);
+  }
+
   changePage(page: number, size: number) {
     let params = new HttpParams();
     params = params.append('page', `${page}`);
