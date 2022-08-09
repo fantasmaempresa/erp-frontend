@@ -27,6 +27,7 @@ import { DynamicViewsModule } from './components/dinamyc-views/dynamic-views.mod
 import { OnSaveDialogComponent } from './components/dynamic-form-creation/on-save-dialog/on-save-dialog.component';
 import { ConnectFormDirective } from '../core/directives/connect-form.directive';
 import { SetValueDirective } from '../core/directives/set-value.directive';
+import { AutofocusDirective } from '../core/directives/autofocus.directive';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -40,6 +41,7 @@ import { SetValueDirective } from '../core/directives/set-value.directive';
     OutSideClickDirective,
     ConnectFormDirective,
     SetValueDirective,
+    AutofocusDirective,
     FromDatePipe,
     DialogSearchComponent,
     TableSearchComponent,
@@ -86,6 +88,7 @@ import { SetValueDirective } from '../core/directives/set-value.directive';
     InputImageComponent,
     InputFileComponent,
     InputCoordinateComponent,
+    AutofocusDirective,
   ],
 })
 export class SharedModule {}
