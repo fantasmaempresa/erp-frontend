@@ -4,9 +4,11 @@ import {
   EventEmitter,
   forwardRef,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -22,9 +24,10 @@ import { Store } from '@ngrx/store';
 import { selectDynamicForm, selectStatus } from '../../../state/dynamic-form/dynamic-form.selector';
 import { Observable, Subscription, tap, using } from 'rxjs';
 import { Formfield } from '../../../data/models/Formfield.model';
-import { updateValues } from '../../../state/dynamic-form/dynamic-form.actions';
-import { Update } from '@ngrx/entity';
 import { AbstractSubformComponent } from './abstract-subform.component';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Update } from '@ngrx/entity';
+import { updateValues } from '../../../state/dynamic-form/dynamic-form.actions';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -45,51 +48,13 @@ import { AbstractSubformComponent } from './abstract-subform.component';
 })
 export class DynamicFormComponent
   extends AbstractSubformComponent
-  implements OnInit, OnDestroy, ControlValueAccessor, Validator
+  implements OnInit, OnDestroy, OnChanges, ControlValueAccessor, Validator
 {
   @Output() formGroupChanges = new EventEmitter();
 
-  @Input()
-  public set formFields(val: Formfield<any>[]) {
-    if (val) {
-      this.fields = val;
-      this.formGroup = this.createForm(val);
-      this.formGroup.updateValueAndValidity();
-      this.formValues$ = using(
-        () =>
-          this.formGroup.valueChanges
-            .pipe(
-              tap((formValues) => {
-                this.updateDynamicFormState(val, formValues);
-              }),
-            )
-            .subscribe(),
-        () => this.store.select(selectDynamicForm),
-      );
-      if (this.onlyRead) {
-        this.formGroup.disable();
-      }
-      this.formGroupChanges.emit(this.formGroup);
-    }
-  }
+  @Input() formFields: Formfield<any>[] = [];
 
-  @Input()
-  public set onlyRead(val: boolean) {
-    console.log('ONLY READ => ', val);
-    if (val) {
-      this.formGroup.disable();
-      console.log(this.formGroup.disabled);
-      this._onlyRead = val;
-    } else {
-      this.formGroup.enable();
-      this.formGroup.controls.total.disable();
-      this._onlyRead = val;
-    }
-  }
-
-  public get onlyRead(): boolean {
-    return this._onlyRead;
-  }
+  @Input() onlyRead: boolean = false;
 
   _onlyRead!: boolean;
 
@@ -98,8 +63,6 @@ export class DynamicFormComponent
   fields: Formfield<any>[] = [];
 
   onChangeSubs: Subscription[] = [];
-
-  fields$!: Observable<Formfield<any>[]>;
 
   formStatus$!: Observable<'EDITABLE' | 'NEW'>;
 
@@ -112,9 +75,45 @@ export class DynamicFormComponent
   }
 
   ngOnInit() {
-    this.formGroup = new FormGroup({});
-    this.fields$ = this.store.select(selectDynamicForm);
     this.formStatus$ = this.store.select(selectStatus);
+    this.formValues$ = this.store.select(selectDynamicForm);
+  }
+
+  ngOnChanges({ formFields, onlyRead }: SimpleChanges) {
+    if (formFields) {
+      if (formFields.currentValue) {
+        this.fields = formFields.currentValue;
+        this.formGroup = this.createForm(this.fields);
+        this.formGroup.updateValueAndValidity();
+        this.formValues$ = using(
+          () =>
+            this.formGroup.valueChanges
+              .pipe(
+                tap((formValues) => {
+                  this.updateDynamicFormState(this.fields, formValues);
+                }),
+              )
+              .subscribe(),
+          () => this.store.select(selectDynamicForm),
+        );
+      }
+      if (this.onlyRead) {
+        this.formGroup.disable();
+      }
+      this.cd.detectChanges();
+      this.formGroupChanges.emit(this.formGroup);
+    }
+
+    if (onlyRead) {
+      if (onlyRead.currentValue) {
+        this.formGroup.disable();
+        this._onlyRead = coerceBooleanProperty(onlyRead.currentValue);
+      } else {
+        this.formGroup.enable();
+        this.formGroup.controls.total.disable();
+        this._onlyRead = coerceBooleanProperty(onlyRead.currentValue);
+      }
+    }
   }
 
   ngOnDestroy() {
@@ -162,20 +161,4 @@ export class DynamicFormComponent
     }
     this.store.dispatch(updateValues({ form: formUpdate }));
   }
-
-  // registerOnTouched(onTouched: any): void {
-  //   this.onTouched = onTouched;
-  // }
-  //
-  // writeValue(value: any): void {
-  //   if (value) {
-  //     this.form.patchValue(value);
-  //   }
-  // }
-  //
-  // validate(control: AbstractControl): ValidationErrors | null {
-  //   return this.form.valid
-  //     ? null
-  //     : { invalidForm: { valid: false, message: 'Dynamic form fields are invalid' } };
-  // }
 }

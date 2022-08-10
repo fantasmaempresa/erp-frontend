@@ -8,7 +8,7 @@ import {
 import { Subscription } from 'rxjs';
 
 export abstract class AbstractSubformComponent<T = any> implements ControlValueAccessor, Validator {
-  public formGroup!: FormGroup;
+  public formGroup: FormGroup = new FormGroup({});
 
   public onTouched: () => void = () => {};
 

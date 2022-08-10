@@ -16,7 +16,6 @@ export class ConnectFormDirective {
       form[field.key] = field.value;
     });
     this.formGroupDirective.form.setValue(form, { emitEvent: false, onlySelf: true });
-    // this.formGroupDirective.form.markAsPristine();
   }
 
   constructor(private formGroupDirective: FormGroupDirective) {}
