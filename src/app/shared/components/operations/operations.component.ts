@@ -30,9 +30,13 @@ import { ConceptFormDialogComponent } from '../../../features/concepts/dialog/co
 export class OperationsComponent implements OnInit {
   @Output() form = new EventEmitter();
 
-  @ViewChildren('conceptTotalInput') conceptTotalInput!: QueryList<ElementRef<HTMLInputElement>>;
+  @ViewChildren('conceptTotalInput') conceptTotalInput!: QueryList<
+    ElementRef<HTMLInputElement>
+  >;
 
-  @ViewChildren('conceptFieldInput') conceptFieldsInput!: QueryList<ElementRef<HTMLInputElement>>;
+  @ViewChildren('conceptFieldInput') conceptFieldsInput!: QueryList<
+    ElementRef<HTMLInputElement>
+  >;
 
   autocompleteControl = new FormControl();
 
@@ -71,25 +75,33 @@ export class OperationsComponent implements OnInit {
     if (operations) {
       if (operations.operation_total.length > 0) {
         this.operation_total.clear();
-        operations.operation_total.forEach((operation: Formfield<any>, index: number) => {
-          this.addOperation(operation);
-          operation.concepts?.forEach((concept: ConceptDto) => {
-            let concepts = this.operation_total.at(index).get('concepts') as FormArray;
-            concepts.push(new FormControl(concept));
-          });
-        });
+        operations.operation_total.forEach(
+          (operation: Formfield<any>, index: number) => {
+            this.addOperation(operation);
+            operation.concepts?.forEach((concept: ConceptDto) => {
+              let concepts = this.operation_total
+                .at(index)
+                .get('concepts') as FormArray;
+              concepts.push(new FormControl(concept));
+            });
+          },
+        );
         this.operation_total.patchValue(operations.operation_total);
       }
 
       if (operations.operation_fields.length > 0) {
         this.operation_fields.clear();
-        operations.operation_fields.forEach((operation: Formfield<any>, index: number) => {
-          this.addOperation(operation);
-          operation.concepts?.forEach((concept: ConceptDto) => {
-            let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
-            concepts.push(new FormControl(concept));
-          });
-        });
+        operations.operation_fields.forEach(
+          (operation: Formfield<any>, index: number) => {
+            this.addOperation(operation);
+            operation.concepts?.forEach((concept: ConceptDto) => {
+              let concepts = this.operation_fields
+                .at(index)
+                .get('concepts') as FormArray;
+              concepts.push(new FormControl(concept));
+            });
+          },
+        );
         this.operation_fields.patchValue(operations.operation_fields);
       }
 
@@ -108,7 +120,9 @@ export class OperationsComponent implements OnInit {
     private projectQuoteService: ProjectQuoteService,
   ) {
     this.formFields$ = store.select(selectDynamicForm);
-    this.concepts$ = this.conceptService.fetchAll().pipe(map((concepts) => concepts.data));
+    this.concepts$ = this.conceptService
+      .fetchAll()
+      .pipe(map((concepts) => concepts.data));
     this.initOperationsFormGroup();
     this.autocompleteControl.valueChanges.subscribe((value) => {
       if (typeof value !== 'object') {
@@ -118,7 +132,9 @@ export class OperationsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    let valueOfControl$ = this.autocompleteControl.valueChanges.pipe(startWith(''));
+    let valueOfControl$ = this.autocompleteControl.valueChanges.pipe(
+      startWith(''),
+    );
     this.filteredOptions$ = this.formFields$.pipe(
       map((value) => value.filter((x) => x.controlType === 'number')),
       tap(() => this.initOperationsFormGroup()),
@@ -135,7 +151,9 @@ export class OperationsComponent implements OnInit {
       operation_total: new FormArray([]),
     });
 
-    this.operationsForm.valueChanges.subscribe(() => this.form.emit(this.operationsForm));
+    this.operationsForm.valueChanges.subscribe(() =>
+      this.form.emit(this.operationsForm),
+    );
   }
 
   createOperationGroup(field: Formfield<any>, target: string): FormGroup {
@@ -149,7 +167,8 @@ export class OperationsComponent implements OnInit {
 
     if (target === 'total') {
       operation.get('value')?.patchValue('Valor por calcular');
-      let valueOfConceptControl = operation.controls.conceptCtrl.valueChanges.pipe(startWith(''));
+      let valueOfConceptControl =
+        operation.controls.conceptCtrl.valueChanges.pipe(startWith(''));
       this.filteredConceptsTotal$.push(
         this.concepts$.pipe(
           combineLatestWith(valueOfConceptControl),
@@ -159,7 +178,8 @@ export class OperationsComponent implements OnInit {
         ),
       );
     } else {
-      let valueOfConceptControl = operation.controls.conceptCtrl.valueChanges.pipe(startWith(''));
+      let valueOfConceptControl =
+        operation.controls.conceptCtrl.valueChanges.pipe(startWith(''));
       this.filteredConcepts$.push(
         this.concepts$.pipe(
           combineLatestWith(valueOfConceptControl),
@@ -303,7 +323,11 @@ export class OperationsComponent implements OnInit {
       });
   }
 
-  selected(event: MatAutocompleteSelectedEvent, index: number, target: string): void {
+  selected(
+    event: MatAutocompleteSelectedEvent,
+    index: number,
+    target: string,
+  ): void {
     if (event.option.value === 'new' && target === 'total') {
       this.openDialog(index, target);
       // @ts-ignore
@@ -319,7 +343,9 @@ export class OperationsComponent implements OnInit {
       return;
     }
     if (target === 'total') {
-      let concepts = this.operation_total.at(index).get('concepts') as FormArray;
+      let concepts = this.operation_total
+        .at(index)
+        .get('concepts') as FormArray;
       const conceptsArray: ConceptDto[] = concepts.value;
       let isInArray = false;
       conceptsArray.forEach((value) => {
@@ -339,7 +365,9 @@ export class OperationsComponent implements OnInit {
       this.operation_total.at(index).get('conceptCtrl')?.setValue('');
     }
     if (target === 'fields') {
-      let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
+      let concepts = this.operation_fields
+        .at(index)
+        .get('concepts') as FormArray;
       const conceptsArray: ConceptDto[] = concepts.value;
       let isInArray = false;
       conceptsArray.forEach((value) => {
@@ -364,7 +392,9 @@ export class OperationsComponent implements OnInit {
     const value = (event.value || '').trim();
 
     if (value) {
-      let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
+      let concepts = this.operation_fields
+        .at(index)
+        .get('concepts') as FormArray;
       concepts.push(new FormControl(value));
     }
 
@@ -375,7 +405,9 @@ export class OperationsComponent implements OnInit {
 
   remove(concept: ConceptDto, index: number, target: string): void {
     if (target === 'total') {
-      const concepts = this.operation_total.at(index).get('concepts') as FormArray;
+      const concepts = this.operation_total
+        .at(index)
+        .get('concepts') as FormArray;
       const conceptsArray: ConceptDto[] = concepts.value;
       conceptsArray.forEach((value, i) => {
         if (value.id === concept.id) {
@@ -384,7 +416,9 @@ export class OperationsComponent implements OnInit {
       });
     }
     if (target === 'fields') {
-      const concepts = this.operation_fields.at(index).get('concepts') as FormArray;
+      const concepts = this.operation_fields
+        .at(index)
+        .get('concepts') as FormArray;
       const conceptsArray: ConceptDto[] = concepts.value;
       conceptsArray.forEach((value, i) => {
         if (value.id === concept.id) {
@@ -401,7 +435,9 @@ export class OperationsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe((result) => {
       if (!result) return;
-      this.concepts$ = this.conceptService.fetchAll().pipe(map((concepts) => concepts.data));
+      this.concepts$ = this.conceptService
+        .fetchAll()
+        .pipe(map((concepts) => concepts.data));
       if (target === 'fields') {
         // @ts-ignore
         let valueOfConceptControl = this.operation_fields
@@ -415,7 +451,9 @@ export class OperationsComponent implements OnInit {
           }),
         );
         this.filteredConcepts$.splice(index, 1, filter);
-        let concepts = this.operation_fields.at(index).get('concepts') as FormArray;
+        let concepts = this.operation_fields
+          .at(index)
+          .get('concepts') as FormArray;
         concepts.push(new FormControl(result));
         return;
       }
@@ -432,21 +470,12 @@ export class OperationsComponent implements OnInit {
           }),
         );
         this.filteredConceptsTotal$.splice(index, 1, filter);
-        let concepts = this.operation_total.at(index).get('concepts') as FormArray;
+        let concepts = this.operation_total
+          .at(index)
+          .get('concepts') as FormArray;
         concepts.push(new FormControl(result));
         return;
       }
     });
   }
 }
-
-function listFibonacci(num: number) {
-  let fibonacci = [0, 1];
-  for (let i = 1; i < num; i++) {
-    fibonacci.push(fibonacci[i] + fibonacci[i - 1]);
-  }
-  console.log(fibonacci);
-}
-
-listFibonacci(11);
-// [0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89]

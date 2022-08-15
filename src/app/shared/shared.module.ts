@@ -24,6 +24,10 @@ import { InputImageComponent } from './components/input-image/input-image.compon
 import { InputFileComponent } from './components/input-file/input-file.component';
 import { InputCoordinateComponent } from './components/input-coordinate/input-coordinate.component';
 import { DynamicViewsModule } from './components/dinamyc-views/dynamic-views.module';
+import { OnSaveDialogComponent } from './components/dynamic-form-creation/on-save-dialog/on-save-dialog.component';
+import { ConnectFormDirective } from '../core/directives/connect-form.directive';
+import { SetValueDirective } from '../core/directives/set-value.directive';
+import { AutofocusDirective } from '../core/directives/autofocus.directive';
 
 @NgModule({
   entryComponents: [DialogSearchComponent],
@@ -35,6 +39,9 @@ import { DynamicViewsModule } from './components/dinamyc-views/dynamic-views.mod
     ChipListAutocompleteFixDirective,
     DragFileDirective,
     OutSideClickDirective,
+    ConnectFormDirective,
+    SetValueDirective,
+    AutofocusDirective,
     FromDatePipe,
     DialogSearchComponent,
     TableSearchComponent,
@@ -46,6 +53,7 @@ import { DynamicViewsModule } from './components/dinamyc-views/dynamic-views.mod
     InputImageComponent,
     InputFileComponent,
     InputCoordinateComponent,
+    OnSaveDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -70,6 +78,8 @@ import { DynamicViewsModule } from './components/dinamyc-views/dynamic-views.mod
     StopPropagationDirective,
     ChipListAutocompleteFixDirective,
     OutSideClickDirective,
+    ConnectFormDirective,
+    SetValueDirective,
     FromDatePipe,
     DynamicFormComponent,
     DynamicFormCreationComponent,
@@ -78,6 +88,7 @@ import { DynamicViewsModule } from './components/dinamyc-views/dynamic-views.mod
     InputImageComponent,
     InputFileComponent,
     InputCoordinateComponent,
+    AutofocusDirective,
   ],
 })
 export class SharedModule {}

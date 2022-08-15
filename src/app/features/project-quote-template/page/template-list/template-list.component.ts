@@ -7,7 +7,10 @@ import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { emptyQuoteList, loadNextPageOfQuotes } from '../../../../state/quotes/quotes.actions';
+import {
+  emptyQuoteList,
+  loadNextPageOfQuotes,
+} from '../../../../state/quotes/quotes.actions';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { selectQuoteTemplates } from '../../../../state/quote-template/quote-template.selector';
 import { QuoteTemplate } from '../../../../data/dto/QuoteTemplate.dto';
@@ -84,10 +87,12 @@ export class TemplateListComponent implements OnInit {
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: QuoteStatusDto): string {
     if (!row) {
-      return `${this.isAllSelected() ? "deselect" : "select"} all`;
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
     // @ts-ignore
-    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      row.id + 1
+    }`;
   }
 
   async goToNewQuote() {
@@ -108,8 +113,15 @@ export class TemplateListComponent implements OnInit {
       () => {
         this.templateService.delete(this.selection.selected[0].id).subscribe({
           next: () => {
+            MessageHelper.successMessage(
+              'Éxito',
+              `Plantilla ${this.selection.selected[0].name} borrada correctamente`,
+            );
             this.store.dispatch(loadQuoteTemplates());
             this.selection.clear();
+          },
+          error: ({ error }) => {
+            MessageHelper.errorMessage(error.error);
           },
         });
       },

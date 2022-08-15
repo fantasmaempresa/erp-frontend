@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChildrenRouteLayoutComponent } from '../../layout/children-route-layout/children-route-layout.component';
 import { ProjectQuoteListComponent } from './page/project-quote-list/project-quote-list.component';
-import { ProjectQuoteFormComponent } from './page/project-quote-form/project-quote-form.component';
 import { ProjectQuotePageComponent } from './page/project-quote-page/project-quote-page.component';
 
 const routes: Routes = [
@@ -22,7 +21,12 @@ const routes: Routes = [
       },
       {
         path: 'quote',
-        component: ProjectQuoteFormComponent,
+        component: ProjectQuotePageComponent,
+        data: { breadcrumb: 'Editar cotización' },
+      },
+      {
+        path: 'change-status',
+        component: ProjectQuotePageComponent,
         data: { breadcrumb: 'Editar cotización' },
       },
       {

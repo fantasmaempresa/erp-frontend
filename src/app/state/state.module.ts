@@ -24,8 +24,13 @@ import { ProcessEffects } from './process/process.effects';
 import { RoleEffects } from './role/role.effects';
 import { MyProjectEffects } from './my-project/my-project.effects';
 
-export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-  return localStorageSync({ keys: ['auth'], rehydrate: true })(reducer);
+export function localStorageSyncReducer(
+  reducer: ActionReducer<any>,
+): ActionReducer<any> {
+  return localStorageSync({
+    keys: [{ auth: ['tokens', 'user'] }],
+    rehydrate: true,
+  })(reducer);
 }
 
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
@@ -54,7 +59,11 @@ const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
       QuoteTemplateEffects,
       MyProjectEffects,
     ]),
-    StoreDevtoolsModule.instrument({ name: 'ERP', maxAge: 25, logOnly: environment.production }),
+    StoreDevtoolsModule.instrument({
+      name: 'ERP',
+      maxAge: 25,
+      logOnly: environment.production,
+    }),
   ],
 })
 export class StateModule {}

@@ -28,17 +28,26 @@ export class ConceptFormComponent implements OnInit {
 
   get validityType() {
     // @ts-ignore
-    return this.conceptForm.get('formula').get('validity').get('type') as FormControl;
+    return this.conceptForm
+      .get('formula')
+      .get('validity')
+      .get('type') as FormControl;
   }
 
   get betweenValidity() {
     // @ts-ignore
-    return this.conceptForm.get('formula').get('validity').get('between') as FormArray;
+    return this.conceptForm
+      .get('formula')
+      .get('validity')
+      .get('between') as FormArray;
   }
 
   get betweenRange() {
     // @ts-ignore
-    return this.conceptForm.get('formula').get('range').get('between') as FormArray;
+    return this.conceptForm
+      .get('formula')
+      .get('range')
+      .get('between') as FormArray;
   }
 
   get isOperable() {
@@ -53,19 +62,31 @@ export class ConceptFormComponent implements OnInit {
 
   get isDateInValidity() {
     // @ts-ignore
-    return this.conceptForm.get('formula')?.get('validity')?.get('is_date') as FormControl;
+    return this.conceptForm
+      .get('formula')
+      ?.get('validity')
+      ?.get('is_date') as FormControl;
   }
 
   get applyValidity() {
-    return this.conceptForm.get('formula')?.get('validity')?.get('apply') as FormControl;
+    return this.conceptForm
+      .get('formula')
+      ?.get('validity')
+      ?.get('apply') as FormControl;
   }
 
   get applyRange() {
-    return this.conceptForm.get('formula')?.get('range')?.get('apply') as FormControl;
+    return this.conceptForm
+      .get('formula')
+      ?.get('range')
+      ?.get('apply') as FormControl;
   }
 
   get isRangeInValidity() {
-    return this.conceptForm.get('formula')?.get('validity')?.get('is_range') as FormControl;
+    return this.conceptForm
+      .get('formula')
+      ?.get('validity')
+      ?.get('is_range') as FormControl;
   }
 
   get formula() {
@@ -178,7 +199,11 @@ export class ConceptFormComponent implements OnInit {
     this.isDateInValidity.valueChanges.subscribe({
       next: (val) => {
         this.isDateInYears = !!val;
-        this.conceptForm.get('formula')?.get('validity')?.get('amount')?.patchValue('');
+        this.conceptForm
+          .get('formula')
+          ?.get('validity')
+          ?.get('amount')
+          ?.patchValue('');
       },
     });
 
@@ -208,7 +233,10 @@ export class ConceptFormComponent implements OnInit {
         let message;
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         this.isEdit ? (message = 'actualizado') : (message = 'registrado');
-        MessageHelper.successMessage('¡Éxito!', `El concepto ha sido ${message} correctamente.`);
+        MessageHelper.successMessage(
+          '¡Éxito!',
+          `El concepto ha sido ${message} correctamente.`,
+        );
         await this.router.navigate(['../'], { relativeTo: this.route });
       },
     });
@@ -238,12 +266,16 @@ export class ConceptFormComponent implements OnInit {
     const form = new FormGroup({
       min: new FormControl(value ? value.min : null, [Validators.required]),
       max: new FormControl(value ? value.max : null, [Validators.required]),
-      amount: new FormControl(value ? value.amount : null, [Validators.required]),
+      amount: new FormControl(value ? value.amount : null, [
+        Validators.required,
+      ]),
     });
 
     form.get('min')?.valueChanges.subscribe({
       next: (val) => {
-        form.get('max')?.setValidators([Validators.required, Validators.min(val)]);
+        form
+          .get('max')
+          ?.setValidators([Validators.required, Validators.min(val)]);
         form.get('max')?.updateValueAndValidity();
       },
     });
@@ -262,7 +294,7 @@ export class ConceptFormComponent implements OnInit {
   createForm() {
     return new FormGroup({
       name: new FormControl('', Validators.required),
-      description: new FormControl(''),
+      description: new FormControl('', [Validators.required]),
       amount: new FormControl(null),
       operationType: new FormControl('import'),
       formula: new FormGroup({
