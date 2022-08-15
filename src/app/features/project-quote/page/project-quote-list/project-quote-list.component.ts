@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { QuoteStatus } from '../../../../data/models/QuoteStatus.model';
@@ -25,7 +31,9 @@ import { ProjectQuotePreviewComponent } from '../../dialog/project-quote-preview
   templateUrl: './project-quote-list.component.html',
   styleUrls: ['./project-quote-list.component.scss'],
 })
-export class ProjectQuoteListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProjectQuoteListComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   filterOptions = [
     { name: 'En revisión', value: 'review' },
     { name: 'Aprobado', value: 'approved' },
@@ -92,7 +100,10 @@ export class ProjectQuoteListComponent implements OnInit, AfterViewInit, OnDestr
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
     // @ts-ignore
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      // @ts-ignore
+      row.id + 1
+    }`;
   }
 
   async goToNewQuote() {
@@ -145,16 +156,6 @@ export class ProjectQuoteListComponent implements OnInit, AfterViewInit, OnDestr
     let size = event.pageSize;
     page = page + 1;
     this.store.dispatch(loadNextPageOfQuotes({ page, size }));
-    // if(this.filterValue == null) {
-    //   page = page +1;
-    //   this.userService.findAll(page, size).pipe(
-    //       map((userData: UserData) => this.dataSource = userData)
-    //   ).subscribe();
-    // } else {
-    //   this.userService.paginateByName(page, size, this.filterValue).pipe(
-    //       map((userData: UserData) => this.dataSource = userData)
-    //   ).subscribe()
-    // }
   }
 
   changeSelection(row: ProjectQuote) {
