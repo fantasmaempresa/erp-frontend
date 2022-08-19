@@ -1,3 +1,9 @@
+@use "@angular/material" as mat;
+
+@use 'styles/themes/light';
+@use "./styles/components";
+@use "./styles/typography/config" as typography;
+
 @import '~src/assets/styles/abstracts/variables';
 @import '~src/assets/styles/abstracts/functions';
 @import '~src/assets/styles/abstracts/mixins';
@@ -8,7 +14,12 @@
 
 @import '~src/assets/styles/components/profile-img';
 @import '~src/assets/styles/components/scrollbar';
-@import "sass/components/card-view";
+@import "styles/components/card-view";
+
+@include mat.core(typography.$fontConfig);
+
+@include mat.all-component-themes(light.$light-theme);
+@include components.theme(light.$light-theme, typography.$fontConfig);
 
 *, *::after, *::before {
   box-sizing: border-box;

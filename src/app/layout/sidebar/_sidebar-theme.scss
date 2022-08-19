@@ -1,0 +1,69 @@
+@use "sass:map";
+@use "../../../../node_modules/@angular/material/index" as mat;
+
+@mixin color ($theme) {
+
+  $color-config: mat.get-color-config($theme);
+
+  $primary-palette: map.get($color-config, "primary");
+  $accent-palette: map.get($color-config, "accent");
+
+
+  .sidebar {
+    background-color: mat.get-color-from-palette($accent-palette, "main");
+    color: mat.get-color-from-palette($primary-palette, "main");
+
+    &__icon {
+      &,
+      &::after,
+      &::before {
+        width: 3rem;
+        height: 2px;
+        background-color: #fff;
+        display: inline-block;
+      }
+    }
+  }
+
+  .menu {
+    &__link {
+      &--active,
+      &--active:hover {
+        color: mat.get-color-from-palette($accent-palette, "main");
+      }
+
+      &::after {
+        background: mat.get-color-from-palette($primary-palette, "main");
+      }
+    }
+
+    &__dropdown-container {
+      //color: var(--color-secondary-100);
+      background: mat.get-color-from-palette($accent-palette, "main");
+      border-top: 2px solid rgba(0, 0, 0, 0.325);
+    }
+
+    &__dropdown-back {
+      background-color: mat.get-color-from-palette($accent-palette, "main");
+      &:hover {
+        color: mat.get-color-from-palette($accent-palette, "main");
+        background: mat.get-color-from-palette($primary-palette, "main");
+      }
+    }
+  }
+}
+
+@mixin typography($typography-config) {
+}
+
+
+@mixin theme($theme, $typography-config) {
+  $color-config: mat.get-color-config($theme);
+  @if $color-config != null {
+    @include color($theme);
+  }
+
+  @if $typography-config != null {
+    @include typography($typography-config);
+  }
+}

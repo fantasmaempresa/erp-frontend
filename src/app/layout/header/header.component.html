@@ -1,7 +1,11 @@
 <header class="header">
   <div class="header__logo">
     <a routerLink="/dashboard">
-      <img alt="Logo Code" class="header__logo-img" src="assets/images/brand/logo.png" />
+      <img
+        alt="Logo Code"
+        class="header__logo-img"
+        src="assets/images/brand/logo.png"
+      />
     </a>
   </div>
 
@@ -23,13 +27,17 @@
   <div class="header__profile">
     <div class="header__profile-container">
       <button [matMenuTriggerFor]="profileMenu" mat-button>
-        <img alt="" class="profile-img" src="assets/images/profile_picture.jpg" />
+        <img
+          alt=""
+          class="profile-img"
+          src="assets/images/profile_picture.jpg"
+        />
         <span class="header__profile-label">Patrick</span>
         <span class="material-icons">expand_more</span>
       </button>
       <mat-menu #profileMenu="matMenu" xPosition="before">
         <button mat-menu-item>Item 1</button>
-        <mat-slide-toggle #slide color="primary" (change)="changeTheme($event)" checked
+        <mat-slide-toggle #slide color="primary" (change)="changeTheme($event)"
           >Modo {{ slide.checked ? 'Oscuro' : 'Claro' }}
         </mat-slide-toggle>
         <button (click)="logout()" mat-menu-item>Cerrar sesión</button>

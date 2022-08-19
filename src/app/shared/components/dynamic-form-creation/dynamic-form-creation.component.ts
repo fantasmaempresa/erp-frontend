@@ -424,7 +424,7 @@ export class DynamicFormCreationComponent implements OnInit {
       options: [],
       key: 'total',
       type: 'number',
-      order: 0,
+      order: Number.MAX_SAFE_INTEGER,
     };
     this.store.dispatch(setField({ form }));
   }

@@ -20,11 +20,9 @@
   margin-right: 0;
   top: -$top;
   right: 0;
-  color: var(--primaryColor);
 
   width: 85%;
   min-height: calc(100% + #{$top});
-  background: var(--bgColor);
   border-radius: 0.5rem;
   display: flex;
   flex-direction: column;
@@ -75,7 +73,7 @@
     &::before {
       width: 3rem;
       height: 2px;
-      background-color: var(--textColor-100);
+      //background-color: var(--textColor-100);
       display: inline-block;
     }
 
@@ -176,7 +174,7 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    color: inherit;
+    //color: inherit;
     text-decoration: none;
 
     & > * {
@@ -193,21 +191,21 @@
       width: 100%;
       border-radius: 0.5rem;
       transform: scaleX(0);
-      background: var(--bgColorDark);
+      //background: var(--bgColorDark);
       transition: 360ms all ease-in-out;
       transform-origin: left;
       z-index: 2;
     }
 
     &:hover {
-      color: var(--textColor-400);
+      //color: var(--textColor-400);
       animation: heartBeating 850ms infinite ease-in-out;
       animation-direction: alternate;
     }
 
     &--active,
     &--active:hover {
-      color: var(--textColor-100);
+      //color: var(--textColor-100);
       animation: none;
 
       &::after {
@@ -274,7 +272,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--bgColor);
+    //background: var(--bgColor);
     border-top: 2px solid rgba(0, 0, 0, 0.325);
     transform: translateX(-100%);
     transition: 450ms transform ease-in-out 300ms;
@@ -283,7 +281,7 @@
   &__dropdown-back {
     //height: 40px;
     width: 4rem;
-    background-color: var(--bgColor);
+    //background-color: var(--bgColor);
     margin: 1rem 0.5rem;
     padding: 1rem;
     text-decoration: none;
@@ -296,7 +294,7 @@
 
     &:hover {
       color: var(--bgColorDark);
-      background: var(--primaryColor);
+      //background: var(--primaryColor);
     }
   }
 
