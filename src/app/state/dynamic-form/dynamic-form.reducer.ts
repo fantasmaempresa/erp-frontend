@@ -1,5 +1,9 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { dynamicFormAdapter, DynamicFormState, initialState } from './dynamic-form.state';
+import {
+  dynamicFormAdapter,
+  DynamicFormState,
+  initialState,
+} from './dynamic-form.state';
 import * as DynamicFormActions from './dynamic-form.actions';
 
 const DynamicFormReducer = createReducer(
@@ -9,6 +13,7 @@ const DynamicFormReducer = createReducer(
       ...state,
       id: actions.id,
       name: actions.name,
+      description: actions.description,
       isEditable: true,
     });
   }),

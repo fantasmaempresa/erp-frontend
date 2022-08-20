@@ -16,7 +16,12 @@ export enum DynamicFormActions {
 
 export const loadForm = createAction(
   DynamicFormActions.LOAD_FORM,
-  props<{ form: Formfield<any>[]; id: number; name: string }>(),
+  props<{
+    form: Formfield<any>[];
+    id: number;
+    name: string;
+    description: string;
+  }>(),
 );
 export const loadFormSuccess = createAction(
   DynamicFormActions.LOAD_FORM_SUCCESS,

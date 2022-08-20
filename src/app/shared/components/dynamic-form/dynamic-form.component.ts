@@ -1,22 +1,36 @@
-import { Component, forwardRef, Input, OnDestroy, OnInit } from '@angular/core';
 import {
-  AbstractControl,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  forwardRef,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import {
   ControlValueAccessor,
   FormControl,
   FormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
-  ValidationErrors,
   Validator,
   Validators,
 } from '@angular/forms';
 import { FormfieldControlService } from '../../../core/services/formfield-control.service';
 import { Store } from '@ngrx/store';
-import { selectDynamicForm, selectStatus } from '../../../state/dynamic-form/dynamic-form.selector';
-import { Observable, Subscription, take } from 'rxjs';
+import {
+  selectDynamicForm,
+  selectStatus,
+} from '../../../state/dynamic-form/dynamic-form.selector';
+import { Observable, Subscription, tap, using } from 'rxjs';
 import { Formfield } from '../../../data/dto/Formfield.dto';
-import { updateField } from '../../../state/dynamic-form/dynamic-form.actions';
 import { Update } from '@ngrx/entity';
+import { AbstractSubformComponent } from './abstract-subform.component';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { updateValues } from '../../../state/dynamic-form/dynamic-form.actions';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -35,114 +49,122 @@ import { Update } from '@ngrx/entity';
     },
   ],
 })
-export class DynamicFormComponent implements OnInit, OnDestroy, ControlValueAccessor, Validator {
+export class DynamicFormComponent
+  extends AbstractSubformComponent
+  implements OnInit, OnDestroy, OnChanges, ControlValueAccessor, Validator
+{
+  @Output() formGroupChanges = new EventEmitter();
+
+  @Input() formFields: Formfield<any>[] = [];
+
   @Input() onlyRead: boolean = false;
 
-  formFields!: Formfield<any>[];
+  _onlyRead!: boolean;
 
-  form: FormGroup = new FormGroup({});
+  formValues$!: Observable<any>;
 
-  @Input()
-  public set save(val: boolean) {
-    if (this.form.status === 'VALID' && this.form.touched) {
-      if (val) {
-        console.log('Formulario valido y save true');
-        this.saveInStore();
-      }
-    }
-    this.form.markAllAsTouched();
-  }
+  fields: Formfield<any>[] = [];
 
   onChangeSubs: Subscription[] = [];
 
-  onTouched = () => {};
-
-  onChange = () => {};
-
-  payLoad = '';
-
-  fields$!: Observable<Formfield<any>[]>;
-
   formStatus$!: Observable<'EDITABLE' | 'NEW'>;
 
-  constructor(private formfieldService: FormfieldControlService, private store: Store) {
-    this.fields$ = store.select(selectDynamicForm);
-    this.formStatus$ = store.select(selectStatus);
+  constructor(
+    private formfieldService: FormfieldControlService,
+    private store: Store,
+    private cd: ChangeDetectorRef,
+  ) {
+    super();
   }
 
-  ngOnInit(): void {
-    this.fields$.pipe(take(1)).subscribe({
-      next: (formFields) => {
-        if (formFields) {
-          this.formFields = formFields;
-          this.form = this.createForm(formFields);
-          this.form.updateValueAndValidity();
-        }
-      },
-    });
+  ngOnInit() {
+    this.formStatus$ = this.store.select(selectStatus);
+    this.formValues$ = this.store.select(selectDynamicForm);
+  }
+
+  ngOnChanges({ formFields, onlyRead }: SimpleChanges) {
+    if (formFields) {
+      if (formFields.currentValue) {
+        this.fields = formFields.currentValue;
+        this.formGroup = this.createForm(this.fields);
+        this.formGroup.updateValueAndValidity();
+        this.formValues$ = using(
+          () =>
+            this.formGroup.valueChanges
+              .pipe(
+                tap((formValues) => {
+                  this.updateDynamicFormState(this.fields, formValues);
+                }),
+              )
+              .subscribe(),
+          () => this.store.select(selectDynamicForm),
+        );
+      }
+      if (this.onlyRead) {
+        this.formGroup.disable();
+      }
+      this.cd.detectChanges();
+      this.formGroupChanges.emit(this.formGroup);
+    }
+
+    if (onlyRead) {
+      if (onlyRead.currentValue) {
+        this.formGroup.disable();
+        this._onlyRead = coerceBooleanProperty(onlyRead.currentValue);
+      } else {
+        this.formGroup.enable();
+        this.formGroup.controls.total.disable();
+        this._onlyRead = coerceBooleanProperty(onlyRead.currentValue);
+      }
+    }
   }
 
   ngOnDestroy() {
     for (let sub of this.onChangeSubs) {
       sub.unsubscribe();
     }
-    if (this.onlyRead) {
-      return;
-    }
-    this.saveInStore();
   }
 
   createForm(controls: Formfield<any>[]): FormGroup {
     const group: any = {};
     for (const control of controls) {
-      if (control.key === 'total') {
-        group[control.key] = new FormControl({ value: '', disabled: true });
-      } else {
-        group[control.key] = control.required
-          ? new FormControl(control.value || '', [Validators.required])
-          : new FormControl(control.value || '');
-      }
+      group[control.key] = control.required
+        ? new FormControl(control.value || '', [Validators.required])
+        : new FormControl(control.value || '');
     }
-    return new FormGroup(group);
-  }
-
-  saveInStore() {
-    console.log('Guardando en el store');
-    let formUpdate: Update<Formfield<any>>;
-    for (const field in this.form.value) {
-      for (const item of this.formFields) {
-        if (item.key === field) {
-          formUpdate = {
-            id: item.id,
-            changes: {
-              value:
-                item.controlType === 'number' ? +this.form.value[field] : this.form.value[field],
-            },
-          };
-          this.store.dispatch(updateField({ form: formUpdate }));
-        }
-      }
+    let formGroup = new FormGroup(group);
+    if (this._onlyRead) {
+      formGroup.disable();
+    } else {
+      formGroup.enable();
+      formGroup.controls.total.disable();
     }
+    return formGroup;
   }
 
   registerOnChange(onChange: any): void {
-    const sub = this.form.valueChanges.subscribe(onChange);
+    const sub = this.formGroup.valueChanges.subscribe(onChange);
     this.onChangeSubs.push(sub);
   }
 
-  registerOnTouched(onTouched: any): void {
-    this.onTouched = onTouched;
-  }
-
-  writeValue(value: any): void {
-    if (value) {
-      this.form.patchValue(value);
+  updateDynamicFormState(formFields: Formfield<any>[], formValues: any) {
+    let formUpdate: Update<Formfield<any>>[] = [];
+    for (const field in formValues) {
+      for (const item of formFields) {
+        if (item.key === field) {
+          let singleFormUpdate: Update<Formfield<any>> = {
+            id: item.id,
+            changes: {
+              value:
+                item.controlType === 'number'
+                  ? +formValues[field]
+                  : formValues[field],
+            },
+          };
+          formUpdate.push(singleFormUpdate);
+        }
+      }
     }
-  }
-
-  validate(control: AbstractControl): ValidationErrors | null {
-    return this.form.valid
-      ? null
-      : { invalidForm: { valid: false, message: 'Dynamic form fields are invalid' } };
+    this.store.dispatch(updateValues({ form: formUpdate }));
   }
 }

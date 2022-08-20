@@ -17,7 +17,7 @@
     matTooltip="Eliminar concepto"
     (click)="delete()"
   >
-    <mat-icon>person_remove</mat-icon>
+    <mat-icon>delete_forever</mat-icon>
   </button>
   <button
     [matTooltipPosition]="'below'"
@@ -26,7 +26,7 @@
     matTooltip="Agregar concepto"
     (click)="goToNewConcept()"
   >
-    <mat-icon>person_add</mat-icon>
+    <mat-icon>note_add</mat-icon>
   </button>
 </mat-toolbar>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -64,7 +64,11 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: displayedColumns"
+    (click)="selection.toggle(row)"
+  ></tr>
 </table>
 <mat-paginator
   [length]="totalItems"

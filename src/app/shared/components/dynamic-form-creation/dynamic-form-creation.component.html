@@ -2,8 +2,11 @@
   <mat-label>Plantilla</mat-label>
   <mat-select [formControl]="templateControl" [compareWith]="compareObjects">
     <mat-option>Ninguna</mat-option>
-    <mat-option *ngFor="let template of templates; index as i" [value]="template">
-      {{ template.name }}
+    <mat-option
+      *ngFor="let formStructure of formStructures; index as i"
+      [value]="formStructure"
+    >
+      {{ formStructure.name }}
     </mat-option>
   </mat-select>
   <!--        <mat-error appErrorMessage></mat-error>-->
@@ -48,47 +51,85 @@
     </div>
   </div>
   <div class="col-8 mat-elevation-z5">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="m-5">
+    <form #f="ngForm" [formGroup]="form" (ngSubmit)="onSubmit(f)" class="m-5">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Tipo de dato</mat-label>
         <mat-select formControlName="controlType">
           <mat-option>Ninguna</mat-option>
-          <mat-option *ngFor="let type of types; index as i" [value]="type.value">{{
-            type.label
-          }}</mat-option>
+          <mat-option
+            *ngFor="let type of types; index as i"
+            [value]="type.value"
+            >{{ type.label }}</mat-option
+          >
         </mat-select>
-        <mat-error *ngIf="f.controlType.hasError">Requerido</mat-error>
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>Etiqueta</mat-label>
-        <input matInput type="text" autocomplete="off" formControlName="label" />
-        <mat-error *ngIf="f.controlType.hasError">Requerido</mat-error>
+        <input
+          matInput
+          type="text"
+          autocomplete="off"
+          formControlName="label"
+        />
+        <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <div class="row">
-        <mat-checkbox color="primary" class="checkbox" formControlName="required">
+        <mat-checkbox
+          color="primary"
+          class="checkbox"
+          formControlName="required"
+        >
           ¿Es requerido?
         </mat-checkbox>
       </div>
 
-      <p class="row" *ngIf="errorMessage$ | async as message" style="color: red">{{ message }}</p>
+      <p
+        class="row"
+        *ngIf="errorMessage$ | async as message"
+        style="color: red"
+      >
+        {{ message }}
+      </p>
 
-      <div class="d-flex flex-column" *ngIf="hasOptions()" formArrayName="options">
-        <div class="row" *ngFor="let option of options.controls; index as i" [formGroupName]="i">
+      <div
+        class="d-flex flex-column"
+        *ngIf="hasOptions()"
+        formArrayName="options"
+      >
+        <div
+          class="row"
+          *ngFor="let option of options.controls; index as i"
+          [formGroupName]="i"
+        >
           <div class="col-5">
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Clave</mat-label>
-              <input matInput type="text" autocomplete="off" formControlName="key" />
+              <input
+                matInput
+                type="text"
+                autocomplete="off"
+                formControlName="key"
+              />
             </mat-form-field>
           </div>
           <div class="col-5">
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Valor</mat-label>
-              <input matInput type="text" autocomplete="off" formControlName="value" />
+              <input
+                matInput
+                type="text"
+                autocomplete="off"
+                formControlName="value"
+              />
             </mat-form-field>
           </div>
-          <div class="col-2 d-flex align-items-center" style="margin-top: -20px">
+          <div
+            class="col-2 d-flex align-items-center"
+            style="margin-top: -20px"
+          >
             <button
               *ngIf="options.controls.length > 1"
               type="button"
@@ -143,7 +184,7 @@
         (click)="saveTemplate()"
         *ngIf="fields.length > 1"
       >
-        Guardar plantilla de formulario
+        Guardar estructura de formulario
       </button>
 
       <button

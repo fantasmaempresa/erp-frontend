@@ -1,10 +1,33 @@
 <mat-toolbar>
+  <mat-chip-list aria-label="Filters" selectable="true" multiple="false">
+    <mat-chip [selected]="isSelectedFilter('all')" (click)="getAllQuotes()">
+      Todas</mat-chip
+    >
+    <mat-chip
+      *ngFor="let option of filterOptions"
+      [selected]="isSelectedFilter(option.value)"
+      (click)="filterBy(option.value)"
+    >
+      {{ option.name }}
+    </mat-chip>
+  </mat-chip-list>
+  <span class="spacer"></span>
   <button
     *ngIf="selection.selected.length !== 0"
     [matTooltipPosition]="'below'"
-    aria-label="Editar estado de la cotización"
+    aria-label="Vista previa"
     mat-icon-button
-    matTooltip="Editar estado de la cotización"
+    matTooltip="Vista previa"
+    (click)="preview()"
+  >
+    <mat-icon>preview</mat-icon>
+  </button>
+  <button
+    *ngIf="selection.selected.length !== 0"
+    [matTooltipPosition]="'below'"
+    aria-label="Editar cotización"
+    mat-icon-button
+    matTooltip="Editar cotización"
     (click)="edit()"
   >
     <mat-icon>edit</mat-icon>
@@ -12,21 +35,21 @@
   <button
     *ngIf="selection.selected.length !== 0"
     [matTooltipPosition]="'below'"
-    aria-label="Eliminar estado de la cotización"
+    aria-label="Eliminar cotización"
     mat-icon-button
-    matTooltip="Eliminar estado de la cotización"
+    matTooltip="Eliminar cotización"
     (click)="delete()"
   >
-    <mat-icon>person_remove</mat-icon>
+    <mat-icon>delete_forever</mat-icon>
   </button>
   <button
     [matTooltipPosition]="'below'"
-    aria-label="Agregar estado de la cotización"
+    aria-label="Crear cotización"
     mat-icon-button
-    matTooltip="Agregar estado de la cotización"
+    matTooltip="Crear cotización"
     (click)="goToNewQuote()"
   >
-    <mat-icon>person_add</mat-icon>
+    <mat-icon>note_add</mat-icon>
   </button>
 </mat-toolbar>
 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
@@ -58,7 +81,16 @@
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns" (click)="selection.toggle(row)"></tr>
+
+  <tr class="mat-row" *matNoDataRow>
+    <td class="mat-cell" colspan="4">Sin resultados</td>
+  </tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: displayedColumns"
+    (click)="changeSelection(row)"
+    (dblclick)="preview(row)"
+  ></tr>
 </table>
 <mat-paginator
   [length]="totalItems"

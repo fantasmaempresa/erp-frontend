@@ -1,5 +1,12 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { loginFailure, loginStart, loginSuccess, logout } from './auth.actions';
+import {
+  cleanError,
+  cleanLoading,
+  loginFailure,
+  loginStart,
+  loginSuccess,
+  logout,
+} from './auth.actions';
 import { AuthState, initialState } from './auth.state';
 
 const AuthReducer = createReducer(
@@ -32,7 +39,20 @@ const AuthReducer = createReducer(
       tokens: null,
     };
   }),
+  on(cleanLoading, (state) => {
+    return {
+      ...state,
+      isLoading: false,
+    };
+  }),
+  on(cleanError, (state) => {
+    return {
+      ...state,
+      errorMessage: null,
+    };
+  }),
 );
+
 // eslint-disable-next-line @typescript-eslint/default-param-last
 export function authReducer(state = initialState, action: Action) {
   return AuthReducer(state, action);

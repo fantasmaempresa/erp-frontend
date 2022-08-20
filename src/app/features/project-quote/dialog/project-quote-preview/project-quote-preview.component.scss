@@ -1,3 +1,7 @@
 .upper-dotted {
   border-top: dashed .3rem var(--primaryColor);
 }
+
+.mat-dialog-content {
+  max-height: 75vh;
+}

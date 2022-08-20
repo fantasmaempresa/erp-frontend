@@ -1,10 +1,14 @@
 <ng-container>
-  <form [formGroup]="form">
-    <div class="row" *ngFor="let formField of fields$ | async; index as i">
+  <form [formGroup]="formGroup" [connectForm]="formValues$ | async">
+    <div class="row" *ngFor="let formField of fields; index as i">
       <div class="col-10">
         <!--        <app-dynamic-form-input [input]="formField" [form]="form"></app-dynamic-form-input>-->
         <div [ngSwitch]="formField.controlType">
-          <mat-form-field appearance="outline" *ngSwitchCase="'textbox'" class="w-100">
+          <mat-form-field
+            appearance="outline"
+            *ngSwitchCase="'textbox'"
+            class="w-100"
+          >
             <mat-label>{{ formField.label }}</mat-label>
             <input
               matInput
@@ -17,7 +21,11 @@
             <mat-error appErrorMessage></mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" *ngSwitchCase="'number'" class="w-100">
+          <mat-form-field
+            appearance="outline"
+            *ngSwitchCase="'number'"
+            class="w-100"
+          >
             <mat-label>{{ formField.label }}</mat-label>
             <input
               matInput
@@ -95,7 +103,10 @@
                 [formControlName]="formField.key"
                 [value]="formField.value"
               />
-              <mat-datepicker-toggle matSuffix [for]="dateForm"></mat-datepicker-toggle>
+              <mat-datepicker-toggle
+                matSuffix
+                [for]="dateForm"
+              ></mat-datepicker-toggle>
               <mat-datepicker #dateForm disabled="false"></mat-datepicker>
             </mat-form-field>
           </div>
