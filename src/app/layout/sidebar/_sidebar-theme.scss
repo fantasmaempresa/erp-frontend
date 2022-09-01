@@ -1,5 +1,5 @@
 @use "sass:map";
-@use "../../../../node_modules/@angular/material/index" as mat;
+@use "@angular/material" as mat;
 
 @mixin color ($theme) {
 
@@ -10,8 +10,8 @@
 
 
   .sidebar {
-    background-color: mat.get-color-from-palette($accent-palette, "main");
-    color: mat.get-color-from-palette($primary-palette, "main");
+    background-color: mat.get-color-from-palette($primary-palette, "main");
+    color: var(--text-primary-color);
 
     &__icon {
       &,
@@ -23,31 +23,67 @@
         display: inline-block;
       }
     }
+
+    &-header {
+      &__profile-place {
+        color: mat.get-color-from-palette($accent-palette, "darker");
+      }
+    }
   }
 
   .menu {
     &__link {
-      &--active,
-      &--active:hover {
-        color: mat.get-color-from-palette($accent-palette, "main");
-      }
+      position: relative;
+      padding: 0.5rem 1.5rem;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      color: inherit;
+      text-decoration: none;
 
       &::after {
-        background: mat.get-color-from-palette($primary-palette, "main");
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        border-radius: 0.5rem;
+        transform: scaleX(0);
+        background: mat.get-color-from-palette($accent-palette, "main");
+        transition: 360ms all ease-in-out;
+        transform-origin: left;
+        z-index: 2;
+      }
+
+      &:hover {
+        color: var(--accent-color);
+        animation: heartBeating 850ms infinite ease-in-out;
+        animation-direction: alternate;
+      }
+
+      &--active,
+      &--active:hover {
+        color: mat.get-color-from-palette($primary-palette, "darker");
+        animation: none;
+
+        &::after {
+          transform: scaleX(1);
+        }
       }
     }
 
     &__dropdown-container {
       //color: var(--color-secondary-100);
-      background: mat.get-color-from-palette($accent-palette, "main");
+      background: mat.get-color-from-palette($primary-palette, "main");
       border-top: 2px solid rgba(0, 0, 0, 0.325);
     }
 
     &__dropdown-back {
-      background-color: mat.get-color-from-palette($accent-palette, "main");
+      background-color: mat.get-color-from-palette($primary-palette, "main");
       &:hover {
-        color: mat.get-color-from-palette($accent-palette, "main");
-        background: mat.get-color-from-palette($primary-palette, "main");
+        color: mat.get-color-from-palette($primary-palette, "main");
+        background: mat.get-color-from-palette($accent-palette, "main");
       }
     }
   }

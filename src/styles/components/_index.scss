@@ -1,5 +1,11 @@
 @use '../../app/layout/sidebar/sidebar-theme' as sidebar;
+@use '../../app/layout/header/header-theme' as header;
+@use '../../app/layout/footer/footer-theme' as footer;
+@use '../../app/features/notification/Components/notification/notification-theme' as notification;
 
 @mixin theme($theme, $typography-config) {
   @include sidebar.theme($theme, $typography-config);
+  @include header.theme($theme, $typography-config);
+  @include footer.theme($theme, $typography-config);
+  @include notification.theme($theme, $typography-config);
 }

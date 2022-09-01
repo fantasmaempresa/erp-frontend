@@ -19,6 +19,7 @@
 @include mat.core(typography.$fontConfig);
 
 @include mat.all-component-themes(light.$light-theme);
+@include mat.form-field-theme(light.$input-light-theme);
 @include components.theme(light.$light-theme, typography.$fontConfig);
 
 *, *::after, *::before {
@@ -103,11 +104,11 @@ ul {
 }
 
 .xng-breadcrumb-link {
-  color: var(--textColor-300) !important;
+  color: var(--accent-color) !important;
 }
 
 .xng-breadcrumb-trail {
-  color: var(--textColor-100) !important;
+  color: var(--accent-darker-color) !important;
 }
 
 .input--form {
@@ -170,11 +171,6 @@ ul {
 
 td.mat-cell:first-of-type {
   padding-right: 24px;
-}
-
-.mat-expansion-panel {
-  background: #1d455e;
-  color: white;
 }
 
 .checkbox {
