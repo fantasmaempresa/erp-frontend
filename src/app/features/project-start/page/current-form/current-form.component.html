@@ -4,8 +4,8 @@
 ></app-preview-form-builder>
 
 <div class="container-buttons">
-  <button mat-flat-button color="accent">Formulario Anterior</button>
-  <button mat-flat-button color="primary">Supervisar</button>
-  <button mat-flat-button color="primary">Guardar Información</button>
-  <button mat-flat-button color="accent">Formulario Siguiente</button>
+  <button mat-stroked-button color="primary" (click)="prevPhase()">Formulario Anterior</button>
+  <button mat-flat-button color="primary" (click)="supervise()">Supervisar</button>
+  <button mat-flat-button color="primary" (click)="saveForm()">Guardar Información</button>
+  <button mat-stroked-button color="primary" (click)="nextPhase()">Formulario Siguiente</button>
 </div>
