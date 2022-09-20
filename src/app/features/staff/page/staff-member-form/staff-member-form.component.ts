@@ -1,31 +1,35 @@
-import { Component } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
-import { StaffService } from "../../../../data/services/staff.service";
-import { map, Observable } from "rxjs";
-import { MessageHelper } from "../../../../shared/helpers/MessageHelper";
-import { StaffDto } from "../../../../data/dto/Staff.dto";
-import { WorkAreaDto } from "../../../../data/dto/WorkArea.dto";
-import { AreaService } from "../../../../data/services/area.service";
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { StaffService } from '../../../../data/services/staff.service';
+import { map, Observable } from 'rxjs';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { StaffDto } from '../../../../data/dto/Staff.dto';
+import { WorkAreaDto } from '../../../../data/dto/WorkArea.dto';
+import { AreaService } from '../../../../data/services/area.service';
 
 @Component({
-  selector: "app-staff-member-form",
-  templateUrl: "./staff-member-form.component.html",
-  styleUrls: ["./staff-member-form.component.scss"]
+  selector: 'app-staff-member-form',
+  templateUrl: './staff-member-form.component.html',
+  styleUrls: ['./staff-member-form.component.scss'],
 })
 export class StaffMemberFormComponent {
   staffMemberForm = new UntypedFormGroup({
-    name: new UntypedFormControl("", [Validators.required]),
-    email: new UntypedFormControl("", [Validators.required, Validators.email]),
-    phone: new UntypedFormControl("", [
+    name: new UntypedFormControl('', [Validators.required]),
+    email: new UntypedFormControl('', [Validators.required, Validators.email]),
+    phone: new UntypedFormControl('', [
       Validators.required,
       Validators.minLength(10),
-      Validators.maxLength(10)
+      Validators.maxLength(10),
     ]),
     nickname: new UntypedFormControl(null),
     extra_information: new UntypedFormControl(null),
     work_area_id: new UntypedFormControl(null),
-    user_id: new UntypedFormControl(null)
+    user_id: new UntypedFormControl(null),
   });
 
   isEdit = false;
@@ -47,9 +51,9 @@ export class StaffMemberFormComponent {
       this.isEdit = true;
       staffService.fetch(this.route.snapshot.queryParams.id).subscribe({
         next: (staffMember) => {
-          this.staffMemberForm.addControl("id", new UntypedFormControl(""));
+          this.staffMemberForm.addControl('id', new UntypedFormControl(''));
           this.staffMemberForm.patchValue(staffMember);
-        }
+        },
       });
     }
   }
@@ -67,10 +71,10 @@ export class StaffMemberFormComponent {
     }
     request$.subscribe({
       next: async () => {
-        let message = this.isEdit ? "actualizado" : "registrado";
+        let message = this.isEdit ? 'actualizado' : 'registrado';
         MessageHelper.successMessage(
-          "¡Éxito!",
-          `El miembro ha sido ${message} correctamente.`
+          '¡Éxito!',
+          `El miembro ha sido ${message} correctamente.`,
         );
         await this.backToListRoles();
       },

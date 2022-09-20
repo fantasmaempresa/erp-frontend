@@ -1,15 +1,20 @@
-import { Component, OnInit } from "@angular/core";
-import { UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
-import { ConceptService } from "../../../../data/services/concept.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Observable } from "rxjs";
-import { ConceptDto } from "../../../../data/dto/Concept.dto";
-import { MessageHelper } from "../../../../shared/helpers/MessageHelper";
+import { Component, OnInit } from '@angular/core';
+import {
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { ConceptService } from '../../../../data/services/concept.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { ConceptDto } from '../../../../data/dto/Concept.dto';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 @Component({
-  selector: "app-concept-form",
-  templateUrl: "./concept-form.component.html",
-  styleUrls: ["./concept-form.component.scss"]
+  selector: 'app-concept-form',
+  templateUrl: './concept-form.component.html',
+  styleUrls: ['./concept-form.component.scss'],
 })
 export class ConceptFormComponent implements OnInit {
   isEdit = false;
@@ -23,78 +28,78 @@ export class ConceptFormComponent implements OnInit {
   selectedYear!: number;
 
   get operationType() {
-    return this.conceptForm.get("operationType") as UntypedFormControl;
+    return this.conceptForm.get('operationType') as UntypedFormControl;
   }
 
   get validityType() {
     // @ts-ignore
     return this.conceptForm
-      .get("formula")
-      .get("validity")
-      .get("type") as UntypedFormControl;
+      .get('formula')
+      .get('validity')
+      .get('type') as UntypedFormControl;
   }
 
   get betweenValidity() {
     // @ts-ignore
     return this.conceptForm
-      .get("formula")
-      .get("validity")
-      .get("between") as UntypedFormArray;
+      .get('formula')
+      .get('validity')
+      .get('between') as UntypedFormArray;
   }
 
   get betweenRange() {
     // @ts-ignore
     return this.conceptForm
-      .get("formula")
-      .get("range")
-      .get("between") as UntypedFormArray;
+      .get('formula')
+      .get('range')
+      .get('between') as UntypedFormArray;
   }
 
   get isOperable() {
     // @ts-ignore
     return this.conceptForm
-      .get("formula")
-      .get("operable") as UntypedFormControl;
+      .get('formula')
+      .get('operable') as UntypedFormControl;
   }
 
   get isPercentage() {
     // @ts-ignore
     return this.conceptForm
-      .get("formula")
-      .get("percentage") as UntypedFormControl;
+      .get('formula')
+      .get('percentage') as UntypedFormControl;
   }
 
   get isDateInValidity() {
     // @ts-ignore
     return this.conceptForm
-      .get("formula")
-      ?.get("validity")
-      ?.get("is_date") as UntypedFormControl;
+      .get('formula')
+      ?.get('validity')
+      ?.get('is_date') as UntypedFormControl;
   }
 
   get applyValidity() {
     return this.conceptForm
-      .get("formula")
-      ?.get("validity")
-      ?.get("apply") as UntypedFormControl;
+      .get('formula')
+      ?.get('validity')
+      ?.get('apply') as UntypedFormControl;
   }
 
   get applyRange() {
     return this.conceptForm
-      .get("formula")
-      ?.get("range")
-      ?.get("apply") as UntypedFormControl;
+      .get('formula')
+      ?.get('range')
+      ?.get('apply') as UntypedFormControl;
   }
 
   get isRangeInValidity() {
     return this.conceptForm
-      .get("formula")
-      ?.get("validity")
-      ?.get("is_range") as UntypedFormControl;
+      .get('formula')
+      ?.get('validity')
+      ?.get('is_range') as UntypedFormControl;
   }
 
   get formula() {
-    return this.conceptForm.get("formula") as UntypedFormGroup;
+    return this.conceptForm.get('formula') as UntypedFormGroup;
   }
 
   operations: { value: string; label: string }[] = [
@@ -121,7 +126,7 @@ export class ConceptFormComponent implements OnInit {
       this.isEdit = true;
       conceptService.fetch(this.route.snapshot.queryParams.id).subscribe({
         next: (concept) => {
-          this.conceptForm.addControl("id", new UntypedFormControl(""));
+          this.conceptForm.addControl('id', new UntypedFormControl(''));
           this.conceptForm.patchValue(concept);
           if (concept.formula.validity.apply) {
             this.operationType.patchValue('validity');
@@ -269,23 +274,23 @@ export class ConceptFormComponent implements OnInit {
   createRange(value?: any) {
     const form = new UntypedFormGroup({
       min: new UntypedFormControl(value ? value.min : null, [
-        Validators.required
+        Validators.required,
       ]),
       max: new UntypedFormControl(value ? value.max : null, [
-        Validators.required
+        Validators.required,
       ]),
       amount: new UntypedFormControl(value ? value.amount : null, [
-        Validators.required
-      ])
+        Validators.required,
+      ]),
     });
 
-    form.get("min")?.valueChanges.subscribe({
+    form.get('min')?.valueChanges.subscribe({
       next: (val) => {
         form
-          .get("max")
+          .get('max')
           ?.setValidators([Validators.required, Validators.min(val)]);
-        form.get("max")?.updateValueAndValidity();
-      }
+        form.get('max')?.updateValueAndValidity();
+      },
     });
 
     return form;
@@ -301,10 +306,10 @@ export class ConceptFormComponent implements OnInit {
 
   createForm() {
     return new UntypedFormGroup({
-      name: new UntypedFormControl("", Validators.required),
-      description: new UntypedFormControl("", [Validators.required]),
+      name: new UntypedFormControl('', Validators.required),
+      description: new UntypedFormControl('', [Validators.required]),
       amount: new UntypedFormControl(null),
-      operationType: new UntypedFormControl("import"),
+      operationType: new UntypedFormControl('import'),
       formula: new UntypedFormGroup({
         operation: new UntypedFormControl(null),
         percentage: new UntypedFormControl(false),
@@ -313,43 +318,43 @@ export class ConceptFormComponent implements OnInit {
           apply: new UntypedFormControl(false),
           is_date: new UntypedFormControl(false),
           is_range: new UntypedFormControl(false),
-          type: new UntypedFormControl("date"),
-          amount: new UntypedFormControl(""),
+          type: new UntypedFormControl('date'),
+          amount: new UntypedFormControl(''),
           between: new UntypedFormArray(
-            this.isEdit ? [] : [this.createRange()]
-          )
+            this.isEdit ? [] : [this.createRange()],
+          ),
         }),
         range: new UntypedFormGroup({
           apply: new UntypedFormControl(false),
           between: new UntypedFormArray(
-            this.isEdit ? [] : [this.createRange()]
-          )
-        })
-      })
+            this.isEdit ? [] : [this.createRange()],
+          ),
+        }),
+      }),
     });
   }
 
   resetValidityForm() {
     this.formula.setControl(
-      "validity",
+      'validity',
       new UntypedFormGroup({
         apply: new UntypedFormControl(false),
         is_date: new UntypedFormControl(false),
         is_range: new UntypedFormControl(false),
-        type: new UntypedFormControl("date"),
-        amount: new UntypedFormControl(""),
-        between: new UntypedFormArray([this.createRange()])
-      })
+        type: new UntypedFormControl('date'),
+        amount: new UntypedFormControl(''),
+        between: new UntypedFormArray([this.createRange()]),
+      }),
     );
   }
 
   resetRangeForm() {
     this.formula.setControl(
-      "range",
+      'range',
       new UntypedFormGroup({
         apply: new UntypedFormControl(false),
-        between: new UntypedFormArray([this.createRange()])
-      })
+        between: new UntypedFormArray([this.createRange()]),
+      }),
     );
   }
 }

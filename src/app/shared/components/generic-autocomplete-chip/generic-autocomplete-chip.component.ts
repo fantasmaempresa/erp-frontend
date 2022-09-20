@@ -1,30 +1,50 @@
-import { Component, ElementRef, forwardRef, Injector, Input, OnChanges, OnInit, ViewChild } from "@angular/core";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, UntypedFormControl } from "@angular/forms";
-import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
-import { MatChipInputEvent } from "@angular/material/chips";
-import { debounceTime, filter, map, Observable, startWith, Subject } from "rxjs";
-import { COMMA, ENTER } from "@angular/cdk/keycodes";
+import {
+  Component,
+  ElementRef,
+  forwardRef,
+  Injector,
+  Input,
+  OnChanges,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  NgControl,
+  UntypedFormControl,
+} from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { MatChipInputEvent } from '@angular/material/chips';
+import {
+  debounceTime,
+  filter,
+  map,
+  Observable,
+  startWith,
+  Subject,
+} from 'rxjs';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 @Component({
-  selector: "app-generic-autocomplete-chip",
-  templateUrl: "./generic-autocomplete-chip.component.html",
-  styleUrls: ["./generic-autocomplete-chip.component.scss"],
+  selector: 'app-generic-autocomplete-chip',
+  templateUrl: './generic-autocomplete-chip.component.html',
+  styleUrls: ['./generic-autocomplete-chip.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => GenericAutocompleteChipComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class GenericAutocompleteChipComponent
-  implements ControlValueAccessor, OnChanges, OnInit {
+  implements ControlValueAccessor, OnChanges, OnInit
+{
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onChange = (_: any) => {
-  };
+  onChange = (_: any) => {};
 
-  onTouch = () => {
-  };
+  onTouch = () => {};
 
   data: any[] = [];
 
@@ -32,15 +52,15 @@ export class GenericAutocompleteChipComponent
   allData: any[] | null = [];
 
   @Input()
-  label = "";
+  label = '';
 
   @Input()
-  placeholder = "";
+  placeholder = '';
 
   @Input()
   mapFn!: (item: any) => any;
 
-  @ViewChild("chipInput", { static: true })
+  @ViewChild('chipInput', { static: true })
   input!: ElementRef<HTMLInputElement>;
 
   filteredData!: Observable<any>;
@@ -51,8 +71,7 @@ export class GenericAutocompleteChipComponent
 
   ngControl!: NgControl;
 
-  constructor(private inj: Injector) {
-  }
+  constructor(private inj: Injector) {}
 
   ngOnInit(): void {
     this.ngControl = this.inj.get(NgControl, new UntypedFormControl());
@@ -61,12 +80,12 @@ export class GenericAutocompleteChipComponent
 
   ngOnChanges(): void {
     this.filteredData = this.subject$.asObservable().pipe(
-      startWith(""),
+      startWith(''),
       debounceTime(200),
-      filter((value) => typeof value === "string"),
+      filter((value) => typeof value === 'string'),
       map((item: string) =>
-        !!item ? this._filter(item) : this.excludeLoadedChips()?.slice()
-      )
+        !!item ? this._filter(item) : this.excludeLoadedChips()?.slice(),
+      ),
     );
   }
 
@@ -117,7 +136,7 @@ export class GenericAutocompleteChipComponent
   private excludeLoadedChips(): any {
     return this.allData?.filter(
       (item) =>
-        !this.data.some((data) => this.mapFn(item) === this.mapFn(data))
+        !this.data.some((data) => this.mapFn(item) === this.mapFn(data)),
     );
   }
 

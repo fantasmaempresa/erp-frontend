@@ -1,13 +1,17 @@
-import { Component } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
-import { ProcessService } from "../../../../data/services/process.service";
-import { MessageHelper } from "../../../../shared/helpers/MessageHelper";
+import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { ProcessService } from '../../../../data/services/process.service';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 @Component({
-  selector: "app-process-form",
-  templateUrl: "./process-form.component.html",
-  styleUrls: ["./process-form.component.scss"]
+  selector: 'app-process-form',
+  templateUrl: './process-form.component.html',
+  styleUrls: ['./process-form.component.scss'],
 })
 export class ProcessFormComponent {
   edit = false;
@@ -24,7 +28,7 @@ export class ProcessFormComponent {
     this.form = new UntypedFormGroup({
       name: new UntypedFormControl(null, Validators.required),
       description: new UntypedFormControl(null, Validators.required),
-      config: new UntypedFormControl(null)
+      config: new UntypedFormControl(null),
     });
 
     const id = Number(this.route.snapshot.params.id);
@@ -32,9 +36,9 @@ export class ProcessFormComponent {
       this.edit = true;
       processService.fetch(id).subscribe({
         next: (process) => {
-          this.form.addControl("id", new UntypedFormControl(""));
+          this.form.addControl('id', new UntypedFormControl(''));
           this.form.patchValue(process);
-        }
+        },
       });
     }
   }
@@ -67,13 +71,13 @@ export class ProcessFormComponent {
       ? this.processService.update(body)
       : this.processService.save(body);
     const message = `El proceso se ha ${
-      this.edit ? "actualizado" : "creado"
+      this.edit ? 'actualizado' : 'creado'
     } correctamente`;
     request$.subscribe({
       next: async () => {
-        MessageHelper.successMessage("Éxito", message);
+        MessageHelper.successMessage('Éxito', message);
         await this.back();
-      }
+      },
     });
   }
 }

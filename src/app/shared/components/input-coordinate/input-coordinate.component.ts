@@ -1,14 +1,19 @@
-import { Component, Input } from "@angular/core";
-import { ControlValueAccessor, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import { Component, Input } from '@angular/core';
+import {
+  ControlValueAccessor,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 
 @Component({
-  selector: "app-input-coordinate",
-  templateUrl: "./input-coordinate.component.html",
-  styleUrls: ["./input-coordinate.component.scss"]
+  selector: 'app-input-coordinate',
+  templateUrl: './input-coordinate.component.html',
+  styleUrls: ['./input-coordinate.component.scss'],
 })
 export class InputCoordinateComponent implements ControlValueAccessor {
   @Input()
-  label = "label";
+  label = 'label';
 
   form!: UntypedFormGroup;
 
@@ -20,14 +25,14 @@ export class InputCoordinateComponent implements ControlValueAccessor {
   constructor() {
     this.form = new UntypedFormGroup({
       x: new UntypedFormControl(null, Validators.required),
-      y: new UntypedFormControl(null, Validators.required)
+      y: new UntypedFormControl(null, Validators.required),
     });
 
     this.form.valueChanges.subscribe({
       next: (value: any) => {
         this.onChange(value);
         this.onTouch();
-      }
+      },
     });
   }
 

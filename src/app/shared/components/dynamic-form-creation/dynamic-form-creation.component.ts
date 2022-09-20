@@ -1,36 +1,42 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { FormGroupDirective, UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
-import { Store } from "@ngrx/store";
+import { Component, Input, OnInit } from '@angular/core';
+import {
+  FormGroupDirective,
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { Store } from '@ngrx/store';
 import {
   emptyForm,
   loadForm,
   removeField,
   setField,
-  updateField
-} from "../../../state/dynamic-form/dynamic-form.actions";
-import { Formfield } from "../../../data/dto/Formfield.dto";
-import { map, Observable, of, switchMap } from "rxjs";
+  updateField,
+} from '../../../state/dynamic-form/dynamic-form.actions';
+import { Formfield } from '../../../data/dto/Formfield.dto';
+import { map, Observable, of, switchMap } from 'rxjs';
 import {
   selectDynamicForm,
   selectDynamicFormEssentialData,
   selectErrorMessage,
-  selectIsEditable
-} from "../../../state/dynamic-form/dynamic-form.selector";
-import { MessageHelper } from "../../helpers/MessageHelper";
-import { QuoteTemplateService } from "../../../data/services/quote-template.service";
-import { Update } from "@ngrx/entity";
-import { v4 as uuidv4 } from "uuid";
-import { FormStructureService } from "../../../data/services/form-structure.service";
-import { FormStructure } from "../../../data/models/FormStructure.model";
-import { MatDialog, MatDialogRef } from "@angular/material/dialog";
-import { OnSaveDialogComponent } from "./on-save-dialog/on-save-dialog.component";
-import { QuoteTemplate } from "../../../data/dto/QuoteTemplate.dto";
-import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+  selectIsEditable,
+} from '../../../state/dynamic-form/dynamic-form.selector';
+import { MessageHelper } from '../../helpers/MessageHelper';
+import { QuoteTemplateService } from '../../../data/services/quote-template.service';
+import { Update } from '@ngrx/entity';
+import { v4 as uuidv4 } from 'uuid';
+import { FormStructureService } from '../../../data/services/form-structure.service';
+import { FormStructure } from '../../../data/models/FormStructure.model';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { OnSaveDialogComponent } from './on-save-dialog/on-save-dialog.component';
+import { QuoteTemplate } from '../../../data/dto/QuoteTemplate.dto';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
-  selector: "app-dynamic-form-creation",
-  templateUrl: "./dynamic-form-creation.component.html",
-  styleUrls: ["./dynamic-form-creation.component.scss"]
+  selector: 'app-dynamic-form-creation',
+  templateUrl: './dynamic-form-creation.component.html',
+  styleUrls: ['./dynamic-form-creation.component.scss'],
 })
 export class DynamicFormCreationComponent implements OnInit {
   templateControl = new UntypedFormControl(null);
@@ -188,18 +194,18 @@ export class DynamicFormCreationComponent implements OnInit {
   createForm() {
     this.form = new UntypedFormGroup({
       id: new UntypedFormControl(),
-      controlType: new UntypedFormControl("", [Validators.required]),
-      key: new UntypedFormControl(""),
-      label: new UntypedFormControl("", [Validators.required]),
+      controlType: new UntypedFormControl('', [Validators.required]),
+      key: new UntypedFormControl(''),
+      label: new UntypedFormControl('', [Validators.required]),
       required: new UntypedFormControl(false),
       options: new UntypedFormArray([]),
-      value: new UntypedFormControl(""),
-      order: new UntypedFormControl(0)
+      value: new UntypedFormControl(''),
+      order: new UntypedFormControl(0),
     });
 
     this.f.controlType.valueChanges.subscribe((value) => {
       this.options.clear();
-      if (value === "dropdown" || value === "radio" || value === "checkbox") {
+      if (value === 'dropdown' || value === 'radio' || value === 'checkbox') {
         this.addOption();
       }
     });
@@ -226,8 +232,8 @@ export class DynamicFormCreationComponent implements OnInit {
 
   createOption() {
     return new UntypedFormGroup({
-      key: new UntypedFormControl("", Validators.required),
-      value: new UntypedFormControl("", Validators.required)
+      key: new UntypedFormControl('', Validators.required),
+      value: new UntypedFormControl('', Validators.required),
     });
   }
 

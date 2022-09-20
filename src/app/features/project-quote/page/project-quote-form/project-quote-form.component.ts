@@ -1,25 +1,31 @@
-import { Component, forwardRef } from "@angular/core";
-import { NG_VALIDATORS, NG_VALUE_ACCESSOR, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
-import { MatDialog } from "@angular/material/dialog";
-import { DialogSearchComponent } from "../../../../shared/components/dialog-search/dialog-search.component";
-import { ClientDto } from "../../../../data/dto/Client.dto";
-import { AbstractSubformComponent } from "../../../../shared/components/dynamic-form/abstract-subform.component";
-import { UserDto } from "../../../../data/dto/User.dto";
+import { Component, forwardRef } from '@angular/core';
+import {
+  NG_VALIDATORS,
+  NG_VALUE_ACCESSOR,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogSearchComponent } from '../../../../shared/components/dialog-search/dialog-search.component';
+import { ClientDto } from '../../../../data/dto/Client.dto';
+import { AbstractSubformComponent } from '../../../../shared/components/dynamic-form/abstract-subform.component';
+import { UserDto } from '../../../../data/dto/User.dto';
 
 @Component({
-  selector: "app-project-quote-form",
-  templateUrl: "./project-quote-form.component.html",
-  styleUrls: ["./project-quote-form.component.scss"],
+  selector: 'app-project-quote-form',
+  templateUrl: './project-quote-form.component.html',
+  styleUrls: ['./project-quote-form.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => ProjectQuoteFormComponent),
-      multi: true
+      multi: true,
     },
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => ProjectQuoteFormComponent),
-      multi: true
+      multi: true,
     },
   ],
 })
@@ -29,13 +35,13 @@ export class ProjectQuoteFormComponent extends AbstractSubformComponent {
   constructor(public dialog: MatDialog) {
     super();
     this.formGroup = new UntypedFormGroup({
-      addressee: new UntypedFormControl("", Validators.required),
+      addressee: new UntypedFormControl('', Validators.required),
       client: new UntypedFormControl({ value: null, disabled: true }),
       client_id: new UntypedFormControl({ value: null, disabled: true }),
-      date_end: new UntypedFormControl({ value: "", disabled: true }),
-      description: new UntypedFormControl("", Validators.required),
-      name: new UntypedFormControl("", Validators.required),
-      status_quote_id: new UntypedFormControl(null)
+      date_end: new UntypedFormControl({ value: '', disabled: true }),
+      description: new UntypedFormControl('', Validators.required),
+      name: new UntypedFormControl('', Validators.required),
+      status_quote_id: new UntypedFormControl(null),
     });
   }
 

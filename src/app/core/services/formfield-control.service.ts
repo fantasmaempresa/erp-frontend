@@ -1,9 +1,14 @@
-import { Injectable } from "@angular/core";
-import { UntypedFormControl, UntypedFormGroup, ValidatorFn, Validators } from "@angular/forms";
-import { Formfield } from "../../data/dto/Formfield.dto";
+import { Injectable } from '@angular/core';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
+import { Formfield } from '../../data/dto/Formfield.dto';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root',
 })
 export class FormfieldControlService {
   toFormGroup(inputs: Formfield<any>[]): UntypedFormGroup {
@@ -13,7 +18,7 @@ export class FormfieldControlService {
         ? [Validators.required]
         : [];
       switch (input.validator) {
-        case "email":
+        case 'email':
           validator.push(Validators.email);
           break;
         default:
@@ -21,8 +26,8 @@ export class FormfieldControlService {
       }
       group[input.key] =
         validator.length > 0
-          ? new UntypedFormControl("", validator)
-          : new UntypedFormControl("");
+          ? new UntypedFormControl('', validator)
+          : new UntypedFormControl('');
     });
 
     return new UntypedFormGroup(group);

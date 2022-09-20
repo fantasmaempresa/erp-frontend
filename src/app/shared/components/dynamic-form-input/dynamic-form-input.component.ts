@@ -1,12 +1,17 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit } from "@angular/core";
-import { ControlContainer, UntypedFormGroup } from "@angular/forms";
-import { Formfield } from "../../../data/dto/Formfield.dto";
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
+import { ControlContainer, UntypedFormGroup } from '@angular/forms';
+import { Formfield } from '../../../data/dto/Formfield.dto';
 
 @Component({
-  selector: "app-dynamic-form-input",
+  selector: 'app-dynamic-form-input',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: "./dynamic-form-input.component.html",
-  styleUrls: ["./dynamic-form-input.component.scss"]
+  templateUrl: './dynamic-form-input.component.html',
+  styleUrls: ['./dynamic-form-input.component.scss'],
 })
 export class DynamicFormInputComponent implements OnInit {
   _form!: UntypedFormGroup;

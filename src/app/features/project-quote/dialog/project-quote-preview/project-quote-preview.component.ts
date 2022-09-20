@@ -1,24 +1,28 @@
-import { Component, Inject, OnInit, ViewChild } from "@angular/core";
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { QuoteStatusService } from "../../../../data/services/quote-status.service";
-import { map, Observable, switchMap, take } from "rxjs";
-import { loadForm } from "../../../../state/dynamic-form/dynamic-form.actions";
-import { Store } from "@ngrx/store";
-import { DynamicFormComponent } from "../../../../shared/components/dynamic-form/dynamic-form.component";
-import { ProjectQuoteService } from "../../../../data/services/project-quote.service";
-import { QuoteTemplateService } from "src/app/data/services/quote-template.service";
-import { selectDynamicForm } from "../../../../state/dynamic-form/dynamic-form.selector";
-import { MessageHelper } from "../../../../shared/helpers/MessageHelper";
-import { Formfield } from "../../../../data/dto/Formfield.dto";
-import { QuoteStatusDto } from "../../../../data/dto/QuoteStatus.dto";
-import { QuoteTemplate } from "../../../../data/dto/QuoteTemplate.dto";
-import { ProjectQuoteDto } from "../../../../data/dto/ProjectQuote.dto";
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { QuoteStatusService } from '../../../../data/services/quote-status.service';
+import { map, Observable, switchMap, take } from 'rxjs';
+import { loadForm } from '../../../../state/dynamic-form/dynamic-form.actions';
+import { Store } from '@ngrx/store';
+import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
+import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
+import { QuoteTemplateService } from 'src/app/data/services/quote-template.service';
+import { selectDynamicForm } from '../../../../state/dynamic-form/dynamic-form.selector';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { Formfield } from '../../../../data/dto/Formfield.dto';
+import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';
+import { QuoteTemplate } from '../../../../data/dto/QuoteTemplate.dto';
+import { ProjectQuoteDto } from '../../../../data/dto/ProjectQuote.dto';
 
 @Component({
-  selector: "app-project-quote-preview",
-  templateUrl: "./project-quote-preview.component.html",
-  styleUrls: ["./project-quote-preview.component.scss"]
+  selector: 'app-project-quote-preview',
+  templateUrl: './project-quote-preview.component.html',
+  styleUrls: ['./project-quote-preview.component.scss'],
 })
 export class ProjectQuotePreviewComponent implements OnInit {
   @ViewChild(DynamicFormComponent) formFill!: DynamicFormComponent;
@@ -40,18 +44,18 @@ export class ProjectQuotePreviewComponent implements OnInit {
   results: any = null;
 
   headerForm = new UntypedFormGroup({
-    id: new UntypedFormControl(""),
+    id: new UntypedFormControl(''),
     name: new UntypedFormControl(null, [Validators.required]),
-    addressee: new UntypedFormControl("", [Validators.required]),
-    description: new UntypedFormControl("", [Validators.required]),
+    addressee: new UntypedFormControl('', [Validators.required]),
+    description: new UntypedFormControl('', [Validators.required]),
     date_end: new UntypedFormControl(),
     status_quote_id: new UntypedFormControl(null),
     client: new UntypedFormControl({ value: null, disabled: true }),
-    client_id: new UntypedFormControl({ value: null, disabled: true })
+    client_id: new UntypedFormControl({ value: null, disabled: true }),
   });
 
   quoteForm = new UntypedFormGroup({
-    headerForm: this.headerForm
+    headerForm: this.headerForm,
   });
 
   formFields!: Formfield<any>[];
@@ -197,8 +201,8 @@ export class ProjectQuotePreviewComponent implements OnInit {
   }
 
   addControlToForm(formGroup: UntypedFormGroup) {
-    this.quoteForm.removeControl("formFill");
-    this.quoteForm.addControl("formFill", formGroup);
+    this.quoteForm.removeControl('formFill');
+    this.quoteForm.addControl('formFill', formGroup);
     this.quoteForm.updateValueAndValidity();
   }
 }

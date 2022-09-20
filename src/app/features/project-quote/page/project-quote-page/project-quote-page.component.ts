@@ -1,27 +1,41 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Store } from "@ngrx/store";
-import { QuoteTemplateService } from "../../../../data/services/quote-template.service";
-import { combineLatest, delay, map, Observable, take } from "rxjs";
-import { UntypedFormControl, UntypedFormGroup } from "@angular/forms";
-import { Formfield } from "../../../../data/dto/Formfield.dto";
-import { selectDynamicForm, selectStatus } from "../../../../state/dynamic-form/dynamic-form.selector";
-import { emptyForm, loadForm } from "../../../../state/dynamic-form/dynamic-form.actions";
-import { ProjectQuoteService } from "../../../../data/services/project-quote.service";
-import { MessageHelper } from "../../../../shared/helpers/MessageHelper";
-import { QuoteTemplate } from "../../../../data/dto/QuoteTemplate.dto";
-import { QuoteStatusService } from "../../../../data/services/quote-status.service";
-import { DynamicFormComponent } from "../../../../shared/components/dynamic-form/dynamic-form.component";
-import { ProjectQuoteFormComponent } from "../project-quote-form/project-quote-form.component";
-import { QuoteStatusDto } from "../../../../data/dto/QuoteStatus.dto";
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
+import { combineLatest, delay, map, Observable, take } from 'rxjs';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { Formfield } from '../../../../data/dto/Formfield.dto';
+import {
+  selectDynamicForm,
+  selectStatus,
+} from '../../../../state/dynamic-form/dynamic-form.selector';
+import {
+  emptyForm,
+  loadForm,
+} from '../../../../state/dynamic-form/dynamic-form.actions';
+import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { QuoteTemplate } from '../../../../data/dto/QuoteTemplate.dto';
+import { QuoteStatusService } from '../../../../data/services/quote-status.service';
+import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
+import { ProjectQuoteFormComponent } from '../project-quote-form/project-quote-form.component';
+import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';
 
 @Component({
-  selector: "app-project-quote-page",
-  templateUrl: "./project-quote-page.component.html",
-  styleUrls: ["./project-quote-page.component.scss"]
+  selector: 'app-project-quote-page',
+  templateUrl: './project-quote-page.component.html',
+  styleUrls: ['./project-quote-page.component.scss'],
 })
 export class ProjectQuotePageComponent
-  implements OnInit, OnDestroy, AfterViewInit {
+  implements OnInit, OnDestroy, AfterViewInit
+{
   @ViewChild(DynamicFormComponent) formFill!: DynamicFormComponent;
 
   @ViewChild(ProjectQuoteFormComponent) headerForm!: ProjectQuoteFormComponent;
@@ -109,17 +123,17 @@ export class ProjectQuotePageComponent
       this.isEdit = true;
       this.headerForm
         .getFormGroup()
-        .addControl("id", new UntypedFormControl(""));
+        .addControl('id', new UntypedFormControl(''));
       this.projectQuoteService
         .fetch(this.route.snapshot.queryParams.id)
         .pipe(delay(250))
         .subscribe({
           next: (quote) => {
             let quoteTemplate = this.templates.find(
-              (template) => template.id === quote.template_quote_id
+              (template) => template.id === quote.template_quote_id,
             );
             this.templateControl.patchValue(quoteTemplate, {
-              emitEvent: false
+              emitEvent: false,
             });
             this.store.dispatch(
               loadForm({
@@ -251,9 +265,9 @@ export class ProjectQuotePageComponent
   }
 
   addControlToForm(formGroup: UntypedFormGroup) {
-    console.log("Agregando controles");
-    this.quoteForm.removeControl("formFill");
-    this.quoteForm.addControl("formFill", formGroup);
+    console.log('Agregando controles');
+    this.quoteForm.removeControl('formFill');
+    this.quoteForm.addControl('formFill', formGroup);
     this.quoteForm.updateValueAndValidity();
   }
 }

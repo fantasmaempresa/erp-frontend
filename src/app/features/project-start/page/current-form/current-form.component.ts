@@ -1,15 +1,15 @@
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { MyProjectsService } from "../../../../data/services/my-projects.service";
-import { Observable } from "rxjs";
-import { UntypedFormControl } from "@angular/forms";
-import { MessageHelper } from "../../../../shared/helpers/MessageHelper";
-import { messageDecision } from "../../../../shared/helpers/message-wrapper";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { MyProjectsService } from '../../../../data/services/my-projects.service';
+import { Observable } from 'rxjs';
+import { UntypedFormControl } from '@angular/forms';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { messageDecision } from '../../../../shared/helpers/message-wrapper';
 
 @Component({
-  selector: "app-current-form",
-  templateUrl: "./current-form.component.html",
-  styleUrls: ["./current-form.component.scss"]
+  selector: 'app-current-form',
+  templateUrl: './current-form.component.html',
+  styleUrls: ['./current-form.component.scss'],
 })
 export class CurrentFormComponent implements OnInit {
   projectId!: number;
@@ -22,7 +22,7 @@ export class CurrentFormComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private myProjectService: MyProjectsService
+    private myProjectService: MyProjectsService,
   ) {
     const { id, idProcess } = this.route.snapshot.params;
     this.projectId = Number(id);
@@ -32,7 +32,7 @@ export class CurrentFormComponent implements OnInit {
   ngOnInit(): void {
     this.form$ = this.myProjectService.getCurrentForm(
       this.projectId,
-      this.processId
+      this.processId,
     );
   }
 

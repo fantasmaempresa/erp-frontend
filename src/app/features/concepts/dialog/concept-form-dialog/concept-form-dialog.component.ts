@@ -1,15 +1,20 @@
-import { Component, Inject, OnInit } from "@angular/core";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { UntypedFormArray, UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
-import { Observable } from "rxjs";
-import { ConceptDto } from "../../../../data/dto/Concept.dto";
-import { MessageHelper } from "../../../../shared/helpers/MessageHelper";
-import { ConceptService } from "../../../../data/services/concept.service";
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { Observable } from 'rxjs';
+import { ConceptDto } from '../../../../data/dto/Concept.dto';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { ConceptService } from '../../../../data/services/concept.service';
 
 @Component({
-  selector: "app-concept-form-dialog",
-  templateUrl: "./concept-form-dialog.component.html",
-  styleUrls: ["./concept-form-dialog.component.scss"]
+  selector: 'app-concept-form-dialog',
+  templateUrl: './concept-form-dialog.component.html',
+  styleUrls: ['./concept-form-dialog.component.scss'],
 })
 export class ConceptFormDialogComponent implements OnInit {
   constructor(
@@ -27,78 +32,78 @@ export class ConceptFormDialogComponent implements OnInit {
   selectedYear!: number;
 
   get operationType() {
-    return this.conceptForm.get("operationType") as UntypedFormControl;
+    return this.conceptForm.get('operationType') as UntypedFormControl;
   }
 
   get validityType() {
     // @ts-ignore
     return this.conceptForm
-      .get("formula")
-      .get("validity")
-      .get("type") as UntypedFormControl;
+      .get('formula')
+      .get('validity')
+      .get('type') as UntypedFormControl;
   }
 
   get betweenValidity() {
     // @ts-ignore
     return this.conceptForm
-      .get("formula")
-      .get("validity")
-      .get("between") as UntypedFormArray;
+      .get('formula')
+      .get('validity')
+      .get('between') as UntypedFormArray;
   }
 
   get betweenRange() {
     // @ts-ignore
     return this.conceptForm
-      .get("formula")
-      .get("range")
-      .get("between") as UntypedFormArray;
+      .get('formula')
+      .get('range')
+      .get('between') as UntypedFormArray;
   }
 
   get isOperable() {
     // @ts-ignore
     return this.conceptForm
-      .get("formula")
-      .get("operable") as UntypedFormControl;
+      .get('formula')
+      .get('operable') as UntypedFormControl;
   }
 
   get isPercentage() {
     // @ts-ignore
     return this.conceptForm
-      .get("formula")
-      .get("percentage") as UntypedFormControl;
+      .get('formula')
+      .get('percentage') as UntypedFormControl;
   }
 
   get isDateInValidity() {
     // @ts-ignore
     return this.conceptForm
-      .get("formula")
-      ?.get("validity")
-      ?.get("is_date") as UntypedFormControl;
+      .get('formula')
+      ?.get('validity')
+      ?.get('is_date') as UntypedFormControl;
   }
 
   get applyValidity() {
     return this.conceptForm
-      .get("formula")
-      ?.get("validity")
-      ?.get("apply") as UntypedFormControl;
+      .get('formula')
+      ?.get('validity')
+      ?.get('apply') as UntypedFormControl;
   }
 
   get applyRange() {
     return this.conceptForm
-      .get("formula")
-      ?.get("range")
-      ?.get("apply") as UntypedFormControl;
+      .get('formula')
+      ?.get('range')
+      ?.get('apply') as UntypedFormControl;
   }
 
   get isRangeInValidity() {
     return this.conceptForm
-      .get("formula")
-      ?.get("validity")
-      ?.get("is_range") as UntypedFormControl;
+      .get('formula')
+      ?.get('validity')
+      ?.get('is_range') as UntypedFormControl;
   }
 
   get formula() {
-    return this.conceptForm.get("formula") as UntypedFormGroup;
+    return this.conceptForm.get('formula') as UntypedFormGroup;
   }
 
   operations: { value: string; label: string }[] = [
@@ -160,10 +165,10 @@ export class ConceptFormDialogComponent implements OnInit {
       next: (val) => {
         this.isDateInYears = !!val;
         this.conceptForm
-          .get("formula")
-          ?.get("validity")
-          ?.get("amount")
-          ?.patchValue("");
+          .get('formula')
+          ?.get('validity')
+          ?.get('amount')
+          ?.patchValue('');
       },
     });
 
@@ -187,11 +192,11 @@ export class ConceptFormDialogComponent implements OnInit {
 
     request$.subscribe({
       next: async (value) => {
-        let message = "registrado";
+        let message = 'registrado';
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         MessageHelper.successMessage(
-          "¡Éxito!",
-          `El concepto ha sido ${message} correctamente.`
+          '¡Éxito!',
+          `El concepto ha sido ${message} correctamente.`,
         );
         this.dialogRef.close(value);
       },
@@ -221,23 +226,23 @@ export class ConceptFormDialogComponent implements OnInit {
   createRange(value?: any) {
     const form = new UntypedFormGroup({
       min: new UntypedFormControl(value ? value.min : null, [
-        Validators.required
+        Validators.required,
       ]),
       max: new UntypedFormControl(value ? value.max : null, [
-        Validators.required
+        Validators.required,
       ]),
       amount: new UntypedFormControl(value ? value.amount : null, [
-        Validators.required
-      ])
+        Validators.required,
+      ]),
     });
 
-    form.get("min")?.valueChanges.subscribe({
+    form.get('min')?.valueChanges.subscribe({
       next: (val) => {
         form
-          .get("max")
+          .get('max')
           ?.setValidators([Validators.required, Validators.min(val)]);
-        form.get("max")?.updateValueAndValidity();
-      }
+        form.get('max')?.updateValueAndValidity();
+      },
     });
 
     return form;
@@ -253,10 +258,10 @@ export class ConceptFormDialogComponent implements OnInit {
 
   createForm() {
     return new UntypedFormGroup({
-      name: new UntypedFormControl("", Validators.required),
-      description: new UntypedFormControl(""),
+      name: new UntypedFormControl('', Validators.required),
+      description: new UntypedFormControl(''),
       amount: new UntypedFormControl(null),
-      operationType: new UntypedFormControl("import"),
+      operationType: new UntypedFormControl('import'),
       formula: new UntypedFormGroup({
         operation: new UntypedFormControl(null),
         percentage: new UntypedFormControl(false),
@@ -265,39 +270,39 @@ export class ConceptFormDialogComponent implements OnInit {
           apply: new UntypedFormControl(false),
           is_date: new UntypedFormControl(false),
           is_range: new UntypedFormControl(false),
-          type: new UntypedFormControl("date"),
-          amount: new UntypedFormControl(""),
-          between: new UntypedFormArray([this.createRange()])
+          type: new UntypedFormControl('date'),
+          amount: new UntypedFormControl(''),
+          between: new UntypedFormArray([this.createRange()]),
         }),
         range: new UntypedFormGroup({
           apply: new UntypedFormControl(false),
-          between: new UntypedFormArray([this.createRange()])
-        })
-      })
+          between: new UntypedFormArray([this.createRange()]),
+        }),
+      }),
     });
   }
 
   resetValidityForm() {
     this.formula.setControl(
-      "validity",
+      'validity',
       new UntypedFormGroup({
         apply: new UntypedFormControl(false),
         is_date: new UntypedFormControl(false),
         is_range: new UntypedFormControl(false),
-        type: new UntypedFormControl("date"),
-        amount: new UntypedFormControl(""),
-        between: new UntypedFormArray([this.createRange()])
-      })
+        type: new UntypedFormControl('date'),
+        amount: new UntypedFormControl(''),
+        between: new UntypedFormArray([this.createRange()]),
+      }),
     );
   }
 
   resetRangeForm() {
     this.formula.setControl(
-      "range",
+      'range',
       new UntypedFormGroup({
         apply: new UntypedFormControl(false),
-        between: new UntypedFormArray([this.createRange()])
-      })
+        between: new UntypedFormArray([this.createRange()]),
+      }),
     );
   }
 

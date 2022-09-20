@@ -1,22 +1,22 @@
-import { Component } from "@angular/core";
-import { UntypedFormControl, UntypedFormGroup } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
-import { FormValidationService } from "../../../../shared/services/form-validation.service";
-import { Observable } from "rxjs";
-import { MessageHelper } from "../../../../shared/helpers/MessageHelper";
-import { validationMessages } from "../../../../core/constants/validationMessages";
-import { QuoteStatusService } from "../../../../data/services/quote-status.service";
-import { QuoteStatusDto } from "../../../../data/dto/QuoteStatus.dto";
+import { Component } from '@angular/core';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormValidationService } from '../../../../shared/services/form-validation.service';
+import { Observable } from 'rxjs';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { validationMessages } from '../../../../core/constants/validationMessages';
+import { QuoteStatusService } from '../../../../data/services/quote-status.service';
+import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';
 
 @Component({
-  selector: "app-quote-status-form",
-  templateUrl: "./quote-status-form.component.html",
-  styleUrls: ["./quote-status-form.component.scss"]
+  selector: 'app-quote-status-form',
+  templateUrl: './quote-status-form.component.html',
+  styleUrls: ['./quote-status-form.component.scss'],
 })
 export class QuoteStatusFormComponent {
   quoteStatusForm = new UntypedFormGroup({
-    name: new UntypedFormControl(""),
-    description: new UntypedFormControl("")
+    name: new UntypedFormControl(''),
+    description: new UntypedFormControl(''),
   });
 
   isEdit = false;
@@ -33,7 +33,7 @@ export class QuoteStatusFormComponent {
       this.isEdit = true;
       quoteStatusService.fetch(this.route.snapshot.queryParams.id).subscribe({
         next: (user) => {
-          this.quoteStatusForm.addControl("id", new UntypedFormControl(""));
+          this.quoteStatusForm.addControl('id', new UntypedFormControl(''));
           this.quoteStatusForm.patchValue(user);
         },
       });

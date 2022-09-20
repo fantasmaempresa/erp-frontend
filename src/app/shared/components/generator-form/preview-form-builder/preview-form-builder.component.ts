@@ -1,34 +1,43 @@
-import { Component, forwardRef, Input, OnChanges, SimpleChanges } from "@angular/core";
-import { Formfield } from "../../../../data/dto/Formfield.dto";
-import { ControlValueAccessor, NG_VALUE_ACCESSOR, UntypedFormControl, UntypedFormGroup } from "@angular/forms";
+import {
+  Component,
+  forwardRef,
+  Input,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
+import { Formfield } from '../../../../data/dto/Formfield.dto';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  UntypedFormControl,
+  UntypedFormGroup,
+} from '@angular/forms';
 
 @Component({
-  selector: "app-preview-form-builder",
-  templateUrl: "./preview-form-builder.component.html",
-  styleUrls: ["./preview-form-builder.component.scss"],
+  selector: 'app-preview-form-builder',
+  templateUrl: './preview-form-builder.component.html',
+  styleUrls: ['./preview-form-builder.component.scss'],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => PreviewFormBuilderComponent),
-      multi: true
-    }
-  ]
+      multi: true,
+    },
+  ],
 })
 export class PreviewFormBuilderComponent
-  implements OnChanges, ControlValueAccessor {
+  implements OnChanges, ControlValueAccessor
+{
   @Input()
   formFields: Formfield<any>[] = [];
 
   form: UntypedFormGroup = new UntypedFormGroup({});
 
-  onChange = (_: any) => {
-  };
+  onChange = (_: any) => {};
 
-  onTouch = () => {
-  };
+  onTouch = () => {};
 
-  constructor() {
-  }
+  constructor() {}
 
   buildFormGroup(): UntypedFormGroup {
     const group: any = {};
