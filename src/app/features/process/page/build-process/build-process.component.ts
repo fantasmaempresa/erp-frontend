@@ -39,8 +39,8 @@ import { ProcessPhaseView } from "../../../../data/Presentation/ProcessPhase.vie
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => BuildProcessComponent),
       multi: true
-    },
-  ],
+    }
+  ]
 })
 export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
   processPhases!: ProcessPhaseDto[];
@@ -129,12 +129,16 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
   }
 
   drop(event: CdkDragDrop<any, any>) {
-    moveItemInArray(this.processPhases, event.previousIndex, event.currentIndex);
+    moveItemInArray(
+      this.processPhases,
+      event.previousIndex,
+      event.currentIndex
+    );
     const currentGroup = this.orderFormArray.at(event.previousIndex);
     const nextGroup = this.orderFormArray.at(event.currentIndex);
     this.orderFormArray.removeAt(event.previousIndex);
-    currentGroup.get('previous')?.setValue(null);
-    nextGroup.get('previous')?.setValue(null);
+    currentGroup.get("previous")?.setValue(null);
+    nextGroup.get("previous")?.setValue(null);
     this.orderFormArray.insert(event.currentIndex, currentGroup);
   }
 
@@ -149,8 +153,11 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
   writeValue(obj: any): void {
     if (obj) {
       // eslint-disable-next-line @typescript-eslint/naming-convention
-      const { order_phases, phases_process } = ProcessView.mapConfigOnWrite(obj);
-      const arrayRequest$ = phases_process.map(({ id }) => this.processPhaseService.fetch(id));
+      const { order_phases, phases_process } =
+        ProcessView.mapConfigOnWrite(obj);
+      const arrayRequest$ = phases_process.map(({ id }) =>
+        this.processPhaseService.fetch(id)
+      );
       forkJoin(arrayRequest$).subscribe((phasesProcess: ProcessPhaseDto[]) => {
         this.processPhases = phasesProcess;
         this.buildOrderFormArray();

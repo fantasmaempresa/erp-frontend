@@ -14,14 +14,17 @@ import { COMMA, ENTER } from "@angular/cdk/keycodes";
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => GenericAutocompleteChipComponent),
       multi: true
-    },
-  ],
+    }
+  ]
 })
-export class GenericAutocompleteChipComponent implements ControlValueAccessor, OnChanges, OnInit {
+export class GenericAutocompleteChipComponent
+  implements ControlValueAccessor, OnChanges, OnInit {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onChange = (_: any) => {};
+  onChange = (_: any) => {
+  };
 
-  onTouch = () => {};
+  onTouch = () => {
+  };
 
   data: any[] = [];
 
@@ -29,15 +32,16 @@ export class GenericAutocompleteChipComponent implements ControlValueAccessor, O
   allData: any[] | null = [];
 
   @Input()
-  label = '';
+  label = "";
 
   @Input()
-  placeholder = '';
+  placeholder = "";
 
   @Input()
   mapFn!: (item: any) => any;
 
-  @ViewChild('chipInput', { static: true }) input!: ElementRef<HTMLInputElement>;
+  @ViewChild("chipInput", { static: true })
+  input!: ElementRef<HTMLInputElement>;
 
   filteredData!: Observable<any>;
 
@@ -47,7 +51,8 @@ export class GenericAutocompleteChipComponent implements ControlValueAccessor, O
 
   ngControl!: NgControl;
 
-  constructor(private inj: Injector) {}
+  constructor(private inj: Injector) {
+  }
 
   ngOnInit(): void {
     this.ngControl = this.inj.get(NgControl, new UntypedFormControl());
@@ -56,10 +61,12 @@ export class GenericAutocompleteChipComponent implements ControlValueAccessor, O
 
   ngOnChanges(): void {
     this.filteredData = this.subject$.asObservable().pipe(
-      startWith(''),
+      startWith(""),
       debounceTime(200),
-      filter((value) => typeof value === 'string'),
-      map((item: string) => (!!item ? this._filter(item) : this.excludeLoadedChips()?.slice())),
+      filter((value) => typeof value === "string"),
+      map((item: string) =>
+        !!item ? this._filter(item) : this.excludeLoadedChips()?.slice()
+      )
     );
   }
 
@@ -109,7 +116,8 @@ export class GenericAutocompleteChipComponent implements ControlValueAccessor, O
 
   private excludeLoadedChips(): any {
     return this.allData?.filter(
-      (item) => !this.data.some((data) => this.mapFn(item) === this.mapFn(data)),
+      (item) =>
+        !this.data.some((data) => this.mapFn(item) === this.mapFn(data))
     );
   }
 

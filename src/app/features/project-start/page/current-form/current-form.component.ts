@@ -20,14 +20,20 @@ export class CurrentFormComponent implements OnInit {
 
   formControl = new UntypedFormControl();
 
-  constructor(private route: ActivatedRoute, private myProjectService: MyProjectsService) {
+  constructor(
+    private route: ActivatedRoute,
+    private myProjectService: MyProjectsService
+  ) {
     const { id, idProcess } = this.route.snapshot.params;
     this.projectId = Number(id);
     this.processId = Number(idProcess);
   }
 
   ngOnInit(): void {
-    this.form$ = this.myProjectService.getCurrentForm(this.projectId, this.processId);
+    this.form$ = this.myProjectService.getCurrentForm(
+      this.projectId,
+      this.processId
+    );
   }
 
   @messageDecision('¿Pasar Fase?', '¿Estas seguro?')

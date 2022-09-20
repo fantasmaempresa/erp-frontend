@@ -22,16 +22,19 @@ import { v4 as uuidv4 } from "uuid";
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DynamicFormBuilderComponent),
       multi: true
-    },
-  ],
+    }
+  ]
 })
-export class DynamicFormBuilderComponent implements ControlValueAccessor, OnInit {
+export class DynamicFormBuilderComponent
+  implements ControlValueAccessor, OnInit {
   form!: UntypedFormGroup;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onChange = (_: any) => {};
+  onChange = (_: any) => {
+  };
 
-  onTouch = () => {};
+  onTouch = () => {
+  };
 
   formFields: Formfield<any>[] = [];
 
@@ -128,23 +131,26 @@ export class DynamicFormBuilderComponent implements ControlValueAccessor, OnInit
     this.onTouch = fn;
   }
 
-  getControlType = (value: any) => this.types.find((type) => type.value === value);
+  getControlType = (value: any) =>
+    this.types.find((type) => type.value === value);
 
   canShowOptions = (value: any) => this.getControlType(value)?.options;
 
-  labelButton = (edit: boolean) => (edit ? 'Modificar' : 'Crear');
+  labelButton = (edit: boolean) => (edit ? "Modificar" : "Crear");
 
   onSubmit(ngForm: FormGroupDirective) {
     if (this.form.invalid) {
       return;
     }
-    const label: string = this.form.get('label')?.value;
+    const label: string = this.form.get("label")?.value;
     this.form.get('key')?.setValue(label.toLowerCase());
     // @ts-ignore
     const field = this.form.value;
     if (this.edit) {
       console.log(this.formFields);
-      const index = this.formFields.findIndex((formField) => formField.id === field.id);
+      const index = this.formFields.findIndex(
+        (formField) => formField.id === field.id
+      );
       console.log(index);
       this.formFields[index] = field;
       console.log(this.formFields[index]);
@@ -186,7 +192,9 @@ export class DynamicFormBuilderComponent implements ControlValueAccessor, OnInit
   }
 
   removeFormField(field: Formfield<any>) {
-    const index = this.formFields.findIndex((formField) => formField.id === field.id);
+    const index = this.formFields.findIndex(
+      (formField) => formField.id === field.id
+    );
     this.formFields.splice(index, 1);
     this.notifyValueChange();
   }

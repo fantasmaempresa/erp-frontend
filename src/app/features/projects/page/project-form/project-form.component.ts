@@ -80,21 +80,26 @@ export class ProjectFormComponent {
   onSubmit() {
     this.form.markAllAsTouched();
     if (this.form.invalid) return;
-    this.form.value.estimate_end_date = format(this.form.value.estimate_end_date, 'yyyy-MM-dd');
+    this.form.value.estimate_end_date = format(
+      this.form.value.estimate_end_date,
+      "yyyy-MM-dd"
+    );
     console.log(this.form.value.estimate_end_date);
     const request$ = this.edit
       ? this.projectService.update(this.form.value)
       : this.projectService.save(this.form.value);
-    const message = `El proyecto se ha ${this.edit ? 'actualizado' : 'creado'} correctamente`;
-    MessageHelper.showLoading('Enviando al Servidor...');
+    const message = `El proyecto se ha ${
+      this.edit ? "actualizado" : "creado"
+    } correctamente`;
+    MessageHelper.showLoading("Enviando al Servidor...");
     request$.subscribe({
       next: async () => {
-        MessageHelper.successMessage('Éxito', message);
+        MessageHelper.successMessage("Éxito", message);
         await this.back();
       },
       error: () => {
         MessageHelper.hide();
-      },
+      }
     });
   }
 }

@@ -39,12 +39,18 @@ export class LoginComponent implements OnInit {
     this.errorMessage$ = this.store.select(selectErrorMessage);
     this.signUpForm = new UntypedFormGroup(
       {
-        username: new UntypedFormControl("", [Validators.required, Validators.email]),
+        username: new UntypedFormControl("", [
+          Validators.required,
+          Validators.email
+        ]),
         password: new UntypedFormControl("", Validators.required),
         confirmPassword: new UntypedFormControl("", Validators.required)
       },
       {
-        validators: this.formValidationService.matchConfirmItems("password", "confirmPassword")
+        validators: this.formValidationService.matchConfirmItems(
+          "password",
+          "confirmPassword"
+        )
       }
     );
 

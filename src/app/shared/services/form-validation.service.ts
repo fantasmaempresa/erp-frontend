@@ -6,7 +6,10 @@ import { genericErrorMessages } from "../../core/constants/validationMessages";
   providedIn: "root"
 })
 export class FormValidationService {
-  getValidationErrors(group: UntypedFormGroup, validationMessages: { [key: string]: any }): any {
+  getValidationErrors(
+    group: UntypedFormGroup,
+    validationMessages: { [key: string]: any }
+  ): any {
     let formErrors: { [key: string]: any } = {};
 
     Object.keys(group.controls).forEach((key: string) => {
@@ -28,14 +31,20 @@ export class FormValidationService {
       }
 
       if (abstractControl instanceof UntypedFormGroup) {
-        let groupError = this.getValidationErrors(abstractControl, validationMessages);
+        let groupError = this.getValidationErrors(
+          abstractControl,
+          validationMessages
+        );
         formErrors = { ...formErrors, ...groupError };
       }
     });
     return formErrors;
   }
 
-  matchConfirmItems(controlName: string, confirmControlName: string): ValidatorFn {
+  matchConfirmItems(
+    controlName: string,
+    confirmControlName: string
+  ): ValidatorFn {
     // @ts-ignore
     return (formGroup: UntypedFormGroup) => {
       const control = formGroup.controls[controlName];
@@ -58,7 +67,9 @@ export class FormValidationService {
     let error = '';
     console.log(control.errors);
     if (control.errors) {
-      const [[keyErr, objErr]]: [string, any][] = Object.entries(control.errors);
+      const [[keyErr, objErr]]: [string, any][] = Object.entries(
+        control.errors
+      );
       console.log(keyErr, objErr);
       if (genericErrorMessages[keyErr]) {
         error = genericErrorMessages[keyErr](objErr);

@@ -15,7 +15,9 @@ export class ProjectQuoteConceptsComponent {
   concepts$: Observable<ConceptDto[]>;
 
   constructor(private conceptService: ConceptService) {
-    this.concepts$ = this.conceptService.fetchAll().pipe(map((concepts) => concepts.data));
+    this.concepts$ = this.conceptService
+      .fetchAll()
+      .pipe(map((concepts) => concepts.data));
   }
 
   addNewConcept() {

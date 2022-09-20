@@ -58,10 +58,10 @@ import { MaterialModule } from "../../material.module";
 })
 export class DynamicViewsModule {}
 
-export const SELECTOR = new InjectionToken<MemoizedSelector<any, any>>('selector');
-export const CLAZZ = new InjectionToken<any>('class');
-export const LOAD_ACTION = new InjectionToken<any>('load_action');
-export const LOAD_NEXT_ACTION = new InjectionToken<(props: { size: number; page: number }) => any>(
-  'load_next_action',
+export const SELECTOR = new InjectionToken<MemoizedSelector<any, any>>(
+  "selector"
 );
-export const ACTION_KEY = new InjectionToken<string>('action_key');
+export const CLAZZ = new InjectionToken<any>("class");
+export const LOAD_ACTION = new InjectionToken<any>("load_action");
+export const LOAD_NEXT_ACTION = new InjectionToken<(props: { size: number; page: number }) => any>("load_next_action");
+export const ACTION_KEY = new InjectionToken<string>("action_key");

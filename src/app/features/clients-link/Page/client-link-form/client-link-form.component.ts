@@ -33,12 +33,19 @@ export class ClientLinkFormComponent {
 
   isEdit = false;
 
-  degrees = ['Primaria', 'Secundaría', 'Bachillerato', 'Licenciatura', 'Maestría', 'Doctorado'];
+  degrees = [
+    "Primaria",
+    "Secundaría",
+    "Bachillerato",
+    "Licenciatura",
+    "Maestría",
+    "Doctorado"
+  ];
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private clientLinkService: ClientLinkService,
+    private clientLinkService: ClientLinkService
   ) {
     const id = Number(this.route.snapshot.params.id);
     if (!isNaN(id)) {
@@ -61,14 +68,23 @@ export class ClientLinkFormComponent {
     let request$: Observable<ClientLinkDto>;
     const clientId = Number(this.route.snapshot.parent?.params.id);
     if (!this.isEdit) {
-      request$ = this.clientLinkService.save({ ...this.form.value, client_id: clientId });
+      request$ = this.clientLinkService.save({
+        ...this.form.value,
+        client_id: clientId
+      });
     } else {
-      request$ = this.clientLinkService.update({ ...this.form.value, client_id: clientId });
+      request$ = this.clientLinkService.update({
+        ...this.form.value,
+        client_id: clientId
+      });
     }
     request$.subscribe({
       next: async () => {
-        const message = this.isEdit ? 'actualizado' : 'registrado';
-        MessageHelper.successMessage('¡Éxito!', `El cliente ha sido ${message} correctamente.`);
+        const message = this.isEdit ? "actualizado" : "registrado";
+        MessageHelper.successMessage(
+          "¡Éxito!",
+          `El cliente ha sido ${message} correctamente.`
+        );
         await this.back();
       },
     });

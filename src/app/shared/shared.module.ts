@@ -90,6 +90,6 @@ import { AutofocusDirective } from "../core/directives/autofocus.directive";
     InputFileComponent,
     InputCoordinateComponent,
     AutofocusDirective
-  ]
+  ],
 })
 export class SharedModule {}

@@ -47,8 +47,11 @@ export class RoleFormComponent {
     }
     request$.subscribe({
       next: async () => {
-        let message = this.isEdit ? 'actualizado' : 'registrado';
-        MessageHelper.successMessage('¡Éxito!', `El rol ha sido ${message} correctamente.`);
+        let message = this.isEdit ? "actualizado" : "registrado";
+        MessageHelper.successMessage(
+          "¡Éxito!",
+          `El rol ha sido ${message} correctamente.`
+        );
         await this.backToListRoles();
       },
     });

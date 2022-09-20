@@ -32,44 +32,69 @@ export class ConceptFormDialogComponent implements OnInit {
 
   get validityType() {
     // @ts-ignore
-    return this.conceptForm.get("formula").get("validity").get("type") as UntypedFormControl;
+    return this.conceptForm
+      .get("formula")
+      .get("validity")
+      .get("type") as UntypedFormControl;
   }
 
   get betweenValidity() {
     // @ts-ignore
-    return this.conceptForm.get("formula").get("validity").get("between") as UntypedFormArray;
+    return this.conceptForm
+      .get("formula")
+      .get("validity")
+      .get("between") as UntypedFormArray;
   }
 
   get betweenRange() {
     // @ts-ignore
-    return this.conceptForm.get("formula").get("range").get("between") as UntypedFormArray;
+    return this.conceptForm
+      .get("formula")
+      .get("range")
+      .get("between") as UntypedFormArray;
   }
 
   get isOperable() {
     // @ts-ignore
-    return this.conceptForm.get("formula").get("operable") as UntypedFormControl;
+    return this.conceptForm
+      .get("formula")
+      .get("operable") as UntypedFormControl;
   }
 
   get isPercentage() {
     // @ts-ignore
-    return this.conceptForm.get("formula").get("percentage") as UntypedFormControl;
+    return this.conceptForm
+      .get("formula")
+      .get("percentage") as UntypedFormControl;
   }
 
   get isDateInValidity() {
     // @ts-ignore
-    return this.conceptForm.get("formula")?.get("validity")?.get("is_date") as UntypedFormControl;
+    return this.conceptForm
+      .get("formula")
+      ?.get("validity")
+      ?.get("is_date") as UntypedFormControl;
   }
 
   get applyValidity() {
-    return this.conceptForm.get("formula")?.get("validity")?.get("apply") as UntypedFormControl;
+    return this.conceptForm
+      .get("formula")
+      ?.get("validity")
+      ?.get("apply") as UntypedFormControl;
   }
 
   get applyRange() {
-    return this.conceptForm.get("formula")?.get("range")?.get("apply") as UntypedFormControl;
+    return this.conceptForm
+      .get("formula")
+      ?.get("range")
+      ?.get("apply") as UntypedFormControl;
   }
 
   get isRangeInValidity() {
-    return this.conceptForm.get("formula")?.get("validity")?.get("is_range") as UntypedFormControl;
+    return this.conceptForm
+      .get("formula")
+      ?.get("validity")
+      ?.get("is_range") as UntypedFormControl;
   }
 
   get formula() {
@@ -134,7 +159,11 @@ export class ConceptFormDialogComponent implements OnInit {
     this.isDateInValidity.valueChanges.subscribe({
       next: (val) => {
         this.isDateInYears = !!val;
-        this.conceptForm.get('formula')?.get('validity')?.get('amount')?.patchValue('');
+        this.conceptForm
+          .get("formula")
+          ?.get("validity")
+          ?.get("amount")
+          ?.patchValue("");
       },
     });
 
@@ -158,9 +187,12 @@ export class ConceptFormDialogComponent implements OnInit {
 
     request$.subscribe({
       next: async (value) => {
-        let message = 'registrado';
+        let message = "registrado";
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        MessageHelper.successMessage('¡Éxito!', `El concepto ha sido ${message} correctamente.`);
+        MessageHelper.successMessage(
+          "¡Éxito!",
+          `El concepto ha sido ${message} correctamente.`
+        );
         this.dialogRef.close(value);
       },
     });
@@ -188,14 +220,22 @@ export class ConceptFormDialogComponent implements OnInit {
 
   createRange(value?: any) {
     const form = new UntypedFormGroup({
-      min: new UntypedFormControl(value ? value.min : null, [Validators.required]),
-      max: new UntypedFormControl(value ? value.max : null, [Validators.required]),
-      amount: new UntypedFormControl(value ? value.amount : null, [Validators.required])
+      min: new UntypedFormControl(value ? value.min : null, [
+        Validators.required
+      ]),
+      max: new UntypedFormControl(value ? value.max : null, [
+        Validators.required
+      ]),
+      amount: new UntypedFormControl(value ? value.amount : null, [
+        Validators.required
+      ])
     });
 
     form.get("min")?.valueChanges.subscribe({
       next: (val) => {
-        form.get("max")?.setValidators([Validators.required, Validators.min(val)]);
+        form
+          .get("max")
+          ?.setValidators([Validators.required, Validators.min(val)]);
         form.get("max")?.updateValueAndValidity();
       }
     });

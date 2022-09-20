@@ -19,7 +19,7 @@ import { UserDto } from "../../../../data/dto/User.dto";
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => ProjectQuoteFormComponent),
-      multi: true,
+      multi: true
     },
   ],
 })

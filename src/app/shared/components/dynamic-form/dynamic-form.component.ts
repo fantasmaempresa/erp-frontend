@@ -42,7 +42,7 @@ import { updateValues } from "../../../state/dynamic-form/dynamic-form.actions";
     {
       provide: NG_VALIDATORS,
       useExisting: forwardRef(() => DynamicFormComponent),
-      multi: true,
+      multi: true
     },
   ],
 })

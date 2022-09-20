@@ -40,14 +40,16 @@ export class StaffMemberFormComponent {
     private staffService: StaffService,
     private areaSerivce: AreaService,
   ) {
-    this.workAreas$ = this.areaSerivce.fetchAll().pipe(map((areas) => areas.data));
+    this.workAreas$ = this.areaSerivce
+      .fetchAll()
+      .pipe(map((areas) => areas.data));
     if (this.route.snapshot.queryParams.id) {
       this.isEdit = true;
       staffService.fetch(this.route.snapshot.queryParams.id).subscribe({
         next: (staffMember) => {
           this.staffMemberForm.addControl("id", new UntypedFormControl(""));
           this.staffMemberForm.patchValue(staffMember);
-        },
+        }
       });
     }
   }
@@ -65,8 +67,11 @@ export class StaffMemberFormComponent {
     }
     request$.subscribe({
       next: async () => {
-        let message = this.isEdit ? 'actualizado' : 'registrado';
-        MessageHelper.successMessage('¡Éxito!', `El miembro ha sido ${message} correctamente.`);
+        let message = this.isEdit ? "actualizado" : "registrado";
+        MessageHelper.successMessage(
+          "¡Éxito!",
+          `El miembro ha sido ${message} correctamente.`
+        );
         await this.backToListRoles();
       },
     });

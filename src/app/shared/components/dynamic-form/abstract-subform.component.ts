@@ -10,7 +10,8 @@ export abstract class AbstractSubformComponent<T = any>
 
   onChangeSubs: Subscription[] = [];
 
-  constructor(public errorMessage: string = 'Form part not valid') {}
+  constructor(public errorMessage: string = "Form part not valid") {
+  }
 
   getFormGroup(): UntypedFormGroup {
     return this.formGroup;

@@ -88,7 +88,10 @@ export class ProcessPhaseFormComponent {
       : this.processPhaseService.save(this.form.value);
     request$.subscribe({
       next: async () => {
-        MessageHelper.successMessage('¡Éxito!', `La fase ha sido ${message} correctamente.`);
+        MessageHelper.successMessage(
+          "¡Éxito!",
+          `La fase ha sido ${message} correctamente.`
+        );
         await this.back();
       },
     });

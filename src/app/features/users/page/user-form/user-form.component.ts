@@ -17,7 +17,10 @@ export class UserFormComponent {
   userForm = new UntypedFormGroup({
     name: new UntypedFormControl("", [Validators.required]),
     email: new UntypedFormControl("", [Validators.required, Validators.email]),
-    password: new UntypedFormControl("", [Validators.required, Validators.minLength(6)]),
+    password: new UntypedFormControl("", [
+      Validators.required,
+      Validators.minLength(6)
+    ]),
     role_id: new UntypedFormControl(null, [Validators.required]),
     config: new UntypedFormControl({ test: "test" })
   });
@@ -59,8 +62,11 @@ export class UserFormComponent {
     }
     request$.subscribe({
       next: async () => {
-        let message = this.isEdit ? 'actualizado' : 'registrado';
-        MessageHelper.successMessage('¡Éxito!', `El usuario ha sido ${message} correctamente.`);
+        let message = this.isEdit ? "actualizado" : "registrado";
+        MessageHelper.successMessage(
+          "¡Éxito!",
+          `El usuario ha sido ${message} correctamente.`
+        );
         await this.backToListUsers();
       },
     });

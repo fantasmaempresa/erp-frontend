@@ -54,8 +54,11 @@ export class AreaFormComponent {
     }
     request$.subscribe({
       next: async () => {
-        const message = this.isEdit ? 'actualizada' : 'registrada';
-        MessageHelper.successMessage('¡Éxito!', `El area ha sido ${message} correctamente.`);
+        const message = this.isEdit ? "actualizada" : "registrada";
+        MessageHelper.successMessage(
+          "¡Éxito!",
+          `El area ha sido ${message} correctamente.`
+        );
         await this.backToListAreas();
       },
     });

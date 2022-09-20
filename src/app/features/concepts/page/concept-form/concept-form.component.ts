@@ -52,12 +52,16 @@ export class ConceptFormComponent implements OnInit {
 
   get isOperable() {
     // @ts-ignore
-    return this.conceptForm.get("formula").get("operable") as UntypedFormControl;
+    return this.conceptForm
+      .get("formula")
+      .get("operable") as UntypedFormControl;
   }
 
   get isPercentage() {
     // @ts-ignore
-    return this.conceptForm.get("formula").get("percentage") as UntypedFormControl;
+    return this.conceptForm
+      .get("formula")
+      .get("percentage") as UntypedFormControl;
   }
 
   get isDateInValidity() {
@@ -264,8 +268,12 @@ export class ConceptFormComponent implements OnInit {
 
   createRange(value?: any) {
     const form = new UntypedFormGroup({
-      min: new UntypedFormControl(value ? value.min : null, [Validators.required]),
-      max: new UntypedFormControl(value ? value.max : null, [Validators.required]),
+      min: new UntypedFormControl(value ? value.min : null, [
+        Validators.required
+      ]),
+      max: new UntypedFormControl(value ? value.max : null, [
+        Validators.required
+      ]),
       amount: new UntypedFormControl(value ? value.amount : null, [
         Validators.required
       ])
@@ -277,7 +285,7 @@ export class ConceptFormComponent implements OnInit {
           .get("max")
           ?.setValidators([Validators.required, Validators.min(val)]);
         form.get("max")?.updateValueAndValidity();
-      },
+      }
     });
 
     return form;
@@ -307,11 +315,15 @@ export class ConceptFormComponent implements OnInit {
           is_range: new UntypedFormControl(false),
           type: new UntypedFormControl("date"),
           amount: new UntypedFormControl(""),
-          between: new UntypedFormArray(this.isEdit ? [] : [this.createRange()])
+          between: new UntypedFormArray(
+            this.isEdit ? [] : [this.createRange()]
+          )
         }),
         range: new UntypedFormGroup({
           apply: new UntypedFormControl(false),
-          between: new UntypedFormArray(this.isEdit ? [] : [this.createRange()])
+          between: new UntypedFormArray(
+            this.isEdit ? [] : [this.createRange()]
+          )
         })
       })
     });

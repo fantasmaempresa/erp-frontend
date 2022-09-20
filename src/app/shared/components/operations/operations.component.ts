@@ -23,9 +23,9 @@ import {
 export class OperationsComponent implements OnInit {
   @Output() form = new EventEmitter();
 
-  @ViewChildren('conceptTotalInput') conceptTotalInput!: QueryList<ElementRef<HTMLInputElement>>;
+  @ViewChildren("conceptTotalInput") conceptTotalInput!: QueryList<ElementRef<HTMLInputElement>>;
 
-  @ViewChildren('conceptFieldInput') conceptFieldsInput!: QueryList<ElementRef<HTMLInputElement>>;
+  @ViewChildren("conceptFieldInput") conceptFieldsInput!: QueryList<ElementRef<HTMLInputElement>>;
 
   autocompleteControl = new UntypedFormControl();
 
@@ -145,7 +145,10 @@ export class OperationsComponent implements OnInit {
     );
   }
 
-  createOperationGroup(field: Formfield<any>, target: string): UntypedFormGroup {
+  createOperationGroup(
+    field: Formfield<any>,
+    target: string
+  ): UntypedFormGroup {
     let operation = new UntypedFormGroup({
       label: new UntypedFormControl(field.label),
       value: new UntypedFormControl({ value: field.value, disabled: true }),
@@ -163,8 +166,8 @@ export class OperationsComponent implements OnInit {
           combineLatestWith(valueOfConceptControl),
           map((data) => {
             return this._filterConcepts(data[1], data[0]);
-          }),
-        ),
+          })
+        )
       );
     } else {
       let valueOfConceptControl =
@@ -187,7 +190,9 @@ export class OperationsComponent implements OnInit {
     }
     let exists = false;
     if (item.key === 'total') {
-      const control = this.operationsForm.get("operation_total") as UntypedFormArray;
+      const control = this.operationsForm.get(
+        "operation_total"
+      ) as UntypedFormArray;
       const controlArray: [] = control.value;
       controlArray.forEach((ctrl: any) => {
         if (ctrl.key === item.key) {
@@ -200,7 +205,9 @@ export class OperationsComponent implements OnInit {
 
       control.push(this.createOperationGroup(item, 'total'));
     } else {
-      const control = this.operationsForm.get("operation_fields") as UntypedFormArray;
+      const control = this.operationsForm.get(
+        "operation_fields"
+      ) as UntypedFormArray;
       const controlArray: [] = control.value;
       controlArray.forEach((ctrl: any) => {
         if (ctrl.key === item.key) {
@@ -210,7 +217,7 @@ export class OperationsComponent implements OnInit {
       if (exists) {
         return;
       }
-      control.push(this.createOperationGroup(item, 'other'));
+      control.push(this.createOperationGroup(item, "other"));
     }
     // this.autocompleteControl = new FormControl();
   }
@@ -431,7 +438,7 @@ export class OperationsComponent implements OnInit {
         // @ts-ignore
         let valueOfConceptControl = this.operation_fields
           .at(index)
-          .get('conceptCtrl')
+          .get("conceptCtrl")
           .valueChanges.pipe(startWith(""));
         const filter = this.concepts$.pipe(
           combineLatestWith(valueOfConceptControl),
@@ -450,7 +457,7 @@ export class OperationsComponent implements OnInit {
         // @ts-ignore
         let valueOfConceptControl = this.operation_total
           .at(index)
-          .get('conceptCtrl')
+          .get("conceptCtrl")
           .valueChanges.pipe(startWith(""));
         const filter = this.concepts$.pipe(
           combineLatestWith(valueOfConceptControl),

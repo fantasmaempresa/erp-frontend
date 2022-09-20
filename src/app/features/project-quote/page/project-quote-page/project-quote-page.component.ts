@@ -107,7 +107,9 @@ export class ProjectQuotePageComponent
     if (this.route.snapshot.queryParams.id) {
       this.quoteId = +this.route.snapshot.queryParams.id;
       this.isEdit = true;
-      this.headerForm.getFormGroup().addControl("id", new UntypedFormControl(""));
+      this.headerForm
+        .getFormGroup()
+        .addControl("id", new UntypedFormControl(""));
       this.projectQuoteService
         .fetch(this.route.snapshot.queryParams.id)
         .pipe(delay(250))
