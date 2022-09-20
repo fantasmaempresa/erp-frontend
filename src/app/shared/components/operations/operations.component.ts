@@ -1,46 +1,35 @@
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren } from "@angular/core";
+import { Store } from "@ngrx/store";
+import { combineLatestWith, map, Observable, startWith, take, tap } from "rxjs";
+import { Formfield } from "../../../data/dto/Formfield.dto";
+import { selectDynamicForm } from "../../../state/dynamic-form/dynamic-form.selector";
+import { UntypedFormArray, UntypedFormControl, UntypedFormGroup } from "@angular/forms";
+import { ConceptService } from "../../../data/services/concept.service";
+import { ConceptDto } from "../../../data/dto/Concept.dto";
+import { MatDialog } from "@angular/material/dialog";
+import { ProjectQuoteService } from "../../../data/services/project-quote.service";
+import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { MatChipInputEvent } from "@angular/material/chips";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
 import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  QueryList,
-  ViewChildren,
-} from '@angular/core';
-import { Store } from '@ngrx/store';
-import { combineLatestWith, map, Observable, startWith, take, tap } from 'rxjs';
-import { Formfield } from '../../../data/dto/Formfield.dto';
-import { selectDynamicForm } from '../../../state/dynamic-form/dynamic-form.selector';
-import { FormArray, FormControl, FormGroup } from '@angular/forms';
-import { ConceptService } from '../../../data/services/concept.service';
-import { ConceptDto } from '../../../data/dto/Concept.dto';
-import { MatDialog } from '@angular/material/dialog';
-import { ProjectQuoteService } from '../../../data/services/project-quote.service';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { ConceptFormDialogComponent } from '../../../features/concepts/dialog/concept-form-dialog/concept-form-dialog.component';
+  ConceptFormDialogComponent
+} from "../../../features/concepts/dialog/concept-form-dialog/concept-form-dialog.component";
 
 @Component({
-  selector: 'app-operations',
-  templateUrl: './operations.component.html',
-  styleUrls: ['./operations.component.scss'],
+  selector: "app-operations",
+  templateUrl: "./operations.component.html",
+  styleUrls: ["./operations.component.scss"]
 })
 export class OperationsComponent implements OnInit {
   @Output() form = new EventEmitter();
 
-  @ViewChildren('conceptTotalInput') conceptTotalInput!: QueryList<
-    ElementRef<HTMLInputElement>
-  >;
+  @ViewChildren('conceptTotalInput') conceptTotalInput!: QueryList<ElementRef<HTMLInputElement>>;
 
-  @ViewChildren('conceptFieldInput') conceptFieldsInput!: QueryList<
-    ElementRef<HTMLInputElement>
-  >;
+  @ViewChildren('conceptFieldInput') conceptFieldsInput!: QueryList<ElementRef<HTMLInputElement>>;
 
-  autocompleteControl = new FormControl();
+  autocompleteControl = new UntypedFormControl();
 
-  autocompleteConceptControl = new FormControl();
+  autocompleteConceptControl = new UntypedFormControl();
 
   filteredOptions$!: Observable<Formfield<any>[]>;
 
@@ -50,19 +39,19 @@ export class OperationsComponent implements OnInit {
 
   formFields$!: Observable<Formfield<any>[]>;
 
-  operationsForm: FormGroup = new FormGroup({
-    operation_fields: new FormArray([]),
-    operation_total: new FormArray([]),
+  operationsForm: UntypedFormGroup = new UntypedFormGroup({
+    operation_fields: new UntypedFormArray([]),
+    operation_total: new UntypedFormArray([])
   });
 
   concepts$: Observable<ConceptDto[]>;
 
   get operation_fields() {
-    return this.operationsForm.controls.operation_fields as FormArray;
+    return this.operationsForm.controls.operation_fields as UntypedFormArray;
   }
 
   get operation_total() {
-    return this.operationsForm.controls.operation_total as FormArray;
+    return this.operationsForm.controls.operation_total as UntypedFormArray;
   }
 
   separatorKeysCodes: number[] = [ENTER, COMMA];
@@ -81,8 +70,8 @@ export class OperationsComponent implements OnInit {
             operation.concepts?.forEach((concept: ConceptDto) => {
               let concepts = this.operation_total
                 .at(index)
-                .get('concepts') as FormArray;
-              concepts.push(new FormControl(concept));
+                .get("concepts") as UntypedFormArray;
+              concepts.push(new UntypedFormControl(concept));
             });
           },
         );
@@ -97,8 +86,8 @@ export class OperationsComponent implements OnInit {
             operation.concepts?.forEach((concept: ConceptDto) => {
               let concepts = this.operation_fields
                 .at(index)
-                .get('concepts') as FormArray;
-              concepts.push(new FormControl(concept));
+                .get("concepts") as UntypedFormArray;
+              concepts.push(new UntypedFormControl(concept));
             });
           },
         );
@@ -146,29 +135,29 @@ export class OperationsComponent implements OnInit {
   }
 
   initOperationsFormGroup() {
-    this.operationsForm = new FormGroup({
-      operation_fields: new FormArray([]),
-      operation_total: new FormArray([]),
+    this.operationsForm = new UntypedFormGroup({
+      operation_fields: new UntypedFormArray([]),
+      operation_total: new UntypedFormArray([])
     });
 
     this.operationsForm.valueChanges.subscribe(() =>
-      this.form.emit(this.operationsForm),
+      this.form.emit(this.operationsForm)
     );
   }
 
-  createOperationGroup(field: Formfield<any>, target: string): FormGroup {
-    let operation = new FormGroup({
-      label: new FormControl(field.label),
-      value: new FormControl({ value: field.value, disabled: true }),
-      key: new FormControl(field.key),
-      conceptCtrl: new FormControl(),
-      concepts: new FormArray([]),
+  createOperationGroup(field: Formfield<any>, target: string): UntypedFormGroup {
+    let operation = new UntypedFormGroup({
+      label: new UntypedFormControl(field.label),
+      value: new UntypedFormControl({ value: field.value, disabled: true }),
+      key: new UntypedFormControl(field.key),
+      conceptCtrl: new UntypedFormControl(),
+      concepts: new UntypedFormArray([])
     });
 
-    if (target === 'total') {
-      operation.get('value')?.patchValue('Valor por calcular');
+    if (target === "total") {
+      operation.get("value")?.patchValue("Valor por calcular");
       let valueOfConceptControl =
-        operation.controls.conceptCtrl.valueChanges.pipe(startWith(''));
+        operation.controls.conceptCtrl.valueChanges.pipe(startWith(""));
       this.filteredConceptsTotal$.push(
         this.concepts$.pipe(
           combineLatestWith(valueOfConceptControl),
@@ -198,7 +187,7 @@ export class OperationsComponent implements OnInit {
     }
     let exists = false;
     if (item.key === 'total') {
-      const control = this.operationsForm.get('operation_total') as FormArray;
+      const control = this.operationsForm.get("operation_total") as UntypedFormArray;
       const controlArray: [] = control.value;
       controlArray.forEach((ctrl: any) => {
         if (ctrl.key === item.key) {
@@ -211,7 +200,7 @@ export class OperationsComponent implements OnInit {
 
       control.push(this.createOperationGroup(item, 'total'));
     } else {
-      const control = this.operationsForm.get('operation_fields') as FormArray;
+      const control = this.operationsForm.get("operation_fields") as UntypedFormArray;
       const controlArray: [] = control.value;
       controlArray.forEach((ctrl: any) => {
         if (ctrl.key === item.key) {
@@ -345,7 +334,7 @@ export class OperationsComponent implements OnInit {
     if (target === 'total') {
       let concepts = this.operation_total
         .at(index)
-        .get('concepts') as FormArray;
+        .get("concepts") as UntypedFormArray;
       const conceptsArray: ConceptDto[] = concepts.value;
       let isInArray = false;
       conceptsArray.forEach((value) => {
@@ -359,7 +348,7 @@ export class OperationsComponent implements OnInit {
         this.operation_total.at(index).get('conceptCtrl')?.setValue('');
         return;
       }
-      concepts.push(new FormControl(event.option.value));
+      concepts.push(new UntypedFormControl(event.option.value));
       // @ts-ignore
       this.conceptTotalInput.get(index).nativeElement.value = '';
       this.operation_total.at(index).get('conceptCtrl')?.setValue('');
@@ -367,7 +356,7 @@ export class OperationsComponent implements OnInit {
     if (target === 'fields') {
       let concepts = this.operation_fields
         .at(index)
-        .get('concepts') as FormArray;
+        .get("concepts") as UntypedFormArray;
       const conceptsArray: ConceptDto[] = concepts.value;
       let isInArray = false;
       conceptsArray.forEach((value) => {
@@ -381,7 +370,7 @@ export class OperationsComponent implements OnInit {
         this.operation_fields.at(index).get('conceptCtrl')?.setValue('');
         return;
       }
-      concepts.push(new FormControl(event.option.value));
+      concepts.push(new UntypedFormControl(event.option.value));
       // @ts-ignore
       this.conceptFieldsInput.get(index).nativeElement.value = '';
       this.operation_fields.at(index).get('conceptCtrl')?.setValue('');
@@ -394,8 +383,8 @@ export class OperationsComponent implements OnInit {
     if (value) {
       let concepts = this.operation_fields
         .at(index)
-        .get('concepts') as FormArray;
-      concepts.push(new FormControl(value));
+        .get("concepts") as UntypedFormArray;
+      concepts.push(new UntypedFormControl(value));
     }
 
     event.chipInput!.clear();
@@ -407,7 +396,7 @@ export class OperationsComponent implements OnInit {
     if (target === 'total') {
       const concepts = this.operation_total
         .at(index)
-        .get('concepts') as FormArray;
+        .get("concepts") as UntypedFormArray;
       const conceptsArray: ConceptDto[] = concepts.value;
       conceptsArray.forEach((value, i) => {
         if (value.id === concept.id) {
@@ -418,7 +407,7 @@ export class OperationsComponent implements OnInit {
     if (target === 'fields') {
       const concepts = this.operation_fields
         .at(index)
-        .get('concepts') as FormArray;
+        .get("concepts") as UntypedFormArray;
       const conceptsArray: ConceptDto[] = concepts.value;
       conceptsArray.forEach((value, i) => {
         if (value.id === concept.id) {
@@ -443,18 +432,18 @@ export class OperationsComponent implements OnInit {
         let valueOfConceptControl = this.operation_fields
           .at(index)
           .get('conceptCtrl')
-          .valueChanges.pipe(startWith(''));
+          .valueChanges.pipe(startWith(""));
         const filter = this.concepts$.pipe(
           combineLatestWith(valueOfConceptControl),
           map((data) => {
             return this._filterConcepts(data[1], data[0]);
-          }),
+          })
         );
         this.filteredConcepts$.splice(index, 1, filter);
         let concepts = this.operation_fields
           .at(index)
-          .get('concepts') as FormArray;
-        concepts.push(new FormControl(result));
+          .get("concepts") as UntypedFormArray;
+        concepts.push(new UntypedFormControl(result));
         return;
       }
       if (target === 'total') {
@@ -462,18 +451,18 @@ export class OperationsComponent implements OnInit {
         let valueOfConceptControl = this.operation_total
           .at(index)
           .get('conceptCtrl')
-          .valueChanges.pipe(startWith(''));
+          .valueChanges.pipe(startWith(""));
         const filter = this.concepts$.pipe(
           combineLatestWith(valueOfConceptControl),
           map((data) => {
             return this._filterConcepts(data[1], data[0]);
-          }),
+          })
         );
         this.filteredConceptsTotal$.splice(index, 1, filter);
         let concepts = this.operation_total
           .at(index)
-          .get('concepts') as FormArray;
-        concepts.push(new FormControl(result));
+          .get("concepts") as UntypedFormArray;
+        concepts.push(new UntypedFormControl(result));
         return;
       }
     });

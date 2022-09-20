@@ -1,16 +1,16 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Inject, OnInit } from "@angular/core";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 
 @Component({
-  selector: 'app-on-save-dialog',
-  templateUrl: './on-save-dialog.component.html',
-  styleUrls: ['./on-save-dialog.component.scss'],
+  selector: "app-on-save-dialog",
+  templateUrl: "./on-save-dialog.component.html",
+  styleUrls: ["./on-save-dialog.component.scss"]
 })
 export class OnSaveDialogComponent implements OnInit {
-  formGroup = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
+  formGroup = new UntypedFormGroup({
+    name: new UntypedFormControl("", [Validators.required]),
+    description: new UntypedFormControl("", [Validators.required])
   });
 
   constructor(
@@ -19,8 +19,9 @@ export class OnSaveDialogComponent implements OnInit {
     public data: {
       title: string;
       payload?: { name: string; description: string };
-    },
-  ) {}
+    }
+  ) {
+  }
 
   ngOnInit(): void {
     if (this.data.payload) {

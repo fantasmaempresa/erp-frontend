@@ -1,30 +1,30 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ProcessService } from '../../../../data/services/process.service';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { Component } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import { ProcessService } from "../../../../data/services/process.service";
+import { MessageHelper } from "../../../../shared/helpers/MessageHelper";
 
 @Component({
-  selector: 'app-process-form',
-  templateUrl: './process-form.component.html',
-  styleUrls: ['./process-form.component.scss'],
+  selector: "app-process-form",
+  templateUrl: "./process-form.component.html",
+  styleUrls: ["./process-form.component.scss"]
 })
 export class ProcessFormComponent {
   edit = false;
 
   step = 0;
 
-  form!: FormGroup;
+  form!: UntypedFormGroup;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private processService: ProcessService,
   ) {
-    this.form = new FormGroup({
-      name: new FormControl(null, Validators.required),
-      description: new FormControl(null, Validators.required),
-      config: new FormControl(null),
+    this.form = new UntypedFormGroup({
+      name: new UntypedFormControl(null, Validators.required),
+      description: new UntypedFormControl(null, Validators.required),
+      config: new UntypedFormControl(null)
     });
 
     const id = Number(this.route.snapshot.params.id);
@@ -32,9 +32,9 @@ export class ProcessFormComponent {
       this.edit = true;
       processService.fetch(id).subscribe({
         next: (process) => {
-          this.form.addControl('id', new FormControl(''));
+          this.form.addControl("id", new UntypedFormControl(""));
           this.form.patchValue(process);
-        },
+        }
       });
     }
   }

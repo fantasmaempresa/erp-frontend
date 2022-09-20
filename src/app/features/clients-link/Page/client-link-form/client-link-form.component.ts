@@ -1,34 +1,34 @@
-import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { ClientLinkDto } from '../../../../data/dto/ClientLink.dto';
-import { ClientLinkService } from '../../../../data/services/client-link.service';
+import { Component } from "@angular/core";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Observable } from "rxjs";
+import { MessageHelper } from "../../../../shared/helpers/MessageHelper";
+import { ClientLinkDto } from "../../../../data/dto/ClientLink.dto";
+import { ClientLinkService } from "../../../../data/services/client-link.service";
 
 @Component({
-  selector: 'app-client-link-form',
-  templateUrl: './client-link-form.component.html',
-  styleUrls: ['./client-link-form.component.scss'],
+  selector: "app-client-link-form",
+  templateUrl: "./client-link-form.component.html",
+  styleUrls: ["./client-link-form.component.scss"]
 })
 export class ClientLinkFormComponent {
-  form = new FormGroup({
-    name: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [
+  form = new UntypedFormGroup({
+    name: new UntypedFormControl("", [Validators.required]),
+    email: new UntypedFormControl("", [Validators.required, Validators.email]),
+    phone: new UntypedFormControl("", [
       Validators.required,
       Validators.minLength(10),
-      Validators.maxLength(10),
+      Validators.maxLength(10)
     ]),
-    nickname: new FormControl(null),
-    address: new FormControl(null),
-    rfc: new FormControl('', [
+    nickname: new UntypedFormControl(null),
+    address: new UntypedFormControl(null),
+    rfc: new UntypedFormControl("", [
       Validators.required,
       Validators.minLength(10),
-      Validators.maxLength(13),
+      Validators.maxLength(13)
     ]),
-    profession: new FormControl(null),
-    degree: new FormControl(null),
+    profession: new UntypedFormControl(null),
+    degree: new UntypedFormControl(null)
   });
 
   isEdit = false;
@@ -45,7 +45,7 @@ export class ClientLinkFormComponent {
       this.isEdit = true;
       clientLinkService.fetch(id).subscribe({
         next: (client) => {
-          this.form.addControl('id', new FormControl(''));
+          this.form.addControl("id", new UntypedFormControl(""));
           this.form.patchValue(client);
         },
       });

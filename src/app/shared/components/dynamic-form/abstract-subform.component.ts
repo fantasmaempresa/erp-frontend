@@ -1,24 +1,18 @@
-import {
-  AbstractControl,
-  ControlValueAccessor,
-  FormGroup,
-  ValidationErrors,
-  Validator,
-} from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { AbstractControl, ControlValueAccessor, UntypedFormGroup, ValidationErrors, Validator } from "@angular/forms";
+import { Subscription } from "rxjs";
 
 export abstract class AbstractSubformComponent<T = any>
-  implements ControlValueAccessor, Validator
-{
-  public formGroup: FormGroup = new FormGroup({});
+  implements ControlValueAccessor, Validator {
+  public formGroup: UntypedFormGroup = new UntypedFormGroup({});
 
-  public onTouched: () => void = () => {};
+  public onTouched: () => void = () => {
+  };
 
   onChangeSubs: Subscription[] = [];
 
   constructor(public errorMessage: string = 'Form part not valid') {}
 
-  getFormGroup(): FormGroup {
+  getFormGroup(): UntypedFormGroup {
     return this.formGroup;
   }
 

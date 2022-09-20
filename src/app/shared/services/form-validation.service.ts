@@ -1,18 +1,18 @@
-import { Injectable } from '@angular/core';
-import { AbstractControl, FormGroup, ValidatorFn } from '@angular/forms';
-import { genericErrorMessages } from '../../core/constants/validationMessages';
+import { Injectable } from "@angular/core";
+import { AbstractControl, UntypedFormGroup, ValidatorFn } from "@angular/forms";
+import { genericErrorMessages } from "../../core/constants/validationMessages";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root"
 })
 export class FormValidationService {
-  getValidationErrors(group: FormGroup, validationMessages: { [key: string]: any }): any {
+  getValidationErrors(group: UntypedFormGroup, validationMessages: { [key: string]: any }): any {
     let formErrors: { [key: string]: any } = {};
 
     Object.keys(group.controls).forEach((key: string) => {
       const abstractControl = group.get(key);
 
-      formErrors[key] = '';
+      formErrors[key] = "";
       if (
         abstractControl &&
         !abstractControl.valid &&
@@ -27,7 +27,7 @@ export class FormValidationService {
         }
       }
 
-      if (abstractControl instanceof FormGroup) {
+      if (abstractControl instanceof UntypedFormGroup) {
         let groupError = this.getValidationErrors(abstractControl, validationMessages);
         formErrors = { ...formErrors, ...groupError };
       }
@@ -37,7 +37,7 @@ export class FormValidationService {
 
   matchConfirmItems(controlName: string, confirmControlName: string): ValidatorFn {
     // @ts-ignore
-    return (formGroup: FormGroup) => {
+    return (formGroup: UntypedFormGroup) => {
       const control = formGroup.controls[controlName];
       const confirmControl = formGroup.controls[confirmControlName];
       if (!control || !confirmControl) {

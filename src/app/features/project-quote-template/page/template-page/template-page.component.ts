@@ -1,20 +1,20 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { FormControl, FormGroup } from '@angular/forms';
-import { selectDynamicFormEssentialData } from '../../../../state/dynamic-form/dynamic-form.selector';
-import { catchError, lastValueFrom, take, throwError } from 'rxjs';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import Swal from 'sweetalert2';
-import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
-import { QuoteTemplate } from '../../../../data/dto/QuoteTemplate.dto';
-import { emptyForm } from '../../../../state/dynamic-form/dynamic-form.actions';
-import { FormStructureService } from '../../../../data/services/form-structure.service';
+import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { UntypedFormControl, UntypedFormGroup } from "@angular/forms";
+import { selectDynamicFormEssentialData } from "../../../../state/dynamic-form/dynamic-form.selector";
+import { catchError, lastValueFrom, take, throwError } from "rxjs";
+import { MessageHelper } from "../../../../shared/helpers/MessageHelper";
+import Swal from "sweetalert2";
+import { QuoteTemplateService } from "../../../../data/services/quote-template.service";
+import { QuoteTemplate } from "../../../../data/dto/QuoteTemplate.dto";
+import { emptyForm } from "../../../../state/dynamic-form/dynamic-form.actions";
+import { FormStructureService } from "../../../../data/services/form-structure.service";
 
 @Component({
-  selector: 'app-template-page',
-  templateUrl: './template-page.component.html',
-  styleUrls: ['./template-page.component.scss'],
+  selector: "app-template-page",
+  templateUrl: "./template-page.component.html",
+  styleUrls: ["./template-page.component.scss"]
 })
 export class TemplatePageComponent implements OnInit, OnDestroy {
   FORM_BUILD_STEP = 0;
@@ -25,13 +25,13 @@ export class TemplatePageComponent implements OnInit, OnDestroy {
 
   step = 0;
 
-  templateForm: FormGroup = new FormGroup({
-    name: new FormControl(),
+  templateForm: UntypedFormGroup = new UntypedFormGroup({
+    name: new UntypedFormControl()
   });
 
-  previewForm: FormControl = new FormControl(null);
+  previewForm: UntypedFormControl = new UntypedFormControl(null);
 
-  operationsForm = new FormGroup({});
+  operationsForm = new UntypedFormGroup({});
 
   isEdit = false;
 

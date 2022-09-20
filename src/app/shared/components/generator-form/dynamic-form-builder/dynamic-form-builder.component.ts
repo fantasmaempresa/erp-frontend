@@ -1,32 +1,32 @@
-import { Component, forwardRef, Injector, OnInit } from '@angular/core';
+import { Component, forwardRef, Injector, OnInit } from "@angular/core";
 import {
   ControlValueAccessor,
-  FormArray,
-  FormControl,
-  FormGroup,
   FormGroupDirective,
   NG_VALUE_ACCESSOR,
   NgControl,
-  Validators,
-} from '@angular/forms';
-import { Formfield } from '../../../../data/dto/Formfield.dto';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { v4 as uuidv4 } from 'uuid';
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators
+} from "@angular/forms";
+import { Formfield } from "../../../../data/dto/Formfield.dto";
+import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+import { v4 as uuidv4 } from "uuid";
 
 @Component({
-  selector: 'app-dynamic-form-builder',
-  templateUrl: './dynamic-form-builder.component.html',
-  styleUrls: ['./dynamic-form-builder.component.scss'],
+  selector: "app-dynamic-form-builder",
+  templateUrl: "./dynamic-form-builder.component.html",
+  styleUrls: ["./dynamic-form-builder.component.scss"],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DynamicFormBuilderComponent),
-      multi: true,
+      multi: true
     },
   ],
 })
 export class DynamicFormBuilderComponent implements ControlValueAccessor, OnInit {
-  form!: FormGroup;
+  form!: UntypedFormGroup;
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onChange = (_: any) => {};
@@ -87,25 +87,25 @@ export class DynamicFormBuilderComponent implements ControlValueAccessor, OnInit
   ngControl!: NgControl;
 
   constructor(private inj: Injector) {
-    this.form = new FormGroup({
-      id: new FormControl(),
-      controlType: new FormControl('', [Validators.required]),
-      key: new FormControl(''),
-      label: new FormControl('', [Validators.required]),
-      required: new FormControl(false),
-      options: new FormArray([]),
-      value: new FormControl(''),
-      order: new FormControl(0),
+    this.form = new UntypedFormGroup({
+      id: new UntypedFormControl(),
+      controlType: new UntypedFormControl("", [Validators.required]),
+      key: new UntypedFormControl(""),
+      label: new UntypedFormControl("", [Validators.required]),
+      required: new UntypedFormControl(false),
+      options: new UntypedFormArray([]),
+      value: new UntypedFormControl(""),
+      order: new UntypedFormControl(0)
     });
 
-    this.form.get('controlType')?.valueChanges.subscribe({
+    this.form.get("controlType")?.valueChanges.subscribe({
       next: (value) => {
         const controlType = this.getControlType(value);
         this.options.clear();
         if (controlType && controlType.options) {
           this.addOption();
         }
-      },
+      }
     });
   }
 
@@ -169,15 +169,15 @@ export class DynamicFormBuilderComponent implements ControlValueAccessor, OnInit
   }
 
   get options() {
-    return this.form.controls.options as FormArray;
+    return this.form.controls.options as UntypedFormArray;
   }
 
   addOption() {
     this.options.push(
-      new FormGroup({
-        key: new FormControl('', Validators.required),
-        value: new FormControl('', Validators.required),
-      }),
+      new UntypedFormGroup({
+        key: new UntypedFormControl("", Validators.required),
+        value: new UntypedFormControl("", Validators.required)
+      })
     );
   }
 

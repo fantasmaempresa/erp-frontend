@@ -1,57 +1,48 @@
-import { Component, forwardRef, Injector, OnDestroy } from '@angular/core';
+import { Component, forwardRef, Injector, OnDestroy } from "@angular/core";
 import {
   ControlValueAccessor,
-  FormArray,
-  FormControl,
-  FormGroup,
   NG_VALUE_ACCESSOR,
-} from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup
+} from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
 import {
   CLAZZ,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
-  SELECTOR,
-} from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { PopupMultiSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-multi-selector/popup-multi-selector.component';
+  SELECTOR
+} from "../../../../shared/components/dinamyc-views/dynamic-views.module";
 import {
-  filter,
-  forkJoin,
-  lastValueFrom,
-  map,
-  Observable,
-  shareReplay,
-  Subject,
-  take,
-  takeUntil,
-  tap,
-} from 'rxjs';
-import { ProcessDto } from '../../../../data/dto/Process.dto';
-import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
-import { selectProcess } from '../../../../state/process/process.selector';
-import { ProcessPhaseService } from '../../../../data/services/process-phase.service';
-import { ProcessPhaseDto } from '../../../../data/dto/ProcessPhase.dto';
-import { RoleService } from '../../../../data/services/role.service';
-import { ProcessService } from '../../../../data/services/process.service';
-import { ProjectView } from '../../../../data/Presentation/Project.view';
-import { ProcessView } from '../../../../data/Presentation/Process.view';
+  PopupMultiSelectorComponent
+} from "../../../../shared/components/dinamyc-views/popup-multi-selector/popup-multi-selector.component";
+import { filter, forkJoin, lastValueFrom, map, Observable, shareReplay, Subject, take, takeUntil, tap } from "rxjs";
+import { ProcessDto } from "../../../../data/dto/Process.dto";
+import { loadNextPageOfProcess, loadProcess } from "../../../../state/process/process.actions";
+import { selectProcess } from "../../../../state/process/process.selector";
+import { ProcessPhaseService } from "../../../../data/services/process-phase.service";
+import { ProcessPhaseDto } from "../../../../data/dto/ProcessPhase.dto";
+import { RoleService } from "../../../../data/services/role.service";
+import { ProcessService } from "../../../../data/services/process.service";
+import { ProjectView } from "../../../../data/Presentation/Project.view";
+import { ProcessView } from "../../../../data/Presentation/Process.view";
 
 @Component({
-  selector: 'app-build-project',
-  templateUrl: './build-project.component.html',
-  styleUrls: ['./build-project.component.scss'],
+  selector: "app-build-project",
+  templateUrl: "./build-project.component.html",
+  styleUrls: ["./build-project.component.scss"],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => BuildProjectComponent),
-      multi: true,
+      multi: true
     },
   ],
 })
 export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
-  involvedFormArray = new FormArray([]);
+  involvedFormArray = new UntypedFormArray([]);
 
-  form = new FormGroup({ involved: this.involvedFormArray });
+  form = new UntypedFormGroup({ involved: this.involvedFormArray });
 
   processes: any[] = [];
 
@@ -76,10 +67,10 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
       user: false,
     },
   ) {
-    return new FormGroup({
-      id: new FormControl(id),
-      [keyType]: new FormControl(false),
-      user: new FormControl(user),
+    return new UntypedFormGroup({
+      id: new UntypedFormControl(id),
+      [keyType]: new UntypedFormControl(false),
+      user: new UntypedFormControl(user)
     });
   }
 
@@ -107,12 +98,12 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
   users = (users$: Observable<any[]>, [i, j, type]: [number, number, string]) => {
     return users$.pipe(
       tap((users) => {
-        const phasesArray = (this.form.get('involved') as FormArray).controls[i].get(
-          'phases',
-        ) as FormArray;
+        const phasesArray = (this.form.get("involved") as UntypedFormArray).controls[i].get(
+          "phases"
+        ) as UntypedFormArray;
 
-        const arrayKey = type === 'work' ? 'work_user' : 'supervisor_user';
-        const teamArray = (phasesArray.controls[j] as FormGroup).get(arrayKey) as FormArray;
+        const arrayKey = type === "work" ? "work_user" : "supervisor_user";
+        const teamArray = (phasesArray.controls[j] as UntypedFormGroup).get(arrayKey) as UntypedFormArray;
 
         if (users) {
           const configType = type === 'work' ? 'mandatory_work' : 'mandatory_supervision';
@@ -219,39 +210,39 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
     this.involvedFormArray.clear();
     for (const process of processes) {
       this.involvedFormArray.push(
-        new FormGroup({
-          process: new FormControl({ id: process.id }),
-          phases: new FormArray([]),
-        }),
+        new UntypedFormGroup({
+          process: new UntypedFormControl({ id: process.id }),
+          phases: new UntypedFormArray([])
+        })
       );
       for (const phase of process.config.order_phases) {
         const phasesArrayControl = this.involvedFormArray
           .at(this.involvedFormArray.length - 1)
-          .get('phases') as FormArray;
+          .get("phases") as UntypedFormArray;
         phasesArrayControl.push(
-          new FormGroup({
-            phase: new FormControl({ id: phase.phase.id }),
-            supervisor_reference: new FormControl(),
-            supervisor: new FormArray([
+          new UntypedFormGroup({
+            phase: new UntypedFormControl({ id: phase.phase.id }),
+            supervisor_reference: new UntypedFormControl(),
+            supervisor: new UntypedFormArray([
               ...phase.involved.supervisor.map(({ id }: { id: number }) =>
-                BuildProjectComponent.createMandatoryConfig('mandatory_supervision', {
+                BuildProjectComponent.createMandatoryConfig("mandatory_supervision", {
                   id,
-                  user: false,
-                }),
-              ),
+                  user: false
+                })
+              )
             ]),
-            supervisor_user: new FormArray([]),
-            work_reference: new FormControl(),
-            work_group: new FormArray([
+            supervisor_user: new UntypedFormArray([]),
+            work_reference: new UntypedFormControl(),
+            work_group: new UntypedFormArray([
               ...phase.involved.work_group.map(({ id }: { id: number }) =>
-                BuildProjectComponent.createMandatoryConfig('mandatory_work', {
+                BuildProjectComponent.createMandatoryConfig("mandatory_work", {
                   id,
-                  user: false,
-                }),
-              ),
+                  user: false
+                })
+              )
             ]),
-            work_user: new FormArray([]),
-          }),
+            work_user: new UntypedFormArray([])
+          })
         );
       }
     }

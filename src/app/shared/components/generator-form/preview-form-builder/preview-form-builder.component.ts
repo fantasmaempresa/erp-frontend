@@ -1,38 +1,42 @@
-import { Component, forwardRef, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Formfield } from '../../../../data/dto/Formfield.dto';
-import { ControlValueAccessor, FormControl, FormGroup, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, forwardRef, Input, OnChanges, SimpleChanges } from "@angular/core";
+import { Formfield } from "../../../../data/dto/Formfield.dto";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, UntypedFormControl, UntypedFormGroup } from "@angular/forms";
 
 @Component({
-  selector: 'app-preview-form-builder',
-  templateUrl: './preview-form-builder.component.html',
-  styleUrls: ['./preview-form-builder.component.scss'],
+  selector: "app-preview-form-builder",
+  templateUrl: "./preview-form-builder.component.html",
+  styleUrls: ["./preview-form-builder.component.scss"],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => PreviewFormBuilderComponent),
-      multi: true,
-    },
-  ],
+      multi: true
+    }
+  ]
 })
-export class PreviewFormBuilderComponent implements OnChanges, ControlValueAccessor {
+export class PreviewFormBuilderComponent
+  implements OnChanges, ControlValueAccessor {
   @Input()
   formFields: Formfield<any>[] = [];
 
-  form: FormGroup = new FormGroup({});
+  form: UntypedFormGroup = new UntypedFormGroup({});
 
-  onChange = (_: any) => {};
+  onChange = (_: any) => {
+  };
 
-  onTouch = () => {};
+  onTouch = () => {
+  };
 
-  constructor() {}
+  constructor() {
+  }
 
-  buildFormGroup(): FormGroup {
+  buildFormGroup(): UntypedFormGroup {
     const group: any = {};
     //Todo add creation of validators
     for (const control of this.formFields) {
-      group[control.key] = new FormControl(null);
+      group[control.key] = new UntypedFormControl(null);
     }
-    return new FormGroup(group);
+    return new UntypedFormGroup(group);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

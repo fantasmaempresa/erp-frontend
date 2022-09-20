@@ -1,28 +1,19 @@
-import {
-  Component,
-  ElementRef,
-  forwardRef,
-  Injector,
-  Input,
-  OnChanges,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, NgControl } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { MatChipInputEvent } from '@angular/material/chips';
-import { debounceTime, filter, map, Observable, startWith, Subject } from 'rxjs';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { Component, ElementRef, forwardRef, Injector, Input, OnChanges, OnInit, ViewChild } from "@angular/core";
+import { ControlValueAccessor, NG_VALUE_ACCESSOR, NgControl, UntypedFormControl } from "@angular/forms";
+import { MatAutocompleteSelectedEvent } from "@angular/material/autocomplete";
+import { MatChipInputEvent } from "@angular/material/chips";
+import { debounceTime, filter, map, Observable, startWith, Subject } from "rxjs";
+import { COMMA, ENTER } from "@angular/cdk/keycodes";
 
 @Component({
-  selector: 'app-generic-autocomplete-chip',
-  templateUrl: './generic-autocomplete-chip.component.html',
-  styleUrls: ['./generic-autocomplete-chip.component.scss'],
+  selector: "app-generic-autocomplete-chip",
+  templateUrl: "./generic-autocomplete-chip.component.html",
+  styleUrls: ["./generic-autocomplete-chip.component.scss"],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => GenericAutocompleteChipComponent),
-      multi: true,
+      multi: true
     },
   ],
 })
@@ -59,7 +50,7 @@ export class GenericAutocompleteChipComponent implements ControlValueAccessor, O
   constructor(private inj: Injector) {}
 
   ngOnInit(): void {
-    this.ngControl = this.inj.get(NgControl, new FormControl());
+    this.ngControl = this.inj.get(NgControl, new UntypedFormControl());
     this.ngControl.valueAccessor = this;
   }
 

@@ -1,55 +1,54 @@
-import { Component, forwardRef, Injector, OnDestroy, StaticProvider } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, forwardRef, Injector, OnDestroy, StaticProvider } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import {
   CLAZZ,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
-  SELECTOR,
-} from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { PopupMultiSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-multi-selector/popup-multi-selector.component';
-import { ProcessPhaseDto } from '../../../../data/dto/ProcessPhase.dto';
+  SELECTOR
+} from "../../../../shared/components/dinamyc-views/dynamic-views.module";
 import {
-  loadNextPageOfProcessPhase,
-  loadProcessPhase,
-} from '../../../../state/process-phase/processPhase.actions';
-import { selectProcessPhase } from '../../../../state/process-phase/processPhase.selector';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+  PopupMultiSelectorComponent
+} from "../../../../shared/components/dinamyc-views/popup-multi-selector/popup-multi-selector.component";
+import { ProcessPhaseDto } from "../../../../data/dto/ProcessPhase.dto";
+import { loadNextPageOfProcessPhase, loadProcessPhase } from "../../../../state/process-phase/processPhase.actions";
+import { selectProcessPhase } from "../../../../state/process-phase/processPhase.selector";
+import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
 import {
   ControlValueAccessor,
-  FormArray,
-  FormControl,
-  FormGroup,
   NG_VALUE_ACCESSOR,
-  Validators,
-} from '@angular/forms';
-import { debounceTime, forkJoin, Subject, take, takeUntil } from 'rxjs';
-import { ProcessPhaseService } from '../../../../data/services/process-phase.service';
-import { RoleService } from '../../../../data/services/role.service';
-import { loadNextPageOfRoles, loadRoles } from '../../../../state/role/role.actions';
-import { selectRoles } from '../../../../state/role/role.selector';
-import { ProcessView } from '../../../../data/Presentation/Process.view';
-import { RoleView } from '../../../../data/Presentation/Role.view';
-import { ProcessPhaseView } from '../../../../data/Presentation/ProcessPhase.view';
+  UntypedFormArray,
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators
+} from "@angular/forms";
+import { debounceTime, forkJoin, Subject, take, takeUntil } from "rxjs";
+import { ProcessPhaseService } from "../../../../data/services/process-phase.service";
+import { RoleService } from "../../../../data/services/role.service";
+import { loadNextPageOfRoles, loadRoles } from "../../../../state/role/role.actions";
+import { selectRoles } from "../../../../state/role/role.selector";
+import { ProcessView } from "../../../../data/Presentation/Process.view";
+import { RoleView } from "../../../../data/Presentation/Role.view";
+import { ProcessPhaseView } from "../../../../data/Presentation/ProcessPhase.view";
 
 @Component({
-  selector: 'app-build-process',
-  templateUrl: './build-process.component.html',
-  styleUrls: ['./build-process.component.scss'],
+  selector: "app-build-process",
+  templateUrl: "./build-process.component.html",
+  styleUrls: ["./build-process.component.scss"],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => BuildProcessComponent),
-      multi: true,
+      multi: true
     },
   ],
 })
 export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
   processPhases!: ProcessPhaseDto[];
 
-  orderFormArray = new FormArray([]);
+  orderFormArray = new UntypedFormArray([]);
 
-  form = new FormGroup({
-    order_phases: this.orderFormArray,
+  form = new UntypedFormGroup({
+    order_phases: this.orderFormArray
   });
 
   private onDestroy$ = new Subject<number>();
@@ -119,12 +118,12 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
     this.orderFormArray.clear();
     this.processPhases.forEach(() => {
       this.orderFormArray.push(
-        new FormGroup({
-          end_process: new FormControl(false),
-          previous: new FormControl(),
-          roles_supervision: new FormControl(null, Validators.required),
-          roles_team: new FormControl(null, Validators.required),
-        }),
+        new UntypedFormGroup({
+          end_process: new UntypedFormControl(false),
+          previous: new UntypedFormControl(),
+          roles_supervision: new UntypedFormControl(null, Validators.required),
+          roles_team: new UntypedFormControl(null, Validators.required)
+        })
       );
     });
   }

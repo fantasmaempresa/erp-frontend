@@ -8,39 +8,36 @@ import {
   OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
-} from '@angular/core';
+  SimpleChanges
+} from "@angular/core";
 import {
   ControlValueAccessor,
-  FormControl,
-  FormGroup,
   NG_VALIDATORS,
   NG_VALUE_ACCESSOR,
+  UntypedFormControl,
+  UntypedFormGroup,
   Validator,
-  Validators,
-} from '@angular/forms';
-import { FormfieldControlService } from '../../../core/services/formfield-control.service';
-import { Store } from '@ngrx/store';
-import {
-  selectDynamicForm,
-  selectStatus,
-} from '../../../state/dynamic-form/dynamic-form.selector';
-import { Observable, Subscription, tap, using } from 'rxjs';
-import { Formfield } from '../../../data/dto/Formfield.dto';
-import { Update } from '@ngrx/entity';
-import { AbstractSubformComponent } from './abstract-subform.component';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { updateValues } from '../../../state/dynamic-form/dynamic-form.actions';
+  Validators
+} from "@angular/forms";
+import { FormfieldControlService } from "../../../core/services/formfield-control.service";
+import { Store } from "@ngrx/store";
+import { selectDynamicForm, selectStatus } from "../../../state/dynamic-form/dynamic-form.selector";
+import { Observable, Subscription, tap, using } from "rxjs";
+import { Formfield } from "../../../data/dto/Formfield.dto";
+import { Update } from "@ngrx/entity";
+import { AbstractSubformComponent } from "./abstract-subform.component";
+import { coerceBooleanProperty } from "@angular/cdk/coercion";
+import { updateValues } from "../../../state/dynamic-form/dynamic-form.actions";
 
 @Component({
-  selector: 'app-dynamic-form',
-  templateUrl: './dynamic-form.component.html',
-  styleUrls: ['./dynamic-form.component.scss'],
+  selector: "app-dynamic-form",
+  templateUrl: "./dynamic-form.component.html",
+  styleUrls: ["./dynamic-form.component.scss"],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => DynamicFormComponent),
-      multi: true,
+      multi: true
     },
     {
       provide: NG_VALIDATORS,
@@ -125,14 +122,14 @@ export class DynamicFormComponent
     }
   }
 
-  createForm(controls: Formfield<any>[]): FormGroup {
+  createForm(controls: Formfield<any>[]): UntypedFormGroup {
     const group: any = {};
     for (const control of controls) {
       group[control.key] = control.required
-        ? new FormControl(control.value || '', [Validators.required])
-        : new FormControl(control.value || '');
+        ? new UntypedFormControl(control.value || "", [Validators.required])
+        : new UntypedFormControl(control.value || "");
     }
-    let formGroup = new FormGroup(group);
+    let formGroup = new UntypedFormGroup(group);
     if (this._onlyRead) {
       formGroup.disable();
     } else {

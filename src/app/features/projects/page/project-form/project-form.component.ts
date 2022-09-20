@@ -1,35 +1,35 @@
-import { Component, StaticProvider } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectService } from '../../../../data/services/project.service';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { Component, StaticProvider } from "@angular/core";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { ProjectService } from "../../../../data/services/project.service";
+import { MessageHelper } from "../../../../shared/helpers/MessageHelper";
 import {
   CLAZZ,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
-  SELECTOR,
-} from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { selectClients } from '../../../../state/clients/clients.selector';
-import { loadClients, loadNextPageOfClients } from '../../../../state/clients/clients.actions';
-import { ClientService } from '../../../../data/services/client.service';
-import { ProcessService } from '../../../../data/services/process.service';
-import { selectProcess } from '../../../../state/process/process.selector';
-import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
-import { format } from 'date-fns';
-import { ClientView } from '../../../../data/Presentation/Client.view';
-import { ProcessView } from '../../../../data/Presentation/Process.view';
+  SELECTOR
+} from "../../../../shared/components/dinamyc-views/dynamic-views.module";
+import { selectClients } from "../../../../state/clients/clients.selector";
+import { loadClients, loadNextPageOfClients } from "../../../../state/clients/clients.actions";
+import { ClientService } from "../../../../data/services/client.service";
+import { ProcessService } from "../../../../data/services/process.service";
+import { selectProcess } from "../../../../state/process/process.selector";
+import { loadNextPageOfProcess, loadProcess } from "../../../../state/process/process.actions";
+import { format } from "date-fns";
+import { ClientView } from "../../../../data/Presentation/Client.view";
+import { ProcessView } from "../../../../data/Presentation/Process.view";
 
 @Component({
-  selector: 'app-project-form',
-  templateUrl: './project-form.component.html',
-  styleUrls: ['./project-form.component.scss'],
+  selector: "app-project-form",
+  templateUrl: "./project-form.component.html",
+  styleUrls: ["./project-form.component.scss"]
 })
 export class ProjectFormComponent {
   edit = false;
 
   step = 0;
 
-  form!: FormGroup;
+  form!: UntypedFormGroup;
 
   clientProvider: StaticProvider[] = [
     { provide: SELECTOR, useValue: selectClients },
@@ -52,13 +52,13 @@ export class ProjectFormComponent {
     public clientService: ClientService,
     public processService: ProcessService,
   ) {
-    this.form = new FormGroup({
-      name: new FormControl(null, Validators.required),
-      folio: new FormControl(null),
-      description: new FormControl(null, Validators.required),
-      estimate_end_date: new FormControl(null, Validators.required),
-      client_id: new FormControl(null, Validators.required),
-      config: new FormControl(null, Validators.required),
+    this.form = new UntypedFormGroup({
+      name: new UntypedFormControl(null, Validators.required),
+      folio: new UntypedFormControl(null),
+      description: new UntypedFormControl(null, Validators.required),
+      estimate_end_date: new UntypedFormControl(null, Validators.required),
+      client_id: new UntypedFormControl(null, Validators.required),
+      config: new UntypedFormControl(null, Validators.required)
     });
 
     const id = Number(this.route.snapshot.params.id);
@@ -66,9 +66,9 @@ export class ProjectFormComponent {
       this.edit = true;
       projectService.fetch(id).subscribe({
         next: (project) => {
-          this.form.addControl('id', new FormControl(''));
+          this.form.addControl("id", new UntypedFormControl(""));
           this.form.patchValue(project);
-        },
+        }
       });
     }
   }

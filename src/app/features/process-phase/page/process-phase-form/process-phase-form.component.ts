@@ -1,21 +1,21 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProcessPhaseService } from '../../../../data/services/process-phase.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { RoleService } from '../../../../data/services/role.service';
-import { map, Observable, pluck, startWith } from 'rxjs';
-import { RoleDto } from '../../../../data/dto/Role.dto';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { Component } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { ProcessPhaseService } from "../../../../data/services/process-phase.service";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import { RoleService } from "../../../../data/services/role.service";
+import { map, Observable, pluck, startWith } from "rxjs";
+import { RoleDto } from "../../../../data/dto/Role.dto";
+import { MessageHelper } from "../../../../shared/helpers/MessageHelper";
 
 @Component({
-  selector: 'app-process-phase-form',
-  templateUrl: './process-phase-form.component.html',
-  styleUrls: ['./process-phase-form.component.scss'],
+  selector: "app-process-phase-form",
+  templateUrl: "./process-phase-form.component.html",
+  styleUrls: ["./process-phase-form.component.scss"]
 })
 export class ProcessPhaseFormComponent {
   step = 0;
 
-  form!: FormGroup;
+  form!: UntypedFormGroup;
 
   roles$: Observable<RoleDto[]>;
 
@@ -33,23 +33,23 @@ export class ProcessPhaseFormComponent {
   ) {
     const id = Number(this.route.snapshot.params.id);
 
-    this.roles$ = this.roleService.fetchAll().pipe(pluck('data'));
+    this.roles$ = this.roleService.fetchAll().pipe(pluck("data"));
 
-    this.form = new FormGroup({
-      name: new FormControl(null, [Validators.required]),
-      description: new FormControl(null, [Validators.required]),
-      notification: new FormControl(false),
-      payments: new FormControl(false),
-      form: new FormControl([], Validators.required),
+    this.form = new UntypedFormGroup({
+      name: new UntypedFormControl(null, [Validators.required]),
+      description: new UntypedFormControl(null, [Validators.required]),
+      notification: new UntypedFormControl(false),
+      payments: new UntypedFormControl(false),
+      form: new UntypedFormControl([], Validators.required)
     });
 
     if (!isNaN(id)) {
       this.edit = true;
       this.processPhaseService.fetch(id).subscribe({
         next: (value: any) => {
-          this.form.addControl('id', new FormControl());
+          this.form.addControl("id", new UntypedFormControl());
           this.form.patchValue(value);
-        },
+        }
       });
     }
 
