@@ -4,9 +4,9 @@
 
 export const environment = {
   production: false,
-  base_url: 'http://35.236.46.69/api',
-  client_id: '972635d9-b530-4007-8040-9801dbccf813',
-  client_secret: 'za2ZwQx1DEi4XXuLgsMJt9pUCMRyFlFzH5qIct0w',
+  base_url: 'http://159.223.133.133/api',
+  client_id: '9745ffe6-38e5-437c-8e03-3fc06538aa93',
+  client_secret: 'XOVnpU6cwyA18GcT8KdbrvpAtVYWNFPC0I8IaGxl',
   grant_type: 'password',
   mix_pusher_app_key: '1234567',
   mix_pusher_app_cluster: 'mt1',
