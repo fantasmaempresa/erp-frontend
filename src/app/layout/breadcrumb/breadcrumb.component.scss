@@ -1,4 +1,4 @@
-@import '~src/assets/styles/abstracts/mixins';
+@use './src/assets/styles/abstracts/mixins' as mixins;
 
 .header-container {
   position: relative;
@@ -9,11 +9,11 @@
   padding: 1rem 5rem;
   align-items: center;
 
-  @include respond(tabLand) {
+  @include mixins.respond(tabLand) {
     padding: 1rem 7rem;
   }
 
-  @include respond {
+  @include mixins.respond {
     margin-top: -6.5rem;
     height: 6.5rem;
     flex-direction: column;
@@ -27,7 +27,7 @@
     font-weight: 400;
     margin-bottom: 0;
 
-    @include respond {
+    @include mixins.respond {
       font-size: var(--text-500);
     }
   }
@@ -35,7 +35,7 @@
   &__breadcrum {
     font-size: var(--text-400);
     font-weight: 150;
-    @include respond {
+    @include mixins.respond {
       font-size: var(--text-400);
     }
   }

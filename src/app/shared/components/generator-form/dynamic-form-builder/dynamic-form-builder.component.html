@@ -1,4 +1,7 @@
-<div class="form-builder" [class.form-builder--invalid]="ngControl?.touched && ngControl?.invalid">
+<div
+  class="form-builder"
+  [class.form-builder--invalid]="ngControl.touched && ngControl.invalid"
+>
   <div class="form-builder__fields">
     <div
       cdkDropList
@@ -36,14 +39,21 @@
       </div>
     </div>
   </div>
-  <form #f="ngForm" [formGroup]="form" (ngSubmit)="onSubmit(f)" class="form-builder__form">
+  <form
+    #f="ngForm"
+    [formGroup]="form"
+    (ngSubmit)="onSubmit(f)"
+    class="form-builder__form"
+  >
     <mat-form-field appearance="outline" class="w-100">
       <mat-label>Tipo de dato</mat-label>
       <mat-select formControlName="controlType">
         <mat-option>Ninguna</mat-option>
-        <mat-option *ngFor="let type of types; index as i" [value]="type.value">{{
-          type.label
-        }}</mat-option>
+        <mat-option
+          *ngFor="let type of types; index as i"
+          [value]="type.value"
+        >{{ type.label }}</mat-option
+        >
       </mat-select>
       <mat-error appErrorMessage></mat-error>
     </mat-form-field>
@@ -67,13 +77,23 @@
         <div class="form-options__key">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Clave</mat-label>
-            <input matInput type="text" autocomplete="off" formControlName="key" />
+            <input
+              matInput
+              type="text"
+              autocomplete="off"
+              formControlName="key"
+            />
           </mat-form-field>
         </div>
         <div class="form-options__value">
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>Valor</mat-label>
-            <input matInput type="text" autocomplete="off" formControlName="value" />
+            <input
+              matInput
+              type="text"
+              autocomplete="off"
+              formControlName="value"
+            />
           </mat-form-field>
         </div>
         <button

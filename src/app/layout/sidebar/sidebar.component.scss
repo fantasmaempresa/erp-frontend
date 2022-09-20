@@ -1,11 +1,12 @@
-@import '~src/assets/styles/abstracts/mixins';
-@import '~src/theme';
+@use './src/assets/styles/abstracts/variables' as variables;
+@use './src/assets/styles/abstracts/mixins' as mixins;
+@use './src/theme';
 
 .sidebar-container {
   position: relative;
   height: 100%;
 
-  @include respond(tabLand) {
+  @include mixins.respond(tabLand) {
     position: absolute;
     top: 0;
     left: 0;
@@ -30,15 +31,15 @@
   padding: 4rem 1rem 2rem;
   box-shadow: 8px 8px 16px 8px rgba(0, 0, 0, 0.125);
 
-  @include respond(tabLand) {
-    top: calc($headerHeight/2);
+  @include mixins.respond(tabLand) {
+    top: calc(#{variables.$headerHeight} / 2);
     min-height: auto;
     width: 30rem;
     transition: transform 550ms ease-in-out;
     transform: translateX(-100%);
   }
 
-  @include respond {
+  @include mixins.respond {
     width: 66.66vw;
   }
 
@@ -55,7 +56,7 @@
     display: none;
     z-index: 2000;
 
-    @include respond(tabLand) {
+    @include mixins.respond(tabLand) {
       display: block;
     }
   }

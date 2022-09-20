@@ -1,4 +1,5 @@
-@import '~src/assets/styles/abstracts/variables';
+@use './src/assets/styles/abstracts/variables' as variables;
+@use './src/assets/styles/abstracts/functions' as functions;
 
 @mixin clearfix {
   &::after {
@@ -29,8 +30,8 @@
 }
 
 @mixin font-scale($typoScale: minor-third) {
-  $currentScale: map-get($typoScales, $typoScale);
-  $scale: $defaultFontSize / pow($currentScale, 3);
+  $currentScale: map-get(variables.$typoScales, $typoScale);
+  $scale: variables.$defaultFontSize / functions.pow($currentScale, 3);
   $currentValue: $scale;
   & {
     @for $i from 1 to 10 {
@@ -60,7 +61,7 @@ Order: Base + typograpy > general layout + grid > page layout > components
 -bigDesktop
 */
 @mixin respond($size: phone, $type: max) {
-  $breakpoint: map-get($breakpoints, $size);
+  $breakpoint: map-get(variables.$breakpoints, $size);
   @if $type == max {
     @media (max-width: $breakpoint) {
       @content;

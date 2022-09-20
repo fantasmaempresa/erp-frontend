@@ -1,4 +1,4 @@
-@import '~src/assets/styles/abstracts/mixins';
+@use './src/assets/styles/abstracts/mixins' as mixins;
 
 :host {
   display: grid;
@@ -12,7 +12,7 @@
   justify-content: space-between;
   align-items: flex-start;
 
-  @include respond {
+  @include mixins.respond {
     padding: 0 1rem;
     justify-content: space-around;
   }
@@ -61,7 +61,7 @@
     justify-content: space-between;
     align-items: center;
 
-    @include respond {
+    @include mixins.respond {
       display: none;
     }
   }
@@ -72,7 +72,7 @@
     display: flex;
     align-items: center;
 
-    @include respond {
+    @include mixins.respond {
       flex: 9 1;
     }
 
