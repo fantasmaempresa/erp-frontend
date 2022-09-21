@@ -1,18 +1,18 @@
-@import '~src/assets/styles/abstracts/variables';
-@import '~src/assets/styles/abstracts/mixins';
+@use './src/assets/styles/abstracts/variables' as variables;
+@use './src/assets/styles/abstracts/mixins' as mixins;
 
 :host {
   min-height: 100vh;
   display: grid;
   grid-template-rows: 15rem minmax(0, 1fr);
-  grid-template-columns: $sidebarContainer repeat(2, 1fr);
+  grid-template-columns: variables.$sidebarContainer repeat(2, 1fr);
   background-color: var(--bgColorDark);
 
   grid-template-areas:
     'header header header'
     'sidebar main main';
 
-  @include respond(tabLand) {
+  @include mixins.respond(tabLand) {
     grid-template-columns: 1fr;
     grid-template-areas:
       'header'
@@ -26,7 +26,7 @@
 
 .sidebar {
   grid-area: sidebar;
-  @include respond(tabLand) {
+  @include mixins.respond(tabLand) {
     grid-area: none;
   }
 }
@@ -45,7 +45,7 @@
   margin-bottom: 1.5rem;
   padding: 0 2.4rem;
 
-  @include respond {
+  @include mixins.respond {
     padding: 0;
   }
 }

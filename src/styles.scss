@@ -4,16 +4,16 @@
 @use "./styles/components";
 @use "./styles/typography/config" as typography;
 
-@import '~src/assets/styles/abstracts/variables';
-@import '~src/assets/styles/abstracts/functions';
-@import '~src/assets/styles/abstracts/mixins';
+@import './src/assets/styles/abstracts/variables';
+@import './src/assets/styles/abstracts/functions';
+@import './src/assets/styles/abstracts/mixins';
 
-@import '~src/assets/styles/base/base';
-@import '~src/assets/styles/base/typograpgy';
-@import '~src/assets/styles/base/animation';
+@import './src/assets/styles/base/base';
+@import './src/assets/styles/base/typograpgy';
+@import './src/assets/styles/base/animation';
 
-@import '~src/assets/styles/components/profile-img';
-@import '~src/assets/styles/components/scrollbar';
+@import './src/assets/styles/components/profile-img';
+@import './src/assets/styles/components/scrollbar';
 @import "styles/components/card-view";
 
 @include mat.core(typography.$fontConfig);
