@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { ClientService } from '../../data/services/client.service';
-import { loadClients, loadClientsSuccess, loadNextPageOfClients } from './clients.actions';
+import {
+  loadClients,
+  loadClientsSuccess,
+  loadNextPageOfClients,
+} from './clients.actions';
 import { map, mergeMap } from 'rxjs';
 
 @Injectable()
 export class ClientsEffects {
-  constructor(private actions$: Actions, private clientService: ClientService) {}
+  constructor(
+    private actions$: Actions,
+    private clientService: ClientService,
+  ) {}
 
   loadClients$ = createEffect(() => {
     return this.actions$.pipe(

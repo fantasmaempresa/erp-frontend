@@ -6,10 +6,14 @@
 <div mat-dialog-content>
   <app-table-search
     [pageSize]="options.pageSize"
-    (optionSelected)="$event ? (optionSelected = $event) : (optionSelected = null)"
+    (optionSelected)="
+      $event ? (optionSelected = $event) : (optionSelected = null)
+    "
   ></app-table-search>
 </div>
 
 <div mat-dialog-actions class="d-flex justify-content-end">
-  <button mat-button [mat-dialog-close]="optionSelected" cdkFocusInitial>Seleccionar</button>
+  <button mat-button [mat-dialog-close]="optionSelected" cdkFocusInitial>
+    Seleccionar
+  </button>
 </div>

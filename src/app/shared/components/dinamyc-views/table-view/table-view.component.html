@@ -21,12 +21,20 @@
     [matColumnDef]="displayedColumns[i + 1]"
   >
     <th mat-header-cell *matHeaderCellDef>{{ field }}</th>
-    <ng-container *ngIf="displayedColumns[i + 1] | mapTo: doesntHaveHtml; else renderHtml">
-      <td mat-cell *matCellDef="let element">{{ element | mapTo: mapToGetKey:i + 1 }}</td>
+    <ng-container
+      *ngIf="displayedColumns[i + 1] | mapTo: doesntHaveHtml; else renderHtml"
+    >
+      <td mat-cell *matCellDef="let element">
+        {{ element | mapTo: mapToGetKey:i + 1 }}
+      </td>
     </ng-container>
 
     <ng-template #renderHtml>
-      <td mat-cell *matCellDef="let element" [innerHTML]="element | mapTo: mapToInnerHtml:i + 1">
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [innerHTML]="element | mapTo: mapToInnerHtml:i + 1"
+      >
         {{ element }}
       </td>
     </ng-template>

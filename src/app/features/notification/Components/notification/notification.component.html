@@ -21,12 +21,20 @@
           [class.notifications__item--unread]="!notification.check"
           class="notifications__item"
         >
-          <span class="notifications__item-title">{{ notification.notification.title }}</span>
+          <span class="notifications__item-title">{{
+            notification.notification.title
+          }}</span>
           <div class="notifications__item-body">
-            <span class="material-icons notifications__item-icon">notifications</span>
-            <span class="notifications__item-label">{{ notification.notification.message }}</span>
+            <span class="material-icons notifications__item-icon"
+              >notifications</span
+            >
+            <span class="notifications__item-label">{{
+              notification.notification.message
+            }}</span>
           </div>
-          <span class="notifications__item-date">{{ notification?.created_at | fromDate }}</span>
+          <span class="notifications__item-date">{{
+            notification?.created_at | fromDate
+          }}</span>
         </li>
       </ul>
     </div>

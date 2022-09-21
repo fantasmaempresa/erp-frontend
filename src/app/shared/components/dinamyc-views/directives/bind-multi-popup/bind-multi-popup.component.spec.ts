@@ -8,9 +8,8 @@ describe('BindMultiPopupComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BindMultiPopupComponent ]
-    })
-    .compileComponents();
+      declarations: [BindMultiPopupComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { ActionsCard } from '../card-view/card-view.component';
 import { BreakpointObserver, BreakpointState } from '@angular/cdk/layout';
 import { Subject, takeUntil } from 'rxjs';

@@ -35,7 +35,10 @@
           formControlName="estimate_end_date"
           (focus)="dateForm.open()"
         />
-        <mat-datepicker-toggle matSuffix [for]="dateForm"></mat-datepicker-toggle>
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="dateForm"
+        ></mat-datepicker-toggle>
         <mat-datepicker #dateForm></mat-datepicker>
       </mat-form-field>
 

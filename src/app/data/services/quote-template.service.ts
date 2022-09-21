@@ -17,8 +17,11 @@ export class QuoteTemplateService extends CrudService<QuoteTemplate> {
     let params = new HttpParams();
     params = params.append('page', `${page}`);
     params = params.append('paginate', `${size}`);
-    return this.http.get<Pagination<QuoteTemplate>>(`${environment.base_url}/templateQuotes`, {
-      params,
-    });
+    return this.http.get<Pagination<QuoteTemplate>>(
+      `${environment.base_url}/templateQuotes`,
+      {
+        params,
+      },
+    );
   }
 }

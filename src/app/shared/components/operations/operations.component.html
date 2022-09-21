@@ -34,16 +34,24 @@
       >
         <div class="col-5">
           <mat-form-field appearance="outline" class="w-100">
-            <mat-label>{{ operation_fields.at(i).get('label')?.value }}</mat-label>
+            <mat-label>{{
+              operation_fields.at(i).get('label')?.value
+            }}</mat-label>
             <input matInput formControlName="value" />
           </mat-form-field>
         </div>
         <div class="col-5">
-          <mat-form-field class="w-100" appearance="outline" appChipListAutocompleteFix>
+          <mat-form-field
+            class="w-100"
+            appearance="outline"
+            appChipListAutocompleteFix
+          >
             <mat-label>Conceptos</mat-label>
             <mat-chip-list #chipList aria-label="Concept selection">
               <mat-chip
-                *ngFor="let concept of operation_fields.controls[i].value.concepts"
+                *ngFor="
+                  let concept of operation_fields.controls[i].value.concepts
+                "
                 (removed)="remove(concept, i, 'fields')"
               >
                 {{ concept.name }}
@@ -68,7 +76,10 @@
             >
               <mat-option [value]="'new'">Crear nuevo concepto</mat-option>
               <mat-option
-                *ngFor="let concept of filteredConcepts$[i] | async; trackBy: trackConceptsByFn"
+                *ngFor="
+                  let concept of filteredConcepts$[i] | async;
+                  trackBy: trackConceptsByFn
+                "
                 [value]="concept"
               >
                 {{ concept.name }}
@@ -104,16 +115,24 @@
       >
         <div class="col-5">
           <mat-form-field appearance="outline" class="w-100">
-            <mat-label>{{ operation_total.at(i).get('label')?.value }}</mat-label>
+            <mat-label>{{
+              operation_total.at(i).get('label')?.value
+            }}</mat-label>
             <input matInput formControlName="value" />
           </mat-form-field>
         </div>
         <div class="col-5">
-          <mat-form-field class="w-100" appearance="outline" appChipListAutocompleteFix>
+          <mat-form-field
+            class="w-100"
+            appearance="outline"
+            appChipListAutocompleteFix
+          >
             <mat-label>Conceptos</mat-label>
             <mat-chip-list #chipListTotal aria-label="Concept selection">
               <mat-chip
-                *ngFor="let concept of operation_total.controls[i].value.concepts"
+                *ngFor="
+                  let concept of operation_total.controls[i].value.concepts
+                "
                 (removed)="remove(concept, i, 'total')"
               >
                 {{ concept.name }}

@@ -35,12 +35,17 @@ export class ProcessView {
             supervisor: orderPhase[index].roles_supervision
               ? orderPhase[index].roles_supervision
               : [],
-            work_group: orderPhase[index].roles_team ? orderPhase[index].roles_team : [],
+            work_group: orderPhase[index].roles_team
+              ? orderPhase[index].roles_team
+              : [],
           },
         },
       ];
     }, []);
-    return { order_phases, phases_process: phases_process.map(({ id }) => ({ id })) };
+    return {
+      order_phases,
+      phases_process: phases_process.map(({ id }) => ({ id })),
+    };
   }
 
   static mapConfigOnWrite({

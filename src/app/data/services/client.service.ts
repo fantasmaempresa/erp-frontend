@@ -17,6 +17,9 @@ export class ClientService extends CrudService<ClientDto> {
     let params = new HttpParams();
     params = params.append('page', `${page}`);
     params = params.append('paginate', `${size}`);
-    return this._http.get<Pagination<ClientDto>>(`${environment.base_url}/clients`, { params });
+    return this._http.get<Pagination<ClientDto>>(
+      `${environment.base_url}/clients`,
+      { params },
+    );
   }
 }

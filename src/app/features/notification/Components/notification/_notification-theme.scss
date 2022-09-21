@@ -1,32 +1,30 @@
-@use "sass:map";
-@use "@angular/material" as mat;
+@use 'sass:map';
+@use '@angular/material' as mat;
 
-@mixin color ($theme) {
-
+@mixin color($theme) {
   $color-config: mat.get-color-config($theme);
 
-  $primary-palette: map.get($color-config, "primary");
-  $accent-palette: map.get($color-config, "accent");
+  $primary-palette: map.get($color-config, 'primary');
+  $accent-palette: map.get($color-config, 'accent');
 
   .notifications {
     &__icon {
-      color: mat.get-color-from-palette($accent-palette, "main");
+      color: mat.get-color-from-palette($accent-palette, 'main');
     }
 
     &__number {
-      background: mat.get-color-from-palette($primary-palette, "main");
-      color: mat.get-color-from-palette($accent-palette, "main");
+      background: mat.get-color-from-palette($primary-palette, 'main');
+      color: mat.get-color-from-palette($accent-palette, 'main');
     }
 
     &__container {
-      background: mat.get-color-from-palette($primary-palette, "main");
+      background: mat.get-color-from-palette($primary-palette, 'main');
     }
   }
 }
 
 @mixin typography($typography-config) {
 }
-
 
 @mixin theme($theme, $typography-config) {
   $color-config: mat.get-color-config($theme);

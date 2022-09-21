@@ -24,11 +24,10 @@
     color: var(--primaryColor);
     background: rgba(0, 0, 0, 0.3);
   }
-
 }
 
 .process {
-  background: rgba(0, 0, 0, .33);
+  background: rgba(0, 0, 0, 0.33);
   min-height: 15rem;
   padding: 2rem 2rem 3rem;
   border-radius: 4px;
@@ -75,7 +74,6 @@
   }
 
   &__involved {
-
     & mat-radio-group {
       display: block;
 

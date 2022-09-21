@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap } from 'rxjs';
-import { loadNextPageOfRoles, loadRoles, loadRolesSuccess } from './role.actions';
+import {
+  loadNextPageOfRoles,
+  loadRoles,
+  loadRolesSuccess,
+} from './role.actions';
 import { RoleService } from '../../data/services/role.service';
 
 @Injectable()
@@ -10,7 +14,9 @@ export class RoleEffects {
     return this.actions$.pipe(
       ofType(loadRoles),
       mergeMap(() => {
-        return this.roleService.fetchAll().pipe(map((roles) => loadRolesSuccess({ roles })));
+        return this.roleService
+          .fetchAll()
+          .pipe(map((roles) => loadRolesSuccess({ roles })));
       }),
     );
   });

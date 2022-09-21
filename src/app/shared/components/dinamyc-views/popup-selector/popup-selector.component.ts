@@ -35,9 +35,12 @@ export class PopupSelectorComponent implements OnInit {
   ngOnInit(): void {
     const injector = Injector.create([...this.data.providers], this.inj);
 
-    this.componentRef = this.container.viewContainerRef.createComponent(TableViewComponent, {
-      injector,
-    });
+    this.componentRef = this.container.viewContainerRef.createComponent(
+      TableViewComponent,
+      {
+        injector,
+      },
+    );
   }
 
   closeDialog() {

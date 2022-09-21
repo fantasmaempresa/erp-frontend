@@ -31,9 +31,13 @@ export class ErrorMessageDirective implements AfterViewInit, OnDestroy {
     this.control = inputRef._control.ngControl?.control;
     const target = inputRef._elementRef.nativeElement;
 
-    this.classWatcher = new ClassWatcher(target, 'mat-form-field-invalid', () => {
-      this.checkErrors();
-    });
+    this.classWatcher = new ClassWatcher(
+      target,
+      'mat-form-field-invalid',
+      () => {
+        this.checkErrors();
+      },
+    );
   }
 
   checkErrors() {

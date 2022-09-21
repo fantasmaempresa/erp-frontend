@@ -10,7 +10,9 @@
       <div class="card-view__field-row" *ngFor="let process of project.process">
         <div class="card-view__field-header">{{ process.name }}</div>
         <div class="card-view__field-actions">
-          <mat-icon (click)="startProcess(project, process)" matTooltip="Comenzar Proceso"
+          <mat-icon
+            (click)="startProcess(project, process)"
+            matTooltip="Comenzar Proceso"
             >start
           </mat-icon>
         </div>

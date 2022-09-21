@@ -16,7 +16,11 @@
     [formGroup]="form"
   >
     <ng-container *ngIf="processPhases; else containerPlaceholder">
-      <div class="build-process__item" *ngFor="let phase of processPhases; let i = index" cdkDrag>
+      <div
+        class="build-process__item"
+        *ngFor="let phase of processPhases; let i = index"
+        cdkDrag
+      >
         <!--        <div class="placeholder-item" *cdkDragPlaceholder></div>-->
         <div class="phase-item">
           <span class="phase-item__name">

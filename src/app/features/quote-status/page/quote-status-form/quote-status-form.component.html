@@ -1,7 +1,11 @@
 <mat-card>
   <mat-toolbar>
     <div>
-      <button aria-label="Regresar" mat-icon-button (click)="backToListQuoteStatusList()">
+      <button
+        aria-label="Regresar"
+        mat-icon-button
+        (click)="backToListQuoteStatusList()"
+      >
         <mat-icon>arrow_back</mat-icon>
       </button>
     </div>
@@ -27,8 +31,15 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Descripción</mat-label>
-        <input matInput type="text" formControlName="description" (blur)="logValidationErrors()" />
-        <mat-error *ngIf="formErrors.description">{{ formErrors.description }}</mat-error>
+        <input
+          matInput
+          type="text"
+          formControlName="description"
+          (blur)="logValidationErrors()"
+        />
+        <mat-error *ngIf="formErrors.description">{{
+          formErrors.description
+        }}</mat-error>
       </mat-form-field>
 
       <button mat-flat-button color="primary">Guardar</button>

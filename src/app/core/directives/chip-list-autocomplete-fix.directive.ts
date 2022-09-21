@@ -43,7 +43,8 @@ export class ChipListAutocompleteFixDirective implements AfterContentInit {
   ngAfterContentInit(): void {
     if (!this.rawInput) {
       // Query our input element directly
-      this.rawInput = this._viewContainerRef.element.nativeElement.querySelector('input');
+      this.rawInput =
+        this._viewContainerRef.element.nativeElement.querySelector('input');
     }
 
     // Watch for changes on the Chip List
@@ -52,7 +53,10 @@ export class ChipListAutocompleteFixDirective implements AfterContentInit {
       const currentChipCount = changes.length;
 
       // Check if we're adding or removing a chip to toggle input
-      if (currentChipCount < this.chipCount || currentChipCount > this.chipCount) {
+      if (
+        currentChipCount < this.chipCount ||
+        currentChipCount > this.chipCount
+      ) {
         this.toggleInput();
       }
 

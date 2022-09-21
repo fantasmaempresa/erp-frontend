@@ -5,12 +5,15 @@ import * as ConceptActions from './concepts.actions';
 const ConceptsReducer = createReducer(
   conceptsInitialState,
   on(ConceptActions.loadConcepts, (state) => state),
-  on(ConceptActions.loadConceptsSuccess, (state: ConceptsState, { concepts }) => {
-    return {
-      ...state,
-      concepts,
-    };
-  }),
+  on(
+    ConceptActions.loadConceptsSuccess,
+    (state: ConceptsState, { concepts }) => {
+      return {
+        ...state,
+        concepts,
+      };
+    },
+  ),
   on(ConceptActions.emptyConceptList, (state) => {
     return conceptsInitialState;
   }),

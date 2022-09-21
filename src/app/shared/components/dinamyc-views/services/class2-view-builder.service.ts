@@ -19,9 +19,14 @@ export class Class2ViewBuilderService {
     if (!this.objClass) return [];
     const propertyNames = Object.getOwnPropertyNames(this.objClass);
     return propertyNames
-      .filter((key) => Reflect.getMetadataKeys(this.objClass, key).includes('printLabel'))
+      .filter((key) =>
+        Reflect.getMetadataKeys(this.objClass, key).includes('printLabel'),
+      )
       .map((key) => {
-        return { key, metadata: Reflect.getMetadata('printLabel', this.objClass, key) };
+        return {
+          key,
+          metadata: Reflect.getMetadata('printLabel', this.objClass, key),
+        };
       })
       .sort((a, b) => b.metadata.order - a.metadata.order)
       .map(({ key }) => key);
@@ -44,7 +49,10 @@ export class Class2ViewBuilderService {
     return this._getKeysDecoratorValues(printableKeys, 'mapHTML');
   }
 
-  private _getKeysDecoratorValues(printableKeys: string[], decoratorName: string) {
+  private _getKeysDecoratorValues(
+    printableKeys: string[],
+    decoratorName: string,
+  ) {
     const mapToArrays = printableKeys.filter((key) =>
       Reflect.getMetadataKeys(this.objClass, key).includes(decoratorName),
     );

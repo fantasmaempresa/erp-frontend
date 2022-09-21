@@ -5,13 +5,16 @@ import * as ProjectActions from './project.actions';
 const ProjectReducer = createReducer(
   initialState,
   on(ProjectActions.loadProjects, (state) => state),
-  on(ProjectActions.loadProjectsSuccess, (state: ProjectState, { projects }) => {
-    return {
-      ...state,
-      projects,
-    };
-  }),
-  on(ProjectActions.emptyProjectList, (state) => {
+  on(
+    ProjectActions.loadProjectsSuccess,
+    (state: ProjectState, { projects }) => {
+      return {
+        ...state,
+        projects,
+      };
+    },
+  ),
+  on(ProjectActions.emptyProjectList, () => {
     return initialState;
   }),
 );

@@ -10,7 +10,9 @@ export enum ProcessPhaseActions {
   EMPTY_PROCESS_PHASE_LIST = '[ProcessPhase] Empty processPhase list',
 }
 
-export const loadProcessPhase = createAction(ProcessPhaseActions.LOAD_PROCESS_PHASE);
+export const loadProcessPhase = createAction(
+  ProcessPhaseActions.LOAD_PROCESS_PHASE,
+);
 export const loadProcessPhaseSuccess = createAction(
   ProcessPhaseActions.LOAD_PROCESS_PHASE_SUCCESS,
   props<{ processPhases: Pagination<ProcessPhaseDto> }>(),
@@ -21,4 +23,6 @@ export const loadNextPageOfProcessPhase = createAction(
   props<{ page: number; size: number }>(),
 );
 
-export const emptyClientList = createAction(ProcessPhaseActions.EMPTY_PROCESS_PHASE_LIST);
+export const emptyClientList = createAction(
+  ProcessPhaseActions.EMPTY_PROCESS_PHASE_LIST,
+);

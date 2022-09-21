@@ -1,5 +1,14 @@
 import { Injectable } from '@angular/core';
-import { bufferTime, filter, map, Observable, pluck, take, tap, timer } from 'rxjs';
+import {
+  bufferTime,
+  filter,
+  map,
+  Observable,
+  pluck,
+  take,
+  tap,
+  timer,
+} from 'rxjs';
 import { LaravelWebSocket } from '../../classes/laravel-web-socket';
 
 // const ANIMATION_TIME = 18_000;
@@ -55,7 +64,11 @@ export class NotificationSocketService extends LaravelWebSocket {
       map(() => {
         const id = new Date().getTime();
         return {
-          notification: { title: 'Prueba', type: 1, message: `Notification Test ${id}` },
+          notification: {
+            title: 'Prueba',
+            type: 1,
+            message: `Notification Test ${id}`,
+          },
           id,
           check: false,
         };

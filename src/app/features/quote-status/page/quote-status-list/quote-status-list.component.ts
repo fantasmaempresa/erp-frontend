@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
@@ -21,7 +27,9 @@ import {
   templateUrl: './quote-status-list.component.html',
   styleUrls: ['./quote-status-list.component.scss'],
 })
-export class QuoteStatusListComponent implements OnInit, AfterViewInit, OnDestroy {
+export class QuoteStatusListComponent
+  implements OnInit, AfterViewInit, OnDestroy
+{
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['select', 'name', 'description'];
@@ -86,10 +94,12 @@ export class QuoteStatusListComponent implements OnInit, AfterViewInit, OnDestro
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: QuoteStatusDto): string {
     if (!row) {
-      return `${this.isAllSelected() ? "deselect" : "select"} all`;
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
     // @ts-ignore
-    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      row.id + 1
+    }`;
   }
 
   async goToNewQuoteStatus() {
@@ -108,9 +118,11 @@ export class QuoteStatusListComponent implements OnInit, AfterViewInit, OnDestro
       `¿Deseas borrar el concepto ${this.selection.selected[0].name}?`,
       'Una vez borrado no hay marcha atras.',
       () => {
-        this.quoteStatusService.delete(this.selection.selected[0].id).subscribe({
-          next: () => this.store.dispatch(loadQuoteStatuses()),
-        });
+        this.quoteStatusService
+          .delete(this.selection.selected[0].id)
+          .subscribe({
+            next: () => this.store.dispatch(loadQuoteStatuses()),
+          });
       },
     );
   }

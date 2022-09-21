@@ -1,14 +1,23 @@
 import { ActionReducerMap } from '@ngrx/store';
 import { AuthState, initialState } from './auth/auth.state';
 import { authReducer } from './auth/auth.reducer';
-import { ClientsState, initialState as clientsInitialState } from './clients/clients.state';
-import { initialState as staffInitialState, StaffState } from './staff/staff.state';
+import {
+  ClientsState,
+  initialState as clientsInitialState,
+} from './clients/clients.state';
+import {
+  initialState as staffInitialState,
+  StaffState,
+} from './staff/staff.state';
 import { staffReducer } from './staff/staff.reducer';
 import { areasInitialState, AreasState } from './areas/areas.state';
 import { areasReducer } from './areas/areas.reducer';
 import { conceptsInitialState, ConceptsState } from './concepts/concepts.state';
 import { conceptReducer } from './concepts/concepts.reducer';
-import { quoteStatusInitialState, QuoteStatusState } from './quote-status/quote-status.state';
+import {
+  quoteStatusInitialState,
+  QuoteStatusState,
+} from './quote-status/quote-status.state';
 import { quoteStatusReducer } from './quote-status/quote-status.reducer';
 import { quotesInitialState, QuotesState } from './quotes/quotes.state';
 import { quotesReducer } from './quotes/quotes.reducer';
@@ -29,15 +38,24 @@ import {
 import { clientsLinkReducer } from './clients-link/clients-link.reducer';
 import { clientReducer } from './clients/clients.reducer';
 import { userReducer } from './users/users.reducer';
-import { initialState as userInitialState, UsersState } from './users/users.state';
+import {
+  initialState as userInitialState,
+  UsersState,
+} from './users/users.state';
 import {
   initialState as processPhaseState,
   ProcessPhaseState,
 } from './process-phase/processPhase.state';
-import { initialState as projectState, ProjectState } from './project/project.state';
+import {
+  initialState as projectState,
+  ProjectState,
+} from './project/project.state';
 import { processPhaseReducer } from './process-phase/processPhase.reducer';
 import { projectReducer } from './project/project.reducer';
-import { initialState as processInitialState, ProcessState } from './process/process.state';
+import {
+  initialState as processInitialState,
+  ProcessState,
+} from './process/process.state';
 import { processReducer } from './process/process.reducer';
 import { rolesInitialState, RoleState } from './role/role.state';
 import { roleReducer } from './role/role.reducer';

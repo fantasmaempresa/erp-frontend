@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { AreaService } from '../../data/services/area.service';
-import { loadAreas, loadAreasSuccess, loadNextPageOfAreas } from './areas.actions';
+import {
+  loadAreas,
+  loadAreasSuccess,
+  loadNextPageOfAreas,
+} from './areas.actions';
 import { map, mergeMap } from 'rxjs';
 
 @Injectable()
@@ -12,7 +16,9 @@ export class AreasEffects {
     return this.actions$.pipe(
       ofType(loadAreas),
       mergeMap(() => {
-        return this.areaService.fetchAll().pipe(map((areas) => loadAreasSuccess({ areas })));
+        return this.areaService
+          .fetchAll()
+          .pipe(map((areas) => loadAreasSuccess({ areas })));
       }),
     );
   });

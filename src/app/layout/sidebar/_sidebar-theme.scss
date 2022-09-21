@@ -1,16 +1,14 @@
-@use "sass:map";
-@use "@angular/material" as mat;
+@use 'sass:map';
+@use '@angular/material' as mat;
 
-@mixin color ($theme) {
-
+@mixin color($theme) {
   $color-config: mat.get-color-config($theme);
 
-  $primary-palette: map.get($color-config, "primary");
-  $accent-palette: map.get($color-config, "accent");
-
+  $primary-palette: map.get($color-config, 'primary');
+  $accent-palette: map.get($color-config, 'accent');
 
   .sidebar {
-    background-color: mat.get-color-from-palette($primary-palette, "main");
+    background-color: mat.get-color-from-palette($primary-palette, 'main');
     color: var(--text-primary-color);
 
     &__icon {
@@ -26,7 +24,7 @@
 
     &-header {
       &__profile-place {
-        color: mat.get-color-from-palette($accent-palette, "darker");
+        color: mat.get-color-from-palette($accent-palette, 'darker');
       }
     }
   }
@@ -50,7 +48,7 @@
         width: 100%;
         border-radius: 0.5rem;
         transform: scaleX(0);
-        background: mat.get-color-from-palette($accent-palette, "main");
+        background: mat.get-color-from-palette($accent-palette, 'main');
         transition: 360ms all ease-in-out;
         transform-origin: left;
         z-index: 2;
@@ -64,7 +62,7 @@
 
       &--active,
       &--active:hover {
-        color: mat.get-color-from-palette($primary-palette, "darker");
+        color: mat.get-color-from-palette($primary-palette, 'darker');
         animation: none;
 
         &::after {
@@ -75,15 +73,15 @@
 
     &__dropdown-container {
       //color: var(--color-secondary-100);
-      background: mat.get-color-from-palette($primary-palette, "main");
+      background: mat.get-color-from-palette($primary-palette, 'main');
       border-top: 2px solid rgba(0, 0, 0, 0.325);
     }
 
     &__dropdown-back {
-      background-color: mat.get-color-from-palette($primary-palette, "main");
+      background-color: mat.get-color-from-palette($primary-palette, 'main');
       &:hover {
-        color: mat.get-color-from-palette($primary-palette, "main");
-        background: mat.get-color-from-palette($accent-palette, "main");
+        color: mat.get-color-from-palette($primary-palette, 'main');
+        background: mat.get-color-from-palette($accent-palette, 'main');
       }
     }
   }
@@ -91,7 +89,6 @@
 
 @mixin typography($typography-config) {
 }
-
 
 @mixin theme($theme, $typography-config) {
   $color-config: mat.get-color-config($theme);

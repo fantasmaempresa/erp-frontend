@@ -25,10 +25,26 @@ export class SidebarComponent {
           icon: 'rule_folder',
           isOpen: false,
           dropdowns: [
-            { label: 'Nueva Cotización', route: './project-quote/new', icon: 'add_circle' },
-            { label: 'Lista de cotizaciones', route: './project-quote', icon: 'group_work' },
-            { label: 'Estados de la cotización', route: './quote-statuses', icon: 'group_work' },
-            { label: 'Plantillas', route: './project-quote-template', icon: 'group_work' },
+            {
+              label: 'Nueva Cotización',
+              route: './project-quote/new',
+              icon: 'add_circle',
+            },
+            {
+              label: 'Lista de cotizaciones',
+              route: './project-quote',
+              icon: 'group_work',
+            },
+            {
+              label: 'Estados de la cotización',
+              route: './quote-statuses',
+              icon: 'group_work',
+            },
+            {
+              label: 'Plantillas',
+              route: './project-quote-template',
+              icon: 'group_work',
+            },
           ],
         },
         {
@@ -39,7 +55,11 @@ export class SidebarComponent {
             { label: 'Fases', route: './process-phase', icon: 'timeline' },
             { label: 'Procesos', route: './process', icon: 'pending_actions' },
             { label: 'Proyectos', route: './project', icon: 'hub' },
-            { label: 'Comenzar Proyecto', route: './project-start', icon: 'hub' },
+            {
+              label: 'Comenzar Proyecto',
+              route: './project-start',
+              icon: 'hub',
+            },
           ],
         },
         {
@@ -47,8 +67,16 @@ export class SidebarComponent {
           icon: 'description',
           isOpen: false,
           dropdowns: [
-            { label: 'Pendientes', route: './pending_procedures', icon: 'pause' },
-            { label: 'En Curso', route: './ongoing_procedure', icon: 'play_arrow' },
+            {
+              label: 'Pendientes',
+              route: './pending_procedures',
+              icon: 'pause',
+            },
+            {
+              label: 'En Curso',
+              route: './ongoing_procedure',
+              icon: 'play_arrow',
+            },
           ],
         },
         {

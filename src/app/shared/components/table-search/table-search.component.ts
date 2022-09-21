@@ -1,4 +1,11 @@
-import { Component, EventEmitter, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ClientDto } from '../../../data/dto/Client.dto';
@@ -54,11 +61,13 @@ export class TableSearchComponent implements OnDestroy {
 
   constructor(private clientService: ClientService) {
     this.fetchData();
-    this.optionSelectedSubscription = this.selection.changed.subscribe((res) => {
-      if (res.added) {
-        this.optionSelected.emit(res.added[0]);
-      }
-    });
+    this.optionSelectedSubscription = this.selection.changed.subscribe(
+      (res) => {
+        if (res.added) {
+          this.optionSelected.emit(res.added[0]);
+        }
+      },
+    );
   }
 
   ngOnDestroy() {
@@ -84,9 +93,11 @@ export class TableSearchComponent implements OnDestroy {
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: ClientDto): string {
     if (!row) {
-      return `${this.isAllSelected() ? "deselect" : "select"} all`;
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      row.id + 1
+    }`;
   }
 
   private updateTable(observable$: Observable<any>) {

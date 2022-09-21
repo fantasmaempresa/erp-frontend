@@ -49,11 +49,9 @@
       <mat-label>Tipo de dato</mat-label>
       <mat-select formControlName="controlType">
         <mat-option>Ninguna</mat-option>
-        <mat-option
-          *ngFor="let type of types; index as i"
-          [value]="type.value"
-        >{{ type.label }}</mat-option
-        >
+        <mat-option *ngFor="let type of types; index as i" [value]="type.value">
+          {{ type.label }}
+        </mat-option>
       </mat-select>
       <mat-error appErrorMessage></mat-error>
     </mat-form-field>

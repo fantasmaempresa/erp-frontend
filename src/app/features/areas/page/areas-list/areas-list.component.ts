@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -82,9 +88,11 @@ export class AreasListComponent implements OnInit, AfterViewInit, OnDestroy {
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: WorkAreaDto): string {
     if (!row) {
-      return `${this.isAllSelected() ? "deselect" : "select"} all`;
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      row.id + 1
+    }`;
   }
 
   async goToNewArea() {

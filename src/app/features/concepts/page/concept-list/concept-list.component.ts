@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ClientDto } from '../../../../data/dto/Client.dto';
@@ -87,10 +93,12 @@ export class ConceptListComponent implements OnInit, AfterViewInit, OnDestroy {
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: ClientDto): string {
     if (!row) {
-      return `${this.isAllSelected() ? "deselect" : "select"} all`;
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
     // @ts-ignore
-    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      row.id + 1
+    }`;
   }
 
   async goToNewConcept() {

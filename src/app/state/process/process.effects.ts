@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap } from 'rxjs';
-import { loadNextPageOfProcess, loadProcess, loadProcessSuccess } from './process.actions';
+import {
+  loadNextPageOfProcess,
+  loadProcess,
+  loadProcessSuccess,
+} from './process.actions';
 import { ProcessService } from '../../data/services/process.service';
 
 @Injectable()
 export class ProcessEffects {
-  constructor(private actions$: Actions, private processService: ProcessService) {}
+  constructor(
+    private actions$: Actions,
+    private processService: ProcessService,
+  ) {}
 
   loadProcessPhases$ = createEffect(() => {
     return this.actions$.pipe(

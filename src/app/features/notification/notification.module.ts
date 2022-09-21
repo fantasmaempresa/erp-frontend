@@ -7,7 +7,11 @@ import { SharedModule } from '../../shared/shared.module';
 import { NotificationAreaComponent } from './Components/notification-area/notification-area.component';
 
 @NgModule({
-  declarations: [NotificationComponent, NotificationListComponent, NotificationAreaComponent],
+  declarations: [
+    NotificationComponent,
+    NotificationListComponent,
+    NotificationAreaComponent,
+  ],
   imports: [SharedModule, NotificationRoutingModule],
   exports: [NotificationComponent, NotificationAreaComponent],
 })

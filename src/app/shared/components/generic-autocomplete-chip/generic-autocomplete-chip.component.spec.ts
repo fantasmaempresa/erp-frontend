@@ -8,9 +8,8 @@ describe('GenericAutocompleteChipComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GenericAutocompleteChipComponent ]
-    })
-    .compileComponents();
+      declarations: [GenericAutocompleteChipComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

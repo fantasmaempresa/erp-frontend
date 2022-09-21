@@ -38,7 +38,13 @@ export class UserView {
   @mapToLabel((value) => value?.name)
   role: RoleDto;
 
-  constructor(name: string, email: string, online: number, locked: number, role: RoleDto) {
+  constructor(
+    name: string,
+    email: string,
+    online: number,
+    locked: number,
+    role: RoleDto,
+  ) {
     this.name = name;
     this.email = email;
     this.online = online;

@@ -37,6 +37,9 @@ export class ConceptService {
     let params = new HttpParams();
     params = params.append('page', `${page}`);
     params = params.append('paginate', `${size}`);
-    return this.http.get<Pagination<ConceptDto>>(`${environment.base_url}/concepts`, { params });
+    return this.http.get<Pagination<ConceptDto>>(
+      `${environment.base_url}/concepts`,
+      { params },
+    );
   }
 }

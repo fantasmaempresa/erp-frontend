@@ -1,8 +1,8 @@
-@use "@angular/material" as mat;
+@use '@angular/material' as mat;
 
 @use 'styles/themes/light';
-@use "./styles/components";
-@use "./styles/typography/config" as typography;
+@use './styles/components';
+@use './styles/typography/config' as typography;
 
 @import './src/assets/styles/abstracts/variables';
 @import './src/assets/styles/abstracts/functions';
@@ -14,7 +14,7 @@
 
 @import './src/assets/styles/components/profile-img';
 @import './src/assets/styles/components/scrollbar';
-@import "styles/components/card-view";
+@import 'styles/components/card-view';
 
 @include mat.core(typography.$fontConfig);
 
@@ -22,10 +22,11 @@
 @include mat.form-field-theme(light.$input-light-theme);
 @include components.theme(light.$light-theme, typography.$fontConfig);
 
-*, *::after, *::before {
+*,
+*::after,
+*::before {
   box-sizing: border-box;
 }
-
 
 :root {
   @each $color, $shades in $colors {

@@ -80,6 +80,8 @@ export class AuthService {
   }
 
   closeSystem(id: number, locked: boolean) {
-    return this.http.post(`${this._base}user/closeSystem/${id}`, { locked }).pipe(take(1));
+    return this.http
+      .post(`${this._base}user/closeSystem/${id}`, { locked })
+      .pipe(take(1));
   }
 }

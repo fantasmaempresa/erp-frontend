@@ -17,6 +17,9 @@ export class StaffService extends CrudService<StaffDto> {
     let params = new HttpParams();
     params = params.append('page', `${page}`);
     params = params.append('paginate', `${size}`);
-    return this.http.get<Pagination<StaffDto>>(`${environment.base_url}/staff`, { params });
+    return this.http.get<Pagination<StaffDto>>(
+      `${environment.base_url}/staff`,
+      { params },
+    );
   }
 }

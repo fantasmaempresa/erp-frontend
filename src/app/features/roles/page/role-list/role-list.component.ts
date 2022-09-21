@@ -11,7 +11,10 @@ import { Store } from '@ngrx/store';
 import { EntityDto } from '../../../../core/interfaces/Entity.dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
-import { loadNextPageOfRoles, loadRoles } from '../../../../state/role/role.actions';
+import {
+  loadNextPageOfRoles,
+  loadRoles,
+} from '../../../../state/role/role.actions';
 import { RoleService } from '../../../../data/services/role.service';
 import { RoleView } from '../../../../data/Presentation/Role.view';
 

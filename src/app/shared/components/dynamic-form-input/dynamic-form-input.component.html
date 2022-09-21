@@ -1,6 +1,10 @@
 <div [formGroup]="form" class="form-group mt-3">
   <div [ngSwitch]="input.controlType">
-    <mat-form-field appearance="outline" *ngSwitchCase="'textbox'" class="w-100">
+    <mat-form-field
+      appearance="outline"
+      *ngSwitchCase="'textbox'"
+      class="w-100"
+    >
       <mat-label>{{ input.label }}</mat-label>
       <input
         matInput
@@ -29,18 +33,23 @@
         <mat-label>{{ input.label }}</mat-label>
         <mat-select [formControlName]="input.key">
           <mat-option>Ninguna</mat-option>
-          <mat-option *ngFor="let option of input.options; index as i" [value]="option.value">{{
-            option.value
-          }}</mat-option>
+          <mat-option
+            *ngFor="let option of input.options; index as i"
+            [value]="option.value"
+            >{{ option.value }}</mat-option
+          >
         </mat-select>
       </mat-form-field>
     </div>
 
     <div *ngSwitchCase="'checkbox'">
       <section class="example-section">
-        <mat-checkbox color="primary" [formControlName]="input.key" [value]="input.value">{{
-          input.label
-        }}</mat-checkbox>
+        <mat-checkbox
+          color="primary"
+          [formControlName]="input.key"
+          [value]="input.value"
+          >{{ input.label }}</mat-checkbox
+        >
       </section>
     </div>
 
@@ -65,7 +74,11 @@
     <div *ngSwitchCase="'textarea'">
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>{{ input.label }}</mat-label>
-        <textarea matInput [formControlName]="input.key" [value]="input.value"></textarea>
+        <textarea
+          matInput
+          [formControlName]="input.key"
+          [value]="input.value"
+        ></textarea>
       </mat-form-field>
     </div>
 
@@ -78,7 +91,10 @@
           [formControlName]="input.key"
           [value]="input.value"
         />
-        <mat-datepicker-toggle matSuffix [for]="dateForm"></mat-datepicker-toggle>
+        <mat-datepicker-toggle
+          matSuffix
+          [for]="dateForm"
+        ></mat-datepicker-toggle>
         <mat-datepicker #dateForm disabled="false"></mat-datepicker>
       </mat-form-field>
     </div>

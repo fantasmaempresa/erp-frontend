@@ -95,7 +95,10 @@ export class UserListComponent implements OnInit, OnDestroy {
         const shouldBlockUser = (locked: boolean) => {
           this.authService.closeSystem(this.selectedItem.id, locked).subscribe({
             next: () => {
-              MessageHelper.successMessage('Éxito', 'La sesión del Usuario finalizo');
+              MessageHelper.successMessage(
+                'Éxito',
+                'La sesión del Usuario finalizo',
+              );
             },
             error: () => {
               MessageHelper.errorMessage('Ocurrió un error');
@@ -122,14 +125,19 @@ export class UserListComponent implements OnInit, OnDestroy {
       '¿Estás seguro de realizar esta acción?',
       `El usuario [${this.selectedItem?.name}] sera bloqueado`,
       () => {
-        this.authService.setLockStatus(this.selectedItem.id, 'locked').subscribe({
-          next: () => {
-            MessageHelper.successMessage('Éxito', `[${this.selectedItem?.name}] ha sido bloqueado`);
-          },
-          error: () => {
-            MessageHelper.errorMessage('Ocurrió un error');
-          },
-        });
+        this.authService
+          .setLockStatus(this.selectedItem.id, 'locked')
+          .subscribe({
+            next: () => {
+              MessageHelper.successMessage(
+                'Éxito',
+                `[${this.selectedItem?.name}] ha sido bloqueado`,
+              );
+            },
+            error: () => {
+              MessageHelper.errorMessage('Ocurrió un error');
+            },
+          });
       },
     );
   };
@@ -139,17 +147,19 @@ export class UserListComponent implements OnInit, OnDestroy {
       '¿Estás seguro de realizar esta acción?',
       `El usuario [${this.selectedItem?.name}] será desbloqueado`,
       () => {
-        this.authService.setLockStatus(this.selectedItem.id, 'unlocked').subscribe({
-          next: () => {
-            MessageHelper.successMessage(
-              'Éxito',
-              `[${this.selectedItem?.name}] ha sido desbloqueado`,
-            );
-          },
-          error: () => {
-            MessageHelper.errorMessage('Ocurrió un error');
-          },
-        });
+        this.authService
+          .setLockStatus(this.selectedItem.id, 'unlocked')
+          .subscribe({
+            next: () => {
+              MessageHelper.successMessage(
+                'Éxito',
+                `[${this.selectedItem?.name}] ha sido desbloqueado`,
+              );
+            },
+            error: () => {
+              MessageHelper.errorMessage('Ocurrió un error');
+            },
+          });
       },
     );
   };

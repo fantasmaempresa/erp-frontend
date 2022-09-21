@@ -36,10 +36,12 @@
     z-index: 2;
 
     &--entry {
-      animation: numberSpanEntry 550ms ease-in, heartBeating 900ms infinite ease-in-out 1s;
+      animation: numberSpanEntry 550ms ease-in,
+        heartBeating 900ms infinite ease-in-out 1s;
 
       & + .notifications__icon {
-        animation: shake-top 1200ms cubic-bezier(0.6, 0.04, 0.98, 0.335) infinite alternate;
+        animation: shake-top 1200ms cubic-bezier(0.6, 0.04, 0.98, 0.335)
+          infinite alternate;
       }
     }
   }

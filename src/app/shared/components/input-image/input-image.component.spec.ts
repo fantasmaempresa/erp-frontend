@@ -8,9 +8,8 @@ describe('InputImageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InputImageComponent ]
-    })
-    .compileComponents();
+      declarations: [InputImageComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

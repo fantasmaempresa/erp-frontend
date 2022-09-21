@@ -9,7 +9,9 @@ export enum QuoteStatusActions {
   EMPTY_LIST = '[Quote status] Empty quote status list',
 }
 
-export const loadQuoteStatuses = createAction(QuoteStatusActions.LOAD_QUOTE_STATUS);
+export const loadQuoteStatuses = createAction(
+  QuoteStatusActions.LOAD_QUOTE_STATUS,
+);
 export const loadQuoteStatusesSucess = createAction(
   QuoteStatusActions.LOAD_QUOTE_STATUS_SUCCESS,
   props<{ quote_status: Pagination<QuoteStatusDto> }>(),

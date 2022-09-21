@@ -14,7 +14,9 @@ export interface ActionsCard {
   templateUrl: './card-view.component.html',
   styleUrls: ['./card-view.component.scss'],
 })
-export class CardViewComponent<T extends EntityDto> extends DynamicViewComponent<T> {
+export class CardViewComponent<
+  T extends EntityDto,
+> extends DynamicViewComponent<T> {
   @Input()
   actions: ActionsCard[] = [];
 

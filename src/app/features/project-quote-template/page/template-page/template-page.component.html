@@ -15,13 +15,19 @@
       >
         <mat-expansion-panel-header>
           <mat-panel-title>Cuerpo</mat-panel-title>
-          <mat-panel-description> Creación de la estructura del formulario</mat-panel-description>
+          <mat-panel-description>
+            Creación de la estructura del formulario</mat-panel-description
+          >
         </mat-expansion-panel-header>
 
-        <app-dynamic-form-creation [template]="loadedTemplate"></app-dynamic-form-creation>
+        <app-dynamic-form-creation
+          [template]="loadedTemplate"
+        ></app-dynamic-form-creation>
 
         <mat-action-row>
-          <button mat-button color="primary" (click)="goToConceptsAssignment()">Siguiente</button>
+          <button mat-button color="primary" (click)="goToConceptsAssignment()">
+            Siguiente
+          </button>
         </mat-action-row>
       </mat-expansion-panel>
 
@@ -44,12 +50,20 @@
         ></app-operations>
 
         <mat-action-row>
-          <button mat-button color="warn" (click)="goToFormBuildStep()">Atras</button>
-          <button mat-button color="primary" (click)="goToPreview()">Siguiente</button>
+          <button mat-button color="warn" (click)="goToFormBuildStep()">
+            Atras
+          </button>
+          <button mat-button color="primary" (click)="goToPreview()">
+            Siguiente
+          </button>
         </mat-action-row>
       </mat-expansion-panel>
 
-      <mat-expansion-panel [expanded]="step === PREVIEW_STEP" (opened)="goToPreview()" hideToggle>
+      <mat-expansion-panel
+        [expanded]="step === PREVIEW_STEP"
+        (opened)="goToPreview()"
+        hideToggle
+      >
         <mat-expansion-panel-header>
           <mat-panel-title>Resultado</mat-panel-title>
           <mat-panel-description> Vista preliminar</mat-panel-description>
@@ -78,7 +92,9 @@
                 <span>Conceptos</span>
               </mat-toolbar>
               <div class="row mt-3 ps-3">
-                <div *ngFor="let field of operationsForm.value.operation_fields">
+                <div
+                  *ngFor="let field of operationsForm.value.operation_fields"
+                >
                   <h2>{{ field.label }}</h2>
                   <ul class="ms-5">
                     <li *ngFor="let concept of field.concepts">
@@ -101,7 +117,9 @@
         </div>
 
         <mat-action-row>
-          <button mat-button color="warn" (click)="goToConceptsAssignment()">Atras</button>
+          <button mat-button color="warn" (click)="goToConceptsAssignment()">
+            Atras
+          </button>
           <button mat-button color="primary" (click)="submit()">Guardar</button>
         </mat-action-row>
       </mat-expansion-panel>

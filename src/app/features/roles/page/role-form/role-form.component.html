@@ -6,11 +6,20 @@
       </button>
     </div>
   </mat-toolbar>
-  <form (ngSubmit)="onSubmit()" [formGroup]="roleForm" class="row justify-content-center">
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="roleForm"
+    class="row justify-content-center"
+  >
     <div class="col-6 d-flex flex-column">
       <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input formControlName="name" matInput placeholder="Administrador" type="text" />
+        <input
+          formControlName="name"
+          matInput
+          placeholder="Administrador"
+          type="text"
+        />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 

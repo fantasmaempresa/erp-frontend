@@ -52,7 +52,9 @@ export class TableViewComponent<T extends EntityDto>
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      row.id + 1
+    }`;
   }
 
   getSelectedElement = () => this.selection.selected[0];

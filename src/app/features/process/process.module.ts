@@ -7,7 +7,11 @@ import { ProcessListComponent } from './page/process-list/process-list.component
 import { BuildProcessComponent } from './page/build-process/build-process.component';
 
 @NgModule({
-  declarations: [ProcessFormComponent, ProcessListComponent, BuildProcessComponent],
+  declarations: [
+    ProcessFormComponent,
+    ProcessListComponent,
+    BuildProcessComponent,
+  ],
   imports: [SharedModule, ProcessRoutingModule],
 })
 export class ProcessModule {}

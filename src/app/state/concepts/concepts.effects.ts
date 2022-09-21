@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { ConceptService } from '../../data/services/concept.service';
-import { loadConcepts, loadConceptsSuccess, loadNextPageOfConcepts } from './concepts.actions';
+import {
+  loadConcepts,
+  loadConceptsSuccess,
+  loadNextPageOfConcepts,
+} from './concepts.actions';
 import { map, mergeMap } from 'rxjs';
 
 @Injectable()
 export class ConceptsEffects {
-  constructor(private actions$: Actions, private conceptService: ConceptService) {}
+  constructor(
+    private actions$: Actions,
+    private conceptService: ConceptService,
+  ) {}
 
   loadConcepts$ = createEffect(() => {
     return this.actions$.pipe(

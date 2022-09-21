@@ -23,8 +23,18 @@
 .bg-login:before {
   content: '';
   position: absolute;
-  background: -webkit-gradient(linear, left top, right top, from(#273c92), to(#293e92));
-  background: linear-gradient(to right, var(--accent-color), var(--accent-darker-color));
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    from(#273c92),
+    to(#293e92)
+  );
+  background: linear-gradient(
+    to right,
+    var(--accent-color),
+    var(--accent-darker-color)
+  );
   top: 0;
   right: 0;
   left: 0;

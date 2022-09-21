@@ -8,9 +8,8 @@ describe('InputCoordinateComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InputCoordinateComponent ]
-    })
-    .compileComponents();
+      declarations: [InputCoordinateComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

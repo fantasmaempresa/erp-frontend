@@ -20,4 +20,6 @@ export const loadNextPageOfMyProjects = createAction(
   props<{ page: number; size: number }>(),
 );
 
-export const emptyProjectList = createAction(MyProjectActions.EMPTY_MY_PROJECT_LIST);
+export const emptyProjectList = createAction(
+  MyProjectActions.EMPTY_MY_PROJECT_LIST,
+);

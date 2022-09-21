@@ -22,6 +22,8 @@ export class ClientLinkService extends CrudService<ClientLinkDto> {
     let params = new HttpParams();
     params = params.append('page', `${page}`);
     params = params.append('paginate', `${size}`);
-    return this._http.get<Pagination<ClientLinkDto>>(`${this._base}`, { params });
+    return this._http.get<Pagination<ClientLinkDto>>(`${this._base}`, {
+      params,
+    });
   }
 }

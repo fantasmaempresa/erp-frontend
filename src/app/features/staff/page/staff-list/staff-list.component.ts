@@ -1,4 +1,10 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -24,7 +30,13 @@ import {
 export class StaffListComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
-  displayedColumns: string[] = ['select', 'name', 'email', 'phone', 'extra_information'];
+  displayedColumns: string[] = [
+    'select',
+    'name',
+    'email',
+    'phone',
+    'extra_information',
+  ];
 
   selection = new SelectionModel<StaffDto>(false, []);
 
@@ -82,9 +94,11 @@ export class StaffListComponent implements OnInit, AfterViewInit, OnDestroy {
   /** The label for the checkbox on the passed row */
   checkboxLabel(row?: StaffDto): string {
     if (!row) {
-      return `${this.isAllSelected() ? "deselect" : "select"} all`;
+      return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? "deselect" : "select"} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      row.id + 1
+    }`;
   }
 
   async goToNewMemberOfStaff() {

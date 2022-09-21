@@ -8,9 +8,8 @@ describe('PreviewFormBuilderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PreviewFormBuilderComponent ]
-    })
-    .compileComponents();
+      declarations: [PreviewFormBuilderComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

@@ -29,7 +29,11 @@ export class BindPopupDirective implements OnInit {
   @Input()
   propertyAccess = 'name';
 
-  constructor(private el: ElementRef, private ngControl: NgControl, private dialog: MatDialog) {}
+  constructor(
+    private el: ElementRef,
+    private ngControl: NgControl,
+    private dialog: MatDialog,
+  ) {}
 
   @HostListener('click')
   onClick() {

@@ -8,7 +8,11 @@ import { SharedModule } from '../../shared/shared.module';
 import { BuildProjectComponent } from './page/build-project/build-project.component';
 
 @NgModule({
-  declarations: [ProjectFormComponent, ProjectListComponent, BuildProjectComponent],
+  declarations: [
+    ProjectFormComponent,
+    ProjectListComponent,
+    BuildProjectComponent,
+  ],
   imports: [CommonModule, ProjectsRoutingModule, SharedModule],
 })
 export class ProjectsModule {}

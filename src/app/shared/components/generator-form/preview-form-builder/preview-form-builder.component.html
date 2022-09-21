@@ -1,8 +1,16 @@
-<form class="form-preview" [formGroup]="form" *ngIf="$any(formFields)?.length > 0; else emptyState">
+<form
+  class="form-preview"
+  [formGroup]="form"
+  *ngIf="$any(formFields)?.length > 0; else emptyState"
+>
   <ng-container *ngFor="let formField of formFields; index as i">
     <ng-container *ngIf="form.get(formField.key)">
       <ng-container [ngSwitch]="formField.controlType">
-        <mat-form-field appearance="outline" *ngSwitchCase="'textbox'" class="w-100">
+        <mat-form-field
+          appearance="outline"
+          *ngSwitchCase="'textbox'"
+          class="w-100"
+        >
           <mat-label>{{ formField.label }}</mat-label>
           <input
             matInput
@@ -14,7 +22,11 @@
           />
         </mat-form-field>
 
-        <mat-form-field appearance="outline" *ngSwitchCase="'number'" class="w-100">
+        <mat-form-field
+          appearance="outline"
+          *ngSwitchCase="'number'"
+          class="w-100"
+        >
           <mat-label>{{ formField.label }}</mat-label>
           <input
             matInput
@@ -26,7 +38,11 @@
           />
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="w-100" *ngSwitchCase="'dropdown'">
+        <mat-form-field
+          appearance="outline"
+          class="w-100"
+          *ngSwitchCase="'dropdown'"
+        >
           <mat-label>{{ formField.label }}</mat-label>
           <mat-select [formControlName]="formField.key">
             <mat-option>Ninguna</mat-option>
@@ -65,12 +81,24 @@
           </mat-radio-group>
         </div>
 
-        <mat-form-field appearance="outline" class="w-100" *ngSwitchCase="'textarea'">
+        <mat-form-field
+          appearance="outline"
+          class="w-100"
+          *ngSwitchCase="'textarea'"
+        >
           <mat-label>{{ formField.label }}</mat-label>
-          <textarea matInput [formControlName]="formField.key" [value]="formField.value"></textarea>
+          <textarea
+            matInput
+            [formControlName]="formField.key"
+            [value]="formField.value"
+          ></textarea>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="w-100" *ngSwitchCase="'date'">
+        <mat-form-field
+          appearance="outline"
+          class="w-100"
+          *ngSwitchCase="'date'"
+        >
           <mat-label>{{ formField.label }}</mat-label>
           <input
             class="clickable"
@@ -80,7 +108,10 @@
             [value]="formField.value"
             (focus)="dateForm.open()"
           />
-          <mat-datepicker-toggle matSuffix [for]="dateForm"></mat-datepicker-toggle>
+          <mat-datepicker-toggle
+            matSuffix
+            [for]="dateForm"
+          ></mat-datepicker-toggle>
           <mat-datepicker #dateForm></mat-datepicker>
         </mat-form-field>
 
@@ -94,7 +125,9 @@
         </ng-container>
 
         <ng-container *ngSwitchCase="'coordinate'">
-          <app-input-coordinate [label]="formField.label"></app-input-coordinate>
+          <app-input-coordinate
+            [label]="formField.label"
+          ></app-input-coordinate>
         </ng-container>
       </ng-container>
     </ng-container>

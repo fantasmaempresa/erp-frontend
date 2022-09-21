@@ -125,7 +125,9 @@
     font-size: var(--text-400);
     font-weight: 500;
 
-    &:not(:placeholder-shown) + .search-input__label > .search-input__label-text {
+    &:not(:placeholder-shown)
+      + .search-input__label
+      > .search-input__label-text {
       transform: scale(0.75) translate(-5rem, 4rem);
       font-weight: 550;
     }

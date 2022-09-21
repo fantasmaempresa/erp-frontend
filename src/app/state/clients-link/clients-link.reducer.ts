@@ -5,12 +5,15 @@ import * as ClientActions from './clients-link.actions';
 const ClientsLinkReducer = createReducer(
   initialState,
   on(ClientActions.loadClientsLink, (state) => state),
-  on(ClientActions.loadClientsLinkSuccess, (state: ClientsLinkState, { clientsLink }) => {
-    return {
-      ...state,
-      clientsLink,
-    };
-  }),
+  on(
+    ClientActions.loadClientsLinkSuccess,
+    (state: ClientsLinkState, { clientsLink }) => {
+      return {
+        ...state,
+        clientsLink,
+      };
+    },
+  ),
   on(ClientActions.emptyClientLinkList, (state) => {
     return initialState;
   }),

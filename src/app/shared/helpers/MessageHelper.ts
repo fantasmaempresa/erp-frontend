@@ -53,7 +53,12 @@ export class MessageHelper {
     });
   }
 
-  static decisionMessage(title: string, body: string, callback: any, onCancelCallback?: any) {
+  static decisionMessage(
+    title: string,
+    body: string,
+    callback: any,
+    onCancelCallback?: any,
+  ) {
     Swal.fire({
       title,
       text: body,

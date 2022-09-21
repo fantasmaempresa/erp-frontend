@@ -1,6 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, filter, map, mergeMap, of, switchMap, take } from 'rxjs';
+import {
+  catchError,
+  exhaustMap,
+  filter,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  take,
+} from 'rxjs';
 import {
   addIncomingNotification,
   currentNotifications,
@@ -14,7 +23,10 @@ import {
 import { NotificationsService } from '../../data/services/notifications.service';
 import { NotificationSocketService } from '../../core/services/SocketChannels/notification-socket.service';
 import { Store } from '@ngrx/store';
-import { selectIncomingNotifications, selectUnreadNotifications } from './notification.selector';
+import {
+  selectIncomingNotifications,
+  selectUnreadNotifications,
+} from './notification.selector';
 import { NotificationDto } from '../../data/dto/Notification.dto';
 
 @Injectable()
@@ -53,9 +65,13 @@ export class NotificationEffects {
   readNotificationsServer$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(readAllNotificationsServer),
-      switchMap(() => this.store.select(selectUnreadNotifications).pipe(take(1))),
+      switchMap(() =>
+        this.store.select(selectUnreadNotifications).pipe(take(1)),
+      ),
       filter((notifications: any) =>
-        notifications.some((notification: NotificationDto) => !notification.check),
+        notifications.some(
+          (notification: NotificationDto) => !notification.check,
+        ),
       ),
       exhaustMap((notifications: any) =>
         this.notificationsService.readAllNotifications(notifications),

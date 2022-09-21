@@ -7,7 +7,10 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { ClientDto } from '../../../../data/dto/Client.dto';
-import { loadClients, loadNextPageOfClients } from '../../../../state/clients/clients.actions';
+import {
+  loadClients,
+  loadNextPageOfClients,
+} from '../../../../state/clients/clients.actions';
 import { selectClients } from '../../../../state/clients/clients.selector';
 import { ListView } from '../../../../core/classes/FormView/ListView';
 import { ClientView } from '../../../../data/Presentation/Client.view';

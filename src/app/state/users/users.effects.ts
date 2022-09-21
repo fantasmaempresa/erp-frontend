@@ -23,7 +23,9 @@ export class UsersEffects {
     return this.actions$.pipe(
       ofType(loadUsers),
       mergeMap(() => {
-        return this.userService.fetchAll().pipe(map((users) => loadUsersSuccess({ users })));
+        return this.userService
+          .fetchAll()
+          .pipe(map((users) => loadUsersSuccess({ users })));
       }),
     );
   });

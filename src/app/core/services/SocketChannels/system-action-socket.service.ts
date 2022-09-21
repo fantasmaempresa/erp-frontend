@@ -13,7 +13,11 @@ import { Router } from '@angular/router';
 export class SystemActionSocketService extends LaravelWebSocket {
   private readonly user$: Observable<UserDto | null>;
 
-  constructor(private authService: AuthService, private store: Store, private router: Router) {
+  constructor(
+    private authService: AuthService,
+    private store: Store,
+    private router: Router,
+  ) {
     super();
     this.subscribeToChannel('system-actions', 'SystemActionsEvent');
     this.user$ = this.store.select(selectUser);

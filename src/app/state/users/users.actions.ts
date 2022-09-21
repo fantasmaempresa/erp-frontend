@@ -19,7 +19,10 @@ export const loadUsersSuccess = createAction(
   UsersActions.LOAD_USERS_SUCCESS,
   props<{ users: Pagination<UserDto> }>(),
 );
-export const changeUser = createAction(UsersActions.CHANGE_USER, props<{ user: UserDto }>());
+export const changeUser = createAction(
+  UsersActions.CHANGE_USER,
+  props<{ user: UserDto }>(),
+);
 
 export const loadNextPageOfUsers = createAction(
   UsersActions.LOAD_NEXT_PAGE,

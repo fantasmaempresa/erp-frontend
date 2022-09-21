@@ -6,7 +6,10 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { selectProcess } from '../../../../state/process/process.selector';
-import { loadNextPageOfProcess, loadProcess } from '../../../../state/process/process.actions';
+import {
+  loadNextPageOfProcess,
+  loadProcess,
+} from '../../../../state/process/process.actions';
 import { EntityDto } from '../../../../core/interfaces/Entity.dto';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';

@@ -17,6 +17,9 @@ export class AreaService extends CrudService<WorkAreaDto> {
     let params = new HttpParams();
     params = params.append('page', `${page}`);
     params = params.append('paginate', `${size}`);
-    return this._http.get<Pagination<WorkAreaDto>>(`${environment.base_url}/workAreas`, { params });
+    return this._http.get<Pagination<WorkAreaDto>>(
+      `${environment.base_url}/workAreas`,
+      { params },
+    );
   }
 }

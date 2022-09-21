@@ -8,9 +8,11 @@
       <mat-label>Concepto</mat-label>
       <mat-select [formControl]="$any(concepts).controls[i]">
         <mat-option>Ninguna</mat-option>
-        <mat-option *ngFor="let concept of concepts$ | async" [value]="concept">{{
-          concept.name
-        }}</mat-option>
+        <mat-option
+          *ngFor="let concept of concepts$ | async"
+          [value]="concept"
+          >{{ concept.name }}</mat-option
+        >
       </mat-select>
       <!--        <mat-error appErrorMessage></mat-error>-->
     </mat-form-field>

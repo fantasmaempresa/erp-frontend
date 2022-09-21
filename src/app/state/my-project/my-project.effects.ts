@@ -6,7 +6,10 @@ import { MyProjectsService } from '../../data/services/my-projects.service';
 
 @Injectable()
 export class MyProjectEffects {
-  constructor(private actions$: Actions, private projectService: MyProjectsService) {}
+  constructor(
+    private actions$: Actions,
+    private projectService: MyProjectsService,
+  ) {}
 
   loadClients$ = createEffect(() => {
     return this.actions$.pipe(

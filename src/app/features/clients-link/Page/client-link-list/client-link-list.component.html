@@ -1,5 +1,10 @@
 <mat-toolbar>
-  <button class="btn-back" (click)="back()" aria-label="Regresar" mat-icon-button>
+  <button
+    class="btn-back"
+    (click)="back()"
+    aria-label="Regresar"
+    mat-icon-button
+  >
     <mat-icon>arrow_back</mat-icon>
   </button>
 
@@ -32,4 +37,7 @@
     <mat-icon>person_add</mat-icon>
   </button>
 </mat-toolbar>
-<app-change-view [actions]="actions" (selectedItem)="setSelectedItem($event)"></app-change-view>
+<app-change-view
+  [actions]="actions"
+  (selectedItem)="setSelectedItem($event)"
+></app-change-view>

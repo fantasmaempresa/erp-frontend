@@ -10,7 +10,10 @@ import { ProcessPhaseService } from '../../data/services/process-phase.service';
 
 @Injectable()
 export class ProcessPhaseEffects {
-  constructor(private actions$: Actions, private phaseService: ProcessPhaseService) {}
+  constructor(
+    private actions$: Actions,
+    private phaseService: ProcessPhaseService,
+  ) {}
 
   loadProcessPhases$ = createEffect(() => {
     return this.actions$.pipe(
@@ -18,7 +21,9 @@ export class ProcessPhaseEffects {
       mergeMap(() => {
         return this.phaseService
           .fetchAll()
-          .pipe(map((processPhases) => loadProcessPhaseSuccess({ processPhases })));
+          .pipe(
+            map((processPhases) => loadProcessPhaseSuccess({ processPhases })),
+          );
       }),
     );
   });
@@ -29,7 +34,9 @@ export class ProcessPhaseEffects {
       mergeMap(({ page, size }) => {
         return this.phaseService
           .changePage(page, size)
-          .pipe(map((processPhases) => loadProcessPhaseSuccess({ processPhases })));
+          .pipe(
+            map((processPhases) => loadProcessPhaseSuccess({ processPhases })),
+          );
       }),
     );
   });

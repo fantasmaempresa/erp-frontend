@@ -7,7 +7,6 @@
     margin-bottom: 2rem;
   }
 
-
   &__container {
     display: flex;
     padding: 1rem;
@@ -49,7 +48,6 @@
   }
 
   .phase {
-
     &-item {
       flex: 1 1 10rem;
       display: flex;
@@ -77,7 +75,7 @@
       border-radius: 8px;
       flex: 1 1 10rem;
       padding: 2rem;
-      background: rgba(255, 255, 255, .075);
+      background: rgba(255, 255, 255, 0.075);
       display: flex;
       align-items: center;
       justify-content: space-evenly;
@@ -90,8 +88,6 @@
         top: 4px;
         left: 2rem;
       }
-
     }
   }
-
 }

@@ -37,8 +37,11 @@ export class QuoteStatusService {
     let params = new HttpParams();
     params = params.append('page', `${page}`);
     params = params.append('paginate', `${size}`);
-    return this.http.get<Pagination<QuoteStatusDto>>(`${environment.base_url}/statusQuotes`, {
-      params,
-    });
+    return this.http.get<Pagination<QuoteStatusDto>>(
+      `${environment.base_url}/statusQuotes`,
+      {
+        params,
+      },
+    );
   }
 }

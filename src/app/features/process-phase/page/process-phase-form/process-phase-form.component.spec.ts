@@ -8,9 +8,8 @@ describe('ProcessPhaseFormComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ProcessPhaseFormComponent ]
-    })
-    .compileComponents();
+      declarations: [ProcessPhaseFormComponent],
+    }).compileComponents();
   });
 
   beforeEach(() => {

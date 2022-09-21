@@ -8,10 +8,16 @@
   </mat-toolbar>
   <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
     <mat-accordion>
-      <mat-expansion-panel (opened)="setStep(0)" [expanded]="step === 0" hideToggle>
+      <mat-expansion-panel
+        (opened)="setStep(0)"
+        [expanded]="step === 0"
+        hideToggle
+      >
         <mat-expansion-panel-header>
           <mat-panel-title>Datos Generales</mat-panel-title>
-          <mat-panel-description>Nombre, Descripción del Proceso</mat-panel-description>
+          <mat-panel-description
+            >Nombre, Descripción del Proceso</mat-panel-description
+          >
         </mat-expansion-panel-header>
 
         <div class="d-flex flex-column form-container">
@@ -33,10 +39,16 @@
           </button>
         </mat-action-row>
       </mat-expansion-panel>
-      <mat-expansion-panel (opened)="setStep(1)" [expanded]="step === 1" hideToggle>
+      <mat-expansion-panel
+        (opened)="setStep(1)"
+        [expanded]="step === 1"
+        hideToggle
+      >
         <mat-expansion-panel-header>
           <mat-panel-title>Asignación de Fases</mat-panel-title>
-          <mat-panel-description>Configure el flujo de las fases</mat-panel-description>
+          <mat-panel-description
+            >Configure el flujo de las fases</mat-panel-description
+          >
         </mat-expansion-panel-header>
 
         <app-build-process formControlName="config"></app-build-process>
@@ -46,7 +58,9 @@
           <button (click)="prevStep()" color="primary" mat-button type="button">
             Datos Generales
           </button>
-          <button color="primary" mat-flat-button type="submit">Guardar Proceso</button>
+          <button color="primary" mat-flat-button type="submit">
+            Guardar Proceso
+          </button>
         </mat-action-row>
       </mat-expansion-panel>
     </mat-accordion>

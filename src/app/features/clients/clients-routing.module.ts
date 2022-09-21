@@ -32,7 +32,9 @@ const routes: Routes = [
       {
         path: ':id/clientsLink',
         loadChildren: () =>
-          import('../clients-link/clients-link.module').then((m) => m.ClientsLinkModule),
+          import('../clients-link/clients-link.module').then(
+            (m) => m.ClientsLinkModule,
+          ),
         data: { breadcrumb: 'Enlaces' },
       },
     ],

@@ -25,7 +25,8 @@
   width: 1rem;
 }
 
-table, mat-paginator {
+table,
+mat-paginator {
   width: 100%;
 }
 
@@ -63,6 +64,6 @@ table, mat-paginator {
     justify-content: center;
     align-items: center;
     text-align: center;
-    box-shadow: 0 0 16px 4px rgba(0, 0, 0, .20);
+    box-shadow: 0 0 16px 4px rgba(0, 0, 0, 0.2);
   }
 }

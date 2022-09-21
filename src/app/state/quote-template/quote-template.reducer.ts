@@ -1,5 +1,8 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { quoteTemplateInitialState, QuoteTemplateState } from './quote-template.state';
+import {
+  quoteTemplateInitialState,
+  QuoteTemplateState,
+} from './quote-template.state';
 import * as QuoteTemplateActions from './quote-template.actions';
 
 const QuoteTemplateReducer = createReducer(
@@ -14,9 +17,15 @@ const QuoteTemplateReducer = createReducer(
       };
     },
   ),
-  on(QuoteTemplateActions.emptyQuoteTemplatesList, () => quoteTemplateInitialState),
+  on(
+    QuoteTemplateActions.emptyQuoteTemplatesList,
+    () => quoteTemplateInitialState,
+  ),
 );
 
-export function quoteTemplateReducer(state = quoteTemplateInitialState, action: Action) {
+export function quoteTemplateReducer(
+  state = quoteTemplateInitialState,
+  action: Action,
+) {
   return QuoteTemplateReducer(state, action);
 }

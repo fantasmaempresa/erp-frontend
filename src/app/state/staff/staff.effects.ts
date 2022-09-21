@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { StaffService } from '../../data/services/staff.service';
-import { loadNextPageOfStaff, loadStaff, loadStaffSuccess } from './staff.actions';
+import {
+  loadNextPageOfStaff,
+  loadStaff,
+  loadStaffSuccess,
+} from './staff.actions';
 import { map, mergeMap } from 'rxjs';
 
 @Injectable()
@@ -12,7 +16,9 @@ export class StaffEffects {
     return this.actions$.pipe(
       ofType(loadStaff),
       mergeMap(() => {
-        return this.staffService.fetchAll().pipe(map((staff) => loadStaffSuccess({ staff })));
+        return this.staffService
+          .fetchAll()
+          .pipe(map((staff) => loadStaffSuccess({ staff })));
       }),
     );
   });

@@ -33,8 +33,13 @@ export class ClassWatcher {
 
   mutationCallback = (mutationsList: any) => {
     for (const mutation of mutationsList) {
-      if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
-        const currentClassState = mutation.target.classList.contains(this.classToWatch);
+      if (
+        mutation.type === 'attributes' &&
+        mutation.attributeName === 'class'
+      ) {
+        const currentClassState = mutation.target.classList.contains(
+          this.classToWatch,
+        );
         if (this.lastClassState !== currentClassState) {
           this.lastClassState = currentClassState;
 

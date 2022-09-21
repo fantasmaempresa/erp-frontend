@@ -19,4 +19,6 @@ export const loadNextPageOfConcepts = createAction(
   ConceptsActions.LOAD_NEXT_PAGE,
   props<{ page: number; size: number }>(),
 );
-export const emptyConceptList = createAction(ConceptsActions.EMPTY_CONCEPT_LIST);
+export const emptyConceptList = createAction(
+  ConceptsActions.EMPTY_CONCEPT_LIST,
+);

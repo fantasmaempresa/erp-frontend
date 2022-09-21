@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { autoLogin, loginFailure, loginStart, loginSuccess, logout } from './auth.actions';
+import {
+  autoLogin,
+  loginFailure,
+  loginStart,
+  loginSuccess,
+  logout,
+} from './auth.actions';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
@@ -33,7 +39,12 @@ export class AuthEffects {
             return loginSuccess({ tokens, user });
           }),
           catchError(() => {
-            return of(loginFailure({ isLoading: false, errorMessage: 'Credenciales invalidas' }));
+            return of(
+              loginFailure({
+                isLoading: false,
+                errorMessage: 'Credenciales invalidas',
+              }),
+            );
           }),
         );
       }),

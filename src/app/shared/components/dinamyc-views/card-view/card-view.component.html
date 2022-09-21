@@ -2,7 +2,9 @@
   <div class="card-view" *ngFor="let item of data.data; let i = index">
     <ng-container *ngFor="let label of labels; let i = index">
       <span class="card-view__field">{{ label }}</span>
-      <ng-container *ngIf="displayedColumns[i] | mapTo: doesntHaveHtml; else renderHtml">
+      <ng-container
+        *ngIf="displayedColumns[i] | mapTo: doesntHaveHtml; else renderHtml"
+      >
         <span class="card-view__value">{{ item | mapTo: mapToGetKey:i }}</span>
       </ng-container>
 

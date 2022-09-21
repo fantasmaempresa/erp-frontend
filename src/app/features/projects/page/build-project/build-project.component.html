@@ -14,7 +14,9 @@
       <div *ngFor="let process of processes; let i = index" class="process">
         <div class="process__header">
           {{ process.name }}
-          <span class="process__header-description">{{ process.description }}</span>
+          <span class="process__header-description">{{
+            process.description
+          }}</span>
         </div>
         <div
           *ngIf="process.config.order_phases as phases"
@@ -26,7 +28,9 @@
             class="process-phase"
             formGroupName="{{ i }}"
           >
-            <ng-container *ngIf="processPhase | mapTo: mapProcessPhase | async as phase">
+            <ng-container
+              *ngIf="processPhase | mapTo: mapProcessPhase | async as phase"
+            >
               <div class="process-phase__name">
                 {{ $any(phase).name }}
               </div>
@@ -39,15 +43,21 @@
                     <div class="process-phase__config">
                       <div
                         *ngFor="
-                          let role of processPhase.involved.supervisor | mapTo: roleGroup | async;
+                          let role of processPhase.involved.supervisor
+                            | mapTo: roleGroup
+                            | async;
                           let k = index
                         "
                         class="process-phase__config-row"
                         formGroupName="supervisor"
                       >
                         <ng-container formGroupName="{{ k }}"
-                          ><span class="process-phase__config-name">{{ role?.name }}</span>
-                          <mat-checkbox color="primary" formControlName="mandatory_supervision"
+                          ><span class="process-phase__config-name">{{
+                            role?.name
+                          }}</span>
+                          <mat-checkbox
+                            color="primary"
+                            formControlName="mandatory_supervision"
                             >¿Supervisión Obligatoria?
                           </mat-checkbox>
                         </ng-container>
@@ -56,7 +66,11 @@
                   </div>
                   <div class="process-phase__container">
                     <app-generic-autocomplete-chip
-                      [allData]="processPhase.involved.supervisor | mapTo: userGroup | async"
+                      [allData]="
+                        processPhase.involved.supervisor
+                          | mapTo: userGroup
+                          | async
+                      "
                       [mapFn]="nameMapFn"
                       formControlName="supervisor_reference"
                       label="Usuarios"
@@ -65,9 +79,9 @@
                     <div class="process-phase__config">
                       <div
                         *ngFor="
-                          let user of $any(involvedFormArray.controls[i].get('phases')).controls[
-                            j
-                          ].get('supervisor_reference').valueChanges
+                          let user of $any(
+                            involvedFormArray.controls[i].get('phases')
+                          ).controls[j].get('supervisor_reference').valueChanges
                             | mapTo: users:i:j
                             | async;
                           let k = index
@@ -76,8 +90,12 @@
                         formGroupName="supervisor_user"
                       >
                         <ng-container formGroupName="{{ k }}">
-                          <span class="process-phase__config-name"> {{ user.name }}</span>
-                          <mat-checkbox color="primary" formControlName="mandatory_supervision"
+                          <span class="process-phase__config-name">
+                            {{ user.name }}</span
+                          >
+                          <mat-checkbox
+                            color="primary"
+                            formControlName="mandatory_supervision"
                             >¿Supervisión Obligatoria?
                           </mat-checkbox>
                         </ng-container>
@@ -86,20 +104,28 @@
                   </div>
                 </div>
                 <div class="process-phase__groups">
-                  <span class="process-phase__groups-title">Grupo de Trabajo</span>
+                  <span class="process-phase__groups-title"
+                    >Grupo de Trabajo</span
+                  >
                   <div class="process-phase__container">
                     <div class="process-phase__config">
                       <div
                         *ngFor="
-                          let role of processPhase.involved.work_group | mapTo: roleGroup | async;
+                          let role of processPhase.involved.work_group
+                            | mapTo: roleGroup
+                            | async;
                           let k = index
                         "
                         class="process-phase__config-row"
                         formGroupName="work_group"
                       >
                         <ng-container formGroupName="{{ k }}"
-                          ><span class="process-phase__config-name">{{ role?.name }}</span>
-                          <mat-checkbox color="primary" formControlName="mandatory_work"
+                          ><span class="process-phase__config-name">{{
+                            role?.name
+                          }}</span>
+                          <mat-checkbox
+                            color="primary"
+                            formControlName="mandatory_work"
                             >¿Supervisión Obligatoria?
                           </mat-checkbox>
                         </ng-container>
@@ -108,7 +134,11 @@
                   </div>
                   <div class="process-phase__container">
                     <app-generic-autocomplete-chip
-                      [allData]="processPhase.involved.work_group | mapTo: userGroup | async"
+                      [allData]="
+                        processPhase.involved.work_group
+                          | mapTo: userGroup
+                          | async
+                      "
                       [mapFn]="nameMapFn"
                       formControlName="work_reference"
                       label="Usuarios"
@@ -117,9 +147,9 @@
                     <div class="process-phase__config">
                       <div
                         *ngFor="
-                          let user of $any(involvedFormArray.controls[i].get('phases')).controls[
-                            j
-                          ].get('work_reference').valueChanges
+                          let user of $any(
+                            involvedFormArray.controls[i].get('phases')
+                          ).controls[j].get('work_reference').valueChanges
                             | mapTo: users:i:j:'work'
                             | async;
                           let k = index
@@ -128,8 +158,12 @@
                         formGroupName="work_user"
                       >
                         <ng-container formGroupName="{{ k }}">
-                          <span class="process-phase__config-name"> {{ user.name }}</span>
-                          <mat-checkbox color="primary" formControlName="mandatory_work"
+                          <span class="process-phase__config-name">
+                            {{ user.name }}</span
+                          >
+                          <mat-checkbox
+                            color="primary"
+                            formControlName="mandatory_work"
                             >¿Supervisión Obligatoria?
                           </mat-checkbox>
                         </ng-container>

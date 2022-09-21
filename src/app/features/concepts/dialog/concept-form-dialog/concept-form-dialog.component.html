@@ -19,11 +19,18 @@
         <mat-checkbox color="primary" formControlName="percentage" class="me-5">
           ¿Es porcentaje?
         </mat-checkbox>
-        <mat-checkbox color="primary" formControlName="operable">¿Es operable?</mat-checkbox>
+        <mat-checkbox color="primary" formControlName="operable"
+          >¿Es operable?</mat-checkbox
+        >
       </section>
 
-      <mat-radio-group formControlName="operationType" class="d-flex justify-content-between">
-        <mat-radio-button value="import" color="primary">Solo es un importe</mat-radio-button>
+      <mat-radio-group
+        formControlName="operationType"
+        class="d-flex justify-content-between"
+      >
+        <mat-radio-button value="import" color="primary"
+          >Solo es un importe</mat-radio-button
+        >
         <mat-radio-button
           value="validity"
           color="primary"
@@ -41,29 +48,55 @@
       <div [ngSwitch]="operationType.value" class="row mt-5">
         <ng-container *ngSwitchCase="'validity'" formGroupName="formula">
           <div formGroupName="validity">
-            <mat-radio-group formControlName="type" class="d-flex justify-content-between">
-              <mat-radio-button value="date" color="primary">Fecha</mat-radio-button>
-              <mat-radio-button value="range" color="primary">Rango de fechas</mat-radio-button>
+            <mat-radio-group
+              formControlName="type"
+              class="d-flex justify-content-between"
+            >
+              <mat-radio-button value="date" color="primary"
+                >Fecha</mat-radio-button
+              >
+              <mat-radio-button value="range" color="primary"
+                >Rango de fechas</mat-radio-button
+              >
             </mat-radio-group>
 
             <div [ngSwitch]="validityType.value" class="mt-3">
               <ng-container *ngSwitchCase="'date'">
-                <mat-form-field appearance="outline" class="col-6" *ngIf="isDateInYears">
+                <mat-form-field
+                  appearance="outline"
+                  class="col-6"
+                  *ngIf="isDateInYears"
+                >
                   <mat-label>Cantidad</mat-label>
-                  <input matInput type="text" autocomplete="off" formControlName="amount" />
+                  <input
+                    matInput
+                    type="text"
+                    autocomplete="off"
+                    formControlName="amount"
+                  />
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
 
-                <mat-form-field appearance="outline" class="col-6" *ngIf="!isDateInYears">
+                <mat-form-field
+                  appearance="outline"
+                  class="col-6"
+                  *ngIf="!isDateInYears"
+                >
                   <mat-label>Año</mat-label>
                   <mat-select formControlName="amount">
                     <mat-option>-- None --</mat-option>
-                    <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                    <mat-option *ngFor="let year of years" [value]="year">{{
+                      year
+                    }}</mat-option>
                   </mat-select>
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
 
-                <mat-checkbox color="primary" formControlName="is_date" class="ms-5">
+                <mat-checkbox
+                  color="primary"
+                  formControlName="is_date"
+                  class="ms-5"
+                >
                   Es una cantidad de años
                 </mat-checkbox>
               </ng-container>
@@ -78,7 +111,9 @@
                     <mat-label>Inicio</mat-label>
                     <mat-select formControlName="min">
                       <mat-option>-- None --</mat-option>
-                      <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                      <mat-option *ngFor="let year of years" [value]="year">{{
+                        year
+                      }}</mat-option>
                     </mat-select>
                     <mat-error appErrorMessage></mat-error>
                   </mat-form-field>
@@ -86,7 +121,9 @@
                     <mat-label>Fin</mat-label>
                     <mat-select formControlName="max">
                       <mat-option>-- None --</mat-option>
-                      <mat-option *ngFor="let year of years" [value]="year">{{ year }}</mat-option>
+                      <mat-option *ngFor="let year of years" [value]="year">{{
+                        year
+                      }}</mat-option>
                     </mat-select>
                     <mat-error appErrorMessage></mat-error>
                   </mat-form-field>
@@ -97,10 +134,18 @@
                   <!--                </mat-form-field>-->
                   <mat-form-field appearance="outline" class="col-4">
                     <mat-label>Monto</mat-label>
-                    <input matInput type="text" autocomplete="off" formControlName="amount" />
+                    <input
+                      matInput
+                      type="text"
+                      autocomplete="off"
+                      formControlName="amount"
+                    />
                     <mat-error appErrorMessage></mat-error>
                   </mat-form-field>
-                  <div class="col-2 d-flex align-items-center" style="margin-top: -20px">
+                  <div
+                    class="col-2 d-flex align-items-center"
+                    style="margin-top: -20px"
+                  >
                     <button
                       type="button"
                       mat-mini-fab
@@ -143,20 +188,38 @@
               >
                 <mat-form-field appearance="outline" class="col-3">
                   <mat-label>Inicio</mat-label>
-                  <input matInput type="text" autocomplete="off" formControlName="min" />
+                  <input
+                    matInput
+                    type="text"
+                    autocomplete="off"
+                    formControlName="min"
+                  />
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-3">
                   <mat-label>Fin</mat-label>
-                  <input matInput type="text" autocomplete="off" formControlName="max" />
+                  <input
+                    matInput
+                    type="text"
+                    autocomplete="off"
+                    formControlName="max"
+                  />
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-4">
                   <mat-label>Monto</mat-label>
-                  <input matInput type="text" autocomplete="off" formControlName="amount" />
+                  <input
+                    matInput
+                    type="text"
+                    autocomplete="off"
+                    formControlName="amount"
+                  />
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
-                <div class="col-2 d-flex align-items-center" style="margin-top: -20px">
+                <div
+                  class="col-2 d-flex align-items-center"
+                  style="margin-top: -20px"
+                >
                   <button
                     type="button"
                     mat-mini-fab
@@ -202,12 +265,19 @@
         </mat-form-field>
       </ng-container>
 
-      <div formGroupName="formula" class="w-100" *ngIf="operationType.value === 'import'">
+      <div
+        formGroupName="formula"
+        class="w-100"
+        *ngIf="operationType.value === 'import'"
+      >
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Tipo de Operación</mat-label>
           <mat-select formControlName="operation">
             <mat-option [value]="null">--Ninguna--</mat-option>
-            <mat-option *ngFor="let operation of operations" [value]="operation.value">
+            <mat-option
+              *ngFor="let operation of operations"
+              [value]="operation.value"
+            >
               {{ operation.label }}
             </mat-option>
           </mat-select>

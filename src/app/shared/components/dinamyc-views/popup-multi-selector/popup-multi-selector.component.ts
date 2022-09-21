@@ -67,7 +67,8 @@ export class PopupMultiSelectorComponent<T extends EntityDto>
 
   isAllSelected() {
     const arrayDiff = this.dataSource.data.filter(
-      (data: any) => !this.selection.selected.some((select: any) => data.id === select.id),
+      (data: any) =>
+        !this.selection.selected.some((select: any) => data.id === select.id),
     );
     return arrayDiff.length === 0;
   }
@@ -77,7 +78,9 @@ export class PopupMultiSelectorComponent<T extends EntityDto>
     if (!row) {
       return `${this.isAllSelected() ? 'deselect' : 'select'} all`;
     }
-    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+    return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${
+      row.id + 1
+    }`;
   }
 
   ngOnInit(): void {
@@ -123,7 +126,9 @@ export class PopupMultiSelectorComponent<T extends EntityDto>
 
   toggleAll() {
     if (this.matCheckAll.checked) {
-      this.selection.selected.forEach((item) => this.deleteOptionSelected(item));
+      this.selection.selected.forEach((item) =>
+        this.deleteOptionSelected(item),
+      );
       this.selection.deselect(...this.dataSource.data);
     } else {
       this.selection.select(...this.dataSource.data);
@@ -136,7 +141,9 @@ export class PopupMultiSelectorComponent<T extends EntityDto>
       this.selection.selected.some((select: any) => data.id === select.id),
     );
     arrayDiff.forEach((item) => {
-      const dontExist = !this.optionsSelected.find((option) => item.id === option.id);
+      const dontExist = !this.optionsSelected.find(
+        (option) => item.id === option.id,
+      );
       if (dontExist) {
         this.optionsSelected.push(item);
       }
@@ -144,7 +151,9 @@ export class PopupMultiSelectorComponent<T extends EntityDto>
   }
 
   private deleteOptionSelected(item: any) {
-    const index = this.optionsSelected.findIndex((option) => item.id === option.id);
+    const index = this.optionsSelected.findIndex(
+      (option) => item.id === option.id,
+    );
     if (!!index || index === 0) {
       this.optionsSelected.splice(index, 1);
     }

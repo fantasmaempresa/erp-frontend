@@ -5,7 +5,9 @@ import { environment } from '../../../../environments/environment';
 import { Pagination } from '../../interfaces/Pagination.model';
 import { EntityDto } from '../../interfaces/Entity.dto';
 
-export abstract class CrudService<T extends EntityDto> implements CrudOperations<T> {
+export abstract class CrudService<T extends EntityDto>
+  implements CrudOperations<T>
+{
   protected constructor(protected _base: string, protected _http: HttpClient) {
     this._base = `${environment.base_url}/` + this._base;
   }

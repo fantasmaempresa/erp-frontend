@@ -58,7 +58,9 @@ export class BindMultiPopupComponent implements OnInit {
     }
     const idArray = this.ngControl.value;
     if (idArray) {
-      const arrayRequest$ = idArray.map((item: any) => this.service.fetch(item.id));
+      const arrayRequest$ = idArray.map((item: any) =>
+        this.service.fetch(item.id),
+      );
       forkJoin(arrayRequest$).subscribe((value: any) => {
         this.selected = value;
       });

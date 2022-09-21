@@ -24,4 +24,6 @@ export const loadNextPageOfClientsLink = createAction(
   props<{ page: number; size: number }>(),
 );
 
-export const emptyClientLinkList = createAction(ClientsLinkActions.EMPTY_CLIENT_LINK_LIST);
+export const emptyClientLinkList = createAction(
+  ClientsLinkActions.EMPTY_CLIENT_LINK_LIST,
+);

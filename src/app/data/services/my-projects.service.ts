@@ -14,7 +14,9 @@ export class MyProjectsService {
   constructor(private http: HttpClient) {}
 
   getMyProjects(): Observable<Pagination<MyProjectDto>> {
-    return this.http.get<Pagination<MyProjectDto>>(`${this._base}/filter/myProjects`);
+    return this.http.get<Pagination<MyProjectDto>>(
+      `${this._base}/filter/myProjects`,
+    );
   }
 
   getCurrentForm(projectId: number, processId: number) {
@@ -32,9 +34,12 @@ export class MyProjectsService {
     processId: number;
     comment: string;
   }) {
-    return this.http.post(`${this._base}/action/start/project/${projectId}/process/${processId}`, {
-      comment,
-    });
+    return this.http.post(
+      `${this._base}/action/start/project/${projectId}/process/${processId}`,
+      {
+        comment,
+      },
+    );
   }
 
   changeProcess({
@@ -48,10 +53,13 @@ export class MyProjectsService {
     comment: string;
     prev: boolean;
   }) {
-    return this.http.post(`${this._base}/action/next/project/${projectId}/process/${processId}`, {
-      comment,
-      prev,
-    });
+    return this.http.post(
+      `${this._base}/action/next/project/${projectId}/process/${processId}`,
+      {
+        comment,
+        prev,
+      },
+    );
   }
 
   nextPhase({
@@ -93,7 +101,15 @@ export class MyProjectsService {
     );
   }
 
-  saveForm({ projectId, processId, form }: { projectId: number; processId: number; form: any }) {
+  saveForm({
+    projectId,
+    processId,
+    form,
+  }: {
+    projectId: number;
+    processId: number;
+    form: any;
+  }) {
     return this.http.post(
       `${this._base}/action/saveForm/project/${projectId}/process/${processId}`,
       { form },
