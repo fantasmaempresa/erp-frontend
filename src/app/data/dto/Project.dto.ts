@@ -1,6 +1,6 @@
 import { ClientDto } from './Client.dto';
 import { UserDto } from './User.dto';
-import { EntityDto } from '../../core/interfaces/Entity.dto';
+import { EntityDto } from '../../core/interfaces';
 
 export interface ProjectDto extends EntityDto {
   name: string;

@@ -1,4 +1,4 @@
-import { EntityDto } from '../../core/interfaces/Entity.dto';
+import { EntityDto } from '../../core/interfaces';
 import { RoleDto } from './Role.dto';
 
 export interface UserDto extends EntityDto {

@@ -5,14 +5,14 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { MatTableDataSource } from '@angular/material/table';
-import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SelectionModel } from '@angular/cdk/collections';
+import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { Observable, Subscription, tap } from 'rxjs';
-import { Pagination } from '../../../../core/interfaces/Pagination.model';
-import { AreaService } from '../../../../data/services/area.service';
-import { WorkAreaDto } from '../../../../data/dto/WorkArea.dto';
+import { Pagination } from '../../../../core/interfaces';
+import { AreaService } from '../../../../data/services';
+import { WorkAreaDto } from '../../../../data/dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { Store } from '@ngrx/store';
 import { selectAreas } from '../../../../state/areas/areas.selector';

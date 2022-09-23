@@ -22,8 +22,6 @@ interface LoginForm {
 export class LoginComponent implements OnInit {
   @HostBinding('class') classes = 'flex-fill justify-content-center row';
 
-  constructor(private router: Router, private store: Store) {}
-
   signUpForm = new FormGroup<LoginForm>({
     username: new FormControl('', {
       nonNullable: true,
@@ -40,6 +38,8 @@ export class LoginComponent implements OnInit {
   isLoading$!: Observable<boolean>;
 
   errorMessage$!: Observable<string | null>;
+
+  constructor(private router: Router, private store: Store) {}
 
   ngOnInit(): void {
     this.isLoading$ = this.store.select(selectIsLoading);

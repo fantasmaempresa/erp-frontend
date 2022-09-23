@@ -1,7 +1,7 @@
 import {
   mapToLabel,
   printLabel,
-} from '../../shared/components/dinamyc-views/DynamicViews.decorators';
+} from '../../shared/components/dynamic-views/DynamicViews.decorators';
 
 export class ClientView {
   @printLabel('Nombre')

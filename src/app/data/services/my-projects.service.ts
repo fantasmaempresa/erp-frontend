@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { MyProjectDto } from '../dto/MyProject.dto';
+import { Pagination } from '../../core/interfaces';
+import { MyProjectDto } from '../dto';
 import { Observable } from 'rxjs';
 
 @Injectable({

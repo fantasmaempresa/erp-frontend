@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { UntypedFormArray, UntypedFormControl } from '@angular/forms';
 import { map, Observable } from 'rxjs';
-import { ConceptService } from '../../../../data/services/concept.service';
-import { ConceptDto } from '../../../../data/dto/Concept.dto';
+import { ConceptService } from '../../../../data/services';
+import { ConceptDto } from '../../../../data/dto';
 
 @Component({
   selector: 'app-project-quote-concepts',
@@ -12,13 +12,11 @@ import { ConceptDto } from '../../../../data/dto/Concept.dto';
 export class ProjectQuoteConceptsComponent {
   concepts = new UntypedFormArray([]);
 
-  concepts$: Observable<ConceptDto[]>;
+  concepts$: Observable<ConceptDto[]> = this.conceptService
+    .fetchAll()
+    .pipe(map((concepts) => concepts.data));
 
-  constructor(private conceptService: ConceptService) {
-    this.concepts$ = this.conceptService
-      .fetchAll()
-      .pipe(map((concepts) => concepts.data));
-  }
+  constructor(private conceptService: ConceptService) {}
 
   addNewConcept() {
     this.concepts.push(new UntypedFormControl({}));

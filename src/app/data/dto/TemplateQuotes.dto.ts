@@ -1,4 +1,4 @@
-import { EntityDto } from '../../core/interfaces/Entity.dto';
+import { EntityDto } from '../../core/interfaces';
 import { Formfield } from './Formfield.dto';
 
 export interface TemplateQuotes extends EntityDto {

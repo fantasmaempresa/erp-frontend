@@ -1,4 +1,4 @@
-import { EntityDto } from '../../core/interfaces/Entity.dto';
+import { EntityDto } from '../../core/interfaces';
 
 export interface ProcessPhaseDto extends EntityDto {
   name: string;

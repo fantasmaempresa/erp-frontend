@@ -12,7 +12,7 @@ import {
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
-} from '../../../../shared/components/dinamyc-views/dynamic-views.module';
+} from '../../../../shared/components/dynamic-views/dynamic-views.module';
 import { selectClients } from '../../../../state/clients/clients.selectors';
 import {
   loadClients,

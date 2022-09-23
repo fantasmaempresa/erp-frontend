@@ -19,7 +19,6 @@
 @include mat.core(typography.$fontConfig);
 
 @include mat.all-component-themes(light.$light-theme);
-@include mat.form-field-theme(light.$input-light-theme);
 @include components.theme(light.$light-theme, typography.$fontConfig);
 
 *,

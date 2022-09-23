@@ -2,7 +2,7 @@ import {
   mapToHTML,
   mapToLabel,
   printLabel,
-} from '../../shared/components/dinamyc-views/DynamicViews.decorators';
+} from '../../shared/components/dynamic-views/DynamicViews.decorators';
 import { RoleDto } from '../dto';
 
 export class UserView {

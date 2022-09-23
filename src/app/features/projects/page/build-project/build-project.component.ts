@@ -12,8 +12,8 @@ import {
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
-} from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { PopupMultiSelectorComponent } from '../../../../shared/components/dinamyc-views/popup-multi-selector/popup-multi-selector.component';
+} from '../../../../shared/components/dynamic-views/dynamic-views.module';
+import { PopupMultiSelectorComponent } from '../../../../shared/components/dynamic-views/popup-multi-selector/popup-multi-selector.component';
 import {
   filter,
   forkJoin,

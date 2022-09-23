@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormValidationService } from '../../../../shared/services/form-validation.service';
 import { Observable } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { validationMessages } from '../../../../core/constants/validationMessages';
-import { QuoteStatusService } from '../../../../data/services/quote-status.service';
-import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';
+import { QuoteStatusService } from '../../../../data/services';
+import { QuoteStatusDto } from '../../../../data/dto';
 
 @Component({
   selector: 'app-quote-status-form',
@@ -21,12 +19,9 @@ export class QuoteStatusFormComponent {
 
   isEdit = false;
 
-  formErrors: any = {};
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private formValidationService: FormValidationService,
     private quoteStatusService: QuoteStatusService,
   ) {
     if (this.route.snapshot.queryParams.id) {
@@ -53,21 +48,14 @@ export class QuoteStatusFormComponent {
     }
     request$.subscribe({
       next: async () => {
-        let message;
-        this.isEdit ? (message = 'actualizado') : (message = 'registrado');
         MessageHelper.successMessage(
           '¡Éxito!',
-          `El estado de la cotización ha sido ${message} correctamente.`,
+          `El estado de la cotización ha sido ${
+            this.isEdit ? 'actualizado' : 'registrado'
+          } correctamente.`,
         );
         await this.backToListQuoteStatusList();
       },
     });
-  }
-
-  logValidationErrors() {
-    this.formErrors = this.formValidationService.getValidationErrors(
-      this.quoteStatusForm,
-      validationMessages,
-    );
   }
 }

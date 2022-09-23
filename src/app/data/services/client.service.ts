@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { ClientDto } from '../dto/Client.dto';
-import { CrudService } from '../../core/classes/Crud/CrudService';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Pagination } from '../../core/interfaces/Pagination.model';
+import { ClientDto } from '../dto';
+import { CrudService } from '../../core/classes/Crud/CrudService';
+import { Pagination } from '../../core/interfaces';
 import { environment } from '../../../environments/environment';
 
 @Injectable({

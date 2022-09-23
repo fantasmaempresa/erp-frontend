@@ -7,26 +7,24 @@ import {
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
 import { combineLatest, delay, map, Observable, take } from 'rxjs';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { Formfield } from '../../../../data/dto/Formfield.dto';
+import { Store } from '@ngrx/store';
 import {
-  selectDynamicForm,
-  selectStatus,
-} from '../../../../state/dynamic-form/dynamic-form.selectors';
+  ProjectQuoteService,
+  QuoteStatusService,
+  QuoteTemplateService,
+} from '../../../../data/services';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { Formfield, QuoteStatusDto, QuoteTemplate } from '../../../../data/dto';
 import {
   emptyForm,
   loadForm,
-} from '../../../../state/dynamic-form/dynamic-form.actions';
-import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
+  selectDynamicForm,
+  selectStatus,
+} from '../../../../state/dynamic-form';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { QuoteTemplate } from '../../../../data/dto/QuoteTemplate.dto';
-import { QuoteStatusService } from '../../../../data/services/quote-status.service';
-import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
+import { DynamicFormComponent } from '../../../../shared/components';
 import { ProjectQuoteFormComponent } from '../project-quote-form/project-quote-form.component';
-import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';
 
 @Component({
   selector: 'app-project-quote-page',

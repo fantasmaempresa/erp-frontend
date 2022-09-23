@@ -1,4 +1,4 @@
-import { EntityDto } from '../../core/interfaces/Entity.dto';
+import { EntityDto } from '../../core/interfaces';
 import { ClientDto } from './Client.dto';
 import { Formfield } from './Formfield.dto';
 import { Operations } from '../models/Operations.model';

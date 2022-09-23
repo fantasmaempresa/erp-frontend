@@ -1,9 +1,7 @@
-import { CrudOperations } from '../../interfaces/CrudOperations';
-import { Observable } from 'rxjs';
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { Pagination } from '../../interfaces/Pagination.model';
-import { EntityDto } from '../../interfaces/Entity.dto';
+import { CrudOperations, EntityDto, Pagination } from '../../interfaces';
 
 export abstract class CrudService<T extends EntityDto>
   implements CrudOperations<T>

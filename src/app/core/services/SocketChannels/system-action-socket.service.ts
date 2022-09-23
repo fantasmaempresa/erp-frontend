@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { LaravelWebSocket } from '../../classes/laravel-web-socket';
-import { Observable, of, switchMap, withLatestFrom } from 'rxjs';
-import { AuthService } from '../auth.service';
-import { Store } from '@ngrx/store';
-import { UserDto } from '../../../data/dto/User.dto';
-import { selectUser } from '../../../state/auth/auth.selectors';
 import { Router } from '@angular/router';
+import { Observable, of, switchMap, withLatestFrom } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { LaravelWebSocket } from '../../classes/laravel-web-socket';
+import { AuthService } from '../auth.service';
+import { UserDto } from '../../../data/dto';
+import { selectUser } from '../../../state/auth';
 
 @Injectable({
   providedIn: `root`,

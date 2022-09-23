@@ -5,10 +5,10 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { ConceptService } from '../../../../data/services/concept.service';
+import { ConceptService } from '../../../../data/services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { ConceptDto } from '../../../../data/dto/Concept.dto';
+import { ConceptDto } from '../../../../data/dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 @Component({

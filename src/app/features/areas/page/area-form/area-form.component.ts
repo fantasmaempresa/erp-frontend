@@ -5,12 +5,10 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { FormValidationService } from '../../../../shared/services/form-validation.service';
-import { AreaService } from '../../../../data/services/area.service';
 import { Observable } from 'rxjs';
+import { AreaService } from '../../../../data/services';
+import { WorkAreaDto } from '../../../../data/dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { validationMessages } from '../../../../core/constants/validationMessages';
-import { WorkAreaDto } from '../../../../data/dto/WorkArea.dto';
 
 @Component({
   selector: 'app-area-form',
@@ -26,12 +24,9 @@ export class AreaFormComponent {
 
   isEdit = false;
 
-  formErrors: any = {};
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private formValidationService: FormValidationService,
     private areaService: AreaService,
   ) {
     if (this.route.snapshot.queryParams.id) {
@@ -66,12 +61,5 @@ export class AreaFormComponent {
         await this.backToListAreas();
       },
     });
-  }
-
-  logValidationErrors() {
-    this.formErrors = this.formValidationService.getValidationErrors(
-      this.areaForm,
-      validationMessages,
-    );
   }
 }

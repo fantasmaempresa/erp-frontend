@@ -1,5 +1,5 @@
 import { UserDto } from './User.dto';
-import { EntityDto } from '../../core/interfaces/Entity.dto';
+import { EntityDto } from '../../core/interfaces';
 
 export interface StaffDto extends EntityDto {
   email: string;

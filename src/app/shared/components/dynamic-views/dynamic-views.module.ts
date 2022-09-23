@@ -8,7 +8,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { CardViewComponent } from './card-view/card-view.component';
 import { ChangeViewComponent } from './change-view/change-view.component';
 import { PopupMultiSelectorComponent } from './popup-multi-selector/popup-multi-selector.component';
-import { MapToPipe } from '../../../core/pipes/map-to.pipe';
+import { MapToPipe } from '../../pipes/map-to.pipe';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
@@ -16,10 +16,10 @@ import { FormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { PopupSelectorComponent } from './popup-selector/popup-selector.component';
-import { HostDirective } from '../../../core/directives/ad-host.directive';
+import { HostDirective } from '../../directives/ad-host.directive';
 import { BindPopupDirective } from './directives/bind-popup.directive';
 import { BindMultiPopupComponent } from './directives/bind-multi-popup/bind-multi-popup.component';
-import { MaterialModule } from '../../material.module';
+import { MaterialModule } from '../../material/material.module';
 
 @NgModule({
   declarations: [

@@ -5,15 +5,16 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { ActivatedRoute, Router } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
-import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subscription, tap } from 'rxjs';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { Store } from '@ngrx/store';
+import { ProjectQuoteDto, QuoteStatusDto } from '../../../../data/dto';
+import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { Pagination } from '../../../../core/interfaces';
 import { selectQuotes } from '../../../../state/quotes/quotes.selector';
 import {
   emptyQuoteList,
@@ -21,9 +22,7 @@ import {
   loadQuotes,
   loadQuotesByStatus,
 } from '../../../../state/quotes/quotes.actions';
-import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
-import { ProjectQuoteDto } from '../../../../data/dto/ProjectQuote.dto';
-import { MatDialog } from '@angular/material/dialog';
+import { ProjectQuoteService } from '../../../../data/services';
 import { ProjectQuotePreviewComponent } from '../../dialog/project-quote-preview/project-quote-preview.component';
 
 @Component({

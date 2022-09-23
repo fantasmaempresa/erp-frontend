@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { CrudService } from '../../core/classes/Crud/CrudService';
-import { ProcessPhaseDto } from '../dto/ProcessPhase.dto';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Pagination } from '../../core/interfaces/Pagination.model';
+import { CrudService } from '../../core/classes/Crud/CrudService';
+import { ProcessPhaseDto } from '../dto';
+import { Pagination } from '../../core/interfaces';
 
 @Injectable({
   providedIn: 'root',

@@ -4,14 +4,14 @@ import {
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
-} from '../../../../shared/components/dinamyc-views/dynamic-views.module';
+} from '../../../../shared/components/dynamic-views/dynamic-views.module';
 import { selectProcess } from '../../../../state/process/process.selector';
 import {
   loadNextPageOfProcess,
   loadProcess,
 } from '../../../../state/process/process.actions';
 import { EntityDto } from '../../../../core/interfaces/Entity.dto';
-import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
+import { ActionsCard } from '../../../../shared/components/dynamic-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProcessView } from '../../../../data/presentation/Process.view';
 

@@ -1,4 +1,4 @@
-import { EntityDto } from '../../core/interfaces/Entity.dto';
+import { EntityDto } from '../../core/interfaces';
 
 export interface DetailProjectsDto extends EntityDto {
   comments: string;

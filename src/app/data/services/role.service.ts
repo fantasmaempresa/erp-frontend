@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { RoleDto } from '../dto/Role.dto';
+import { RoleDto } from '../dto';
 import { CrudService } from '../../core/classes/Crud/CrudService';
-import { Pagination } from '../../core/interfaces/Pagination.model';
+import { Pagination } from '../../core/interfaces';
 
 @Injectable({
   providedIn: 'root',

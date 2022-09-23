@@ -8,7 +8,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { HostDirective } from '../../../../core/directives/ad-host.directive';
+import { HostDirective } from '../../../directives/ad-host.directive';
 import { TableViewComponent } from '../table-view/table-view.component';
 
 interface PopUpData {

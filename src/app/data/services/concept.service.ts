@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { ConceptDto } from '../dto/Concept.dto';
-import { Pagination } from '../../core/interfaces/Pagination.model';
+import { ConceptDto } from '../dto';
+import { Pagination } from '../../core/interfaces';
 
 @Injectable({
   providedIn: 'root',

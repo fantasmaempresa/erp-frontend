@@ -7,14 +7,13 @@ import {
 } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { SelectionModel } from '@angular/cdk/collections';
-import { ClientDto } from '../../../../data/dto/Client.dto';
+import { ClientDto, ConceptDto } from '../../../../data/dto';
 import { MatTableDataSource } from '@angular/material/table';
 import { Observable, Subscription, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { ConceptDto } from '../../../../data/dto/Concept.dto';
-import { ConceptService } from '../../../../data/services/concept.service';
-import { Pagination } from '../../../../core/interfaces/Pagination.model';
+import { ConceptService } from '../../../../data/services';
+import { Pagination } from '../../../../core/interfaces';
 import { Store } from '@ngrx/store';
 import { selectConcepts } from '../../../../state/concepts/concepts.selector';
 import {

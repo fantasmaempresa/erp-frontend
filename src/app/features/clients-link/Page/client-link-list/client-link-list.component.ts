@@ -12,8 +12,8 @@ import {
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
-} from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
+} from '../../../../shared/components/dynamic-views/dynamic-views.module';
+import { ActionsCard } from '../../../../shared/components/dynamic-views/card-view/card-view.component';
 import { ClientLinkView } from '../../../../data/presentation/ClientLink.view';
 
 @Component({

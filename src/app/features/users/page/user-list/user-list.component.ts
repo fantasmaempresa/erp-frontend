@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { EntityDto } from '../../../../core/interfaces/Entity.dto';
-import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
+import { ActionsCard } from '../../../../shared/components/dynamic-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UserService } from '../../../../data/services/user.service';
@@ -10,7 +10,7 @@ import {
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
-} from '../../../../shared/components/dinamyc-views/dynamic-views.module';
+} from '../../../../shared/components/dynamic-views/dynamic-views.module';
 import {
   loadNextPageOfUsers,
   loadUsers,

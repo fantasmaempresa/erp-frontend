@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { CrudService } from '../../core/classes/Crud/CrudService';
-import { NotificationResponseDto } from '../dto/NotificationResponse.dto';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { NotificationDto } from '../dto/Notification.dto';
+import { CrudService } from '../../core/classes/Crud/CrudService';
+import { NotificationDto, NotificationResponseDto } from '../dto';
 
 @Injectable({
   providedIn: 'root',

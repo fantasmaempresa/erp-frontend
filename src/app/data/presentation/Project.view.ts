@@ -1,4 +1,4 @@
-import { printLabel } from '../../shared/components/dinamyc-views/DynamicViews.decorators';
+import { printLabel } from '../../shared/components/dynamic-views/DynamicViews.decorators';
 
 export class ProjectView {
   @printLabel('Nombre')

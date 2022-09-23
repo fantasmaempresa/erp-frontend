@@ -1,4 +1,4 @@
-import { EntityDto } from '../../core/interfaces/Entity.dto';
+import { EntityDto } from '../../core/interfaces';
 import { RoleDto } from './Role.dto';
 import { StaffDto } from './Staff.dto';
 import { ClientDto } from './Client.dto';

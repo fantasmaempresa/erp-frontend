@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormValidationService } from '../../../../shared/services/form-validation.service';
 
 @Component({
   selector: 'app-concept-page',
@@ -8,15 +7,9 @@ import { FormValidationService } from '../../../../shared/services/form-validati
   styleUrls: ['./concept-page.component.scss'],
 })
 export class ConceptPageComponent {
-  formErrors: any = {};
-
   isEdit = false;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private formValidationService: FormValidationService,
-  ) {
+  constructor(private router: Router, private route: ActivatedRoute) {
     if (this.route.snapshot.queryParams.id) {
       this.isEdit = true;
     }

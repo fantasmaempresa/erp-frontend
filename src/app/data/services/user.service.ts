@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { UserDto } from '../dto/User.dto';
+import { UserDto } from '../dto';
 import { CrudService } from '../../core/classes/Crud/CrudService';
-import { Pagination } from '../../core/interfaces/Pagination.model';
+import { Pagination } from '../../core/interfaces';
 
 @Injectable({
   providedIn: 'root',

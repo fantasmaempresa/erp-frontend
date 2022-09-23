@@ -4,14 +4,14 @@ import {
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
-} from '../../../../shared/components/dinamyc-views/dynamic-views.module';
+} from '../../../../shared/components/dynamic-views/dynamic-views.module';
 import { selectProjects } from '../../../../state/project/project.selector';
 import {
   loadNextPageOfProjects,
   loadProjects,
 } from '../../../../state/project/project.actions';
 import { EntityDto } from '../../../../core/interfaces/Entity.dto';
-import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
+import { ActionsCard } from '../../../../shared/components/dynamic-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectView } from '../../../../data/presentation/Project.view';
 

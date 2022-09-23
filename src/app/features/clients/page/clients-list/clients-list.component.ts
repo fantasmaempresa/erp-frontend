@@ -5,7 +5,7 @@ import {
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
-} from '../../../../shared/components/dinamyc-views/dynamic-views.module';
+} from '../../../../shared/components/dynamic-views/dynamic-views.module';
 import { ClientDto } from '../../../../data/dto/Client.dto';
 import {
   loadClients,

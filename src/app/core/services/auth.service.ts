@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../../environments/environment';
 import { Observable, take, tap } from 'rxjs';
-import { AuthResponseDto } from '../../data/dto/AuthResponse.dto';
-import { TokensDto } from '../../data/dto/Tokens.dto';
+import { environment } from '../../../environments/environment';
+import { AuthResponseDto, TokensDto } from '../../data/dto';
 
 @Injectable({
   providedIn: 'root',

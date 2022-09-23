@@ -65,7 +65,6 @@ export class FormValidationService {
 
   getErrorMessage(control: AbstractControl) {
     let error = '';
-    console.log(control.errors);
     if (control.errors) {
       const [[keyErr, objErr]]: [string, any][] = Object.entries(
         control.errors,

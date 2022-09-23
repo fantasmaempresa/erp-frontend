@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { MatFormField } from '@angular/material/form-field';
 import { AbstractControl } from '@angular/forms';
-import { FormValidationService } from '../../shared/services/form-validation.service';
-import { ClassWatcher } from '../classes/ClassWatcher';
+import { FormValidationService } from '../services/form-validation.service';
+import { ClassWatcher } from '../../core/classes/ClassWatcher';
 
 @Directive({
   selector: '[appErrorMessage]',

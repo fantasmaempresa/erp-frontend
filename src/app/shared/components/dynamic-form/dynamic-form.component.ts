@@ -19,18 +19,17 @@ import {
   Validator,
   Validators,
 } from '@angular/forms';
-import { FormfieldControlService } from '../../../core/services/formfield-control.service';
+import { coerceBooleanProperty } from '@angular/cdk/coercion';
+import { Observable, Subscription, tap, using } from 'rxjs';
 import { Store } from '@ngrx/store';
+import { Update } from '@ngrx/entity';
 import {
   selectDynamicForm,
   selectStatus,
-} from '../../../state/dynamic-form/dynamic-form.selectors';
-import { Observable, Subscription, tap, using } from 'rxjs';
-import { Formfield } from '../../../data/dto/Formfield.dto';
-import { Update } from '@ngrx/entity';
+  updateValues,
+} from '../../../state/dynamic-form';
+import { Formfield } from '../../../data/dto';
 import { AbstractSubformComponent } from './abstract-subform.component';
-import { coerceBooleanProperty } from '@angular/cdk/coercion';
-import { updateValues } from '../../../state/dynamic-form/dynamic-form.actions';
 
 @Component({
   selector: 'app-dynamic-form',
@@ -69,11 +68,7 @@ export class DynamicFormComponent
 
   formStatus$!: Observable<'EDITABLE' | 'NEW'>;
 
-  constructor(
-    private formfieldService: FormfieldControlService,
-    private store: Store,
-    private cd: ChangeDetectorRef,
-  ) {
+  constructor(private store: Store, private cd: ChangeDetectorRef) {
     super();
   }
 

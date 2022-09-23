@@ -6,7 +6,7 @@
 
 .card {
   margin-bottom: 24px;
-  box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.03);
+  box-shadow: 0 0.75rem 1.5rem rgba(18, 38, 63, 0.3);
 }
 
 .bg-login {
@@ -27,13 +27,13 @@
     linear,
     left top,
     right top,
-    from(#273c92),
-    to(#293e92)
+    from(var(--primary-color)),
+    to(var(--primary-darker-color))
   );
   background: linear-gradient(
     to right,
-    var(--accent-color),
-    var(--accent-darker-color)
+    var(--primary-color),
+    var(--primary-darker-color)
   );
   top: 0;
   right: 0;

@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { EntityDto } from '../../../../core/interfaces/Entity.dto';
-import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
+import { ActionsCard } from '../../../../shared/components/dynamic-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   CLAZZ,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
-} from '../../../../shared/components/dinamyc-views/dynamic-views.module';
+} from '../../../../shared/components/dynamic-views/dynamic-views.module';
 import { selectProcessPhase } from '../../../../state/process-phase/processPhase.selector';
 import {
   loadNextPageOfProcessPhase,

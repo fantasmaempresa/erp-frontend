@@ -7,10 +7,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogSearchComponent } from '../../../../shared/components/dialog-search/dialog-search.component';
-import { ClientDto } from '../../../../data/dto/Client.dto';
-import { AbstractSubformComponent } from '../../../../shared/components/dynamic-form/abstract-subform.component';
-import { UserDto } from '../../../../data/dto/User.dto';
+import {
+  AbstractSubformComponent,
+  DialogSearchComponent,
+} from '../../../../shared/components';
+import { ClientDto, UserDto } from '../../../../data/dto';
 
 @Component({
   selector: 'app-project-quote-form',

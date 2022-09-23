@@ -1,11 +1,11 @@
-import { EntityDto } from '../../interfaces/Entity.dto';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MessageHelper } from '../../../shared/helpers/MessageHelper';
-import { CrudService } from '../Crud/CrudService';
-import { Action, Store } from '@ngrx/store';
 import { Injector } from '@angular/core';
-import { LOAD_ACTION } from '../../../shared/components/dinamyc-views/dynamic-views.module';
-import { ActionsCard } from '../../../shared/components/dinamyc-views/card-view/card-view.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Action, Store } from '@ngrx/store';
+import { EntityDto } from '../../interfaces';
+import { CrudService } from '../Crud/CrudService';
+import { MessageHelper } from '../../../shared/helpers/MessageHelper';
+import { LOAD_ACTION } from '../../../shared/components/dynamic-views/dynamic-views.module';
+import { ActionsCard } from '../../../shared/components/dynamic-views/card-view/card-view.component';
 
 export class ListView<T extends EntityDto> {
   selectedItem!: T;
