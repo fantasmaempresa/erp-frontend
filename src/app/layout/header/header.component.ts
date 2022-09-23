@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { logout } from '../../state/auth/auth.actions';
+import { logout } from '../../state/auth';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { ThemeManagerService } from '../../core/services/theme-manager.service';
 

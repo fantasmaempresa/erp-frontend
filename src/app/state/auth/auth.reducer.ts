@@ -1,4 +1,4 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import {
   cleanError,
   cleanLoading,
@@ -9,15 +9,16 @@ import {
 } from './auth.actions';
 import { AuthState, initialState } from './auth.state';
 
-const AuthReducer = createReducer(
+export const authReducer = createReducer(
   initialState,
   on(loginStart, (state): AuthState => {
     return {
       ...state,
+      errorMessage: '',
       isLoading: true,
     };
   }),
-  on(loginSuccess, (state, action) => {
+  on(loginSuccess, (state, action): AuthState => {
     return {
       ...state,
       tokens: action.tokens,
@@ -26,34 +27,29 @@ const AuthReducer = createReducer(
       errorMessage: null,
     };
   }),
-  on(loginFailure, (state, { isLoading, errorMessage }) => {
+  on(loginFailure, (state, { isLoading, errorMessage }): AuthState => {
     return {
       ...state,
       isLoading,
       errorMessage,
     };
   }),
-  on(logout, (state) => {
+  on(logout, (state): AuthState => {
     return {
       ...state,
       tokens: null,
     };
   }),
-  on(cleanLoading, (state) => {
+  on(cleanLoading, (state): AuthState => {
     return {
       ...state,
       isLoading: false,
     };
   }),
-  on(cleanError, (state) => {
+  on(cleanError, (state): AuthState => {
     return {
       ...state,
       errorMessage: null,
     };
   }),
 );
-
-// eslint-disable-next-line @typescript-eslint/default-param-last
-export function authReducer(state = initialState, action: Action) {
-  return AuthReducer(state, action);
-}

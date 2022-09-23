@@ -21,7 +21,7 @@ import {
   selectDynamicFormEssentialData,
   selectErrorMessage,
   selectIsEditable,
-} from '../../../state/dynamic-form/dynamic-form.selector';
+} from '../../../state/dynamic-form/dynamic-form.selectors';
 import { MessageHelper } from '../../helpers/MessageHelper';
 import { QuoteTemplateService } from '../../../data/services/quote-template.service';
 import { Update } from '@ngrx/entity';

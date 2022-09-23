@@ -13,7 +13,7 @@ import {
 import { EntityDto } from '../../../../core/interfaces/Entity.dto';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectView } from '../../../../data/Presentation/Project.view';
+import { ProjectView } from '../../../../data/presentation/Project.view';
 
 @Component({
   selector: 'app-project-list',

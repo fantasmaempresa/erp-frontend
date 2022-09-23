@@ -13,7 +13,7 @@ import {
   loadNextPageOfProcessPhase,
   loadProcessPhase,
 } from '../../../../state/process-phase/processPhase.actions';
-import { ProcessPhaseView } from '../../../../data/Presentation/ProcessPhase.view';
+import { ProcessPhaseView } from '../../../../data/presentation/ProcessPhase.view';
 
 @Component({
   selector: 'app-process-phase-list',

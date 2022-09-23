@@ -1,10 +1,14 @@
 import { ActionReducerMap } from '@ngrx/store';
-import { AuthState, initialState } from './auth/auth.state';
-import { authReducer } from './auth/auth.reducer';
 import {
+  authReducer,
+  AuthState,
+  initialState as authInitialState,
+} from './auth';
+import {
+  clientReducer,
   ClientsState,
   initialState as clientsInitialState,
-} from './clients/clients.state';
+} from './clients';
 import {
   initialState as staffInitialState,
   StaffState,
@@ -22,11 +26,6 @@ import { quoteStatusReducer } from './quote-status/quote-status.reducer';
 import { quotesInitialState, QuotesState } from './quotes/quotes.state';
 import { quotesReducer } from './quotes/quotes.reducer';
 import {
-  DynamicFormState,
-  initialState as dynamicFormInitialState,
-} from './dynamic-form/dynamic-form.state';
-import { dynamicFormReducer } from './dynamic-form/dynamic-form.reducer';
-import {
   initialState as notificationInitialState,
   NotificationState,
 } from './notifications/notification.state';
@@ -36,7 +35,6 @@ import {
   initialState as clientsLinkInitialState,
 } from './clients-link/clients-link.state';
 import { clientsLinkReducer } from './clients-link/clients-link.reducer';
-import { clientReducer } from './clients/clients.reducer';
 import { userReducer } from './users/users.reducer';
 import {
   initialState as userInitialState,
@@ -69,6 +67,11 @@ import {
   MyProjectState,
 } from './my-project/my-project.state';
 import { myProjectReducer } from './my-project/my-project.reducer';
+import {
+  DynamicFormState,
+  initialState as dynamicFormInitialState,
+  dynamicFormReducer,
+} from './dynamic-form';
 
 export interface AppState {
   roles: RoleState;
@@ -96,7 +99,7 @@ export const initialAppState: AppState = {
   projects: projectState,
   myProjects: myProjectInitialState,
   notifications: notificationInitialState,
-  auth: initialState,
+  auth: authInitialState,
   clients: clientsInitialState,
   users: userInitialState,
   clientsLink: clientsLinkInitialState,

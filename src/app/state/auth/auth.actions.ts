@@ -6,7 +6,6 @@ export enum AuthActions {
   LOGIN_START = '[Auth] Login start',
   LOGIN_LOADING = '[Auth] Login loading',
   LOGIN_SUCCESS = '[Auth] Login success',
-  AUTO_LOGIN = '[Auth] Auto login',
   LOGIN_FAIL = '[Auth] Login Fail',
   LOGOUT = '[Auth] Logout',
   CLEAN_ERROR = '[Auth] Clean error',
@@ -25,7 +24,6 @@ export const loginSuccess = createAction(
   AuthActions.LOGIN_SUCCESS,
   props<{ tokens: TokensDto; user: UserAuthDto }>(),
 );
-export const autoLogin = createAction(AuthActions.AUTO_LOGIN);
 export const loginFailure = createAction(
   AuthActions.LOGIN_FAIL,
   props<{ isLoading: boolean; errorMessage: string }>(),

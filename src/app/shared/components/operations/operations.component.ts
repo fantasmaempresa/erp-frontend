@@ -11,7 +11,7 @@ import {
 import { Store } from '@ngrx/store';
 import { combineLatestWith, map, Observable, startWith, take, tap } from 'rxjs';
 import { Formfield } from '../../../data/dto/Formfield.dto';
-import { selectDynamicForm } from '../../../state/dynamic-form/dynamic-form.selector';
+import { selectDynamicForm } from '../../../state/dynamic-form/dynamic-form.selectors';
 import {
   UntypedFormArray,
   UntypedFormControl,

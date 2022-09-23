@@ -24,7 +24,7 @@ import { Store } from '@ngrx/store';
 import {
   selectDynamicForm,
   selectStatus,
-} from '../../../state/dynamic-form/dynamic-form.selector';
+} from '../../../state/dynamic-form/dynamic-form.selectors';
 import { Observable, Subscription, tap, using } from 'rxjs';
 import { Formfield } from '../../../data/dto/Formfield.dto';
 import { Update } from '@ngrx/entity';

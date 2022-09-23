@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  autoLogin,
-  loginFailure,
-  loginStart,
-  loginSuccess,
-  logout,
-} from './auth.actions';
+import { loginFailure, loginStart, loginSuccess, logout } from './auth.actions';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
@@ -25,8 +19,8 @@ export class AuthEffects {
   login$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loginStart),
-      exhaustMap((action) => {
-        return this.authService.login(action.username, action.password).pipe(
+      exhaustMap(({ username, password }) => {
+        return this.authService.login(username, password).pipe(
           map((resp) => {
             const tokens: TokensDto = {
               access_token: resp.access_token,
@@ -63,25 +57,13 @@ export class AuthEffects {
     { dispatch: false },
   );
 
-  autoLogin$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(autoLogin),
-        map(() => {
-          const token = this.authService.getAuthorizationToken();
-        }),
-      );
-    },
-    { dispatch: false },
-  );
-
   logout$ = createEffect(
     () => {
       return this.actions$.pipe(
         ofType(logout),
-        map(() => {
+        map(async () => {
           this.authService.logout();
-          this.router.navigate(['auth']);
+          await this.router.navigate(['auth']);
         }),
       );
     },

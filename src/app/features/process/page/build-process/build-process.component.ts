@@ -36,9 +36,9 @@ import {
   loadRoles,
 } from '../../../../state/role/role.actions';
 import { selectRoles } from '../../../../state/role/role.selector';
-import { ProcessView } from '../../../../data/Presentation/Process.view';
-import { RoleView } from '../../../../data/Presentation/Role.view';
-import { ProcessPhaseView } from '../../../../data/Presentation/ProcessPhase.view';
+import { ProcessView } from '../../../../data/presentation/Process.view';
+import { RoleView } from '../../../../data/presentation/Role.view';
+import { ProcessPhaseView } from '../../../../data/presentation/ProcessPhase.view';
 
 @Component({
   selector: 'app-build-process',

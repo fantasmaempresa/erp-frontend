@@ -4,7 +4,7 @@ import { Observable, of, switchMap, withLatestFrom } from 'rxjs';
 import { AuthService } from '../auth.service';
 import { Store } from '@ngrx/store';
 import { UserDto } from '../../../data/dto/User.dto';
-import { selectUser } from '../../../state/auth/auth.selector';
+import { selectUser } from '../../../state/auth/auth.selectors';
 import { Router } from '@angular/router';
 
 @Injectable({

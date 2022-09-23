@@ -13,7 +13,7 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
-import { selectClients } from '../../../../state/clients/clients.selector';
+import { selectClients } from '../../../../state/clients/clients.selectors';
 import {
   loadClients,
   loadNextPageOfClients,
@@ -26,8 +26,8 @@ import {
   loadProcess,
 } from '../../../../state/process/process.actions';
 import { format } from 'date-fns';
-import { ClientView } from '../../../../data/Presentation/Client.view';
-import { ProcessView } from '../../../../data/Presentation/Process.view';
+import { ClientView } from '../../../../data/presentation/Client.view';
+import { ProcessView } from '../../../../data/presentation/Process.view';
 
 @Component({
   selector: 'app-project-form',

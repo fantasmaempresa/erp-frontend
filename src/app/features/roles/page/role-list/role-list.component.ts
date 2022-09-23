@@ -16,7 +16,7 @@ import {
   loadRoles,
 } from '../../../../state/role/role.actions';
 import { RoleService } from '../../../../data/services/role.service';
-import { RoleView } from '../../../../data/Presentation/Role.view';
+import { RoleView } from '../../../../data/presentation/Role.view';
 
 @Component({
   selector: 'app-role-list',

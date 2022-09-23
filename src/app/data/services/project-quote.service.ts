@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { CrudService } from '../../core/classes/Crud/CrudService';
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { environment } from '../../../environments/environment';
 import { map, Observable, switchMap, take } from 'rxjs';
-import { selectFormToOperations } from '../../state/dynamic-form/dynamic-form.selector';
 import { Store } from '@ngrx/store';
+import { environment } from '../../../environments/environment';
+import { CrudService } from '../../core/classes/Crud/CrudService';
+import { Pagination } from '../../core/interfaces';
 import { Operations } from '../models/Operations.model';
-import { ProjectQuoteDto } from '../dto/ProjectQuote.dto';
-import { QuoteTemplate } from '../dto/QuoteTemplate.dto';
+import { ProjectQuoteDto, QuoteTemplate } from '../dto';
+import { selectFormToOperations } from '../../state/dynamic-form';
 
 @Injectable({
   providedIn: 'root',

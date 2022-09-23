@@ -9,7 +9,7 @@ import {
 } from './quotes.actions';
 import { map, mergeMap, skipWhile, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { selectRole } from '../auth/auth.selector';
+import { selectRole } from '../auth/auth.selectors';
 
 @Injectable()
 export class QuotesEffects {

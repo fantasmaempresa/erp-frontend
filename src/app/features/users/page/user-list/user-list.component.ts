@@ -19,10 +19,10 @@ import {
 } from '../../../../state/users/users.actions';
 import { UserDto } from '../../../../data/dto/User.dto';
 import { selectUsers } from '../../../../state/users/users.selector';
-import { selectUser } from '../../../../state/auth/auth.selector';
+import { selectUser } from '../../../../state/auth/auth.selectors';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth.service';
-import { UserView } from '../../../../data/Presentation/User.view';
+import { UserView } from '../../../../data/presentation/User.view';
 
 @Component({
   selector: 'app-user-list',

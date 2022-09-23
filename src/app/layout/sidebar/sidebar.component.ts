@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { UserDto } from '../../data/dto/User.dto';
-import { selectRole, selectUser } from '../../state/auth/auth.selector';
+import { selectRole, selectUser } from '../../state/auth/auth.selectors';
 import { RoleDto } from '../../data/dto/Role.dto';
 
 @Component({

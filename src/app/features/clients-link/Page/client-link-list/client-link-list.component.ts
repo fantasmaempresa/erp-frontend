@@ -14,7 +14,7 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dinamyc-views/dynamic-views.module';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
-import { ClientLinkView } from '../../../../data/Presentation/ClientLink.view';
+import { ClientLinkView } from '../../../../data/presentation/ClientLink.view';
 
 @Component({
   selector: 'app-client-link-list',

@@ -3,7 +3,7 @@ import {
   mapToLabel,
   printLabel,
 } from '../../shared/components/dinamyc-views/DynamicViews.decorators';
-import { RoleDto } from '../dto/Role.dto';
+import { RoleDto } from '../dto';
 
 export class UserView {
   @printLabel('Nombre')

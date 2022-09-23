@@ -36,8 +36,8 @@ import { ProcessPhaseService } from '../../../../data/services/process-phase.ser
 import { ProcessPhaseDto } from '../../../../data/dto/ProcessPhase.dto';
 import { RoleService } from '../../../../data/services/role.service';
 import { ProcessService } from '../../../../data/services/process.service';
-import { ProjectView } from '../../../../data/Presentation/Project.view';
-import { ProcessView } from '../../../../data/Presentation/Process.view';
+import { ProjectView } from '../../../../data/presentation/Project.view';
+import { ProcessView } from '../../../../data/presentation/Process.view';
 
 @Component({
   selector: 'app-build-project',

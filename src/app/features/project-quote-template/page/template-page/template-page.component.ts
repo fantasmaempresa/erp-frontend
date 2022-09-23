@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { selectDynamicFormEssentialData } from '../../../../state/dynamic-form/dynamic-form.selector';
+import { selectDynamicFormEssentialData } from '../../../../state/dynamic-form/dynamic-form.selectors';
 import { catchError, lastValueFrom, take, throwError } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import Swal from 'sweetalert2';

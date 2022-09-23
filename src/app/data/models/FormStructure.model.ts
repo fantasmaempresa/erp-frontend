@@ -1,5 +1,5 @@
-import { EntityDto } from '../../core/interfaces/Entity.dto';
-import { Formfield } from '../dto/Formfield.dto';
+import { EntityDto } from '../../core/interfaces';
+import { Formfield } from '../dto';
 
 export interface FormStructure extends EntityDto {
   name: string;

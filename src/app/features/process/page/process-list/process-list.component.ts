@@ -13,7 +13,7 @@ import {
 import { EntityDto } from '../../../../core/interfaces/Entity.dto';
 import { ActionsCard } from '../../../../shared/components/dinamyc-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProcessView } from '../../../../data/Presentation/Process.view';
+import { ProcessView } from '../../../../data/presentation/Process.view';
 
 @Component({
   selector: 'app-process-list',

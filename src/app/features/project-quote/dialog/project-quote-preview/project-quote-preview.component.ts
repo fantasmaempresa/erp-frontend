@@ -12,7 +12,7 @@ import { Store } from '@ngrx/store';
 import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
 import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
 import { QuoteTemplateService } from 'src/app/data/services/quote-template.service';
-import { selectDynamicForm } from '../../../../state/dynamic-form/dynamic-form.selector';
+import { selectDynamicForm } from '../../../../state/dynamic-form/dynamic-form.selectors';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { Formfield } from '../../../../data/dto/Formfield.dto';
 import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';

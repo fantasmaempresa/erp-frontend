@@ -11,9 +11,9 @@ import {
   loadClients,
   loadNextPageOfClients,
 } from '../../../../state/clients/clients.actions';
-import { selectClients } from '../../../../state/clients/clients.selector';
+import { selectClients } from '../../../../state/clients/clients.selectors';
 import { ListView } from '../../../../core/classes/FormView/ListView';
-import { ClientView } from '../../../../data/Presentation/Client.view';
+import { ClientView } from '../../../../data/presentation/Client.view';
 
 @Component({
   selector: 'app-clients-list',

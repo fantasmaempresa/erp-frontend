@@ -15,7 +15,7 @@ import { Formfield } from '../../../../data/dto/Formfield.dto';
 import {
   selectDynamicForm,
   selectStatus,
-} from '../../../../state/dynamic-form/dynamic-form.selector';
+} from '../../../../state/dynamic-form/dynamic-form.selectors';
 import {
   emptyForm,
   loadForm,
