@@ -16,9 +16,9 @@ export abstract class LaravelWebSocket {
       key: environment.mix_pusher_app_key,
       cluster: environment.mix_pusher_app_cluster,
       forceTLS: false,
-      wsHost: '34.94.51.135/api',
-      wsPort: 6001,
-      wssPort: 6001,
+      wsHost: environment.socket_url,
+      wsPort: environment.socket_port,
+      wssPort: environment.socket_port,
       authEndpoint: 'broadcasting/auth',
     });
   }
