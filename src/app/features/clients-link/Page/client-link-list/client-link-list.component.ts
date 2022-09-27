@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EntityDto } from '../../../../core/interfaces/Entity.dto';
-import { selectClientsLink } from '../../../../state/clients-link/clients-link.selector';
+import { selectClientsLink } from '../../../../state/clients-link/clients-link.selectors';
 import {
   loadClientsLink,
   loadNextPageOfClientsLink,

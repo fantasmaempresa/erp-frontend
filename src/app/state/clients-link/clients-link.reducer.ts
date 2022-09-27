@@ -1,24 +1,20 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import { ClientsLinkState, initialState } from './clients-link.state';
 import * as ClientActions from './clients-link.actions';
 
-const ClientsLinkReducer = createReducer(
+export const clientsLinkReducer = createReducer(
   initialState,
-  on(ClientActions.loadClientsLink, (state) => state),
+  on(ClientActions.loadClientsLink, (state): ClientsLinkState => state),
   on(
     ClientActions.loadClientsLinkSuccess,
-    (state: ClientsLinkState, { clientsLink }) => {
+    (state, { clientsLink }): ClientsLinkState => {
       return {
         ...state,
         clientsLink,
       };
     },
   ),
-  on(ClientActions.emptyClientLinkList, (state) => {
+  on(ClientActions.emptyClientLinkList, (): ClientsLinkState => {
     return initialState;
   }),
 );
-
-export function clientsLinkReducer(state = initialState, action: Action) {
-  return ClientsLinkReducer(state, action);
-}

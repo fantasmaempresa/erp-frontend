@@ -12,7 +12,7 @@ import {
   loadNextPageOfQuotes,
 } from '../../../../state/quotes/quotes.actions';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { selectQuoteTemplates } from '../../../../state/quote-template/quote-template.selector';
+import { selectQuoteTemplates } from '../../../../state/quote-template/quote-template.selectors';
 import { QuoteTemplate } from '../../../../data/dto/QuoteTemplate.dto';
 import { loadQuoteTemplates } from '../../../../state/quote-template/quote-template.actions';
 import { QuoteTemplateService } from '../../../../data/services/quote-template.service';

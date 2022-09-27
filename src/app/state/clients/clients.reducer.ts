@@ -1,21 +1,17 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import { ClientsState, initialState } from './clients.state';
 import * as ClientActions from './clients.actions';
 
-const ClientsReducer = createReducer(
+export const clientsReducer = createReducer(
   initialState,
-  on(ClientActions.loadClients, (state) => state),
-  on(ClientActions.loadClientsSuccess, (state: ClientsState, { clients }) => {
+  on(ClientActions.loadClients, (state): ClientsState => state),
+  on(ClientActions.loadClientsSuccess, (state, { clients }): ClientsState => {
     return {
       ...state,
       clients,
     };
   }),
-  on(ClientActions.emptyClientList, (state) => {
+  on(ClientActions.emptyClientList, (): ClientsState => {
     return initialState;
   }),
 );
-
-export function clientReducer(state = initialState, action: Action) {
-  return ClientsReducer(state, action);
-}

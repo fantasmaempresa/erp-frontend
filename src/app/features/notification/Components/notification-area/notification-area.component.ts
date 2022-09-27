@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { selectIncomingNotifications } from '../../../../state/notifications/notification.selector';
+import { selectIncomingNotifications } from '../../../../state/notifications/notification.selectors';
 import { NotificationPopUpDto } from '../../../../data/dto/NotificationPopUp.dto';
 import { closeIncomingNotification } from '../../../../state/notifications/notification.actions';
 

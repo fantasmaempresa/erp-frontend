@@ -1,6 +1,6 @@
 import { Action, createReducer, on } from '@ngrx/store';
-import { initialState, ProcessPhaseState } from './processPhase.state';
-import * as ProcessPhaseActions from './processPhase.actions';
+import { initialState, ProcessPhaseState } from './process-phase.state';
+import * as ProcessPhaseActions from './process-phase.actions';
 
 const ProcessPhaseReducer = createReducer(
   initialState,
@@ -12,7 +12,7 @@ const ProcessPhaseReducer = createReducer(
       processPhases,
     }),
   ),
-  on(ProcessPhaseActions.emptyClientList, (state) => {
+  on(ProcessPhaseActions.emptyClientList, () => {
     return initialState;
   }),
 );

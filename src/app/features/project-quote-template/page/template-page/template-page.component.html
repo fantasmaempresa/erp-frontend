@@ -44,9 +44,10 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
 
+        <!--        TODO: Revisar la forma de que quitando el ? operator funcione-->
         <app-operations
           (form)="operationsForm = $event"
-          [operations]="this.loadedTemplate.operations"
+          [operations]="this.loadedTemplate?.operations"
         ></app-operations>
 
         <mat-action-row>

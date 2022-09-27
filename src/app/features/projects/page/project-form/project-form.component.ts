@@ -20,7 +20,7 @@ import {
 } from '../../../../state/clients/clients.actions';
 import { ClientService } from '../../../../data/services/client.service';
 import { ProcessService } from '../../../../data/services/process.service';
-import { selectProcess } from '../../../../state/process/process.selector';
+import { selectProcess } from '../../../../state/process/process.selectors';
 import {
   loadNextPageOfProcess,
   loadProcess,

@@ -1,19 +1,19 @@
 import { Component, Injector } from '@angular/core';
-import { ClientService } from '../../../../data/services/client.service';
+import { ClientService } from '../../../../data/services';
 import {
   CLAZZ,
   LOAD_ACTION,
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dynamic-views/dynamic-views.module';
-import { ClientDto } from '../../../../data/dto/Client.dto';
+import { ClientDto } from '../../../../data/dto';
 import {
   loadClients,
   loadNextPageOfClients,
-} from '../../../../state/clients/clients.actions';
-import { selectClients } from '../../../../state/clients/clients.selectors';
+  selectClients,
+} from '../../../../state/clients';
 import { ListView } from '../../../../core/classes/FormView/ListView';
-import { ClientView } from '../../../../data/presentation/Client.view';
+import { ClientView } from '../../../../data/presentation';
 
 @Component({
   selector: 'app-clients-list',

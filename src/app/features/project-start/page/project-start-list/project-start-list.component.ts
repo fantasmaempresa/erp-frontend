@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
-import { selectMyProjects } from '../../../../state/my-project/my-project.selector';
+import { selectMyProjects } from '../../../../state/my-project/my-project.selectors';
 import { loadMyProjects } from '../../../../state/my-project/my-project.actions';
 import { MyProjectDto } from '../../../../data/dto/MyProject.dto';
 import { MyProjectsService } from '../../../../data/services/my-projects.service';

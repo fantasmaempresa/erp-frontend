@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
-import { ProcessPhaseState } from './processPhase.state';
+import { ProcessPhaseState } from './process-phase.state';
 
 const selectProcessPhaseState =
   createFeatureSelector<ProcessPhaseState>('processPhases');

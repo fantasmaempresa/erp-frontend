@@ -1,24 +1,20 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import { initialState, MyProjectState } from './my-project.state';
 import * as MyProjectActions from './my-project.actions';
 
-const MyProjectReducer = createReducer(
+export const myProjectReducer = createReducer(
   initialState,
-  on(MyProjectActions.loadMyProjects, (state) => state),
+  on(MyProjectActions.loadMyProjects, (state): MyProjectState => state),
   on(
     MyProjectActions.loadMyProjectsSuccess,
-    (state: MyProjectState, { myProjects }) => {
+    (state: MyProjectState, { myProjects }): MyProjectState => {
       return {
         ...state,
         myProjects,
       };
     },
   ),
-  on(MyProjectActions.emptyProjectList, (state) => {
+  on(MyProjectActions.emptyProjectList, (): MyProjectState => {
     return initialState;
   }),
 );
-
-export function myProjectReducer(state = initialState, action: Action) {
-  return MyProjectReducer(state, action);
-}

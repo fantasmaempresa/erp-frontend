@@ -1,4 +1,4 @@
-import { Action, createReducer, on } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 import {
   dynamicFormAdapter,
   DynamicFormState,
@@ -6,7 +6,7 @@ import {
 } from './dynamic-form.state';
 import * as DynamicFormActions from './dynamic-form.actions';
 
-const DynamicFormReducer = createReducer(
+export const dynamicFormReducer = createReducer(
   initialState,
   on(DynamicFormActions.loadForm, (state, actions) => {
     return dynamicFormAdapter.setAll(actions.form, {
@@ -35,7 +35,7 @@ const DynamicFormReducer = createReducer(
   on(DynamicFormActions.setValuesToFields, (state, { fields }) => {
     return dynamicFormAdapter.updateMany(fields, state);
   }),
-  on(DynamicFormActions.changeStatus, (state, { status }) => {
+  on(DynamicFormActions.changeStatus, (state, { status }): DynamicFormState => {
     return {
       ...state,
       status,
@@ -48,7 +48,3 @@ const DynamicFormReducer = createReducer(
     return initialState;
   }),
 );
-
-export function dynamicFormReducer(state = initialState, action: Action) {
-  return DynamicFormReducer(state, action);
-}

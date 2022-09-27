@@ -5,7 +5,7 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dynamic-views/dynamic-views.module';
-import { selectRoles } from '../../../../state/role/role.selector';
+import { selectRoles } from '../../../../state/role/role.selectors';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { EntityDto } from '../../../../core/interfaces/Entity.dto';

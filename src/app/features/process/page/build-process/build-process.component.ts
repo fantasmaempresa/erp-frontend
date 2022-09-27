@@ -17,8 +17,8 @@ import { ProcessPhaseDto } from '../../../../data/dto/ProcessPhase.dto';
 import {
   loadNextPageOfProcessPhase,
   loadProcessPhase,
-} from '../../../../state/process-phase/processPhase.actions';
-import { selectProcessPhase } from '../../../../state/process-phase/processPhase.selector';
+} from '../../../../state/process-phase/process-phase.actions';
+import { selectProcessPhase } from '../../../../state/process-phase/process-phase.selectors';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   ControlValueAccessor,
@@ -35,7 +35,7 @@ import {
   loadNextPageOfRoles,
   loadRoles,
 } from '../../../../state/role/role.actions';
-import { selectRoles } from '../../../../state/role/role.selector';
+import { selectRoles } from '../../../../state/role/role.selectors';
 import { ProcessView } from '../../../../data/presentation/Process.view';
 import { RoleView } from '../../../../data/presentation/Role.view';
 import { ProcessPhaseView } from '../../../../data/presentation/ProcessPhase.view';

@@ -5,72 +5,72 @@ import {
   initialState as authInitialState,
 } from './auth';
 import {
-  clientReducer,
+  clientsReducer,
   ClientsState,
   initialState as clientsInitialState,
 } from './clients';
 import {
   initialState as staffInitialState,
+  staffReducer,
   StaffState,
-} from './staff/staff.state';
-import { staffReducer } from './staff/staff.reducer';
-import { areasInitialState, AreasState } from './areas/areas.state';
-import { areasReducer } from './areas/areas.reducer';
-import { conceptsInitialState, ConceptsState } from './concepts/concepts.state';
-import { conceptReducer } from './concepts/concepts.reducer';
+} from './staff';
+import { areasInitialState, areasReducer, AreasState } from './areas';
+import {
+  conceptReducer,
+  ConceptsState,
+  initialState as conceptsInitialState,
+} from './concepts';
 import {
   quoteStatusInitialState,
+  quoteStatusReducer,
   QuoteStatusState,
-} from './quote-status/quote-status.state';
-import { quoteStatusReducer } from './quote-status/quote-status.reducer';
-import { quotesInitialState, QuotesState } from './quotes/quotes.state';
-import { quotesReducer } from './quotes/quotes.reducer';
+} from './quote-status';
+import { quotesInitialState, quotesReducer, QuotesState } from './quotes';
 import {
   initialState as notificationInitialState,
+  notificationReducer,
   NotificationState,
-} from './notifications/notification.state';
-import { notificationReducer } from './notifications/notification.reducer';
+} from './notifications';
 import {
+  clientsLinkReducer,
   ClientsLinkState,
   initialState as clientsLinkInitialState,
-} from './clients-link/clients-link.state';
-import { clientsLinkReducer } from './clients-link/clients-link.reducer';
-import { userReducer } from './users/users.reducer';
+} from './clients-link';
 import {
   initialState as userInitialState,
+  userReducer,
   UsersState,
-} from './users/users.state';
+} from './users';
 import {
   initialState as processPhaseState,
+  processPhaseReducer,
   ProcessPhaseState,
-} from './process-phase/processPhase.state';
+} from './process-phase';
 import {
   initialState as projectState,
+  projectReducer,
   ProjectState,
-} from './project/project.state';
-import { processPhaseReducer } from './process-phase/processPhase.reducer';
-import { projectReducer } from './project/project.reducer';
+} from './project';
 import {
   initialState as processInitialState,
+  processReducer,
   ProcessState,
-} from './process/process.state';
-import { processReducer } from './process/process.reducer';
-import { rolesInitialState, RoleState } from './role/role.state';
-import { roleReducer } from './role/role.reducer';
+} from './process';
+import { roleReducer, rolesInitialState, RoleState } from './role';
 import {
   quoteTemplateInitialState,
+  quoteTemplateReducer,
   QuoteTemplateState,
-} from './quote-template/quote-template.state';
-import { quoteTemplateReducer } from './quote-template/quote-template.reducer';
+} from './quote-template';
 import {
   initialState as myProjectInitialState,
+  myProjectReducer,
   MyProjectState,
-} from './my-project/my-project.state';
-import { myProjectReducer } from './my-project/my-project.reducer';
+} from './my-project';
 import {
+  dynamicFormReducer,
   DynamicFormState,
   initialState as dynamicFormInitialState,
-  dynamicFormReducer,
 } from './dynamic-form';
 
 export interface AppState {
@@ -123,7 +123,7 @@ export const reducers: ActionReducerMap<AppState> = {
   projects: projectReducer,
   myProjects: myProjectReducer,
   auth: authReducer,
-  clients: clientReducer,
+  clients: clientsReducer,
   users: userReducer,
   staff: staffReducer,
   areas: areasReducer,

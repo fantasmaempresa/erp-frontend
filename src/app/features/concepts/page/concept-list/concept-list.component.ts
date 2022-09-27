@@ -15,7 +15,7 @@ import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { ConceptService } from '../../../../data/services';
 import { Pagination } from '../../../../core/interfaces';
 import { Store } from '@ngrx/store';
-import { selectConcepts } from '../../../../state/concepts/concepts.selector';
+import { selectConcepts } from '../../../../state/concepts/concepts.selectors';
 import {
   emptyConceptList,
   loadConcepts,

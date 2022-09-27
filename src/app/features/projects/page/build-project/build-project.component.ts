@@ -31,7 +31,7 @@ import {
   loadNextPageOfProcess,
   loadProcess,
 } from '../../../../state/process/process.actions';
-import { selectProcess } from '../../../../state/process/process.selector';
+import { selectProcess } from '../../../../state/process/process.selectors';
 import { ProcessPhaseService } from '../../../../data/services/process-phase.service';
 import { ProcessPhaseDto } from '../../../../data/dto/ProcessPhase.dto';
 import { RoleService } from '../../../../data/services/role.service';
