@@ -1,14 +1,13 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProcessPhaseService } from '../../../../data/services/process-phase.service';
+import { ProcessPhaseService, RoleService } from '../../../../data/services';
 import {
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { RoleService } from '../../../../data/services/role.service';
 import { map, Observable, pluck, startWith } from 'rxjs';
-import { RoleDto } from '../../../../data/dto/Role.dto';
+import { RoleDto } from '../../../../data/dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 
 @Component({

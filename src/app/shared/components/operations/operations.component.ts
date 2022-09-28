@@ -10,17 +10,15 @@ import {
 } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { combineLatestWith, map, Observable, startWith, take, tap } from 'rxjs';
-import { Formfield } from '../../../data/dto/Formfield.dto';
-import { selectDynamicForm } from '../../../state/dynamic-form/dynamic-form.selectors';
+import { ConceptDto, Formfield } from '../../../data/dto';
+import { selectDynamicForm } from '../../../state/dynamic-form';
 import {
   UntypedFormArray,
   UntypedFormControl,
   UntypedFormGroup,
 } from '@angular/forms';
-import { ConceptService } from '../../../data/services/concept.service';
-import { ConceptDto } from '../../../data/dto/Concept.dto';
+import { ConceptService, ProjectQuoteService } from '../../../data/services';
 import { MatDialog } from '@angular/material/dialog';
-import { ProjectQuoteService } from '../../../data/services/project-quote.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';

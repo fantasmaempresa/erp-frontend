@@ -18,6 +18,7 @@ export const dynamicFormReducer = createReducer(
     });
   }),
   on(DynamicFormActions.setField, (state, actions) => {
+    console.log(state.entities);
     if (state.entities[actions.form.key]) {
       return {
         ...state,
@@ -46,5 +47,11 @@ export const dynamicFormReducer = createReducer(
   }),
   on(DynamicFormActions.emptyForm, (): DynamicFormState => {
     return initialState;
+  }),
+  on(DynamicFormActions.clearError, (state): DynamicFormState => {
+    return {
+      ...state,
+      errorMessage: '',
+    };
   }),
 );

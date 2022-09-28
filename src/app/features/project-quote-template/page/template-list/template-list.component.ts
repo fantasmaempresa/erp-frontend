@@ -1,28 +1,26 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
-import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';
+import { QuoteStatusDto, QuoteTemplate } from '../../../../data/dto';
 import { Observable, Subscription, tap } from 'rxjs';
-import { Pagination } from '../../../../core/interfaces/Pagination.model';
+import { Pagination } from '../../../../core/interfaces';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {
-  emptyQuoteList,
-  loadNextPageOfQuotes,
-} from '../../../../state/quotes/quotes.actions';
+import { emptyQuoteList, loadNextPageOfQuotes } from '../../../../state/quotes';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { selectQuoteTemplates } from '../../../../state/quote-template/quote-template.selectors';
-import { QuoteTemplate } from '../../../../data/dto/QuoteTemplate.dto';
-import { loadQuoteTemplates } from '../../../../state/quote-template/quote-template.actions';
-import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
+import {
+  loadQuoteTemplates,
+  selectQuoteTemplates,
+} from '../../../../state/quote-template';
+import { QuoteTemplateService } from '../../../../data/services';
 
 @Component({
   selector: 'app-template-list',
   templateUrl: './template-list.component.html',
   styleUrls: ['./template-list.component.scss'],
 })
-export class TemplateListComponent implements OnInit {
+export class TemplateListComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
   displayedColumns: string[] = ['select', 'name', 'description'];

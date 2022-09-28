@@ -5,7 +5,7 @@ import {
   OnChanges,
   SimpleChanges,
 } from '@angular/core';
-import { Formfield } from '../../../../data/dto/Formfield.dto';
+import { Formfield } from '../../../../data/dto';
 import {
   ControlValueAccessor,
   NG_VALUE_ACCESSOR,
