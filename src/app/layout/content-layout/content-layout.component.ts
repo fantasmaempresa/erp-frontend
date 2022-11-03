@@ -1,6 +1,6 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { startListenNotification } from '../../state/notifications/notification.actions';
+import { startListenNotification } from '../../state/notifications';
 import { SystemActionSocketService } from '../../core/services/SocketChannels/system-action-socket.service';
 
 @Component({

@@ -143,8 +143,6 @@ export class DynamicFormComponent
   }
 
   updateDynamicFormState(formFields: Formfield<any>[], formValues: any) {
-    console.log(formFields);
-    console.log(formValues);
     let formUpdate: Update<Formfield<any>>[] = [];
     for (const field in formValues) {
       for (const item of formFields) {
