@@ -2,6 +2,7 @@ import { Component, HostBinding, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { startListenNotification } from '../../state/notifications/notification.actions';
 import { SystemActionSocketService } from '../../core/services/SocketChannels/system-action-socket.service';
+import { RoleService } from '../../data/services';
 
 @Component({
   selector: 'app-content-layout',
@@ -19,9 +20,12 @@ export class ContentLayoutComponent implements OnInit {
   constructor(
     private store: Store,
     private systemActionSocket: SystemActionSocketService,
+    private roleService: RoleService,
   ) {}
 
   ngOnInit(): void {
+    this.roleService.getPermissions();
+    this.roleService.getSidebarMenus();
     this.store.dispatch(startListenNotification());
     this.systemActionSocket.action$.subscribe();
   }
