@@ -28,7 +28,20 @@
         <textarea formControlName="description" matInput></textarea>
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
+
+      <ng-container formGroupName="config">
+        <app-generic-autocomplete-chip
+          label="Módulos"
+          [allData]="modules$ | async"
+          placeholder="Escribe el nombre de los módulos"
+          [mapFn]="moduleName"
+          formControlName="modules"
+        ></app-generic-autocomplete-chip>
+      </ng-container>
+
       <button color="primary" mat-flat-button>Guardar</button>
     </div>
+
+    {{ roleForm.value | json }}
   </form>
 </mat-card>

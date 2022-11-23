@@ -1,5 +1,5 @@
 import { ActivatedRouteSnapshot } from '@angular/router';
-import { KEY_LS_PERMISSIONS } from '../../data/services';
+import { KEY_LS_MENUS } from '../../data/services';
 
 export enum Modules {
   CLIENTS = 'clients',
@@ -15,10 +15,9 @@ export class ManageModule {
   constructor(private route: ActivatedRouteSnapshot) {}
 
   static checkIfUserHavePermission(permission: Array<Modules>) {
-    const userPermission: Array<any> = JSON.parse(
-      localStorage.getItem(KEY_LS_PERMISSIONS) ?? `[]`,
+    const { submenus: userPermission }: { submenus: Array<any> } = JSON.parse(
+      localStorage.getItem(KEY_LS_MENUS) ?? `{}`,
     );
-
     return userPermission
       .map(({ route }: { route: string }) => route.replace('./', '') as Modules)
       .some((module: Modules) => permission.includes(module));

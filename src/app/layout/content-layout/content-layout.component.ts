@@ -24,8 +24,7 @@ export class ContentLayoutComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.roleService.getPermissions();
-    this.roleService.getSidebarMenus();
+    this.roleService.buildSidebar();
     this.store.dispatch(startListenNotification());
     this.systemActionSocket.action$.subscribe();
   }

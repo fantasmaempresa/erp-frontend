@@ -6,10 +6,9 @@ import {
   Validators,
 } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { UserService } from '../../../../data/services/user.service';
-import { RoleService } from '../../../../data/services/role.service';
+import { RoleService, UserService } from '../../../../data/services';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { RoleDto } from '../../../../data/dto/Role.dto';
+import { RoleDto } from '../../../../data/dto';
 
 @Component({
   selector: 'app-role-form',
@@ -20,10 +19,16 @@ export class RoleFormComponent {
   roleForm = new UntypedFormGroup({
     name: new UntypedFormControl('', [Validators.required]),
     description: new UntypedFormControl('', [Validators.required]),
-    config: new UntypedFormControl({ test: 'test' }),
+    config: new UntypedFormGroup({
+      modules: new UntypedFormControl(null),
+    }),
   });
 
   isEdit = false;
+
+  modules$: Observable<any>;
+
+  moduleName = ({ name }: { name: string }) => name;
 
   constructor(
     private router: Router,
@@ -31,6 +36,8 @@ export class RoleFormComponent {
     private userService: UserService,
     private roleService: RoleService,
   ) {
+    this.modules$ = this.roleService.getPermissions();
+
     if (this.route.snapshot.queryParams.id) {
       this.isEdit = true;
       roleService.fetch(this.route.snapshot.queryParams.id).subscribe({

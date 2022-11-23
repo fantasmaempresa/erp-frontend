@@ -4,7 +4,6 @@ import { RoleDto } from '../dto';
 import { CrudService } from '../../core/classes/Crud/CrudService';
 import { Pagination } from '../../core/interfaces';
 
-export const KEY_LS_PERMISSIONS = 'permissions';
 export const KEY_LS_MENUS = 'menus';
 
 @Injectable({
@@ -23,15 +22,11 @@ export class RoleService extends CrudService<RoleDto> {
   }
 
   getPermissions() {
-    return this._http.get(`${this._base}/modules/get`).subscribe({
-      next: (permissions) => {
-        localStorage.setItem(KEY_LS_PERMISSIONS, JSON.stringify(permissions));
-      },
-    });
+    return this._http.get(`${this._base}/modules/get`);
   }
 
-  getSidebarMenus() {
-    return this._http.get(`${this._base}/modules/construct`).subscribe({
+  buildSidebar() {
+    this._http.get(`${this._base}/modules/construct`).subscribe({
       next: (menus) => {
         localStorage.setItem(KEY_LS_MENUS, JSON.stringify(menus));
       },
