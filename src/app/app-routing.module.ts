@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { ContentLayoutComponent } from './layout/content-layout/content-layout.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
+import { ManageModule, Modules } from './core/classes/modules';
+import { ModuleGuard } from './core/guards/module.guard';
 
 const routes: Routes = [
   {
@@ -20,6 +22,7 @@ const routes: Routes = [
     path: 'app',
     component: ContentLayoutComponent,
     data: { breadcrumb: 'Inicio' },
+    canActivateChild: [ModuleGuard],
     children: [
       {
         path: '',
@@ -38,13 +41,17 @@ const routes: Routes = [
         path: 'users',
         loadChildren: () =>
           import('./features/users/users.module').then((m) => m.UsersModule),
-        data: { breadcrumb: 'Usuarios' },
+        data: {
+          breadcrumb: 'Usuarios',
+          ...ManageModule.setModulePermission(Modules.SETTINGS),
+        },
       },
       {
         path: 'roles',
         loadChildren: () =>
           import('./features/roles/roles.module').then((m) => m.RolesModule),
         data: { breadcrumb: 'Roles' },
+        ...ManageModule.setModulePermission(Modules.SETTINGS),
       },
       {
         path: 'clients',
@@ -53,18 +60,21 @@ const routes: Routes = [
             (m) => m.ClientsModule,
           ),
         data: { breadcrumb: 'Clientes' },
+        ...ManageModule.setModulePermission(Modules.CLIENTS),
       },
       {
         path: 'staff',
         loadChildren: () =>
           import('./features/staff/staff.module').then((m) => m.StaffModule),
         data: { breadcrumb: 'Personal' },
+        ...ManageModule.setModulePermission(Modules.STAFF),
       },
       {
         path: 'areas',
         loadChildren: () =>
           import('./features/areas/areas.module').then((m) => m.AreasModule),
         data: { breadcrumb: 'Áreas' },
+        ...ManageModule.setModulePermission(Modules.AREAS),
       },
       {
         path: 'concepts',
@@ -73,6 +83,7 @@ const routes: Routes = [
             (m) => m.ConceptsModule,
           ),
         data: { breadcrumb: 'Conceptos' },
+        ...ManageModule.setModulePermission(Modules.CONCEPTS),
       },
       {
         path: 'project-quote',
@@ -80,7 +91,9 @@ const routes: Routes = [
           import('./features/project-quote/project-quote.module').then(
             (m) => m.ProjectQuoteModule,
           ),
-        data: { breadcrumb: 'Cotizaciones de proyectos' },
+        data: {
+          breadcrumb: 'Cotizaciones de proyectos',
+        },
       },
       {
         path: 'quote-statuses',
