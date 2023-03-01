@@ -18,7 +18,7 @@ export abstract class LaravelWebSocket {
       forceTLS: false,
       wsHost: environment.socket_url,
       wsPort: environment.socket_port,
-      wssPort: environment.socket_port,
+      // wssPort: environment.socket_port,
       authEndpoint: 'broadcasting/auth',
     });
   }
