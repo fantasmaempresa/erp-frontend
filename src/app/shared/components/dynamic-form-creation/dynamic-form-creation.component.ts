@@ -8,30 +8,30 @@ import {
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import {
+  clearError,
   emptyForm,
   loadForm,
   removeField,
-  setField,
-  updateField,
-} from '../../../state/dynamic-form/dynamic-form.actions';
-import { Formfield } from '../../../data/dto/Formfield.dto';
-import { map, Observable, of, switchMap } from 'rxjs';
-import {
   selectDynamicForm,
   selectDynamicFormEssentialData,
   selectErrorMessage,
   selectIsEditable,
-} from '../../../state/dynamic-form/dynamic-form.selectors';
+  setField,
+  updateField,
+} from '../../../state/dynamic-form';
+import { Formfield, QuoteTemplate } from '../../../data/dto';
+import { map, Observable, of, switchMap } from 'rxjs';
 import { MessageHelper } from '../../helpers/MessageHelper';
-import { QuoteTemplateService } from '../../../data/services/quote-template.service';
+import {
+  FormStructureService,
+  QuoteTemplateService,
+} from '../../../data/services';
 import { Update } from '@ngrx/entity';
-import { v4 as uuidv4 } from 'uuid';
-import { FormStructureService } from '../../../data/services/form-structure.service';
 import { FormStructure } from '../../../data/models/FormStructure.model';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { OnSaveDialogComponent } from './on-save-dialog/on-save-dialog.component';
-import { QuoteTemplate } from '../../../data/dto/QuoteTemplate.dto';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-dynamic-form-creation',
@@ -142,6 +142,7 @@ export class DynamicFormCreationComponent implements OnInit {
               description: value.description,
             }),
           );
+          this.store.dispatch(clearError());
         } else {
           this.store.dispatch(emptyForm());
           this.addTotalToTemplate();
@@ -178,6 +179,7 @@ export class DynamicFormCreationComponent implements OnInit {
   ngOnInit(): void {
     this.createForm();
     this.addTotalToTemplate();
+    this.store.dispatch(clearError());
   }
 
   getFormStructures() {
@@ -248,6 +250,7 @@ export class DynamicFormCreationComponent implements OnInit {
     }
     const options: Formfield<any> = { ...this.form.value };
     options.key = options.label.toLowerCase();
+    this.store.dispatch(clearError());
     if (this.isEdit) {
       const updatedField: Update<Formfield<any>> = {
         id: options.id,

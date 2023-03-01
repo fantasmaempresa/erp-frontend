@@ -26,7 +26,7 @@ import { Store } from '@ngrx/store';
 import {
   selectIncomingNotifications,
   selectUnreadNotifications,
-} from './notification.selector';
+} from './notification.selectors';
 import { NotificationDto } from '../../data/dto/Notification.dto';
 
 @Injectable()

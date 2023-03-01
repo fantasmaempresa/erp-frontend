@@ -5,7 +5,7 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dynamic-views/dynamic-views.module';
-import { selectProjects } from '../../../../state/project/project.selector';
+import { selectProjects } from '../../../../state/project/project.selectors';
 import {
   loadNextPageOfProjects,
   loadProjects,

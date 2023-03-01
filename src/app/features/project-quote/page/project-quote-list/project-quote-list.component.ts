@@ -15,7 +15,7 @@ import { Store } from '@ngrx/store';
 import { ProjectQuoteDto, QuoteStatusDto } from '../../../../data/dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { Pagination } from '../../../../core/interfaces';
-import { selectQuotes } from '../../../../state/quotes/quotes.selector';
+import { selectQuotes } from '../../../../state/quotes/quotes.selectors';
 import {
   emptyQuoteList,
   loadNextPageOfQuotes,

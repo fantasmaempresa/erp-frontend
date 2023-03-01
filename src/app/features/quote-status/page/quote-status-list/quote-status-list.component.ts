@@ -15,7 +15,7 @@ import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';
 import { QuoteStatusService } from '../../../../data/services/quote-status.service';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
 import { Store } from '@ngrx/store';
-import { selectQuoteStatus } from '../../../../state/quote-status/quote-status.selector';
+import { selectQuoteStatus } from '../../../../state/quote-status/quote-status.selectors';
 import {
   emptyQuoteStatusList,
   laodNextPageOfQuoteStatus,

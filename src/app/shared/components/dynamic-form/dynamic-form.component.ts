@@ -1,13 +1,11 @@
 import {
   ChangeDetectorRef,
   Component,
-  EventEmitter,
   forwardRef,
   Input,
   OnChanges,
   OnDestroy,
   OnInit,
-  Output,
   SimpleChanges,
 } from '@angular/core';
 import {
@@ -52,7 +50,7 @@ export class DynamicFormComponent
   extends AbstractSubformComponent
   implements OnInit, OnDestroy, OnChanges, ControlValueAccessor, Validator
 {
-  @Output() formGroupChanges = new EventEmitter();
+  // @Output() formGroupChanges = new EventEmitter();
 
   @Input() formFields: Formfield<any>[] = [];
 
@@ -60,7 +58,9 @@ export class DynamicFormComponent
 
   _onlyRead!: boolean;
 
-  formValues$!: Observable<any>;
+  formValues$!: Observable<Formfield<any>[]>;
+
+  formValuesStructure$!: Observable<Formfield<any>[]>;
 
   fields: Formfield<any>[] = [];
 
@@ -99,7 +99,7 @@ export class DynamicFormComponent
         this.formGroup.disable();
       }
       this.cd.detectChanges();
-      this.formGroupChanges.emit(this.formGroup);
+      // this.formGroupChanges.emit(this.formGroup);
     }
 
     if (onlyRead) {
@@ -148,7 +148,7 @@ export class DynamicFormComponent
       for (const item of formFields) {
         if (item.key === field) {
           let singleFormUpdate: Update<Formfield<any>> = {
-            id: item.id,
+            id: item.key,
             changes: {
               value:
                 item.controlType === 'number'

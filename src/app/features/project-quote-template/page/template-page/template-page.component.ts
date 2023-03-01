@@ -2,14 +2,19 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { selectDynamicFormEssentialData } from '../../../../state/dynamic-form/dynamic-form.selectors';
+import {
+  emptyForm,
+  selectDynamicForm,
+  selectDynamicFormEssentialData,
+} from '../../../../state/dynamic-form';
 import { catchError, lastValueFrom, take, throwError } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import Swal from 'sweetalert2';
-import { QuoteTemplateService } from '../../../../data/services/quote-template.service';
-import { QuoteTemplate } from '../../../../data/dto/QuoteTemplate.dto';
-import { emptyForm } from '../../../../state/dynamic-form/dynamic-form.actions';
-import { FormStructureService } from '../../../../data/services/form-structure.service';
+import {
+  FormStructureService,
+  QuoteTemplateService,
+} from '../../../../data/services';
+import { Formfield, QuoteTemplate } from '../../../../data/dto';
 
 @Component({
   selector: 'app-template-page',
@@ -36,6 +41,8 @@ export class TemplatePageComponent implements OnInit, OnDestroy {
   isEdit = false;
 
   loadedTemplate!: QuoteTemplate;
+
+  formFields!: Formfield<any>[];
 
   constructor(
     private router: Router,
@@ -75,6 +82,10 @@ export class TemplatePageComponent implements OnInit, OnDestroy {
 
   goToPreview() {
     this.step = this.PREVIEW_STEP;
+    this.store
+      .select(selectDynamicForm)
+      .pipe(take(1))
+      .subscribe((data) => (this.formFields = data));
     console.log(this.operationsForm.value);
   }
 
@@ -131,6 +142,9 @@ export class TemplatePageComponent implements OnInit, OnDestroy {
   }
 
   updateTemplate(form: any) {
+    if (!this.loadedTemplate) {
+      return;
+    }
     Swal.fire({
       title: 'Actualizar plantilla',
       icon: 'question',
@@ -142,7 +156,7 @@ export class TemplatePageComponent implements OnInit, OnDestroy {
       inputValue: this.loadedTemplate.name,
       preConfirm: (name) => {
         const template: any = {
-          id: this.loadedTemplate.id,
+          id: this.loadedTemplate?.id,
           name,
           form,
           operations: this.operationsForm.getRawValue(),

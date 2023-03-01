@@ -15,7 +15,8 @@ export class ConnectFormDirective {
     val.forEach((field: any) => {
       form[field.key] = field.value;
     });
-    this.formGroupDirective.form.setValue(form, {
+    console.log(this.formGroupDirective.form);
+    this.formGroupDirective.form.patchValue(form, {
       emitEvent: false,
       onlySelf: true,
     });

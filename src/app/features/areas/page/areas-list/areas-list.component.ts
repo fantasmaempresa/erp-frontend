@@ -15,7 +15,7 @@ import { AreaService } from '../../../../data/services';
 import { WorkAreaDto } from '../../../../data/dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { Store } from '@ngrx/store';
-import { selectAreas } from '../../../../state/areas/areas.selector';
+import { selectAreas } from '../../../../state/areas/areas.selectors';
 import {
   emptyAreaList,
   loadAreas,

@@ -18,7 +18,7 @@ import {
   stopToListenUsers,
 } from '../../../../state/users/users.actions';
 import { UserDto } from '../../../../data/dto/User.dto';
-import { selectUsers } from '../../../../state/users/users.selector';
+import { selectUsers } from '../../../../state/users/users.selectors';
 import { selectUser } from '../../../../state/auth/auth.selectors';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth.service';

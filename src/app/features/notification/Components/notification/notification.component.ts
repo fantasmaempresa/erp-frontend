@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import {
   selectLastNotification,
   selectNumberOfNotifications,
-} from '../../../../state/notifications/notification.selector';
+} from '../../../../state/notifications/notification.selectors';
 import {
   loadNotifications,
   readAllNotificationsServer,

@@ -5,7 +5,7 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dynamic-views/dynamic-views.module';
-import { selectProcess } from '../../../../state/process/process.selector';
+import { selectProcess } from '../../../../state/process/process.selectors';
 import {
   loadNextPageOfProcess,
   loadProcess,

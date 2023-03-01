@@ -15,7 +15,7 @@ import { StaffService } from '../../../../data/services/staff.service';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { StaffDto } from '../../../../data/dto/Staff.dto';
 import { Store } from '@ngrx/store';
-import { selectStaff } from '../../../../state/staff/staff.selector';
+import { selectStaff } from '../../../../state/staff/staff.selectors';
 import {
   emptyStaffList,
   loadNextPageOfStaff,

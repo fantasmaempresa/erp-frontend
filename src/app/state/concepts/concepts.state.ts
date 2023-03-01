@@ -5,6 +5,6 @@ export interface ConceptsState {
   concepts: Pagination<ConceptDto> | null;
 }
 
-export const conceptsInitialState: ConceptsState = {
+export const initialState: ConceptsState = {
   concepts: null,
 };

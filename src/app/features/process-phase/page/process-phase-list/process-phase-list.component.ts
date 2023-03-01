@@ -8,11 +8,11 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dynamic-views/dynamic-views.module';
-import { selectProcessPhase } from '../../../../state/process-phase/processPhase.selector';
+import { selectProcessPhase } from '../../../../state/process-phase/process-phase.selectors';
 import {
   loadNextPageOfProcessPhase,
   loadProcessPhase,
-} from '../../../../state/process-phase/processPhase.actions';
+} from '../../../../state/process-phase/process-phase.actions';
 import { ProcessPhaseView } from '../../../../data/presentation/ProcessPhase.view';
 
 @Component({

@@ -21,8 +21,12 @@
         </mat-expansion-panel-header>
 
         <app-dynamic-form-creation
+          *ngIf="loadedTemplate"
           [template]="loadedTemplate"
         ></app-dynamic-form-creation>
+
+        <app-dynamic-form-creation *ngIf="!loadedTemplate">
+        </app-dynamic-form-creation>
 
         <mat-action-row>
           <button mat-button color="primary" (click)="goToConceptsAssignment()">
@@ -44,10 +48,18 @@
           </mat-panel-description>
         </mat-expansion-panel-header>
 
+        <!--        TODO: Revisar la forma de que quitando el ? operator funcione-->
         <app-operations
+          *ngIf="loadedTemplate"
           (form)="operationsForm = $event"
-          [operations]="this.loadedTemplate.operations"
+          [operations]="loadedTemplate.operations"
         ></app-operations>
+
+        <app-operations
+          *ngIf="!loadedTemplate"
+          (form)="operationsForm = $event"
+        >
+        </app-operations>
 
         <mat-action-row>
           <button mat-button color="warn" (click)="goToFormBuildStep()">
@@ -80,8 +92,8 @@
 
           <div class="mt-3">
             <app-dynamic-form
+              [formFields]="formFields"
               [formControl]="previewForm"
-              *ngIf="step === PREVIEW_STEP"
               [onlyRead]="true"
             ></app-dynamic-form>
           </div>

@@ -18,7 +18,7 @@ import { DynamicFormEffects } from './dynamic-form/dynamic-form.effects';
 import { ClientsLinkEffects } from './clients-link/clients-link.effects';
 import { ClientsEffects } from './clients/clients.effects';
 import { QuoteTemplateEffects } from './quote-template/quote-template.effects';
-import { ProcessPhaseEffects } from './process-phase/processPhase.effects';
+import { ProcessPhaseEffects } from './process-phase/process-phase.effects';
 import { ProjectEffects } from './project/project.effects';
 import { ProcessEffects } from './process/process.effects';
 import { RoleEffects } from './role/role.effects';

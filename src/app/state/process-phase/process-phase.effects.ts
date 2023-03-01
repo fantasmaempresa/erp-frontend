@@ -5,7 +5,7 @@ import {
   loadNextPageOfProcessPhase,
   loadProcessPhase,
   loadProcessPhaseSuccess,
-} from './processPhase.actions';
+} from './process-phase.actions';
 import { ProcessPhaseService } from '../../data/services/process-phase.service';
 
 @Injectable()
