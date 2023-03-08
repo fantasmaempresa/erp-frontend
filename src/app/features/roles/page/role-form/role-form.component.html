@@ -37,11 +37,12 @@
           [mapFn]="moduleName"
           formControlName="modules"
         ></app-generic-autocomplete-chip>
-      </ng-container>
 
+        <section class="mb-5">
+          <mat-checkbox formControlName="view_mode"> Modo vista</mat-checkbox>
+        </section>
+      </ng-container>
       <button color="primary" mat-flat-button>Guardar</button>
     </div>
-
-    {{ roleForm.value | json }}
   </form>
 </mat-card>
