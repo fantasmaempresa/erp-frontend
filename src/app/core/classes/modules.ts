@@ -1,37 +1,28 @@
-import { ActivatedRouteSnapshot } from '@angular/router';
+import { RouterStateSnapshot } from '@angular/router';
 import { KEY_LS_MENUS } from '../../data/services';
 
-export enum Modules {
-  CLIENTS = 'clients',
-  STAFF = 'staff',
-  AREAS = 'areas',
-  CONCEPTS = 'concepts',
-  PROCEDURES = 'procedures',
-  PROJECTS = 'projects',
-  SETTINGS = 'settings',
-}
-
 export class ManageModule {
-  constructor(private route: ActivatedRouteSnapshot) {}
+  constructor(private state: RouterStateSnapshot) {}
 
-  static checkIfUserHavePermission(permission: Array<Modules>) {
+  static checkIfUserHavePermission(path: string) {
     const { submenus: userPermission }: { submenus: Array<any> } = JSON.parse(
       localStorage.getItem(KEY_LS_MENUS) ?? `{}`,
     );
-    return userPermission
-      .map(({ route }: { route: string }) => route.replace('./', '') as Modules)
-      .some((module: Modules) => permission.includes(module));
+    console.log(userPermission, path);
+
+    const somePathExist: Function = (
+      menu: Array<{ route: string; dropdown: any[] }>,
+    ) =>
+      menu.some(({ route, dropdown }) => {
+        const realPath = route.replace('./', '');
+        return dropdown ? somePathExist(dropdown) : path.includes(realPath);
+      });
+    return somePathExist(userPermission);
   }
 
   checkIfRouteAndUserHavePermissions() {
-    const { permission: routePermission } = this.route.data;
-    if (!routePermission) return true;
-    return ManageModule.checkIfUserHavePermission(routePermission);
-  }
-
-  static setModulePermission(...modules: Modules[]) {
-    return {
-      permission: modules,
-    };
+    const path = this.state.url;
+    if (!path) return true;
+    return ManageModule.checkIfUserHavePermission(path);
   }
 }

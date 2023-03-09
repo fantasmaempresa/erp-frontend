@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { ContentLayoutComponent } from './layout/content-layout/content-layout.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
-import { ManageModule, Modules } from './core/classes/modules';
 import { ModuleGuard } from './core/guards/module.guard';
 
 const routes: Routes = [
@@ -43,7 +42,6 @@ const routes: Routes = [
           import('./features/users/users.module').then((m) => m.UsersModule),
         data: {
           breadcrumb: 'Usuarios',
-          ...ManageModule.setModulePermission(Modules.SETTINGS),
         },
       },
       {
@@ -52,7 +50,6 @@ const routes: Routes = [
           import('./features/roles/roles.module').then((m) => m.RolesModule),
         data: {
           breadcrumb: 'Roles',
-          ...ManageModule.setModulePermission(Modules.SETTINGS),
         },
       },
       {
@@ -63,7 +60,6 @@ const routes: Routes = [
           ),
         data: {
           breadcrumb: 'Clientes',
-          ...ManageModule.setModulePermission(Modules.CLIENTS),
         },
       },
       {
@@ -72,7 +68,6 @@ const routes: Routes = [
           import('./features/staff/staff.module').then((m) => m.StaffModule),
         data: {
           breadcrumb: 'Personal',
-          ...ManageModule.setModulePermission(Modules.STAFF),
         },
       },
       {
@@ -81,7 +76,6 @@ const routes: Routes = [
           import('./features/areas/areas.module').then((m) => m.AreasModule),
         data: {
           breadcrumb: 'Áreas',
-          ...ManageModule.setModulePermission(Modules.AREAS),
         },
       },
       {
@@ -92,7 +86,6 @@ const routes: Routes = [
           ),
         data: {
           breadcrumb: 'Conceptos',
-          ...ManageModule.setModulePermission(Modules.CONCEPTS),
         },
       },
       {
