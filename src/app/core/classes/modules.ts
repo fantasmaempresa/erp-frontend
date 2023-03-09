@@ -8,14 +8,14 @@ export class ManageModule {
     const { submenus: userPermission }: { submenus: Array<any> } = JSON.parse(
       localStorage.getItem(KEY_LS_MENUS) ?? `{}`,
     );
-    console.log(userPermission, path);
+    // console.log(userPermission, path);
 
     const somePathExist: Function = (
       menu: Array<{ route: string; dropdowns: any[] }>,
     ) =>
       menu.some(({ route, dropdowns }) => {
         const realPath = route.replace('./', '');
-        console.log({ route, realPath });
+        // console.log({ route, realPath });
         return dropdowns ? somePathExist(dropdowns) : path.includes(realPath);
       });
     return somePathExist(userPermission);

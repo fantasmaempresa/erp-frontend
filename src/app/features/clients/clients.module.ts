@@ -5,10 +5,11 @@ import { ClientFormComponent } from './page/client-form/client-form.component';
 import { SharedModule } from '../../shared/shared.module';
 import { ClientsListComponent } from './page/clients-list/clients-list.component';
 import { DynamicViewsModule } from '../../shared/components/dynamic-views/dynamic-views.module';
+import { CoreModule } from '../../core/core.module';
 
 @NgModule({
   declarations: [ClientFormComponent, ClientsListComponent],
-  imports: [SharedModule, ClientsRoutingModule, DynamicViewsModule],
+  imports: [SharedModule, ClientsRoutingModule, DynamicViewsModule, CoreModule],
   exports: [ClientsListComponent],
 })
 export class ClientsModule {}
