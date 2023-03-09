@@ -11,6 +11,10 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, .25),
+  0 0 1px 4px rgba(0, 0, 0, .125),
+  0 0 1px 6px rgba(0, 0, 0, .125),
+  0 0 2px 8px rgba(0, 0, 0, .10);
 
   @include mixins.respond {
     padding: 0 1rem;
@@ -126,8 +130,8 @@
     font-weight: 500;
 
     &:not(:placeholder-shown)
-      + .search-input__label
-      > .search-input__label-text {
+    + .search-input__label
+    > .search-input__label-text {
       transform: scale(0.75) translate(-5rem, 4rem);
       font-weight: 550;
     }
