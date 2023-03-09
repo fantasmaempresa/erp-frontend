@@ -11,11 +11,12 @@ export class ManageModule {
     console.log(userPermission, path);
 
     const somePathExist: Function = (
-      menu: Array<{ route: string; dropdown: any[] }>,
+      menu: Array<{ route: string; dropdowns: any[] }>,
     ) =>
-      menu.some(({ route, dropdown }) => {
+      menu.some(({ route, dropdowns }) => {
         const realPath = route.replace('./', '');
-        return dropdown ? somePathExist(dropdown) : path.includes(realPath);
+        console.log({ route, realPath });
+        return dropdowns ? somePathExist(dropdowns) : path.includes(realPath);
       });
     return somePathExist(userPermission);
   }
