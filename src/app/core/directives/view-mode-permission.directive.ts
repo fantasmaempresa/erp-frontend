@@ -11,10 +11,12 @@ export class ViewModePermissionDirective {
   opacity = 1;
 
   constructor() {
-    const { user } = JSON.parse(localStorage.getItem('auth') ?? '{}');
-    const { role } = user;
-    const { config } = role;
-    this.isViewModeEnable = config.view_mode;
+    const {
+      user: {
+        role: { config },
+      },
+    } = JSON.parse(localStorage.getItem('auth') ?? '{}');
+    this.isViewModeEnable = config?.view_mode ?? false;
     if (this.isViewModeEnable) {
       this.opacity = 0.33;
     }
