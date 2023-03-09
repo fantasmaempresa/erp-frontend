@@ -20,11 +20,9 @@ export class ContentLayoutComponent implements OnInit {
   constructor(
     private store: Store,
     private systemActionSocket: SystemActionSocketService,
-    private roleService: RoleService,
   ) {}
 
   ngOnInit(): void {
-    this.roleService.buildSidebar();
     this.store.dispatch(startListenNotification());
     this.systemActionSocket.action$.subscribe();
   }

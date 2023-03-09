@@ -3,6 +3,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { RoleDto } from '../dto';
 import { CrudService } from '../../core/classes/Crud/CrudService';
 import { Pagination } from '../../core/interfaces';
+import { tap } from 'rxjs';
 
 export const KEY_LS_MENUS = 'menus';
 
@@ -26,10 +27,10 @@ export class RoleService extends CrudService<RoleDto> {
   }
 
   buildSidebar() {
-    this._http.get(`${this._base}/modules/construct`).subscribe({
-      next: (menus) => {
+    return this._http.get(`${this._base}/modules/construct`).pipe(
+      tap((menus) => {
         localStorage.setItem(KEY_LS_MENUS, JSON.stringify(menus));
-      },
-    });
+      }),
+    );
   }
 }
