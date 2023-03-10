@@ -11,7 +11,7 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../dynamic-views.module';
-import { PageEvent } from '@angular/material/paginator';
+import { LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
 import { Class2ViewBuilderService } from '../services/class2-view-builder.service';
 import { DomSanitizer } from '@angular/platform-browser';
 

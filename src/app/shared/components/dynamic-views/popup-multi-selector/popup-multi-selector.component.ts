@@ -7,10 +7,10 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatLegacyPaginator as MatPaginator, LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Observable, Subscription, tap } from 'rxjs';
 import { EntityDto } from '../../../../core/interfaces/Entity.dto';
 import { Pagination } from '../../../../core/interfaces/Pagination.model';
@@ -18,7 +18,7 @@ import { Store } from '@ngrx/store';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DynamicViewComponent } from '../class/dynamic-view.component';
 import { ActivatedRoute } from '@angular/router';
-import { MatCheckbox } from '@angular/material/checkbox';
+import { MatLegacyCheckbox as MatCheckbox } from '@angular/material/legacy-checkbox';
 
 interface PopUpMultiData {
   property: string;

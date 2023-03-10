@@ -12,7 +12,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { CrudService } from '../../../../../core/classes/Crud/CrudService';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { NgControl } from '@angular/forms';
 import { BACKSPACE } from '@angular/cdk/keycodes';
 import { forkJoin, take } from 'rxjs';

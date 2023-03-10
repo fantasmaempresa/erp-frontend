@@ -6,7 +6,7 @@ import {
   OnDestroy,
   Renderer2,
 } from '@angular/core';
-import { MatFormField } from '@angular/material/form-field';
+import { MatLegacyFormField as MatFormField } from '@angular/material/legacy-form-field';
 import { AbstractControl } from '@angular/forms';
 import { FormValidationService } from '../services/form-validation.service';
 import { ClassWatcher } from '../../core/classes/ClassWatcher';

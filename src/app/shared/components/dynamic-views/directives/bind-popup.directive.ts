@@ -8,7 +8,7 @@ import {
   StaticProvider,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { PopupSelectorComponent } from '../popup-selector/popup-selector.component';
 import { take } from 'rxjs';
 import { BACKSPACE } from '@angular/cdk/keycodes';

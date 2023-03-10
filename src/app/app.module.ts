@@ -13,7 +13,7 @@ import { HeaderComponent } from './layout/header/header.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { BreadcrumbComponent } from './layout/breadcrumb/breadcrumb.component';
 import { ChildrenRouteLayoutComponent } from './layout/children-route-layout/children-route-layout.component';
-import { MatPaginatorIntl } from '@angular/material/paginator';
+import { MatLegacyPaginatorIntl as MatPaginatorIntl } from '@angular/material/legacy-paginator';
 import { getSpanishPaginatorIntl } from './core/i18n/spanish-paginator-intl';
 import { StateModule } from './state/state.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';

@@ -4,7 +4,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { QuoteStatusService } from '../../../../data/services/quote-status.service';
 import { map, Observable, switchMap, take } from 'rxjs';
 import { loadForm } from '../../../../state/dynamic-form/dynamic-form.actions';

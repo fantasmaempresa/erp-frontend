@@ -28,7 +28,7 @@ import {
 } from '../../../data/services';
 import { Update } from '@ngrx/entity';
 import { FormStructure } from '../../../data/models/FormStructure.model';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import { OnSaveDialogComponent } from './on-save-dialog/on-save-dialog.component';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { v4 as uuidv4 } from 'uuid';

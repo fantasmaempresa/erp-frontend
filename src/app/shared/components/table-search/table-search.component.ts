@@ -6,10 +6,10 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ClientDto } from '../../../data/dto/Client.dto';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Observable, Subscription, tap } from 'rxjs';
 import { ClientService } from '../../../data/services/client.service';
 import { Pagination } from '../../../core/interfaces/Pagination.model';

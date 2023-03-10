@@ -159,8 +159,8 @@ $input-dark-theme: (
 $dark-theme: mat.define-dark-theme($dark-theme-structure);
 
 .dark-theme {
-  @include mat.all-component-themes($dark-theme);
-  @include mat.form-field-theme($input-dark-theme);
+  @include mat.all-legacy-component-themes($dark-theme);
+  @include mat.legacy-form-field-theme($input-dark-theme);
   @include components.theme($dark-theme, typography.$fontConfig);
 }
 
