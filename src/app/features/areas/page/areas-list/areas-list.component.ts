@@ -7,20 +7,20 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
-import { MatLegacyPaginator as MatPaginator, LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
 import { Observable, Subscription, tap } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces';
 import { AreaService } from '../../../../data/services';
 import { WorkAreaDto } from '../../../../data/dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { Store } from '@ngrx/store';
-import { selectAreas } from '../../../../state/areas/areas.selectors';
 import {
   emptyAreaList,
   loadAreas,
   loadNextPageOfAreas,
-} from '../../../../state/areas/areas.actions';
+  selectAreas,
+} from '../../../../state/areas';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-areas-list',

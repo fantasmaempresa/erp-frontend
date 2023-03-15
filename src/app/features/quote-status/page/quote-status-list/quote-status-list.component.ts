@@ -5,22 +5,22 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { MatLegacyPaginator as MatPaginator, LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Observable, Subscription, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';
-import { QuoteStatusService } from '../../../../data/services/quote-status.service';
-import { Pagination } from '../../../../core/interfaces/Pagination.model';
+import { QuoteStatusDto } from '../../../../data/dto';
+import { QuoteStatusService } from '../../../../data/services';
+import { Pagination } from '../../../../core/interfaces';
 import { Store } from '@ngrx/store';
-import { selectQuoteStatus } from '../../../../state/quote-status/quote-status.selectors';
 import {
   emptyQuoteStatusList,
   laodNextPageOfQuoteStatus,
   loadQuoteStatuses,
-} from '../../../../state/quote-status/quote-status.actions';
+  selectQuoteStatus,
+} from '../../../../state/quote-status';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-quote-status-list',

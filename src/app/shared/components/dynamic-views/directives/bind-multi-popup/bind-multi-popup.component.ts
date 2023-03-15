@@ -12,11 +12,11 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { CrudService } from '../../../../../core/classes/Crud/CrudService';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { NgControl } from '@angular/forms';
 import { BACKSPACE } from '@angular/cdk/keycodes';
 import { forkJoin, take } from 'rxjs';
 import { PopupMultiSelectorComponent } from '../../popup-multi-selector/popup-multi-selector.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   // eslint-disable-next-line @angular-eslint/component-selector

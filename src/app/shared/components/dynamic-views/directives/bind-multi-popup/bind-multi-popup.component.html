@@ -1,7 +1,7 @@
 <ng-template #templateRef>
-  <mat-chip-list (click)="openDialog()" style="cursor: pointer">
+  <mat-chip-listbox (click)="openDialog()" style="cursor: pointer">
     <mat-chip *ngFor="let item of selected">
       {{ item[propertyAccess] }}
     </mat-chip>
-  </mat-chip-list>
+  </mat-chip-listbox>
 </ng-template>

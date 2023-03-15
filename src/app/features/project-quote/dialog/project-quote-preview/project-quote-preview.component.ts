@@ -4,20 +4,23 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
-import { QuoteStatusService } from '../../../../data/services/quote-status.service';
+import {
+  ProjectQuoteService,
+  QuoteStatusService,
+} from '../../../../data/services';
 import { map, Observable, switchMap, take } from 'rxjs';
-import { loadForm } from '../../../../state/dynamic-form/dynamic-form.actions';
+import { loadForm, selectDynamicForm } from '../../../../state/dynamic-form';
 import { Store } from '@ngrx/store';
-import { DynamicFormComponent } from '../../../../shared/components/dynamic-form/dynamic-form.component';
-import { ProjectQuoteService } from '../../../../data/services/project-quote.service';
+import { DynamicFormComponent } from '../../../../shared/components';
 import { QuoteTemplateService } from 'src/app/data/services/quote-template.service';
-import { selectDynamicForm } from '../../../../state/dynamic-form/dynamic-form.selectors';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { Formfield } from '../../../../data/dto/Formfield.dto';
-import { QuoteStatusDto } from '../../../../data/dto/QuoteStatus.dto';
-import { QuoteTemplate } from '../../../../data/dto/QuoteTemplate.dto';
-import { ProjectQuoteDto } from '../../../../data/dto/ProjectQuote.dto';
+import {
+  Formfield,
+  ProjectQuoteDto,
+  QuoteStatusDto,
+  QuoteTemplate,
+} from '../../../../data/dto';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-project-quote-preview',

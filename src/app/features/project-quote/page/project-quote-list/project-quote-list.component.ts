@@ -7,23 +7,23 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatLegacyPaginator as MatPaginator, LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Observable, Subscription, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ProjectQuoteDto, QuoteStatusDto } from '../../../../data/dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { Pagination } from '../../../../core/interfaces';
-import { selectQuotes } from '../../../../state/quotes/quotes.selectors';
 import {
   emptyQuoteList,
   loadNextPageOfQuotes,
   loadQuotes,
   loadQuotesByStatus,
-} from '../../../../state/quotes/quotes.actions';
+  selectQuotes,
+} from '../../../../state/quotes';
 import { ProjectQuoteService } from '../../../../data/services';
 import { ProjectQuotePreviewComponent } from '../../dialog/project-quote-preview/project-quote-preview.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-project-quote-list',

@@ -7,27 +7,31 @@ import { BreadcrumbModule } from 'xng-breadcrumb';
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ErrorMessageDirective } from './directives/error-message.directive';
-import { DialogSearchComponent } from './components/dialog-search/dialog-search.component';
+import {
+  AutofocusDirective,
+  ChipListAutocompleteFixDirective,
+  ConnectFormDirective,
+  DragFileDirective,
+  ErrorMessageDirective,
+  OutSideClickDirective,
+  SetValueDirective,
+  StopPropagationDirective,
+} from './directives';
+import {
+  DialogSearchComponent,
+  DynamicFormComponent,
+  DynamicFormCreationComponent,
+  OnSaveDialogComponent,
+} from './components';
 import { TableSearchComponent } from './components/table-search/table-search.component';
 import { DynamicFormInputComponent } from './components/dynamic-form-input/dynamic-form-input.component';
-import { DynamicFormComponent } from './components/dynamic-form/dynamic-form.component';
-import { StopPropagationDirective } from './directives/stop-propagation.directive';
-import { OutSideClickDirective } from './directives/out-side-click.directive';
-import { FromDatePipe } from './pipes/from-date.pipe';
-import { DynamicFormCreationComponent } from './components/dynamic-form-creation/dynamic-form-creation.component';
+import { FromDatePipe } from './pipes';
 import { OperationsComponent } from './components/operations/operations.component';
 import { GenericAutocompleteChipComponent } from './components/generic-autocomplete-chip/generic-autocomplete-chip.component';
-import { ChipListAutocompleteFixDirective } from './directives/chip-list-autocomplete-fix.directive';
-import { DragFileDirective } from './directives/drag-file.directive';
 import { InputImageComponent } from './components/input-image/input-image.component';
 import { InputFileComponent } from './components/input-file/input-file.component';
 import { InputCoordinateComponent } from './components/input-coordinate/input-coordinate.component';
 import { DynamicViewsModule } from './components/dynamic-views/dynamic-views.module';
-import { OnSaveDialogComponent } from './components/dynamic-form-creation/on-save-dialog/on-save-dialog.component';
-import { ConnectFormDirective } from './directives/connect-form.directive';
-import { SetValueDirective } from './directives/set-value.directive';
-import { AutofocusDirective } from './directives/autofocus.directive';
 
 @NgModule({
   declarations: [

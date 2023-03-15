@@ -5,22 +5,22 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { MatLegacyPaginator as MatPaginator, LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ClientDto, ConceptDto } from '../../../../data/dto';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Observable, Subscription, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
 import { ConceptService } from '../../../../data/services';
 import { Pagination } from '../../../../core/interfaces';
 import { Store } from '@ngrx/store';
-import { selectConcepts } from '../../../../state/concepts/concepts.selectors';
 import {
   emptyConceptList,
   loadConcepts,
   loadNextPageOfConcepts,
-} from '../../../../state/concepts/concepts.actions';
+  selectConcepts,
+} from '../../../../state/concepts';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-concept-list',

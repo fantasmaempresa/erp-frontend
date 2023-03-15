@@ -1,5 +1,4 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import {
   UntypedFormArray,
   UntypedFormControl,
@@ -7,9 +6,10 @@ import {
   Validators,
 } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { ConceptDto } from '../../../../data/dto/Concept.dto';
+import { ConceptDto } from '../../../../data/dto';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { ConceptService } from '../../../../data/services/concept.service';
+import { ConceptService } from '../../../../data/services';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-concept-form-dialog',

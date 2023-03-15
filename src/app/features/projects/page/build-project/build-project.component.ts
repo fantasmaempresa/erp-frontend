@@ -6,7 +6,6 @@ import {
   UntypedFormControl,
   UntypedFormGroup,
 } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import {
   CLAZZ,
   LOAD_ACTION,
@@ -26,18 +25,19 @@ import {
   takeUntil,
   tap,
 } from 'rxjs';
-import { ProcessDto } from '../../../../data/dto/Process.dto';
+import { ProcessDto, ProcessPhaseDto } from '../../../../data/dto';
 import {
   loadNextPageOfProcess,
   loadProcess,
-} from '../../../../state/process/process.actions';
-import { selectProcess } from '../../../../state/process/process.selectors';
-import { ProcessPhaseService } from '../../../../data/services/process-phase.service';
-import { ProcessPhaseDto } from '../../../../data/dto/ProcessPhase.dto';
-import { RoleService } from '../../../../data/services/role.service';
-import { ProcessService } from '../../../../data/services/process.service';
-import { ProjectView } from '../../../../data/presentation/Project.view';
-import { ProcessView } from '../../../../data/presentation/Process.view';
+  selectProcess,
+} from '../../../../state/process';
+import {
+  ProcessPhaseService,
+  ProcessService,
+  RoleService,
+} from '../../../../data/services';
+import { ProcessView, ProjectView } from '../../../../data/presentation';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-build-project',
@@ -88,6 +88,7 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onChange = (_: any) => {};
 
   onTouch = () => {};

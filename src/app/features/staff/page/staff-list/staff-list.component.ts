@@ -5,22 +5,22 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatLegacyPaginator as MatPaginator, LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
 import { Observable, Subscription, tap } from 'rxjs';
-import { Pagination } from '../../../../core/interfaces/Pagination.model';
-import { StaffService } from '../../../../data/services/staff.service';
+import { Pagination } from '../../../../core/interfaces';
+import { StaffService } from '../../../../data/services';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { StaffDto } from '../../../../data/dto/Staff.dto';
+import { StaffDto } from '../../../../data/dto';
 import { Store } from '@ngrx/store';
-import { selectStaff } from '../../../../state/staff/staff.selectors';
 import {
   emptyStaffList,
   loadNextPageOfStaff,
   loadStaff,
-} from '../../../../state/staff/staff.actions';
+  selectStaff,
+} from '../../../../state/staff';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-staff-list',

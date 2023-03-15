@@ -5,7 +5,6 @@ import {
   OnDestroy,
   StaticProvider,
 } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import {
   CLAZZ,
   LOAD_ACTION,
@@ -40,6 +39,7 @@ import {
   ProcessView,
   RoleView,
 } from '../../../../data/presentation';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-build-process',

@@ -6,12 +6,12 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import {
   AbstractSubformComponent,
   DialogSearchComponent,
 } from '../../../../shared/components';
 import { ClientDto, UserDto } from '../../../../data/dto';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-project-quote-form',

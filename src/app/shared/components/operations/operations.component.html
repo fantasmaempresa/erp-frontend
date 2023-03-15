@@ -47,7 +47,7 @@
             appChipListAutocompleteFix
           >
             <mat-label>Conceptos</mat-label>
-            <mat-chip-list #chipList aria-label="Concept selection">
+            <mat-chip-grid #chipList aria-label="Concept selection">
               <mat-chip
                 *ngFor="
                   let concept of operation_fields.controls[i].value.concepts
@@ -68,7 +68,7 @@
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                 (matChipInputTokenEnd)="add($event, i)"
               />
-            </mat-chip-list>
+            </mat-chip-grid>
             <mat-autocomplete
               #autoConcept="matAutocomplete"
               (optionSelected)="selected($event, i, 'fields')"
@@ -128,7 +128,7 @@
             appChipListAutocompleteFix
           >
             <mat-label>Conceptos</mat-label>
-            <mat-chip-list #chipListTotal aria-label="Concept selection">
+            <mat-chip-grid #chipListTotal aria-label="Concept selection">
               <mat-chip
                 *ngFor="
                   let concept of operation_total.controls[i].value.concepts
@@ -148,7 +148,7 @@
                 [matChipInputFor]="chipListTotal"
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               />
-            </mat-chip-list>
+            </mat-chip-grid>
             <mat-autocomplete
               #autoConcept="matAutocomplete"
               (optionSelected)="selected($event, i, 'total')"

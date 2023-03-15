@@ -10,9 +10,9 @@
     class="custom-control"
   >
     <mat-label>{{ label }}</mat-label>
-    <mat-chip-list #chipList>
+    <mat-chip-grid #chipList>
       <mat-chip (removed)="remove(item)" *ngFor="let item of data">
-        {{ item | mapTo: mapFn }}
+        {{ item | mapTo : mapFn }}
         <button matChipRemove>
           <mat-icon>cancel</mat-icon>
         </button>
@@ -27,14 +27,14 @@
         [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
         [placeholder]="placeholder"
       />
-    </mat-chip-list>
+    </mat-chip-grid>
     <mat-autocomplete
       #auto="matAutocomplete"
       (optionSelected)="selected($event)"
       autoActiveFirstOption
     >
       <mat-option *ngFor="let item of filteredData | async" [value]="item">
-        {{ item | mapTo: mapFn }}
+        {{ item | mapTo : mapFn }}
       </mat-option>
     </mat-autocomplete>
   </mat-form-field>

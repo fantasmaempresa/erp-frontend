@@ -18,11 +18,11 @@ import {
   UntypedFormGroup,
 } from '@angular/forms';
 import { ConceptService, ProjectQuoteService } from '../../../data/services';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
-import { MatLegacyAutocompleteSelectedEvent as MatAutocompleteSelectedEvent } from '@angular/material/legacy-autocomplete';
-import { MatLegacyChipInputEvent as MatChipInputEvent } from '@angular/material/legacy-chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ConceptFormDialogComponent } from '../../../features/concepts/dialog/concept-form-dialog/concept-form-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 
 @Component({
   selector: 'app-operations',

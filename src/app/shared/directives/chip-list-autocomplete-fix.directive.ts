@@ -5,8 +5,8 @@ import {
   QueryList,
   ViewContainerRef,
 } from '@angular/core';
-import { MatLegacyAutocompleteTrigger as MatAutocompleteTrigger } from '@angular/material/legacy-autocomplete';
-import { MatLegacyChip as MatChip, MatLegacyChipList as MatChipList } from '@angular/material/legacy-chips';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
+import { MatChipListbox } from '@angular/material/chips';
 
 /**
  * This directive fixes the Material Chip List Autocomplete issue where if you click an option in the autocomplete menu,
@@ -19,7 +19,7 @@ import { MatLegacyChip as MatChip, MatLegacyChipList as MatChipList } from '@ang
 })
 export class ChipListAutocompleteFixDirective implements AfterContentInit {
   // Use ContentChild decorator to get the MatAutocomplete component and the MatAutoCompleteTrigger component
-  @ContentChild(MatChipList) chipList: MatChipList | undefined;
+  @ContentChild(MatChipListbox) chipList: MatChipListbox | undefined;
 
   @ContentChild(MatAutocompleteTrigger, { read: MatAutocompleteTrigger })
   input: MatAutocompleteTrigger | undefined;

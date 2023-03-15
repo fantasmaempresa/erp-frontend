@@ -2,8 +2,7 @@ import { MemoizedSelector, Store } from '@ngrx/store';
 import { Component, Injector } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, shareReplay } from 'rxjs';
-import { Pagination } from '../../../../core/interfaces/Pagination.model';
-import { EntityDto } from '../../../../core/interfaces/Entity.dto';
+import { EntityDto, Pagination } from '../../../../core/interfaces';
 import {
   ACTION_KEY,
   CLAZZ,
@@ -11,9 +10,9 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../dynamic-views.module';
-import { LegacyPageEvent as PageEvent } from '@angular/material/legacy-paginator';
 import { Class2ViewBuilderService } from '../services/class2-view-builder.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
   template: '',

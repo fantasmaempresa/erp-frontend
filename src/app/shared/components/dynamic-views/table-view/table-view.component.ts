@@ -7,13 +7,12 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Subscription, tap } from 'rxjs';
-import { Pagination } from '../../../../core/interfaces/Pagination.model';
+import { EntityDto, Pagination } from '../../../../core/interfaces';
 import { DynamicViewComponent } from '../class/dynamic-view.component';
-import { EntityDto } from '../../../../core/interfaces/Entity.dto';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-table-view',
