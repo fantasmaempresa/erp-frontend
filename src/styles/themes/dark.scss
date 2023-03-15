@@ -77,6 +77,7 @@ body {
   --text-primary-lighter-color: #{$dark-primary-text};
   --text-primary-darker-color: #{$light-primary-text};
 }
+
 $mat-primary: (
   main: #0d2b3e,
   lighter: #b6bfc5,
@@ -84,11 +85,11 @@ $mat-primary: (
   200: #0d2b3e,
   // For slide toggle,
   contrast:
-    (
-      main: $light-primary-text,
-      lighter: $dark-primary-text,
-      darker: $light-primary-text,
-    ),
+  (
+    main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text,
+  ),
 );
 $theme-primary: mat.define-palette($mat-primary, main, lighter, darker);
 
@@ -100,6 +101,7 @@ body {
   --text-accent-lighter-color: #{$dark-primary-text};
   --text-accent-darker-color: #{$dark-primary-text};
 }
+
 $mat-accent: (
   main: #dfc356,
   lighter: #f5edcc,
@@ -107,11 +109,11 @@ $mat-accent: (
   200: #dfc356,
   // For slide toggle,
   contrast:
-    (
-      main: $dark-primary-text,
-      lighter: $dark-primary-text,
-      darker: $dark-primary-text,
-    ),
+  (
+    main: $dark-primary-text,
+    lighter: $dark-primary-text,
+    darker: $dark-primary-text,
+  ),
 );
 $theme-accent: mat.define-palette($mat-accent, main, lighter, darker);
 
@@ -123,6 +125,7 @@ body {
   --text-warn-lighter-color: #{$dark-primary-text};
   --text-warn-darker-color: #{$light-primary-text};
 }
+
 $mat-warn: (
   main: #fb3640,
   lighter: #fec3c6,
@@ -130,19 +133,22 @@ $mat-warn: (
   200: #fb3640,
   // For slide toggle,
   contrast:
-    (
-      main: $light-primary-text,
-      lighter: $dark-primary-text,
-      darker: $light-primary-text,
-    ),
+  (
+    main: $light-primary-text,
+    lighter: $dark-primary-text,
+    darker: $light-primary-text,
+  ),
 );
 $theme-warn: mat.define-palette($mat-warn, main, lighter, darker);
 
 $dark-theme-structure: (
-  primary: $theme-primary,
-  accent: $theme-accent,
-  warn: $theme-warn,
+  color: (
+    primary: $theme-primary,
+    accent: $theme-accent,
+    warn: $theme-warn,
+  ),
   is-dark: false,
+  typography: typography.$fontConfig,
   foreground: $mat-dark-theme-foreground,
   background: $mat-dark-theme-background,
 );
@@ -152,6 +158,7 @@ $input-dark-theme: (
   accent: $theme-primary,
   warn: $theme-warn,
   is-dark: true,
+  density: 0,
   foreground: $mat-dark-theme-foreground,
   background: $mat-dark-theme-background,
 );
@@ -159,8 +166,10 @@ $input-dark-theme: (
 $dark-theme: mat.define-dark-theme($dark-theme-structure);
 
 .dark-theme {
-  @include mat.all-legacy-component-themes($dark-theme);
-  @include mat.legacy-form-field-theme($input-dark-theme);
+  //@include mat.all-legacy-component-themes($dark-theme);
+  //@include mat.legacy-form-field-theme($input-dark-theme);
+  //@include mat.core-theme($dark-theme);
+  @include mat.all-component-colors($dark-theme);
   @include components.theme($dark-theme, typography.$fontConfig);
 }
 
@@ -184,6 +193,7 @@ $dark-theme: mat.define-dark-theme($dark-theme-structure);
 .material-icons {
   font-size: 24px;
   font-family: 'Material Icons', 'Material Icons', 'serif';
+
   .mat-badge-content {
     font-family: 'Roboto', 'serif';
   }
