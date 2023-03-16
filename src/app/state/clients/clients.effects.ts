@@ -10,11 +10,6 @@ import { map, mergeMap } from 'rxjs';
 
 @Injectable()
 export class ClientsEffects {
-  constructor(
-    private actions$: Actions,
-    private clientService: ClientService,
-  ) {}
-
   loadClients$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadClients),
@@ -25,7 +20,6 @@ export class ClientsEffects {
       }),
     );
   });
-
   loadNextPageOfClients$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfClients),
@@ -36,4 +30,9 @@ export class ClientsEffects {
       }),
     );
   });
+
+  constructor(
+    private actions$: Actions,
+    private clientService: ClientService,
+  ) {}
 }

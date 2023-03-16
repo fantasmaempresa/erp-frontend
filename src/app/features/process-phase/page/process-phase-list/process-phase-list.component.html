@@ -1,11 +1,11 @@
 <mat-toolbar>
   <button
+    (click)="goToEditForm()"
     *ngIf="selectedItem"
     [matTooltipPosition]="'below'"
     aria-label="Editar Fase"
     mat-icon-button
     matTooltip="Editar Fase"
-    (click)="goToEditForm()"
   >
     <mat-icon>edit</mat-icon>
   </button>
@@ -19,16 +19,16 @@
     <mat-icon>person_remove</mat-icon>
   </button>
   <button
+    (click)="goToAddForm()"
     [matTooltipPosition]="'below'"
     aria-label="Agregar Fase"
     mat-icon-button
     matTooltip="Agregar Fase"
-    (click)="goToAddForm()"
   >
     <mat-icon>person_add</mat-icon>
   </button>
 </mat-toolbar>
 <app-change-view
-  [actions]="actions"
   (selectedItem)="setSelectedItem($event)"
+  [actions]="actions"
 ></app-change-view>

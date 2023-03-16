@@ -18,25 +18,6 @@ export class ListView<T extends EntityDto> {
 
   private readonly loadAction: () => Action;
 
-  actions: ActionsCard[] = [
-    {
-      icon: 'edit',
-      callback: async (item: T) => {
-        this.selectedItem = item;
-        await this.goToEditForm();
-      },
-      tooltip: `Editar ${this.modelName}`,
-    },
-    {
-      icon: 'delete',
-      callback: (item: T) => {
-        this.selectedItem = item;
-        this.delete();
-      },
-      tooltip: `Eliminar ${this.modelName}`,
-    },
-  ];
-
   constructor(
     injector: Injector,
     protected service: CrudService<T>,
@@ -75,4 +56,23 @@ export class ListView<T extends EntityDto> {
       },
     );
   };
+
+  actions: ActionsCard[] = [
+    {
+      icon: 'edit',
+      callback: async (item: T) => {
+        this.selectedItem = item;
+        await this.goToEditForm();
+      },
+      tooltip: `Editar ${this.modelName}`,
+    },
+    {
+      icon: 'delete',
+      callback: (item: T) => {
+        this.selectedItem = item;
+        this.delete();
+      },
+      tooltip: `Eliminar ${this.modelName}`,
+    },
+  ];
 }

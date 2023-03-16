@@ -10,11 +10,6 @@ import { map, mergeMap } from 'rxjs';
 
 @Injectable()
 export class QuoteStatusEffects {
-  constructor(
-    private actions$: Actions,
-    private quoteStatusService: QuoteStatusService,
-  ) {}
-
   loadQuoteStatus$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadQuoteStatuses),
@@ -27,7 +22,6 @@ export class QuoteStatusEffects {
       }),
     );
   });
-
   loadNextPageOfQuoteStatus$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(laodNextPageOfQuoteStatus),
@@ -40,4 +34,9 @@ export class QuoteStatusEffects {
       }),
     );
   });
+
+  constructor(
+    private actions$: Actions,
+    private quoteStatusService: QuoteStatusService,
+  ) {}
 }

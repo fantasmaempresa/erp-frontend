@@ -9,12 +9,6 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class DialogSearchComponent {
   options!: any;
-
-  @HostListener('keydown.esc')
-  public onEsc() {
-    this.close(false);
-  }
-
   optionSelected!: ClientDto | null;
 
   constructor(
@@ -23,6 +17,11 @@ export class DialogSearchComponent {
   ) {
     let { componentOptions } = data;
     this.options = componentOptions;
+  }
+
+  @HostListener('keydown.esc')
+  public onEsc() {
+    this.close(false);
   }
 
   public close(value: ClientDto | boolean) {

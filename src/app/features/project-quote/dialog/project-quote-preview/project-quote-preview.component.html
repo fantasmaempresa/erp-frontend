@@ -1,33 +1,33 @@
-<button class="close" mat-button (click)="onNoClick()">X</button>
+<button (click)="onNoClick()" class="close" mat-button>X</button>
 
-<div mat-dialog-title class="d-flex justify-content-between">
+<div class="d-flex justify-content-between" mat-dialog-title>
   <h2>Cotización</h2>
   <div>
     <button
-      mat-button
-      color="primary"
-      class="me-3"
-      mat-flat-button
-      [color]="isEnabledChangeQuoteStatus ? 'primary' : 'accent'"
       (click)="enableChangeStatus()"
+      [color]="isEnabledChangeQuoteStatus ? 'primary' : 'accent'"
+      class="me-3"
+      color="primary"
+      mat-button
+      mat-flat-button
     >
       Cambiar estado
     </button>
     <button
+      (click)="enableEditing()"
+      [color]="isEditing ? 'primary' : 'accent'"
       class="me-3"
       mat-flat-button
-      [color]="isEditing ? 'primary' : 'accent'"
-      (click)="enableEditing()"
     >
       Activar edición
     </button>
     <button
-      mat-flat-button
-      color="primary"
-      class="me-3"
+      (click)="save()"
       [color]="isEditing || isEnabledChangeQuoteStatus ? 'primary' : 'accent'"
       [disabled]="!isEditing && !isEnabledChangeQuoteStatus"
-      (click)="save()"
+      class="me-3"
+      color="primary"
+      mat-flat-button
     >
       Guardar
     </button>
@@ -37,17 +37,17 @@
 <div mat-dialog-content>
   <mat-accordion class="example-headers-align">
     <mat-expansion-panel
-      [expanded]="step === HEADER_STEP"
       (opened)="goToHeaderForm()"
+      [expanded]="step === HEADER_STEP"
       hideToggle
     >
       <mat-expansion-panel-header>
         <mat-panel-title>Encabezado</mat-panel-title>
         <mat-panel-description>
-          Datos acerca de la cotización y el cliente</mat-panel-description
-        >
+          Datos acerca de la cotización y el cliente
+        </mat-panel-description>
       </mat-expansion-panel-header>
-      <form class="row justify-content-center mt-3" [formGroup]="headerForm">
+      <form [formGroup]="headerForm" class="row justify-content-center mt-3">
         <div class="col-6 d-flex flex-column pe-0">
           <mat-form-field appearance="outline">
             <mat-label>Estado de la cotización</mat-label>
@@ -63,39 +63,39 @@
           <mat-form-field appearance="outline">
             <mat-label>A quien va dirigido</mat-label>
             <input
-              matInput
-              type="text"
               autocomplete="off"
               formControlName="addressee"
+              matInput
+              type="text"
             />
             <mat-error appErrorMessage></mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Descripción</mat-label>
-            <textarea matInput formControlName="description"> </textarea>
+            <textarea formControlName="description" matInput> </textarea>
             <mat-error appErrorMessage></mat-error>
           </mat-form-field>
 
           <div class="d-flex flex-row">
             <div class="col-12">
-              <mat-form-field class="w-100" appearance="outline">
+              <mat-form-field appearance="outline" class="w-100">
                 <mat-label>Cliente</mat-label>
-                <input type="text" matInput formControlName="client" />
+                <input formControlName="client" matInput type="text" />
               </mat-form-field>
             </div>
           </div>
         </div>
       </form>
       <mat-action-row>
-        <button mat-button color="primary" (click)="goToFormFill()">
+        <button (click)="goToFormFill()" color="primary" mat-button>
           Siguiente
         </button>
       </mat-action-row>
     </mat-expansion-panel>
     <mat-expansion-panel
-      [expanded]="step === FORM_FILL_STEP"
       (opened)="goToFormFill()"
+      [expanded]="step === FORM_FILL_STEP"
       hideToggle
     >
       <mat-expansion-panel-header>
@@ -104,30 +104,30 @@
       </mat-expansion-panel-header>
 
       <app-dynamic-form
-        [onlyRead]="isOnlyReadBodyQuote"
         [formFields]="formFields"
+        [onlyRead]="isOnlyReadBodyQuote"
       ></app-dynamic-form>
 
       <mat-action-row>
-        <button mat-button color="warn" (click)="goToHeaderForm()">
+        <button (click)="goToHeaderForm()" color="warn" mat-button>
           Atras
         </button>
-        <button mat-button color="primary" (click)="goToPreview()">
+        <button (click)="goToPreview()" color="primary" mat-button>
           Siguiente
         </button>
       </mat-action-row>
     </mat-expansion-panel>
 
     <mat-expansion-panel
-      [expanded]="step === PREVIEW_STEP"
       (opened)="step = PREVIEW_STEP"
+      [expanded]="step === PREVIEW_STEP"
       hideToggle
     >
       <mat-expansion-panel-header>
         <mat-panel-title> Vista previa</mat-panel-title>
         <mat-panel-description>
-          Vista previa de la cotización realizada</mat-panel-description
-        >
+          Vista previa de la cotización realizada
+        </mat-panel-description>
       </mat-expansion-panel-header>
 
       <div class="container-fluid mat-elevation-z5">
@@ -136,7 +136,7 @@
             <mat-toolbar color="primary">
               <span>Conceptos</span>
             </mat-toolbar>
-            <div class="row mt-3 ps-3" *ngIf="data.projectQuote.quote as quote">
+            <div *ngIf="data.projectQuote.quote as quote" class="row mt-3 ps-3">
               <div *ngFor="let field of quote.result.operation_fields">
                 <h3>{{ field.name | titlecase }}</h3>
                 <ul class="px-5">
@@ -190,16 +190,16 @@
       </div>
 
       <!--      new results-->
-      <h3 class="mt-5 upper-dotted" *ngIf="results">
+      <h3 *ngIf="results" class="mt-5 upper-dotted">
         Nueva cotización debido a cambios en la anterior
       </h3>
-      <div class="container-fluid mat-elevation-z5" *ngIf="results">
+      <div *ngIf="results" class="container-fluid mat-elevation-z5">
         <div class="row">
           <div class="col-11">
             <mat-toolbar color="primary">
               <span>Conceptos</span>
             </mat-toolbar>
-            <div class="row mt-3 ps-3" *ngIf="results as quote">
+            <div *ngIf="results as quote" class="row mt-3 ps-3">
               <div *ngFor="let field of quote.operation_fields">
                 <h3>{{ field.name | titlecase }}</h3>
                 <ul class="px-5">
@@ -253,7 +253,7 @@
       </div>
       <!-- end new results -->
       <mat-action-row>
-        <button mat-button color="warn" (click)="goToFormFill()">Atras</button>
+        <button (click)="goToFormFill()" color="warn" mat-button>Atras</button>
       </mat-action-row>
     </mat-expansion-panel>
   </mat-accordion>

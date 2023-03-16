@@ -37,8 +37,8 @@
       </button>
       <mat-menu #profileMenu="matMenu" xPosition="before">
         <button mat-menu-item>Item 1</button>
-        <mat-slide-toggle #slide color="primary" (change)="changeTheme($event)"
-          >Modo {{ slide.checked ? 'Oscuro' : 'Claro' }}
+        <mat-slide-toggle #slide (change)="changeTheme($event)" color="primary"
+        >Modo {{ slide.checked ? 'Oscuro' : 'Claro' }}
         </mat-slide-toggle>
         <button (click)="logout()" mat-menu-item>Cerrar sesión</button>
       </mat-menu>

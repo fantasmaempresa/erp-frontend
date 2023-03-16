@@ -1,44 +1,44 @@
 <mat-toolbar>
   <button
+    (click)="edit()"
     *ngIf="selection.selected.length !== 0"
     [matTooltipPosition]="'below'"
     aria-label="Editar empleado"
     mat-icon-button
     matTooltip="Editar empleado"
-    (click)="edit()"
   >
     <mat-icon>edit</mat-icon>
   </button>
   <button
+    (click)="delete()"
     *ngIf="selection.selected.length !== 0"
     [matTooltipPosition]="'below'"
     aria-label="Eliminar empleado"
     mat-icon-button
     matTooltip="Eliminar empleado"
-    (click)="delete()"
   >
     <mat-icon>person_remove</mat-icon>
   </button>
   <button
+    (click)="goToNewMemberOfStaff()"
     [matTooltipPosition]="'below'"
     aria-label="Agregar empleado"
     mat-icon-button
     matTooltip="Agregar empleado"
-    (click)="goToNewMemberOfStaff()"
   >
     <mat-icon>person_add</mat-icon>
   </button>
 </mat-toolbar>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<table [dataSource]="dataSource" class="mat-elevation-z8" mat-table>
   <!-- Checkbox Column -->
   <ng-container matColumnDef="select">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let row">
+    <th *matHeaderCellDef mat-header-cell></th>
+    <td *matCellDef="let row" mat-cell>
       <mat-checkbox
         (change)="$event ? selection.toggle(row) : null"
         (click)="$event.stopPropagation()"
-        [checked]="selection.isSelected(row)"
         [aria-label]="checkboxLabel(row)"
+        [checked]="selection.isSelected(row)"
         color="primary"
       >
       </mat-checkbox>
@@ -47,38 +47,38 @@
 
   <!-- Name Column -->
   <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef>Nombre</th>
-    <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+    <th *matHeaderCellDef mat-header-cell>Nombre</th>
+    <td *matCellDef="let element" mat-cell>{{ element.name }}</td>
   </ng-container>
 
   <!-- Email Column -->
   <ng-container matColumnDef="email">
-    <th mat-header-cell *matHeaderCellDef>Email</th>
-    <td mat-cell *matCellDef="let element">{{ element.email }}</td>
+    <th *matHeaderCellDef mat-header-cell>Email</th>
+    <td *matCellDef="let element" mat-cell>{{ element.email }}</td>
   </ng-container>
 
   <!-- Phone Column -->
   <ng-container matColumnDef="phone">
-    <th mat-header-cell *matHeaderCellDef>Teléfono</th>
-    <td mat-cell *matCellDef="let element">{{ element.phone }}</td>
+    <th *matHeaderCellDef mat-header-cell>Teléfono</th>
+    <td *matCellDef="let element" mat-cell>{{ element.phone }}</td>
   </ng-container>
 
   <!-- Symbol Column -->
   <ng-container matColumnDef="extra_information">
-    <th mat-header-cell *matHeaderCellDef>Información extra</th>
-    <td mat-cell *matCellDef="let element">{{ element.extra_information }}</td>
+    <th *matHeaderCellDef mat-header-cell>Información extra</th>
+    <td *matCellDef="let element" mat-cell>{{ element.extra_information }}</td>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
   <tr
-    mat-row
-    *matRowDef="let row; columns: displayedColumns"
     (click)="selection.toggle(row)"
+    *matRowDef="let row; columns: displayedColumns"
+    mat-row
   ></tr>
 </table>
 <mat-paginator
-  [length]="totalItems"
-  [pageSize]="pageSize"
-  [pageSizeOptions]="[5, 10, 25, 100]"
   (page)="pageEvent = $event; onPaginateChange($event)"
+  [length]="totalItems"
+  [pageSizeOptions]="[5, 10, 25, 100]"
+  [pageSize]="pageSize"
 ></mat-paginator>

@@ -27,34 +27,10 @@ export abstract class DynamicViewComponent<T extends EntityDto> {
   mapToFields: { [p: string]: any };
 
   mapToHTML: { [p: string]: any };
-
-  mapToGetKey = (item: any, [index]: [number]) => {
-    const key = this.displayedColumns[index];
-    if (this.mapToFields && Object.keys(this.mapToFields).includes(key)) {
-      return this.mapToFields[key](item[key]);
-    } else {
-      return item[key];
-    }
-  };
-
-  mapToInnerHtml = (item: any, [index]: [number]) => {
-    const key = this.displayedColumns[index];
-    const innerHtml = this.mapToHTML[key](item[key]);
-    return this.sanitizer.bypassSecurityTrustHtml(innerHtml);
-  };
-
   pageSize = 10;
-
   pageSizeOptions = [5, 10, 25, 100];
-
-  doesntHaveHtml = (key: string) => {
-    return !this.mapToHTML[key];
-  };
-
   protected loadAction: any;
-
   protected selector: MemoizedSelector<any, any>;
-
   protected loadNextPageAction: (props: { size: number; page: number }) => any;
 
   public constructor(
@@ -91,6 +67,25 @@ export abstract class DynamicViewComponent<T extends EntityDto> {
       this.store.dispatch(this.loadAction);
     }
   }
+
+  mapToGetKey = (item: any, [index]: [number]) => {
+    const key = this.displayedColumns[index];
+    if (this.mapToFields && Object.keys(this.mapToFields).includes(key)) {
+      return this.mapToFields[key](item[key]);
+    } else {
+      return item[key];
+    }
+  };
+
+  mapToInnerHtml = (item: any, [index]: [number]) => {
+    const key = this.displayedColumns[index];
+    const innerHtml = this.mapToHTML[key](item[key]);
+    return this.sanitizer.bypassSecurityTrustHtml(innerHtml);
+  };
+
+  doesntHaveHtml = (key: string) => {
+    return !this.mapToHTML[key];
+  };
 
   onPaginateChange(event: PageEvent) {
     let page = event.pageIndex;

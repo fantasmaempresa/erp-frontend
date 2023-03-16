@@ -1,39 +1,39 @@
 <ng-container>
-  <form [formGroup]="formGroup" [connectForm]="formValues$ | async">
-    <div class="row" *ngFor="let formField of fields; index as i">
+  <form [connectForm]="formValues$ | async" [formGroup]="formGroup">
+    <div *ngFor="let formField of fields; index as i" class="row">
       <div class="col-10">
         <!--        <app-dynamic-form-input [input]="formField" [form]="form"></app-dynamic-form-input>-->
         <div [ngSwitch]="formField.controlType">
           <mat-form-field
-            appearance="outline"
             *ngSwitchCase="'textbox'"
+            appearance="outline"
             class="w-100"
           >
             <mat-label>{{ formField.label }}</mat-label>
             <input
-              matInput
               [formControlName]="formField.key"
               [id]="formField.key"
               [type]="formField.type"
               [value]="formField.value"
               autocomplete="off"
+              matInput
             />
             <mat-error appErrorMessage></mat-error>
           </mat-form-field>
 
           <mat-form-field
-            appearance="outline"
             *ngSwitchCase="'number'"
+            appearance="outline"
             class="w-100"
           >
             <mat-label>{{ formField.label }}</mat-label>
             <input
-              matInput
               [formControlName]="formField.key"
-              [value]="formField.value"
               [id]="formField.key"
               [type]="'number'"
+              [value]="formField.value"
               autocomplete="off"
+              matInput
             />
             <mat-error appErrorMessage></mat-error>
           </mat-form-field>
@@ -46,7 +46,7 @@
                 <mat-option
                   *ngFor="let option of formField.options; index as i"
                   [value]="option.value"
-                  >{{ option.value }}</mat-option
+                >{{ option.value }}</mat-option
                 >
               </mat-select>
               <mat-error appErrorMessage></mat-error>
@@ -56,10 +56,10 @@
           <div *ngSwitchCase="'checkbox'">
             <section class="example-section">
               <mat-checkbox
-                color="primary"
                 [formControlName]="formField.key"
                 [value]="formField.value"
-                >{{ formField.label }}</mat-checkbox
+                color="primary"
+              >{{ formField.label }}</mat-checkbox
               >
             </section>
           </div>
@@ -67,15 +67,15 @@
           <div *ngSwitchCase="'radio'">
             <label>{{ formField.label }}</label>
             <mat-radio-group
-              class="radio-group"
-              aria-label="Select an option"
               [formControlName]="formField.key"
+              aria-label="Select an option"
+              class="radio-group"
             >
               <mat-radio-button
-                class="radio-button"
-                color="primary"
                 *ngFor="let option of formField.options"
                 [value]="option.value"
+                class="radio-button"
+                color="primary"
               >
                 {{ option.key }}
               </mat-radio-button>
@@ -86,9 +86,9 @@
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>{{ formField.label }}</mat-label>
               <textarea
-                matInput
                 [formControlName]="formField.key"
                 [value]="formField.value"
+                matInput
               ></textarea>
               <mat-error appErrorMessage></mat-error>
             </mat-form-field>
@@ -98,14 +98,14 @@
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>{{ formField.label }}</mat-label>
               <input
-                matInput
-                [matDatepicker]="dateForm"
                 [formControlName]="formField.key"
+                [matDatepicker]="dateForm"
                 [value]="formField.value"
+                matInput
               />
               <mat-datepicker-toggle
-                matSuffix
                 [for]="dateForm"
+                matSuffix
               ></mat-datepicker-toggle>
               <mat-datepicker #dateForm disabled="false"></mat-datepicker>
             </mat-form-field>

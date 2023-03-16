@@ -71,16 +71,16 @@ export class ProjectQuoteFormComponent extends AbstractSubformComponent {
     return user && user.name ? user.name : '';
   }
 
+  registerOnChange(onChange: any): void {
+    const sub = this.formGroup.valueChanges.subscribe(onChange);
+    this.onChangeSubs.push(sub);
+  }
+
   private _filter(name: string): ClientDto[] {
     const filterValue = name.toLowerCase();
 
     return this.clients.filter((option) =>
       option.name.toLowerCase().includes(filterValue),
     );
-  }
-
-  registerOnChange(onChange: any): void {
-    const sub = this.formGroup.valueChanges.subscribe(onChange);
-    this.onChangeSubs.push(sub);
   }
 }

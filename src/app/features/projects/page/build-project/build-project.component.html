@@ -16,7 +16,7 @@
           {{ process.name }}
           <span class="process__header-description">{{
             process.description
-          }}</span>
+            }}</span>
         </div>
         <div
           *ngIf="process.config.order_phases as phases"
@@ -52,13 +52,13 @@
                         formGroupName="supervisor"
                       >
                         <ng-container formGroupName="{{ k }}"
-                          ><span class="process-phase__config-name">{{
-                            role?.name
+                        ><span class="process-phase__config-name">{{
+                          role?.name
                           }}</span>
                           <mat-checkbox
                             color="primary"
                             formControlName="mandatory_supervision"
-                            >¿Supervisión Obligatoria?
+                          >¿Supervisión Obligatoria?
                           </mat-checkbox>
                         </ng-container>
                       </div>
@@ -96,7 +96,7 @@
                           <mat-checkbox
                             color="primary"
                             formControlName="mandatory_supervision"
-                            >¿Supervisión Obligatoria?
+                          >¿Supervisión Obligatoria?
                           </mat-checkbox>
                         </ng-container>
                       </div>
@@ -105,7 +105,7 @@
                 </div>
                 <div class="process-phase__groups">
                   <span class="process-phase__groups-title"
-                    >Grupo de Trabajo</span
+                  >Grupo de Trabajo</span
                   >
                   <div class="process-phase__container">
                     <div class="process-phase__config">
@@ -120,13 +120,13 @@
                         formGroupName="work_group"
                       >
                         <ng-container formGroupName="{{ k }}"
-                          ><span class="process-phase__config-name">{{
-                            role?.name
+                        ><span class="process-phase__config-name">{{
+                          role?.name
                           }}</span>
                           <mat-checkbox
                             color="primary"
                             formControlName="mandatory_work"
-                            >¿Supervisión Obligatoria?
+                          >¿Supervisión Obligatoria?
                           </mat-checkbox>
                         </ng-container>
                       </div>
@@ -164,7 +164,7 @@
                           <mat-checkbox
                             color="primary"
                             formControlName="mandatory_work"
-                            >¿Supervisión Obligatoria?
+                          >¿Supervisión Obligatoria?
                           </mat-checkbox>
                         </ng-container>
                       </div>

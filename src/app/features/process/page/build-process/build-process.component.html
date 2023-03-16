@@ -1,25 +1,25 @@
 <div class="build-process">
   <button
-    class="build-process__dialog-button"
-    mat-flat-button
-    color="primary"
-    type="button"
     (click)="openDialog()"
+    class="build-process__dialog-button"
+    color="primary"
+    mat-flat-button
+    type="button"
   >
     Seleccionar Fases del proceso
   </button>
 
   <div
-    class="build-process__container"
-    cdkDropList
     (cdkDropListDropped)="drop($event)"
     [formGroup]="form"
+    cdkDropList
+    class="build-process__container"
   >
     <ng-container *ngIf="processPhases; else containerPlaceholder">
       <div
-        class="build-process__item"
         *ngFor="let phase of processPhases; let i = index"
         cdkDrag
+        class="build-process__item"
       >
         <!--        <div class="placeholder-item" *cdkDragPlaceholder></div>-->
         <div class="phase-item">
@@ -33,7 +33,7 @@
         <div class="phase-config" formArrayName="order_phases">
           <ng-container [formGroupName]="i">
             <span class="phase-config__title">Configuración de la Fase</span>
-            <mat-checkbox formControlName="end_process" color="primary">
+            <mat-checkbox color="primary" formControlName="end_process">
               ¿Termina el proceso?
             </mat-checkbox>
             <mat-form-field appearance="outline">
@@ -51,26 +51,26 @@
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Roles Supervisores</mat-label>
               <input
+                [providers]="rolesProvider"
+                [service]="rolesService"
+                app-bind-multi-popup
                 formControlName="roles_supervision"
                 matInput
-                app-bind-multi-popup
-                [service]="rolesService"
-                [providers]="rolesProvider"
-                type="text"
                 title="Roles Supervisores"
+                type="text"
               />
               <mat-error appErrorMessage></mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Equipo de Trabajo</mat-label>
               <input
+                [providers]="rolesProvider"
+                [service]="rolesService"
+                app-bind-multi-popup
                 formControlName="roles_team"
                 matInput
-                app-bind-multi-popup
-                [service]="rolesService"
-                [providers]="rolesProvider"
-                type="text"
                 title="Equipo de Trabajo"
+                type="text"
               />
               <mat-error appErrorMessage></mat-error>
             </mat-form-field>

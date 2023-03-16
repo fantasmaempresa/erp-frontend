@@ -30,14 +30,14 @@ import { RoleView } from '../../../../data/presentation/Role.view';
   ],
 })
 export class RoleListComponent {
+  selectedItem!: any;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private roleService: RoleService,
     private store: Store,
   ) {}
-
-  selectedItem!: any;
 
   setSelectedItem = (item: EntityDto) => {
     this.selectedItem = item;

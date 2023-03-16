@@ -5,14 +5,14 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
   selector: '[appAutofocus]',
 })
 export class AutofocusDirective implements AfterContentInit {
+  constructor(private element: ElementRef) {}
+
   private _autofocus = true;
 
   @Input()
   set autofocus(value: boolean | string) {
     this._autofocus = coerceBooleanProperty(value);
   }
-
-  constructor(private element: ElementRef) {}
 
   public ngAfterContentInit(): void {
     setTimeout(() => this.element.nativeElement.focus(), 100);

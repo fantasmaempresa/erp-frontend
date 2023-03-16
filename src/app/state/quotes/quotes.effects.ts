@@ -13,12 +13,6 @@ import { selectRole } from '../auth/auth.selectors';
 
 @Injectable()
 export class QuotesEffects {
-  constructor(
-    private actions$: Actions,
-    private quotesService: ProjectQuoteService,
-    private store: Store,
-  ) {}
-
   loadQuotes$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadQuotes),
@@ -35,7 +29,6 @@ export class QuotesEffects {
       ),
     );
   });
-
   loadQuotesByStatus$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadQuotesByStatus),
@@ -46,7 +39,6 @@ export class QuotesEffects {
       }),
     );
   });
-
   loadNextPageOfQuotes$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfQuotes),
@@ -57,4 +49,10 @@ export class QuotesEffects {
       }),
     );
   });
+
+  constructor(
+    private actions$: Actions,
+    private quotesService: ProjectQuoteService,
+    private store: Store,
+  ) {}
 }

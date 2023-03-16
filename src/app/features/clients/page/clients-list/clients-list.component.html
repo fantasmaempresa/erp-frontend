@@ -1,48 +1,48 @@
 <mat-toolbar>
   <button
+    (click)="goToClientsLink()"
     *ngIf="selectedItem && selectedItem.type === 1"
     [matTooltipPosition]="'below'"
     aria-label="Ver Enlaces"
-    mat-icon-button
     color="primary"
+    mat-icon-button
     matTooltip="Ver Enlaces"
-    (click)="goToClientsLink()"
   >
     <mat-icon>people</mat-icon>
   </button>
   <button
+    (click)="goToEditForm()"
     *ngIf="selectedItem"
     [matTooltipPosition]="'below'"
     aria-label="Editar cliente"
     mat-icon-button
     matTooltip="Editar cliente"
-    (click)="goToEditForm()"
   >
     <mat-icon>edit</mat-icon>
   </button>
   <button
+    (click)="delete()"
     *ngIf="selectedItem"
     [matTooltipPosition]="'below'"
     aria-label="Eliminar cliente"
     mat-icon-button
     matTooltip="Eliminar cliente"
-    (click)="delete()"
   >
     <mat-icon>person_remove</mat-icon>
   </button>
 
   <button
-    appViewModePermission
+    (click)="goToAddForm()"
     [matTooltipPosition]="'below'"
+    appViewModePermission
     aria-label="Agregar Cliente"
     mat-icon-button
     matTooltip="Agregar Cliente"
-    (click)="goToAddForm()"
   >
     <mat-icon>person_add</mat-icon>
   </button>
 </mat-toolbar>
 <app-change-view
-  [actions]="actions"
   (selectedItem)="setSelectedItem($event)"
+  [actions]="actions"
 ></app-change-view>

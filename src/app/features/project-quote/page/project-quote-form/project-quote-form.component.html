@@ -1,4 +1,4 @@
-<form class="row justify-content-center" [formGroup]="formGroup">
+<form [formGroup]="formGroup" class="row justify-content-center">
   <div class="col-6 d-flex flex-column pe-0">
     <!--      <mat-form-field appearance="outline">-->
     <!--        <mat-label>Estado de la cotización</mat-label>-->
@@ -11,13 +11,13 @@
 
     <div class="d-flex flex-row">
       <div class="col-11">
-        <mat-form-field class="w-100" appearance="outline">
+        <mat-form-field appearance="outline" class="w-100">
           <mat-label>Cliente</mat-label>
           <input
-            type="text"
-            matInput
-            formControlName="client"
             [matAutocomplete]="auto"
+            formControlName="client"
+            matInput
+            type="text"
           />
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
           </mat-autocomplete>
@@ -25,11 +25,11 @@
       </div>
       <div class="col-1">
         <button
-          type="button"
-          mat-icon-button
+          (click)="openDialog()"
           aria-label="Buscar cliente"
           class="align-self-center search-button"
-          (click)="openDialog()"
+          mat-icon-button
+          type="button"
         >
           <mat-icon>search</mat-icon>
         </button>
@@ -39,17 +39,17 @@
     <mat-form-field appearance="outline">
       <mat-label>A quien va dirigido</mat-label>
       <input
-        matInput
-        type="text"
         autocomplete="off"
         formControlName="addressee"
+        matInput
+        type="text"
       />
       <mat-error appErrorMessage></mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Descripción</mat-label>
-      <textarea matInput formControlName="description"> </textarea>
+      <textarea formControlName="description" matInput> </textarea>
       <mat-error appErrorMessage></mat-error>
     </mat-form-field>
 

@@ -1,30 +1,30 @@
 <div [formGroup]="form" class="form-group mt-3">
   <div [ngSwitch]="input.controlType">
     <mat-form-field
-      appearance="outline"
       *ngSwitchCase="'textbox'"
+      appearance="outline"
       class="w-100"
     >
       <mat-label>{{ input.label }}</mat-label>
       <input
-        matInput
         [formControlName]="input.key"
         [id]="input.key"
         [type]="input.type"
         [value]="input.value"
         autocomplete="off"
+        matInput
       />
     </mat-form-field>
 
-    <mat-form-field appearance="outline" *ngSwitchCase="'number'" class="w-100">
+    <mat-form-field *ngSwitchCase="'number'" appearance="outline" class="w-100">
       <mat-label>{{ input.label }}</mat-label>
       <input
-        matInput
         [formControlName]="input.key"
-        [value]="input.value"
         [id]="input.key"
         [type]="'number'"
+        [value]="input.value"
         autocomplete="off"
+        matInput
       />
     </mat-form-field>
 
@@ -36,7 +36,7 @@
           <mat-option
             *ngFor="let option of input.options; index as i"
             [value]="option.value"
-            >{{ option.value }}</mat-option
+          >{{ option.value }}</mat-option
           >
         </mat-select>
       </mat-form-field>
@@ -45,10 +45,10 @@
     <div *ngSwitchCase="'checkbox'">
       <section class="example-section">
         <mat-checkbox
-          color="primary"
           [formControlName]="input.key"
           [value]="input.value"
-          >{{ input.label }}</mat-checkbox
+          color="primary"
+        >{{ input.label }}</mat-checkbox
         >
       </section>
     </div>
@@ -56,15 +56,15 @@
     <div *ngSwitchCase="'radio'">
       <label>{{ input.label }}</label>
       <mat-radio-group
-        class="radio-group"
-        aria-label="Select an option"
         [formControlName]="input.key"
+        aria-label="Select an option"
+        class="radio-group"
       >
         <mat-radio-button
-          class="radio-button"
-          color="primary"
           *ngFor="let option of input.options"
           [value]="option.value"
+          class="radio-button"
+          color="primary"
         >
           {{ option.key }}
         </mat-radio-button>
@@ -75,9 +75,9 @@
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>{{ input.label }}</mat-label>
         <textarea
-          matInput
           [formControlName]="input.key"
           [value]="input.value"
+          matInput
         ></textarea>
       </mat-form-field>
     </div>
@@ -86,14 +86,14 @@
       <mat-form-field appearance="outline" class="w-100">
         <mat-label>{{ input.label }}</mat-label>
         <input
-          matInput
-          [matDatepicker]="dateForm"
           [formControlName]="input.key"
+          [matDatepicker]="dateForm"
           [value]="input.value"
+          matInput
         />
         <mat-datepicker-toggle
-          matSuffix
           [for]="dateForm"
+          matSuffix
         ></mat-datepicker-toggle>
         <mat-datepicker #dateForm disabled="false"></mat-datepicker>
       </mat-form-field>

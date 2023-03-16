@@ -17,19 +17,29 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./concept-form-dialog.component.scss'],
 })
 export class ConceptFormDialogComponent implements OnInit {
+  isDateInYears = false;
+  years: number[] = [];
+  conceptForm = this.createForm();
+  selectedYear!: number;
+  operations: { value: string; label: string }[] = [
+    { value: '+', label: 'Suma' },
+    {
+      value: '-',
+      label: 'Resta',
+    },
+    { value: '*', label: 'Multiplicación' },
+    { value: '+*', label: 'Multiplicar y sumar al resultado' },
+    { value: '-*', label: 'Multiplicar y restar al resultado' },
+    { value: '/', label: 'División' },
+    { value: '+/', label: 'Dividir y sumar al resultado' },
+    { value: '-/', label: 'Dividir y restar al resultado' },
+  ];
+
   constructor(
     public dialogRef: MatDialogRef<ConceptFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private conceptService: ConceptService,
   ) {}
-
-  isDateInYears = false;
-
-  years: number[] = [];
-
-  conceptForm = this.createForm();
-
-  selectedYear!: number;
 
   get operationType() {
     return this.conceptForm.get('operationType') as UntypedFormControl;
@@ -105,20 +115,6 @@ export class ConceptFormDialogComponent implements OnInit {
   get formula() {
     return this.conceptForm.get('formula') as UntypedFormGroup;
   }
-
-  operations: { value: string; label: string }[] = [
-    { value: '+', label: 'Suma' },
-    {
-      value: '-',
-      label: 'Resta',
-    },
-    { value: '*', label: 'Multiplicación' },
-    { value: '+*', label: 'Multiplicar y sumar al resultado' },
-    { value: '-*', label: 'Multiplicar y restar al resultado' },
-    { value: '/', label: 'División' },
-    { value: '+/', label: 'Dividir y sumar al resultado' },
-    { value: '-/', label: 'Dividir y restar al resultado' },
-  ];
 
   ngOnInit(): void {
     this.operationType.valueChanges.subscribe({

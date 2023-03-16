@@ -6,6 +6,8 @@ import { FormGroupDirective } from '@angular/forms';
   selector: '[connectForm]',
 })
 export class ConnectFormDirective {
+  constructor(private formGroupDirective: FormGroupDirective) {}
+
   @Input()
   set connectForm(val: any) {
     let form: any = {};
@@ -21,6 +23,4 @@ export class ConnectFormDirective {
       onlySelf: true,
     });
   }
-
-  constructor(private formGroupDirective: FormGroupDirective) {}
 }

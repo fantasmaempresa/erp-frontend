@@ -18,7 +18,7 @@
           <mat-option>Ninguno</mat-option>
           <mat-option *ngFor="let role of roles$ | async" [value]="role.id">{{
             role.name
-          }}</mat-option>
+            }}</mat-option>
         </mat-select>
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>

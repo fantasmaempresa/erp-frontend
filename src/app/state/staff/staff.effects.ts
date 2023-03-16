@@ -10,8 +10,6 @@ import { map, mergeMap } from 'rxjs';
 
 @Injectable()
 export class StaffEffects {
-  constructor(private actions$: Actions, private staffService: StaffService) {}
-
   loadStaff$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadStaff),
@@ -22,7 +20,6 @@ export class StaffEffects {
       }),
     );
   });
-
   loadNextPageOfStaff$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfStaff),
@@ -33,4 +30,6 @@ export class StaffEffects {
       }),
     );
   });
+
+  constructor(private actions$: Actions, private staffService: StaffService) {}
 }

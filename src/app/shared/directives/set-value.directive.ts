@@ -6,11 +6,11 @@ import { NgControl } from '@angular/forms';
   selector: '[setValue]',
 })
 export class SetValueDirective {
+  constructor(private ngControl: NgControl) {}
+
   @Input()
   set setValue(val: any) {
     // @ts-ignore
     this.ngControl.control.setValue(val, { emitEvent: false });
   }
-
-  constructor(private ngControl: NgControl) {}
 }

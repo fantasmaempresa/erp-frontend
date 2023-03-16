@@ -31,11 +31,11 @@
 
       <ng-container formGroupName="config">
         <app-generic-autocomplete-chip
-          label="Módulos"
           [allData]="modules$ | async"
-          placeholder="Escribe el nombre de los módulos"
           [mapFn]="moduleName"
           formControlName="modules"
+          label="Módulos"
+          placeholder="Escribe el nombre de los módulos"
         ></app-generic-autocomplete-chip>
 
         <section class="mb-5">

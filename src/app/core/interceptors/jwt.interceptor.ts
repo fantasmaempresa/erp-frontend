@@ -29,6 +29,14 @@ export class JwtInterceptor {
 
   constructor(public authService: AuthService, private router: Router) {}
 
+  private static addToken(request: HttpRequest<any>, token: string | null) {
+    return request.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+  }
+
   public intercept(
     req: HttpRequest<any>,
     next: HttpHandler,
@@ -50,14 +58,6 @@ export class JwtInterceptor {
         }
       }),
     );
-  }
-
-  private static addToken(request: HttpRequest<any>, token: string | null) {
-    return request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {

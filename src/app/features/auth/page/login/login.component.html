@@ -10,20 +10,20 @@
       </div>
     </div>
     <div class="card-body pt-5">
-      <div class="error-message m-3" *ngIf="errorMessage$ | async as message">
+      <div *ngIf="errorMessage$ | async as message" class="error-message m-3">
         <span>{{ message }}</span>
       </div>
       <div class="p-2">
-        <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+        <form (ngSubmit)="onSubmit()" [formGroup]="signUpForm">
           <mat-form-field appearance="outline" class="w-100 mb-2">
             <mat-label>Email</mat-label>
             <input
               appAutofocus
+              autocomplete="off"
+              formControlName="username"
               matInput
               placeholder="example@email.com"
               type="text"
-              formControlName="username"
-              autocomplete="off"
             />
             <mat-error appErrorMessage></mat-error>
           </mat-form-field>
@@ -32,8 +32,8 @@
             <mat-label>Contraseña</mat-label>
             <input
               [type]="hidePassword ? 'password' : 'text'"
-              matInput
               formControlName="password"
+              matInput
             />
             <mat-icon (click)="hidePassword = !hidePassword" matSuffix>
               {{ hidePassword ? 'visibility_off' : 'visibility' }}
@@ -43,20 +43,20 @@
 
           <div class="mt-3">
             <button
-              mat-flat-button
+              [disabled]="isLoading$ | async"
               class="w-100"
               color="primary"
+              mat-flat-button
               type="submit"
-              [disabled]="isLoading$ | async"
             >
               {{
-                (isLoading$ | async) ? 'Iniciando sesión...' : 'Iniciar sesión'
+              (isLoading$ | async) ? 'Iniciando sesión...' : 'Iniciar sesión'
               }}
             </button>
           </div>
 
           <div class="mt-4 text-center">
-            <a href="#" class="text-muted">
+            <a class="text-muted" href="#">
               <span class="material-icons lock-icon">lock</span>
               ¿Olvidaste tu contraseña?
             </a>

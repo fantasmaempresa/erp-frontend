@@ -61,7 +61,12 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
   form = new UntypedFormGroup({
     order_phases: this.orderFormArray,
   });
-
+  rolesProvider: StaticProvider[] = [
+    { provide: SELECTOR, useValue: selectRoles },
+    { provide: CLAZZ, useValue: RoleView },
+    { provide: LOAD_ACTION, useValue: loadRoles() },
+    { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfRoles },
+  ];
   private onDestroy$ = new Subject<number>();
 
   constructor(
@@ -74,11 +79,6 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
       .subscribe((value) => this.notifyValueChange(value));
   }
 
-  private notifyValueChange(value: any) {
-    this.onChange(ProcessView.mapConfigOnChange(value, this.processPhases));
-    this.onTouch();
-  }
-
   onChange = (_: any) => {};
 
   onTouch = () => {};
@@ -88,13 +88,6 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
       return i < index ? [...acc, currentItem] : acc;
     }, []);
   };
-
-  rolesProvider: StaticProvider[] = [
-    { provide: SELECTOR, useValue: selectRoles },
-    { provide: CLAZZ, useValue: RoleView },
-    { provide: LOAD_ACTION, useValue: loadRoles() },
-    { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfRoles },
-  ];
 
   openDialog() {
     const inj = Injector.create({
@@ -123,20 +116,6 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
           this.buildOrderFormArray();
         }
       });
-  }
-
-  private buildOrderFormArray() {
-    this.orderFormArray.clear();
-    this.processPhases.forEach(() => {
-      this.orderFormArray.push(
-        new UntypedFormGroup({
-          end_process: new UntypedFormControl(false),
-          previous: new UntypedFormControl(),
-          roles_supervision: new UntypedFormControl(null, Validators.required),
-          roles_team: new UntypedFormControl(null, Validators.required),
-        }),
-      );
-    });
   }
 
   drop(event: CdkDragDrop<any, any>) {
@@ -180,5 +159,24 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
   ngOnDestroy(): void {
     this.onDestroy$.next(1);
     this.onDestroy$.complete();
+  }
+
+  private notifyValueChange(value: any) {
+    this.onChange(ProcessView.mapConfigOnChange(value, this.processPhases));
+    this.onTouch();
+  }
+
+  private buildOrderFormArray() {
+    this.orderFormArray.clear();
+    this.processPhases.forEach(() => {
+      this.orderFormArray.push(
+        new UntypedFormGroup({
+          end_process: new UntypedFormControl(false),
+          previous: new UntypedFormControl(),
+          roles_supervision: new UntypedFormControl(null, Validators.required),
+          roles_team: new UntypedFormControl(null, Validators.required),
+        }),
+      );
+    });
   }
 }

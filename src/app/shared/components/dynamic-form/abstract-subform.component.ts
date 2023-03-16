@@ -11,12 +11,11 @@ export abstract class AbstractSubformComponent<T = any>
   implements ControlValueAccessor, Validator
 {
   public formGroup: UntypedFormGroup = new UntypedFormGroup({});
-
-  public onTouched: () => void = () => {};
-
   onChangeSubs: Subscription[] = [];
 
   protected constructor(public errorMessage: string = 'Form part not valid') {}
+
+  public onTouched: () => void = () => {};
 
   getFormGroup(): UntypedFormGroup {
     return this.formGroup;

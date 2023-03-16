@@ -36,6 +36,15 @@ export class ProjectStartListComponent implements OnInit {
     },
   ];
 
+  constructor(
+    private route: ActivatedRoute,
+    private router: Router,
+    private store: Store,
+    private myProjectService: MyProjectsService,
+  ) {
+    this.myProjects$ = this.store.select(selectMyProjects);
+  }
+
   startProcess = async (project: MyProjectDto, process: ProcessDto) => {
     // MessageHelper.showLoading('Iniciando Proyecto...');
     // this.myProjectService
@@ -59,15 +68,6 @@ export class ProjectStartListComponent implements OnInit {
       relativeTo: this.route,
     });
   };
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private store: Store,
-    private myProjectService: MyProjectsService,
-  ) {
-    this.myProjects$ = this.store.select(selectMyProjects);
-  }
 
   ngOnInit(): void {
     this.store.dispatch(loadMyProjects());

@@ -10,8 +10,6 @@ import { map, mergeMap } from 'rxjs';
 
 @Injectable()
 export class AreasEffects {
-  constructor(private actions$: Actions, private areaService: AreaService) {}
-
   loadAreas$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadAreas),
@@ -22,7 +20,6 @@ export class AreasEffects {
       }),
     );
   });
-
   loadNextPageOfAreas = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfAreas),
@@ -33,4 +30,6 @@ export class AreasEffects {
       }),
     );
   });
+
+  constructor(private actions$: Actions, private areaService: AreaService) {}
 }

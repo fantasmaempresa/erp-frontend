@@ -1,20 +1,20 @@
 <span class="input-label">{{ label }}</span>
 <div
-  class="input-file"
   (click)="fileInput.click()"
-  appDragFile
   (onFileDropped)="uploadFile($event)"
+  appDragFile
+  class="input-file"
 >
   <input
-    hidden
-    type="file"
-    accept="xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf"
     #fileInput
     (change)="uploadFile($any($event.target).files)"
+    accept="xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf"
+    hidden
+    type="file"
   />
   <mat-icon class="input-file__icon">upload_file</mat-icon>
   <span class="input-file__text">Arrastra el archivo o haz click</span>
-  <div class="input-file__description" *ngIf="file">
+  <div *ngIf="file" class="input-file__description">
     <span class="input-file__name">{{ file.name }}</span>
     <span class="input-file__size">{{ file.size | mapTo: mapFileSize }}</span>
   </div>

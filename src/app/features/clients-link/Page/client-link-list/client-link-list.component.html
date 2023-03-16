@@ -1,20 +1,20 @@
 <mat-toolbar>
   <button
-    class="btn-back"
     (click)="back()"
     aria-label="Regresar"
+    class="btn-back"
     mat-icon-button
   >
     <mat-icon>arrow_back</mat-icon>
   </button>
 
   <button
+    (click)="goToEditForm()"
     *ngIf="selectedItem"
     [matTooltipPosition]="'below'"
     aria-label="Editar Enlace"
     mat-icon-button
     matTooltip="Editar Enlace"
-    (click)="goToEditForm()"
   >
     <mat-icon>edit</mat-icon>
   </button>
@@ -28,16 +28,16 @@
     <mat-icon>person_remove</mat-icon>
   </button>
   <button
+    (click)="goToAddForm()"
     [matTooltipPosition]="'below'"
     aria-label="Agregar Enlace"
     mat-icon-button
     matTooltip="Agregar Enlace"
-    (click)="goToAddForm()"
   >
     <mat-icon>person_add</mat-icon>
   </button>
 </mat-toolbar>
 <app-change-view
-  [actions]="actions"
   (selectedItem)="setSelectedItem($event)"
+  [actions]="actions"
 ></app-change-view>

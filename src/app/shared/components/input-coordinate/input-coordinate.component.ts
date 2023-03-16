@@ -17,11 +17,6 @@ export class InputCoordinateComponent implements ControlValueAccessor {
 
   form!: UntypedFormGroup;
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onChange = (_: any) => {};
-
-  onTouch = () => {};
-
   constructor() {
     this.form = new UntypedFormGroup({
       x: new UntypedFormControl(null, Validators.required),
@@ -35,6 +30,11 @@ export class InputCoordinateComponent implements ControlValueAccessor {
       },
     });
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onChange = (_: any) => {};
+
+  onTouch = () => {};
 
   registerOnChange(fn: any): void {
     this.onChange = fn;

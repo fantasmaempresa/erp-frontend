@@ -40,42 +40,19 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 })
 export class DynamicFormCreationComponent implements OnInit {
   templateControl = new UntypedFormControl(null);
-
-  _template!: QuoteTemplate;
-
-  @Input() set template(value: QuoteTemplate) {
-    if (value) {
-      this._template = value;
-      this.templateControl.patchValue(value.form);
-    }
-  }
-
-  get template() {
-    return this._template;
-  }
-
   formFields$!: Observable<Formfield<any>[]>;
-
   formFields!: Formfield<any>[];
-
   templateId = 0;
-
   templateName = '';
-
   templateDescription = '';
-
   dynamicFormEssentialData$!: Observable<{
     id: number;
     name: string;
     description: string;
   }>;
-
   isEditable$: Observable<boolean>;
-
   isEdit = false;
-
   saveMessageButtonLabel = '';
-
   types = [
     {
       value: 'textbox',
@@ -108,19 +85,8 @@ export class DynamicFormCreationComponent implements OnInit {
       label: 'Checkbox',
     },
   ];
-
   form!: UntypedFormGroup;
-
   formStructures!: FormStructure[];
-
-  get f() {
-    return this.form.controls;
-  }
-
-  get options() {
-    return this.form.controls.options as UntypedFormArray;
-  }
-
   errorMessage$: Observable<string>;
 
   constructor(
@@ -174,6 +140,27 @@ export class DynamicFormCreationComponent implements OnInit {
     });
 
     this.isEditable$ = store.select(selectIsEditable);
+  }
+
+  _template!: QuoteTemplate;
+
+  get template() {
+    return this._template;
+  }
+
+  @Input() set template(value: QuoteTemplate) {
+    if (value) {
+      this._template = value;
+      this.templateControl.patchValue(value.form);
+    }
+  }
+
+  get f() {
+    return this.form.controls;
+  }
+
+  get options() {
+    return this.form.controls.options as UntypedFormArray;
   }
 
   ngOnInit(): void {

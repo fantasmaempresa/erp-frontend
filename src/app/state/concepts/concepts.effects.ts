@@ -10,11 +10,6 @@ import { map, mergeMap } from 'rxjs';
 
 @Injectable()
 export class ConceptsEffects {
-  constructor(
-    private actions$: Actions,
-    private conceptService: ConceptService,
-  ) {}
-
   loadConcepts$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadConcepts),
@@ -25,7 +20,6 @@ export class ConceptsEffects {
       }),
     );
   });
-
   loadNextPageOfConcepts$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfConcepts),
@@ -36,4 +30,9 @@ export class ConceptsEffects {
       }),
     );
   });
+
+  constructor(
+    private actions$: Actions,
+    private conceptService: ConceptService,
+  ) {}
 }

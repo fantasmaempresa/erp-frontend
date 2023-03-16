@@ -3,6 +3,7 @@
 .loader:after {
   border-radius: 50%;
 }
+
 .loader {
   color: #0dc5c1;
   font-size: 11px;
@@ -16,11 +17,13 @@
   -ms-transform: translateZ(0);
   transform: translateZ(0);
 }
+
 .loader:before,
 .loader:after {
   position: absolute;
   content: '';
 }
+
 .loader:before {
   width: 5.2em;
   height: 10.2em;
@@ -33,6 +36,7 @@
   -webkit-animation: load2 2s infinite ease 1.5s;
   animation: load2 2s infinite ease 1.5s;
 }
+
 .loader:after {
   width: 5.2em;
   height: 10.2em;
@@ -45,6 +49,7 @@
   -webkit-animation: load2 2s infinite ease;
   animation: load2 2s infinite ease;
 }
+
 @-webkit-keyframes load2 {
   0% {
     -webkit-transform: rotate(0deg);
@@ -55,6 +60,7 @@
     transform: rotate(360deg);
   }
 }
+
 @keyframes load2 {
   0% {
     -webkit-transform: rotate(0deg);

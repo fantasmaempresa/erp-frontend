@@ -58,6 +58,26 @@ export class OperationsComponent implements OnInit {
   });
 
   concepts$: Observable<ConceptDto[]>;
+  separatorKeysCodes: number[] = [ENTER, COMMA];
+  preview!: any;
+
+  constructor(
+    private store: Store,
+    private conceptService: ConceptService,
+    public dialog: MatDialog,
+    private projectQuoteService: ProjectQuoteService,
+  ) {
+    this.formFields$ = store.select(selectDynamicForm);
+    this.concepts$ = this.conceptService
+      .fetchAll()
+      .pipe(map((concepts) => concepts.data));
+    this.initOperationsFormGroup();
+    this.autocompleteControl.valueChanges.subscribe((value) => {
+      if (typeof value !== 'object') {
+        return;
+      }
+    });
+  }
 
   get operation_fields() {
     return this.operationsForm.controls.operation_fields as UntypedFormArray;
@@ -67,11 +87,11 @@ export class OperationsComponent implements OnInit {
     return this.operationsForm.controls.operation_total as UntypedFormArray;
   }
 
-  separatorKeysCodes: number[] = [ENTER, COMMA];
-
-  preview!: any;
-
   _operations!: any;
+
+  get operations() {
+    return this._operations;
+  }
 
   @Input() set operations(operations: any) {
     if (operations) {
@@ -109,28 +129,6 @@ export class OperationsComponent implements OnInit {
 
       this._operations = operations;
     }
-  }
-
-  get operations() {
-    return this._operations;
-  }
-
-  constructor(
-    private store: Store,
-    private conceptService: ConceptService,
-    public dialog: MatDialog,
-    private projectQuoteService: ProjectQuoteService,
-  ) {
-    this.formFields$ = store.select(selectDynamicForm);
-    this.concepts$ = this.conceptService
-      .fetchAll()
-      .pipe(map((concepts) => concepts.data));
-    this.initOperationsFormGroup();
-    this.autocompleteControl.valueChanges.subscribe((value) => {
-      if (typeof value !== 'object') {
-        return;
-      }
-    });
   }
 
   ngOnInit(): void {
@@ -247,30 +245,6 @@ export class OperationsComponent implements OnInit {
     }
 
     control.removeAt(index);
-  }
-
-  private _filter(value: string | object, options: any) {
-    if (typeof value !== 'string') {
-      return;
-    }
-
-    const filterValue = value.toLowerCase();
-
-    return options.filter((option: any) => {
-      return option.key.toLowerCase().includes(filterValue);
-    });
-  }
-
-  private _filterConcepts(value: string | object, options: ConceptDto[]) {
-    if (typeof value !== 'string') {
-      return [];
-    }
-
-    const filterValue = value.toLowerCase();
-
-    return options.filter((option: ConceptDto) => {
-      return option.name.toLowerCase().includes(filterValue);
-    });
   }
 
   trackByFn(index: any, item: any) {
@@ -485,6 +459,30 @@ export class OperationsComponent implements OnInit {
         concepts.push(new UntypedFormControl(result));
         return;
       }
+    });
+  }
+
+  private _filter(value: string | object, options: any) {
+    if (typeof value !== 'string') {
+      return;
+    }
+
+    const filterValue = value.toLowerCase();
+
+    return options.filter((option: any) => {
+      return option.key.toLowerCase().includes(filterValue);
+    });
+  }
+
+  private _filterConcepts(value: string | object, options: ConceptDto[]) {
+    if (typeof value !== 'string') {
+      return [];
+    }
+
+    const filterValue = value.toLowerCase();
+
+    return options.filter((option: ConceptDto) => {
+      return option.name.toLowerCase().includes(filterValue);
     });
   }
 }

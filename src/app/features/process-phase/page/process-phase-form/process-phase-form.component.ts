@@ -22,8 +22,6 @@ export class ProcessPhaseFormComponent {
 
   roles$: Observable<RoleDto[]>;
 
-  mapRoles = (role: RoleDto) => role.name;
-
   form$!: Observable<any> | undefined;
 
   edit = false;
@@ -61,6 +59,8 @@ export class ProcessPhaseFormComponent {
       map((array: any[]) => [...array]),
     );
   }
+
+  mapRoles = (role: RoleDto) => role.name;
 
   async back() {
     await this.router.navigate(['../'], { relativeTo: this.route });

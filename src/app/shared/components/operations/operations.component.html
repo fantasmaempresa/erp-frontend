@@ -1,19 +1,19 @@
 <!--Group-->
 <div class="row">
   <div class="row">
-    <mat-form-field class="w-100" appearance="outline">
+    <mat-form-field appearance="outline" class="w-100">
       <mat-label>Selecciona un campo</mat-label>
       <input
-        type="text"
-        matInput
-        [matAutocomplete]="auto"
         #fieldInput
         [formControl]="autocompleteControl"
+        [matAutocomplete]="auto"
+        matInput
+        type="text"
       />
       <mat-autocomplete #auto="matAutocomplete">
         <mat-option
-          *ngFor="let option of filteredOptions$ | async"
           (click)="addOperation(option)"
+          *ngFor="let option of filteredOptions$ | async"
           [value]="''"
         >
           {{ option.label }}
@@ -36,23 +36,23 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>{{
               operation_fields.at(i).get('label')?.value
-            }}</mat-label>
-            <input matInput formControlName="value" />
+              }}</mat-label>
+            <input formControlName="value" matInput />
           </mat-form-field>
         </div>
         <div class="col-5">
           <mat-form-field
-            class="w-100"
-            appearance="outline"
             appChipListAutocompleteFix
+            appearance="outline"
+            class="w-100"
           >
             <mat-label>Conceptos</mat-label>
             <mat-chip-grid #chipList aria-label="Concept selection">
               <mat-chip
+                (removed)="remove(concept, i, 'fields')"
                 *ngFor="
                   let concept of operation_fields.controls[i].value.concepts
                 "
-                (removed)="remove(concept, i, 'fields')"
               >
                 {{ concept.name }}
                 <button matChipRemove>
@@ -60,13 +60,13 @@
                 </button>
               </mat-chip>
               <input
-                placeholder="Agregar concepto"
                 #conceptFieldInput
-                formControlName="conceptCtrl"
+                (matChipInputTokenEnd)="add($event, i)"
                 [matAutocomplete]="autoConcept"
                 [matChipInputFor]="chipList"
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                (matChipInputTokenEnd)="add($event, i)"
+                formControlName="conceptCtrl"
+                placeholder="Agregar concepto"
               />
             </mat-chip-grid>
             <mat-autocomplete
@@ -90,12 +90,12 @@
         <!--        TODO: Cambiar por un boton para eliminar el concepto-->
         <div class="col-1 d-flex align-items-center" style="margin-top: -20px">
           <button
-            type="button"
-            mat-mini-fab
-            color="warn"
-            class="align-self-center search-button"
             (click)="removeOperation(i, 'other')"
+            class="align-self-center search-button"
+            color="warn"
+            mat-mini-fab
             matTooltip="Eliminar opción"
+            type="button"
           >
             <mat-icon>remove</mat-icon>
           </button>
@@ -117,23 +117,23 @@
           <mat-form-field appearance="outline" class="w-100">
             <mat-label>{{
               operation_total.at(i).get('label')?.value
-            }}</mat-label>
-            <input matInput formControlName="value" />
+              }}</mat-label>
+            <input formControlName="value" matInput />
           </mat-form-field>
         </div>
         <div class="col-5">
           <mat-form-field
-            class="w-100"
-            appearance="outline"
             appChipListAutocompleteFix
+            appearance="outline"
+            class="w-100"
           >
             <mat-label>Conceptos</mat-label>
             <mat-chip-grid #chipListTotal aria-label="Concept selection">
               <mat-chip
+                (removed)="remove(concept, i, 'total')"
                 *ngFor="
                   let concept of operation_total.controls[i].value.concepts
                 "
-                (removed)="remove(concept, i, 'total')"
               >
                 {{ concept.name }}
                 <button matChipRemove>
@@ -141,12 +141,12 @@
                 </button>
               </mat-chip>
               <input
-                placeholder="Agregar concepto"
                 #conceptTotalInput
-                formControlName="conceptCtrl"
                 [matAutocomplete]="autoConcept"
                 [matChipInputFor]="chipListTotal"
                 [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                formControlName="conceptCtrl"
+                placeholder="Agregar concepto"
               />
             </mat-chip-grid>
             <mat-autocomplete
@@ -169,12 +169,12 @@
         </div>
         <div class="col-1 d-flex align-items-center" style="margin-top: -20px">
           <button
-            type="button"
-            mat-mini-fab
-            color="warn"
-            class="align-self-center search-button"
             (click)="removeOperation(i, 'total')"
+            class="align-self-center search-button"
+            color="warn"
+            mat-mini-fab
             matTooltip="Eliminar opción"
+            type="button"
           >
             <mat-icon>remove</mat-icon>
           </button>
@@ -186,7 +186,7 @@
     <!--        Calcular-->
     <!--      </button>-->
     <!--    </div>-->
-    <div class="row mt-3" *ngIf="preview">
+    <div *ngIf="preview" class="row mt-3">
       <table>
         <tr>
           <th>Campo</th>

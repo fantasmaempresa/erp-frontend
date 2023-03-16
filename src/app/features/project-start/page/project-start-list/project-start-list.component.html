@@ -1,5 +1,5 @@
-<div class="card-container" *ngIf="(myProjects$ | async)?.data as projects">
-  <div class="card-view" *ngFor="let project of projects">
+<div *ngIf="(myProjects$ | async)?.data as projects" class="card-container">
+  <div *ngFor="let project of projects" class="card-view">
     <ng-container *ngFor="let info of displayedInfo">
       <span class="card-view__field">{{ info.label }}</span>
       <span class="card-view__value">{{ project[info.key] }}</span>
@@ -7,7 +7,7 @@
 
     <span class="card-view__field">Procesos</span>
     <div class="card-view__field-container">
-      <div class="card-view__field-row" *ngFor="let process of project.process">
+      <div *ngFor="let process of project.process" class="card-view__field-row">
         <div class="card-view__field-header">{{ process.name }}</div>
         <div class="card-view__field-actions">
           <mat-icon

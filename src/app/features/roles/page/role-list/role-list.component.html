@@ -1,36 +1,36 @@
 <mat-toolbar>
   <button
+    (click)="goToEditForm()"
     *ngIf="selectedItem"
     [matTooltipPosition]="'below'"
     aria-label="Editar Rol"
     mat-icon-button
     matTooltip="Editar Rol"
-    (click)="goToEditForm()"
   >
     <mat-icon>edit</mat-icon>
   </button>
   <button
+    (click)="delete()"
     *ngIf="selectedItem"
     [matTooltipPosition]="'below'"
     aria-label="Eliminar Rol"
     mat-icon-button
     matTooltip="Eliminar Rol"
-    (click)="delete()"
   >
     <mat-icon>person_remove</mat-icon>
   </button>
 
   <button
+    (click)="goToAddForm()"
     [matTooltipPosition]="'below'"
     aria-label="Agregar Rol"
     mat-icon-button
     matTooltip="Agregar Rol"
-    (click)="goToAddForm()"
   >
     <mat-icon>person_add</mat-icon>
   </button>
 </mat-toolbar>
 <app-change-view
-  [actions]="actions"
   (selectedItem)="setSelectedItem($event)"
+  [actions]="actions"
 ></app-change-view>

@@ -10,11 +10,6 @@ import { ProcessService } from '../../data/services/process.service';
 
 @Injectable()
 export class ProcessEffects {
-  constructor(
-    private actions$: Actions,
-    private processService: ProcessService,
-  ) {}
-
   loadProcessPhases$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadProcess),
@@ -25,7 +20,6 @@ export class ProcessEffects {
       }),
     );
   });
-
   loadNextPageOfProcess$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfProcess),
@@ -36,4 +30,9 @@ export class ProcessEffects {
       }),
     );
   });
+
+  constructor(
+    private actions$: Actions,
+    private processService: ProcessService,
+  ) {}
 }

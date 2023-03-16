@@ -33,11 +33,11 @@ export class PreviewFormBuilderComponent
 
   form: UntypedFormGroup = new UntypedFormGroup({});
 
+  constructor() {}
+
   onChange = (_: any) => {};
 
   onTouch = () => {};
-
-  constructor() {}
 
   buildFormGroup(): UntypedFormGroup {
     const group: any = {};
@@ -55,15 +55,6 @@ export class PreviewFormBuilderComponent
     }
   }
 
-  private checkFormValueChange() {
-    this.form.valueChanges.subscribe({
-      next: (value) => {
-        this.onChange(value);
-        this.onTouch();
-      },
-    });
-  }
-
   registerOnChange(fn: any): void {
     this.onChange = fn;
   }
@@ -76,5 +67,14 @@ export class PreviewFormBuilderComponent
     if (value) {
       this.form.patchValue({ ...value });
     }
+  }
+
+  private checkFormValueChange() {
+    this.form.valueChanges.subscribe({
+      next: (value) => {
+        this.onChange(value);
+        this.onTouch();
+      },
+    });
   }
 }

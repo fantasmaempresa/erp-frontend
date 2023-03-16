@@ -2,7 +2,6 @@ import { Component, HostBinding, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { startListenNotification } from '../../state/notifications';
 import { SystemActionSocketService } from '../../core/services/SocketChannels/system-action-socket.service';
-import { RoleService } from '../../data/services';
 
 @Component({
   selector: 'app-content-layout',
@@ -12,15 +11,15 @@ import { RoleService } from '../../data/services';
 export class ContentLayoutComponent implements OnInit {
   private isDark = false;
 
-  @HostBinding('class')
-  get themeMode() {
-    return this.isDark ? 'theme-dark' : 'theme-light';
-  }
-
   constructor(
     private store: Store,
     private systemActionSocket: SystemActionSocketService,
   ) {}
+
+  @HostBinding('class')
+  get themeMode() {
+    return this.isDark ? 'theme-dark' : 'theme-light';
+  }
 
   ngOnInit(): void {
     this.store.dispatch(startListenNotification());

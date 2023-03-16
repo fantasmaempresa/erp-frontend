@@ -135,6 +135,15 @@ export class PopupMultiSelectorComponent<T extends EntityDto>
     }
   }
 
+  onPaginateChange(event: PageEvent) {
+    super.onPaginateChange(event);
+    this.isChangingPaginate = true;
+  }
+
+  closeDialog() {
+    this.dialogRef.close(this.optionsSelected);
+  }
+
   private addOptionsSelected() {
     const arrayDiff = this.dataSource.data.filter((data: any) =>
       this.selection.selected.some((select: any) => data.id === select.id),
@@ -156,14 +165,5 @@ export class PopupMultiSelectorComponent<T extends EntityDto>
     if (!!index || index === 0) {
       this.optionsSelected.splice(index, 1);
     }
-  }
-
-  onPaginateChange(event: PageEvent) {
-    super.onPaginateChange(event);
-    this.isChangingPaginate = true;
-  }
-
-  closeDialog() {
-    this.dialogRef.close(this.optionsSelected);
   }
 }

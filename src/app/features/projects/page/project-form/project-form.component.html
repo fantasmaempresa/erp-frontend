@@ -29,15 +29,15 @@
       <mat-form-field appearance="outline">
         <mat-label>Fecha Esperada</mat-label>
         <input
-          class="clickable"
-          matInput
-          [matDatepicker]="dateForm"
-          formControlName="estimate_end_date"
           (focus)="dateForm.open()"
+          [matDatepicker]="dateForm"
+          class="clickable"
+          formControlName="estimate_end_date"
+          matInput
         />
         <mat-datepicker-toggle
-          matSuffix
           [for]="dateForm"
+          matSuffix
         ></mat-datepicker-toggle>
         <mat-datepicker #dateForm></mat-datepicker>
       </mat-form-field>
@@ -45,9 +45,9 @@
       <mat-form-field appearance="outline">
         <mat-label>Cliente</mat-label>
         <input
-          appBindPopup
           [providers]="clientProvider"
           [service]="clientService"
+          appBindPopup
           formControlName="client_id"
           matInput
           type="text"
@@ -60,7 +60,7 @@
       <!--      {{ form.get('config')?.value | json }}-->
     </div>
     <div class="d-flex justify-content-end">
-      <button type="submit" mat-flat-button color="primary">
+      <button color="primary" mat-flat-button type="submit">
         {{ edit ? 'Actualizar' : 'Crear' }} Proyecto
       </button>
     </div>

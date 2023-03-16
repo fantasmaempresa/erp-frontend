@@ -13,12 +13,6 @@ import { RefreshDataSocketService } from '../../core/services/SocketChannels/ref
 
 @Injectable()
 export class UsersEffects {
-  constructor(
-    private actions$: Actions,
-    private userService: UserService,
-    private userSocket: RefreshDataSocketService,
-  ) {}
-
   loadUsers$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadUsers),
@@ -29,7 +23,6 @@ export class UsersEffects {
       }),
     );
   });
-
   loadNextPageOfUsers$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfUsers),
@@ -40,7 +33,6 @@ export class UsersEffects {
       }),
     );
   });
-
   startToListen$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(startToListenUsers),
@@ -48,4 +40,10 @@ export class UsersEffects {
       map((user) => changeUser({ user })),
     );
   });
+
+  constructor(
+    private actions$: Actions,
+    private userService: UserService,
+    private userSocket: RefreshDataSocketService,
+  ) {}
 }

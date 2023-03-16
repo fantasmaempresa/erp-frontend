@@ -1,16 +1,16 @@
 <mat-card>
   <mat-toolbar>
     <div>
-      <button aria-label="Regresar" mat-icon-button (click)="backToListRoles()">
+      <button (click)="backToListRoles()" aria-label="Regresar" mat-icon-button>
         <mat-icon>arrow_back</mat-icon>
       </button>
     </div>
   </mat-toolbar>
 
   <form
-    class="row justify-content-center"
-    [formGroup]="staffMemberForm"
     (ngSubmit)="onSubmit()"
+    [formGroup]="staffMemberForm"
+    class="row justify-content-center"
   >
     <div class="col-6 d-flex flex-column">
       <mat-form-field appearance="outline">
@@ -20,7 +20,7 @@
           <mat-option
             *ngFor="let area of workAreas$ | async"
             [value]="area.id"
-            >{{ area.name }}</mat-option
+          >{{ area.name }}</mat-option
           >
         </mat-select>
         <mat-error appErrorMessage></mat-error>
@@ -28,34 +28,34 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input matInput type="text" formControlName="name" />
+        <input formControlName="name" matInput type="text" />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Correo</mat-label>
         <input
-          matInput
-          type="email"
-          placeholder="ejemplo@ejemplo.com"
           formControlName="email"
+          matInput
+          placeholder="ejemplo@ejemplo.com"
+          type="email"
         />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Teléfono</mat-label>
-        <input matInput type="tel" formControlName="phone" />
+        <input formControlName="phone" matInput type="tel" />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Alias/Apodo</mat-label>
-        <input matInput type="text" formControlName="nickname" />
+        <input formControlName="nickname" matInput type="text" />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
-      <button mat-flat-button color="primary">Guardar</button>
+      <button color="primary" mat-flat-button>Guardar</button>
     </div>
   </form>
 </mat-card>

@@ -1,7 +1,7 @@
 <mat-card>
   <mat-toolbar>
     <div>
-      <button aria-label="Regresar" mat-icon-button (click)="back()">
+      <button (click)="back()" aria-label="Regresar" mat-icon-button>
         <mat-icon>arrow_back</mat-icon>
       </button>
     </div>
@@ -9,15 +9,15 @@
   <ng-container>
     <mat-accordion class="example-headers-align">
       <mat-expansion-panel
-        [expanded]="step === FORM_BUILD_STEP"
         (opened)="goToFormBuildStep()"
+        [expanded]="step === FORM_BUILD_STEP"
         hideToggle
       >
         <mat-expansion-panel-header>
           <mat-panel-title>Cuerpo</mat-panel-title>
           <mat-panel-description>
-            Creación de la estructura del formulario</mat-panel-description
-          >
+            Creación de la estructura del formulario
+          </mat-panel-description>
         </mat-expansion-panel-header>
 
         <app-dynamic-form-creation
@@ -29,16 +29,16 @@
         </app-dynamic-form-creation>
 
         <mat-action-row>
-          <button mat-button color="primary" (click)="goToConceptsAssignment()">
+          <button (click)="goToConceptsAssignment()" color="primary" mat-button>
             Siguiente
           </button>
         </mat-action-row>
       </mat-expansion-panel>
 
       <mat-expansion-panel
-        [expanded]="step === CONCEPTS_ASSIGNMENT"
         (opened)="goToConceptsAssignment()"
         [disabled]="this.templateForm.invalid"
+        [expanded]="step === CONCEPTS_ASSIGNMENT"
         hideToggle
       >
         <mat-expansion-panel-header>
@@ -50,30 +50,30 @@
 
         <!--        TODO: Revisar la forma de que quitando el ? operator funcione-->
         <app-operations
-          *ngIf="loadedTemplate"
           (form)="operationsForm = $event"
+          *ngIf="loadedTemplate"
           [operations]="loadedTemplate.operations"
         ></app-operations>
 
         <app-operations
-          *ngIf="!loadedTemplate"
           (form)="operationsForm = $event"
+          *ngIf="!loadedTemplate"
         >
         </app-operations>
 
         <mat-action-row>
-          <button mat-button color="warn" (click)="goToFormBuildStep()">
+          <button (click)="goToFormBuildStep()" color="warn" mat-button>
             Atras
           </button>
-          <button mat-button color="primary" (click)="goToPreview()">
+          <button (click)="goToPreview()" color="primary" mat-button>
             Siguiente
           </button>
         </mat-action-row>
       </mat-expansion-panel>
 
       <mat-expansion-panel
-        [expanded]="step === PREVIEW_STEP"
         (opened)="goToPreview()"
+        [expanded]="step === PREVIEW_STEP"
         hideToggle
       >
         <mat-expansion-panel-header>
@@ -92,8 +92,8 @@
 
           <div class="mt-3">
             <app-dynamic-form
-              [formFields]="formFields"
               [formControl]="previewForm"
+              [formFields]="formFields"
               [onlyRead]="true"
             ></app-dynamic-form>
           </div>
@@ -129,10 +129,10 @@
         </div>
 
         <mat-action-row>
-          <button mat-button color="warn" (click)="goToConceptsAssignment()">
+          <button (click)="goToConceptsAssignment()" color="warn" mat-button>
             Atras
           </button>
-          <button mat-button color="primary" (click)="submit()">Guardar</button>
+          <button (click)="submit()" color="primary" mat-button>Guardar</button>
         </mat-action-row>
       </mat-expansion-panel>
     </mat-accordion>

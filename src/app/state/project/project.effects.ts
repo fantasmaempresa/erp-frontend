@@ -10,11 +10,6 @@ import {
 
 @Injectable()
 export class ProjectEffects {
-  constructor(
-    private actions$: Actions,
-    private projectService: ProjectService,
-  ) {}
-
   loadClients$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadProjects),
@@ -25,7 +20,6 @@ export class ProjectEffects {
       }),
     );
   });
-
   loadNextPageOfClients$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfProjects),
@@ -36,4 +30,9 @@ export class ProjectEffects {
       }),
     );
   });
+
+  constructor(
+    private actions$: Actions,
+    private projectService: ProjectService,
+  ) {}
 }

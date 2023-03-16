@@ -236,6 +236,11 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
       });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next(true);
+    this.destroy$.complete();
+  }
+
   private buildInvolvedFormArray(processes: any[]) {
     this.involvedFormArray.clear();
     for (const process of processes) {
@@ -279,10 +284,5 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
         );
       }
     }
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next(true);
-    this.destroy$.complete();
   }
 }

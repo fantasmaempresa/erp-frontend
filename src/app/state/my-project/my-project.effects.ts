@@ -6,11 +6,6 @@ import { MyProjectsService } from '../../data/services';
 
 @Injectable()
 export class MyProjectEffects {
-  constructor(
-    private actions$: Actions,
-    private projectService: MyProjectsService,
-  ) {}
-
   loadClients$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadMyProjects),
@@ -21,4 +16,9 @@ export class MyProjectEffects {
       }),
     );
   });
+
+  constructor(
+    private actions$: Actions,
+    private projectService: MyProjectsService,
+  ) {}
 }

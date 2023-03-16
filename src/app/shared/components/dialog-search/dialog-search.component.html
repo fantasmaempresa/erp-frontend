@@ -1,19 +1,19 @@
-<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+<button [mat-dialog-close]="true" class="close-button" mat-icon-button>
   <mat-icon class="close-icon">close</mat-icon>
 </button>
 <h2 mat-dialog-title>{{ data.title }}</h2>
 
 <div mat-dialog-content>
   <app-table-search
-    [pageSize]="options.pageSize"
     (optionSelected)="
       $event ? (optionSelected = $event) : (optionSelected = null)
     "
+    [pageSize]="options.pageSize"
   ></app-table-search>
 </div>
 
-<div mat-dialog-actions class="d-flex justify-content-end">
-  <button mat-button [mat-dialog-close]="optionSelected" cdkFocusInitial>
+<div class="d-flex justify-content-end" mat-dialog-actions>
+  <button [mat-dialog-close]="optionSelected" cdkFocusInitial mat-button>
     Seleccionar
   </button>
 </div>

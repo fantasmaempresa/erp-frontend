@@ -1,47 +1,51 @@
 <h2 mat-dialog-title>Crear nuevo concepto</h2>
 
 <div mat-dialog-content>
-  <form class="row" [formGroup]="conceptForm">
+  <form [formGroup]="conceptForm" class="row">
     <div class="col-12 d-flex flex-column">
       <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input matInput type="text" autocomplete="off" formControlName="name" />
+        <input autocomplete="off" formControlName="name" matInput type="text" />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Descripción</mat-label>
-        <input matInput type="text" formControlName="description" />
+        <input formControlName="description" matInput type="text" />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
-      <section formGroupName="formula" class="mb-5">
-        <mat-checkbox color="primary" formControlName="percentage" class="me-5">
+      <section class="mb-5" formGroupName="formula">
+        <mat-checkbox class="me-5" color="primary" formControlName="percentage">
           ¿Es porcentaje?
         </mat-checkbox>
         <mat-checkbox color="primary" formControlName="operable"
-          >¿Es operable?</mat-checkbox
+        >¿Es operable?
+        </mat-checkbox
         >
       </section>
 
       <mat-radio-group
-        formControlName="operationType"
         class="d-flex justify-content-between"
+        formControlName="operationType"
       >
-        <mat-radio-button value="import" color="primary"
-          >Solo es un importe</mat-radio-button
+        <mat-radio-button color="primary" value="import"
+        >Solo es un importe
+        </mat-radio-button
         >
         <mat-radio-button
+          [disabled]="isPercentage.value || isOperable.value"
+          color="primary"
           value="validity"
-          color="primary"
-          [disabled]="isPercentage.value || isOperable.value"
-          >Vigencia</mat-radio-button
+        >Vigencia
+        </mat-radio-button
         >
         <mat-radio-button
-          value="range"
-          color="primary"
           [disabled]="isPercentage.value || isOperable.value"
-          >Rango numérico</mat-radio-button
+          color="primary"
+          value="range"
+        >Rango numérico
+        </mat-radio-button
         >
       </mat-radio-group>
 
@@ -49,53 +53,55 @@
         <ng-container *ngSwitchCase="'validity'" formGroupName="formula">
           <div formGroupName="validity">
             <mat-radio-group
-              formControlName="type"
               class="d-flex justify-content-between"
+              formControlName="type"
             >
-              <mat-radio-button value="date" color="primary"
-                >Fecha</mat-radio-button
+              <mat-radio-button color="primary" value="date"
+              >Fecha
+              </mat-radio-button
               >
-              <mat-radio-button value="range" color="primary"
-                >Rango de fechas</mat-radio-button
+              <mat-radio-button color="primary" value="range"
+              >Rango de fechas
+              </mat-radio-button
               >
             </mat-radio-group>
 
             <div [ngSwitch]="validityType.value" class="mt-3">
               <ng-container *ngSwitchCase="'date'">
                 <mat-form-field
+                  *ngIf="isDateInYears"
                   appearance="outline"
                   class="col-6"
-                  *ngIf="isDateInYears"
                 >
                   <mat-label>Cantidad</mat-label>
                   <input
-                    matInput
-                    type="text"
                     autocomplete="off"
                     formControlName="amount"
+                    matInput
+                    type="text"
                   />
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
 
                 <mat-form-field
+                  *ngIf="!isDateInYears"
                   appearance="outline"
                   class="col-6"
-                  *ngIf="!isDateInYears"
                 >
                   <mat-label>Año</mat-label>
                   <mat-select formControlName="amount">
                     <mat-option>-- None --</mat-option>
                     <mat-option *ngFor="let year of years" [value]="year">{{
                       year
-                    }}</mat-option>
+                      }}</mat-option>
                   </mat-select>
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
 
                 <mat-checkbox
+                  class="ms-5"
                   color="primary"
                   formControlName="is_date"
-                  class="ms-5"
                 >
                   Es una cantidad de años
                 </mat-checkbox>
@@ -103,9 +109,9 @@
 
               <ng-container *ngSwitchCase="'range'" formArrayName="between">
                 <div
-                  class="row"
                   *ngFor="let _ of betweenValidity.controls; index as i"
                   [formGroupName]="i"
+                  class="row"
                 >
                   <mat-form-field appearance="outline" class="col-3">
                     <mat-label>Inicio</mat-label>
@@ -113,7 +119,7 @@
                       <mat-option>-- None --</mat-option>
                       <mat-option *ngFor="let year of years" [value]="year">{{
                         year
-                      }}</mat-option>
+                        }}</mat-option>
                     </mat-select>
                     <mat-error appErrorMessage></mat-error>
                   </mat-form-field>
@@ -123,7 +129,7 @@
                       <mat-option>-- None --</mat-option>
                       <mat-option *ngFor="let year of years" [value]="year">{{
                         year
-                      }}</mat-option>
+                        }}</mat-option>
                     </mat-select>
                     <mat-error appErrorMessage></mat-error>
                   </mat-form-field>
@@ -135,10 +141,10 @@
                   <mat-form-field appearance="outline" class="col-4">
                     <mat-label>Monto</mat-label>
                     <input
-                      matInput
-                      type="text"
                       autocomplete="off"
                       formControlName="amount"
+                      matInput
+                      type="text"
                     />
                     <mat-error appErrorMessage></mat-error>
                   </mat-form-field>
@@ -147,13 +153,13 @@
                     style="margin-top: -20px"
                   >
                     <button
-                      type="button"
-                      mat-mini-fab
-                      color="warn"
-                      class="align-self-center search-button"
-                      matTooltip="Eliminar opción"
                       (click)="removeRange('validity', i)"
                       *ngIf="i !== 0"
+                      class="align-self-center search-button"
+                      color="warn"
+                      mat-mini-fab
+                      matTooltip="Eliminar opción"
+                      type="button"
                     >
                       <mat-icon>remove</mat-icon>
                     </button>
@@ -162,12 +168,12 @@
                 <div class="row justify-content-center">
                   <div class="col-1">
                     <button
-                      type="button"
-                      mat-fab
-                      color="primary"
-                      class="align-self-center search-button"
-                      matTooltip="Agregar otro rango"
                       (click)="addRange('validity')"
+                      class="align-self-center search-button"
+                      color="primary"
+                      mat-fab
+                      matTooltip="Agregar otro rango"
+                      type="button"
                     >
                       <mat-icon>add</mat-icon>
                     </button>
@@ -182,37 +188,37 @@
           <div formGroupName="range">
             <div formGroupName="between">
               <div
-                class="row"
                 *ngFor="let _ of betweenRange.controls; index as i"
                 [formGroupName]="i"
+                class="row"
               >
                 <mat-form-field appearance="outline" class="col-3">
                   <mat-label>Inicio</mat-label>
                   <input
-                    matInput
-                    type="text"
                     autocomplete="off"
                     formControlName="min"
+                    matInput
+                    type="text"
                   />
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-3">
                   <mat-label>Fin</mat-label>
                   <input
-                    matInput
-                    type="text"
                     autocomplete="off"
                     formControlName="max"
+                    matInput
+                    type="text"
                   />
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-4">
                   <mat-label>Monto</mat-label>
                   <input
-                    matInput
-                    type="text"
                     autocomplete="off"
                     formControlName="amount"
+                    matInput
+                    type="text"
                   />
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
@@ -221,13 +227,13 @@
                   style="margin-top: -20px"
                 >
                   <button
-                    type="button"
-                    mat-mini-fab
-                    color="warn"
-                    class="align-self-center search-button"
-                    matTooltip="Eliminar opción"
                     (click)="removeRange('range', i)"
                     *ngIf="i !== 0"
+                    class="align-self-center search-button"
+                    color="warn"
+                    mat-mini-fab
+                    matTooltip="Eliminar opción"
+                    type="button"
                   >
                     <mat-icon>remove</mat-icon>
                   </button>
@@ -236,12 +242,12 @@
               <div class="row justify-content-center">
                 <div class="col-1">
                   <button
-                    type="button"
-                    mat-fab
-                    color="primary"
-                    class="align-self-center search-button"
-                    matTooltip="Agregar otro rango"
                     (click)="addRange('range')"
+                    class="align-self-center search-button"
+                    color="primary"
+                    mat-fab
+                    matTooltip="Agregar otro rango"
+                    type="button"
                   >
                     <mat-icon>add</mat-icon>
                   </button>
@@ -260,15 +266,15 @@
       >
         <mat-form-field appearance="outline">
           <mat-label>Importe</mat-label>
-          <input matInput type="number" formControlName="amount" />
+          <input formControlName="amount" matInput type="number" />
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
       </ng-container>
 
       <div
-        formGroupName="formula"
-        class="w-100"
         *ngIf="operationType.value === 'import'"
+        class="w-100"
+        formGroupName="formula"
       >
         <mat-form-field appearance="outline" class="w-100">
           <mat-label>Tipo de Operación</mat-label>
@@ -289,7 +295,7 @@
   </form>
 </div>
 
-<div mat-dialog-actions class="d-flex justify-content-between">
-  <button mat-flat-button color="primary" (click)="onSubmit()">Guardar</button>
-  <button mat-flat-button (click)="onNoClick()">Cancelar</button>
+<div class="d-flex justify-content-between" mat-dialog-actions>
+  <button (click)="onSubmit()" color="primary" mat-flat-button>Guardar</button>
+  <button (click)="onNoClick()" mat-flat-button>Cancelar</button>
 </div>

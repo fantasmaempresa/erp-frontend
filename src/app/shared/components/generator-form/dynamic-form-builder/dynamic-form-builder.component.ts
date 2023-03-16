@@ -29,14 +29,7 @@ export class DynamicFormBuilderComponent
   implements ControlValueAccessor, OnInit
 {
   form!: UntypedFormGroup;
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onChange = (_: any) => {};
-
-  onTouch = () => {};
-
   formFields: Formfield<any>[] = [];
-
   types = [
     {
       value: 'textbox',
@@ -83,9 +76,7 @@ export class DynamicFormBuilderComponent
       label: 'Coordenada',
     },
   ];
-
   edit = false;
-
   ngControl!: NgControl;
 
   constructor(private inj: Injector) {
@@ -110,6 +101,15 @@ export class DynamicFormBuilderComponent
       },
     });
   }
+
+  get options() {
+    return this.form.controls.options as UntypedFormArray;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  onChange = (_: any) => {};
+
+  onTouch = () => {};
 
   ngOnInit(): void {
     this.ngControl = this.inj.get(NgControl);
@@ -164,19 +164,6 @@ export class DynamicFormBuilderComponent
     this.notifyValueChange();
   }
 
-  private notifyValueChange() {
-    if (this.formFields.length > 0) {
-      this.onChange(this.formFields);
-    } else {
-      this.onChange(null);
-    }
-    this.onTouch();
-  }
-
-  get options() {
-    return this.form.controls.options as UntypedFormArray;
-  }
-
   addOption() {
     this.options.push(
       new UntypedFormGroup({
@@ -221,5 +208,14 @@ export class DynamicFormBuilderComponent
     ngForm.form.markAsPristine();
     ngForm.resetForm();
     this.edit = false;
+  }
+
+  private notifyValueChange() {
+    if (this.formFields.length > 0) {
+      this.onChange(this.formFields);
+    } else {
+      this.onChange(null);
+    }
+    this.onTouch();
   }
 }

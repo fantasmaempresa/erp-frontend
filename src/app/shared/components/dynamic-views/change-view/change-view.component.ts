@@ -17,17 +17,13 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class ChangeViewComponent implements OnInit, OnDestroy {
   hiddenSelector = false;
-
+  isSelected: boolean = false;
+  @Input()
+  actions: ActionsCard[] = [];
+  @Output() selectedItem = new EventEmitter<any>();
   private unsubscribeSubject = new Subject<boolean>();
 
   constructor(private breakpointObserver: BreakpointObserver) {}
-
-  isSelected: boolean = false;
-
-  @Input()
-  actions: ActionsCard[] = [];
-
-  @Output() selectedItem = new EventEmitter<any>();
 
   setSelectedItem(item: any) {
     this.selectedItem.emit(item);

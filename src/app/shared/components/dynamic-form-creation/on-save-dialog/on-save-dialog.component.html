@@ -3,20 +3,20 @@
   <form [formGroup]="formGroup" class="d-flex flex-column">
     <mat-form-field appearance="outline">
       <mat-label>Nombre para la estructura de formulario</mat-label>
-      <input matInput formControlName="name" />
+      <input formControlName="name" matInput />
       <mat-error appErrorMessage></mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>Descripción</mat-label>
-      <input matInput formControlName="description" />
+      <input formControlName="description" matInput />
       <mat-error appErrorMessage></mat-error>
     </mat-form-field>
   </form>
 </div>
-<div mat-dialog-actions class="d-flex justify-content-between">
-  <button mat-flat-button cdkFocusInitial color="primary" (click)="submit()">
+<div class="d-flex justify-content-between" mat-dialog-actions>
+  <button (click)="submit()" cdkFocusInitial color="primary" mat-flat-button>
     Guardar
   </button>
-  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button (click)="onNoClick()" mat-button>Cancelar</button>
 </div>

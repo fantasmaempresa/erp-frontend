@@ -1,4 +1,4 @@
-<div class="slider-container" *ngIf="!hiddenSelector">
+<div *ngIf="!hiddenSelector" class="slider-container">
   <mat-button-toggle-group [(ngModel)]="isSelected">
     <mat-button-toggle [value]="true" matTooltip="Vista de Cartas">
       <mat-icon>drag_indicator</mat-icon>
@@ -9,7 +9,7 @@
   </mat-button-toggle-group>
 </div>
 <app-table-view
-  [hidden]="isSelected"
   (selectedItem)="setSelectedItem($event)"
+  [hidden]="isSelected"
 ></app-table-view>
 <app-card-view [actions]="actions" [hidden]="!isSelected"></app-card-view>

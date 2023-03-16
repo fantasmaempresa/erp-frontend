@@ -26,6 +26,67 @@ export class ConceptFormComponent implements OnInit {
   conceptForm = this.createForm();
 
   selectedYear!: number;
+  operations: { value: string; label: string }[] = [
+    { value: '+', label: 'Suma' },
+    {
+      value: '-',
+      label: 'Resta',
+    },
+    { value: '*', label: 'Multiplicación' },
+    { value: '+*', label: 'Multiplicar y sumar al resultado' },
+    { value: '-*', label: 'Multiplicar y restar al resultado' },
+    { value: '/', label: 'División' },
+    { value: '+/', label: 'Dividir y sumar al resultado' },
+    { value: '-/', label: 'Dividir y restar al resultado' },
+  ];
+
+  constructor(
+    private conceptService: ConceptService,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) {
+    this.createRangeOfYears();
+    if (this.route.snapshot.queryParams.id) {
+      this.isEdit = true;
+      conceptService.fetch(this.route.snapshot.queryParams.id).subscribe({
+        next: (concept) => {
+          this.conceptForm.addControl('id', new UntypedFormControl(''));
+          this.conceptForm.patchValue(concept);
+          if (concept.formula.validity.apply) {
+            this.operationType.patchValue('validity');
+            this.conceptForm
+              .get('formula')
+              ?.get('validity')
+              ?.get('amount')
+              ?.patchValue(concept.formula.validity.amount);
+            if (concept.formula.validity.between.length > 0) {
+              this.betweenValidity.clear();
+              concept.formula.validity.between.forEach((range) => {
+                console.log(range);
+                this.betweenValidity.push(this.createRange());
+              });
+              this.betweenValidity.patchValue(concept.formula.validity.between);
+            }
+          }
+          if (concept.formula.range.apply) {
+            this.operationType.patchValue('range');
+            if (concept.formula.range.between.length > 0) {
+              this.betweenRange.clear();
+              concept.formula.range.between.forEach((range) => {
+                console.log(range);
+                this.betweenRange.push(this.createRange());
+              });
+              this.betweenRange.patchValue(concept.formula.range.between);
+            }
+          }
+          if (!concept.formula.range.apply && !concept.formula.validity.apply) {
+            this.operationType.patchValue('import');
+          }
+          console.log(this.conceptForm.value);
+        },
+      });
+    }
+  }
 
   get operationType() {
     return this.conceptForm.get('operationType') as UntypedFormControl;
@@ -100,68 +161,6 @@ export class ConceptFormComponent implements OnInit {
 
   get formula() {
     return this.conceptForm.get('formula') as UntypedFormGroup;
-  }
-
-  operations: { value: string; label: string }[] = [
-    { value: '+', label: 'Suma' },
-    {
-      value: '-',
-      label: 'Resta',
-    },
-    { value: '*', label: 'Multiplicación' },
-    { value: '+*', label: 'Multiplicar y sumar al resultado' },
-    { value: '-*', label: 'Multiplicar y restar al resultado' },
-    { value: '/', label: 'División' },
-    { value: '+/', label: 'Dividir y sumar al resultado' },
-    { value: '-/', label: 'Dividir y restar al resultado' },
-  ];
-
-  constructor(
-    private conceptService: ConceptService,
-    private router: Router,
-    private route: ActivatedRoute,
-  ) {
-    this.createRangeOfYears();
-    if (this.route.snapshot.queryParams.id) {
-      this.isEdit = true;
-      conceptService.fetch(this.route.snapshot.queryParams.id).subscribe({
-        next: (concept) => {
-          this.conceptForm.addControl('id', new UntypedFormControl(''));
-          this.conceptForm.patchValue(concept);
-          if (concept.formula.validity.apply) {
-            this.operationType.patchValue('validity');
-            this.conceptForm
-              .get('formula')
-              ?.get('validity')
-              ?.get('amount')
-              ?.patchValue(concept.formula.validity.amount);
-            if (concept.formula.validity.between.length > 0) {
-              this.betweenValidity.clear();
-              concept.formula.validity.between.forEach((range) => {
-                console.log(range);
-                this.betweenValidity.push(this.createRange());
-              });
-              this.betweenValidity.patchValue(concept.formula.validity.between);
-            }
-          }
-          if (concept.formula.range.apply) {
-            this.operationType.patchValue('range');
-            if (concept.formula.range.between.length > 0) {
-              this.betweenRange.clear();
-              concept.formula.range.between.forEach((range) => {
-                console.log(range);
-                this.betweenRange.push(this.createRange());
-              });
-              this.betweenRange.patchValue(concept.formula.range.between);
-            }
-          }
-          if (!concept.formula.range.apply && !concept.formula.validity.apply) {
-            this.operationType.patchValue('import');
-          }
-          console.log(this.conceptForm.value);
-        },
-      });
-    }
   }
 
   ngOnInit(): void {

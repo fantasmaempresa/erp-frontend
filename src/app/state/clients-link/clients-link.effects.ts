@@ -10,11 +10,6 @@ import { ClientLinkService } from '../../data/services/client-link.service';
 
 @Injectable()
 export class ClientsLinkEffects {
-  constructor(
-    private actions$: Actions,
-    private clientLinkService: ClientLinkService,
-  ) {}
-
   loadClientsLink$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadClientsLink),
@@ -25,7 +20,6 @@ export class ClientsLinkEffects {
       }),
     );
   });
-
   loadNextPageOfClientsLink$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfClientsLink),
@@ -36,4 +30,9 @@ export class ClientsLinkEffects {
       }),
     );
   });
+
+  constructor(
+    private actions$: Actions,
+    private clientLinkService: ClientLinkService,
+  ) {}
 }

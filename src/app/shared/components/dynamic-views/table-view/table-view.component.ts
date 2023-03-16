@@ -36,10 +36,6 @@ export class TableViewComponent<T extends EntityDto>
 
   dataSubscription!: Subscription;
 
-  protected doOnConstructor(): void {
-    this.displayedColumns = ['select', ...this.displayedColumns];
-  }
-
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
@@ -87,5 +83,9 @@ export class TableViewComponent<T extends EntityDto>
     } else {
       this.selectedItem.emit(undefined);
     }
+  }
+
+  protected doOnConstructor(): void {
+    this.displayedColumns = ['select', ...this.displayedColumns];
   }
 }

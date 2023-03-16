@@ -41,37 +41,28 @@ import { MatChipInputEvent } from '@angular/material/chips';
 export class GenericAutocompleteChipComponent
   implements ControlValueAccessor, OnChanges, OnInit
 {
+  data: any[] = [];
+  @Input()
+  allData: any[] | null = [];
+  @Input()
+  label = '';
+  @Input()
+  placeholder = '';
+  @Input()
+  mapFn!: (item: any) => any;
+  @ViewChild('chipInput', { static: true })
+  input!: ElementRef<HTMLInputElement>;
+  filteredData!: Observable<any>;
+  separatorKeysCodes = [ENTER, COMMA];
+  ngControl!: NgControl;
+  private subject$ = new Subject<any>();
+
+  constructor(private inj: Injector) {}
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   onChange = (_: any) => {};
 
   onTouch = () => {};
-
-  data: any[] = [];
-
-  @Input()
-  allData: any[] | null = [];
-
-  @Input()
-  label = '';
-
-  @Input()
-  placeholder = '';
-
-  @Input()
-  mapFn!: (item: any) => any;
-
-  @ViewChild('chipInput', { static: true })
-  input!: ElementRef<HTMLInputElement>;
-
-  filteredData!: Observable<any>;
-
-  separatorKeysCodes = [ENTER, COMMA];
-
-  private subject$ = new Subject<any>();
-
-  ngControl!: NgControl;
-
-  constructor(private inj: Injector) {}
 
   ngOnInit(): void {
     this.ngControl = this.inj.get(NgControl, new UntypedFormControl());
@@ -126,6 +117,11 @@ export class GenericAutocompleteChipComponent
     this.notifyValue();
   }
 
+  valueChange() {
+    const value = this.input.nativeElement.value;
+    this.subject$.next(value);
+  }
+
   private _filter(value: any): any[] {
     const filterValue = value.toLowerCase();
     return this.excludeLoadedChips().filter((data: any) =>
@@ -138,11 +134,6 @@ export class GenericAutocompleteChipComponent
       (item) =>
         !this.data.some((data) => this.mapFn(item) === this.mapFn(data)),
     );
-  }
-
-  valueChange() {
-    const value = this.input.nativeElement.value;
-    this.subject$.next(value);
   }
 
   private notifyValue() {

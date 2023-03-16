@@ -10,11 +10,6 @@ import { laodNextPageOfQuoteStatus } from '../quote-status/quote-status.actions'
 
 @Injectable()
 export class QuoteTemplateEffects {
-  constructor(
-    private actions$: Actions,
-    private quoteTemplateService: QuoteTemplateService,
-  ) {}
-
   loadQuoteTemplate$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadQuoteTemplates),
@@ -29,7 +24,6 @@ export class QuoteTemplateEffects {
       }),
     );
   });
-
   loadNextPageOfQuoteTemplates$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(laodNextPageOfQuoteStatus),
@@ -44,4 +38,9 @@ export class QuoteTemplateEffects {
       }),
     );
   });
+
+  constructor(
+    private actions$: Actions,
+    private quoteTemplateService: QuoteTemplateService,
+  ) {}
 }

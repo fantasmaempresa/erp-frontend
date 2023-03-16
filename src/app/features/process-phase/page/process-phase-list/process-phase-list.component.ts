@@ -29,18 +29,14 @@ import { ProcessPhaseView } from '../../../../data/presentation/ProcessPhase.vie
 export class ProcessPhaseListComponent {
   selectedItem!: any;
 
+  constructor(private route: ActivatedRoute, private router: Router) {}
+
   setSelectedItem = (item: EntityDto) => {
     this.selectedItem = item;
   };
 
   goToEditForm = async () => {
     await this.router.navigate(['../', this.selectedItem.id], {
-      relativeTo: this.route,
-    });
-  };
-
-  goToAddForm = async () => {
-    await this.router.navigate(['../new'], {
       relativeTo: this.route,
     });
   };
@@ -63,5 +59,9 @@ export class ProcessPhaseListComponent {
     },
   ];
 
-  constructor(private route: ActivatedRoute, private router: Router) {}
+  goToAddForm = async () => {
+    await this.router.navigate(['../new'], {
+      relativeTo: this.route,
+    });
+  };
 }

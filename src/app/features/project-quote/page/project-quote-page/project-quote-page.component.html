@@ -1,16 +1,16 @@
 <mat-card>
   <mat-toolbar>
     <div>
-      <button aria-label="Regresar" mat-icon-button (click)="backToListUsers()">
+      <button (click)="backToListUsers()" aria-label="Regresar" mat-icon-button>
         <mat-icon>arrow_back</mat-icon>
       </button>
     </div>
   </mat-toolbar>
-  <ng-container [formGroup]="quoteForm" *ngIf="quoteForm">
+  <ng-container *ngIf="quoteForm" [formGroup]="quoteForm">
     <mat-accordion class="example-headers-align">
       <mat-expansion-panel
-        [expanded]="step === HEADER_STEP"
         (opened)="goToHeaderForm()"
+        [expanded]="step === HEADER_STEP"
         hideToggle
       >
         <mat-expansion-panel-header>
@@ -24,8 +24,8 @@
             <mat-form-field appearance="outline">
               <mat-label>Tipo de servicio</mat-label>
               <mat-select
-                [formControl]="templateControl"
                 [compareWith]="compareObjects"
+                [formControl]="templateControl"
               >
                 <mat-option
                   *ngFor="let template of templates; index as i"
@@ -40,15 +40,15 @@
         </div>
         <app-project-quote-form></app-project-quote-form>
         <mat-action-row>
-          <button mat-button color="primary" (click)="goToFormFill()">
+          <button (click)="goToFormFill()" color="primary" mat-button>
             Siguiente
           </button>
         </mat-action-row>
       </mat-expansion-panel>
 
       <mat-expansion-panel
-        [expanded]="step === FORM_FILL_STEP"
         (opened)="goToFormFill()"
+        [expanded]="step === FORM_FILL_STEP"
         hideToggle
       >
         <mat-expansion-panel-header>
@@ -59,10 +59,10 @@
         <app-dynamic-form [formFields]="fields"></app-dynamic-form>
 
         <mat-action-row>
-          <button mat-button color="warn" (click)="goToHeaderForm()">
+          <button (click)="goToHeaderForm()" color="warn" mat-button>
             Atras
           </button>
-          <button mat-button color="primary" (click)="goToPreview()">
+          <button (click)="goToPreview()" color="primary" mat-button>
             Siguiente
           </button>
         </mat-action-row>
@@ -70,15 +70,15 @@
 
       <!--      PREVIEW-->
       <mat-expansion-panel
-        [expanded]="step === PREVIEW_STEP"
         (opened)="step = PREVIEW_STEP"
+        [expanded]="step === PREVIEW_STEP"
         hideToggle
       >
         <mat-expansion-panel-header>
           <mat-panel-title> Vista previa</mat-panel-title>
           <mat-panel-description>
-            Vista previa de la cotización realizada</mat-panel-description
-          >
+            Vista previa de la cotización realizada
+          </mat-panel-description>
         </mat-expansion-panel-header>
 
         <div class="container-fluid mat-elevation-z5">
@@ -87,7 +87,7 @@
               <mat-toolbar color="primary">
                 <span>Conceptos</span>
               </mat-toolbar>
-              <div class="row mt-3 ps-3" *ngIf="quote">
+              <div *ngIf="quote" class="row mt-3 ps-3">
                 <div *ngFor="let field of quote.operation_fields">
                   <h3>{{ field.name | titlecase }}</h3>
                   <ul class="px-5">
@@ -141,13 +141,13 @@
         </div>
 
         <mat-action-row>
-          <button mat-button color="warn" (click)="goToFormFill()">
+          <button (click)="goToFormFill()" color="warn" mat-button>
             Atras
           </button>
           <button
-            mat-button
-            color="primary"
             (click)="isEdit ? updateQuote() : saveQuote()"
+            color="primary"
+            mat-button
           >
             Guardar
           </button>

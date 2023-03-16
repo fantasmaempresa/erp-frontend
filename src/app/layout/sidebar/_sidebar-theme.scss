@@ -79,6 +79,7 @@
 
     &__dropdown-back {
       background-color: mat.get-color-from-palette($primary-palette, 'main');
+
       &:hover {
         color: mat.get-color-from-palette($primary-palette, 'main');
         background: mat.get-color-from-palette($accent-palette, 'main');

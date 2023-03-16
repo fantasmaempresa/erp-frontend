@@ -14,23 +14,23 @@ import { Formfield } from '../../../data/dto/Formfield.dto';
   styleUrls: ['./dynamic-form-input.component.scss'],
 })
 export class DynamicFormInputComponent implements OnInit {
-  _form!: UntypedFormGroup;
-
   @Input() input!: Formfield<any>;
 
-  @Input() set form(formGroup: UntypedFormGroup) {
-    this._form = formGroup;
-  }
+  constructor(private controlContainer: ControlContainer) {}
+
+  _form!: UntypedFormGroup;
 
   get form() {
     return this._form;
   }
 
+  @Input() set form(formGroup: UntypedFormGroup) {
+    this._form = formGroup;
+  }
+
   get isValid() {
     return this.form.controls[this.input.key].valid;
   }
-
-  constructor(private controlContainer: ControlContainer) {}
 
   ngOnInit() {
     this.form = this.controlContainer.control as UntypedFormGroup;
