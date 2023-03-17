@@ -20,6 +20,7 @@ export class ProjectEffects {
       }),
     );
   });
+
   loadNextPageOfClients$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfProjects),

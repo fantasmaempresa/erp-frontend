@@ -42,19 +42,28 @@ export class GenericAutocompleteChipComponent
   implements ControlValueAccessor, OnChanges, OnInit
 {
   data: any[] = [];
+
   @Input()
   allData: any[] | null = [];
+
   @Input()
   label = '';
+
   @Input()
   placeholder = '';
+
   @Input()
   mapFn!: (item: any) => any;
+
   @ViewChild('chipInput', { static: true })
   input!: ElementRef<HTMLInputElement>;
+
   filteredData!: Observable<any>;
+
   separatorKeysCodes = [ENTER, COMMA];
+
   ngControl!: NgControl;
+
   private subject$ = new Subject<any>();
 
   constructor(private inj: Injector) {}

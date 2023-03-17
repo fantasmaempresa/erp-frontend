@@ -20,9 +20,8 @@
           ¿Es porcentaje?
         </mat-checkbox>
         <mat-checkbox color="primary" formControlName="operable"
-        >¿Es operable?
-        </mat-checkbox
-        >
+          >¿Es operable?
+        </mat-checkbox>
       </section>
 
       <mat-radio-group
@@ -30,23 +29,20 @@
         formControlName="operationType"
       >
         <mat-radio-button color="primary" value="import"
-        >Solo es un importe
-        </mat-radio-button
-        >
+          >Solo es un importe
+        </mat-radio-button>
         <mat-radio-button
           [disabled]="isPercentage.value || isOperable.value"
           color="primary"
           value="validity"
-        >Vigencia
-        </mat-radio-button
-        >
+          >Vigencia
+        </mat-radio-button>
         <mat-radio-button
           [disabled]="isPercentage.value || isOperable.value"
           color="primary"
           value="range"
-        >Rango numérico
-        </mat-radio-button
-        >
+          >Rango numérico
+        </mat-radio-button>
       </mat-radio-group>
 
       <div [ngSwitch]="operationType.value" class="row mt-5">
@@ -57,13 +53,11 @@
               formControlName="type"
             >
               <mat-radio-button color="primary" value="date"
-              >Fecha
-              </mat-radio-button
-              >
+                >Fecha
+              </mat-radio-button>
               <mat-radio-button color="primary" value="range"
-              >Rango de fechas
-              </mat-radio-button
-              >
+                >Rango de fechas
+              </mat-radio-button>
             </mat-radio-group>
 
             <div [ngSwitch]="validityType.value" class="mt-3">
@@ -93,7 +87,7 @@
                     <mat-option>-- None --</mat-option>
                     <mat-option *ngFor="let year of years" [value]="year">{{
                       year
-                      }}</mat-option>
+                    }}</mat-option>
                   </mat-select>
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
@@ -119,7 +113,7 @@
                       <mat-option>-- None --</mat-option>
                       <mat-option *ngFor="let year of years" [value]="year">{{
                         year
-                        }}</mat-option>
+                      }}</mat-option>
                     </mat-select>
                     <mat-error appErrorMessage></mat-error>
                   </mat-form-field>
@@ -129,7 +123,7 @@
                       <mat-option>-- None --</mat-option>
                       <mat-option *ngFor="let year of years" [value]="year">{{
                         year
-                        }}</mat-option>
+                      }}</mat-option>
                     </mat-select>
                     <mat-error appErrorMessage></mat-error>
                   </mat-form-field>

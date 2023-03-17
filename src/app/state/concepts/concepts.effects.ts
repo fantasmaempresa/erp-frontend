@@ -20,6 +20,7 @@ export class ConceptsEffects {
       }),
     );
   });
+
   loadNextPageOfConcepts$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfConcepts),

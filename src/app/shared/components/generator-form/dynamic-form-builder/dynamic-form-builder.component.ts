@@ -29,7 +29,9 @@ export class DynamicFormBuilderComponent
   implements ControlValueAccessor, OnInit
 {
   form!: UntypedFormGroup;
+
   formFields: Formfield<any>[] = [];
+
   types = [
     {
       value: 'textbox',
@@ -76,7 +78,9 @@ export class DynamicFormBuilderComponent
       label: 'Coordenada',
     },
   ];
+
   edit = false;
+
   ngControl!: NgControl;
 
   constructor(private inj: Injector) {

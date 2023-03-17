@@ -49,7 +49,7 @@
             <mat-option
               *ngFor="let option of formField.options; index as i"
               [value]="option.value"
-            >{{ option.value }}</mat-option
+              >{{ option.value }}</mat-option
             >
           </mat-select>
         </mat-form-field>
@@ -60,7 +60,7 @@
           [value]="formField.value"
           class="checkbox-input"
           color="primary"
-        >{{ formField.label }}</mat-checkbox
+          >{{ formField.label }}</mat-checkbox
         >
 
         <div *ngSwitchCase="'radio'" class="radio-group">

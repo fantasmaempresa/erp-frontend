@@ -61,12 +61,14 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
   form = new UntypedFormGroup({
     order_phases: this.orderFormArray,
   });
+
   rolesProvider: StaticProvider[] = [
     { provide: SELECTOR, useValue: selectRoles },
     { provide: CLAZZ, useValue: RoleView },
     { provide: LOAD_ACTION, useValue: loadRoles() },
     { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfRoles },
   ];
+
   private onDestroy$ = new Subject<number>();
 
   constructor(

@@ -23,6 +23,7 @@ export class UsersEffects {
       }),
     );
   });
+
   loadNextPageOfUsers$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfUsers),
@@ -33,6 +34,7 @@ export class UsersEffects {
       }),
     );
   });
+
   startToListen$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(startToListenUsers),

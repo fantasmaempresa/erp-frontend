@@ -9,6 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class DialogSearchComponent {
   options!: any;
+
   optionSelected!: ClientDto | null;
 
   constructor(

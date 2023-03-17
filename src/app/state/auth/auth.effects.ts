@@ -38,6 +38,7 @@ export class AuthEffects {
       }),
     );
   });
+
   loginRedirect$ = createEffect(
     () => {
       return this.actions$.pipe(
@@ -51,6 +52,7 @@ export class AuthEffects {
     },
     { dispatch: false },
   );
+
   logout$ = createEffect(
     () => {
       return this.actions$.pipe(

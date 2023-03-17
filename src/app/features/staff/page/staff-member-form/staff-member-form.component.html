@@ -20,7 +20,7 @@
           <mat-option
             *ngFor="let area of workAreas$ | async"
             [value]="area.id"
-          >{{ area.name }}</mat-option
+            >{{ area.name }}</mat-option
           >
         </mat-select>
         <mat-error appErrorMessage></mat-error>

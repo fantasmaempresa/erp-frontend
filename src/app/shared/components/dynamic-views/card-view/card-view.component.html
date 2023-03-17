@@ -3,13 +3,15 @@
     <ng-container *ngFor="let label of labels; let i = index">
       <span class="card-view__field">{{ label }}</span>
       <ng-container
-        *ngIf="displayedColumns[i] | mapTo: doesntHaveHtml; else renderHtml"
+        *ngIf="displayedColumns[i] | mapTo : doesntHaveHtml; else renderHtml"
       >
-        <span class="card-view__value">{{ item | mapTo: mapToGetKey:i }}</span>
+        <span class="card-view__value">{{
+          item | mapTo : mapToGetKey : i
+        }}</span>
       </ng-container>
 
       <ng-template #renderHtml>
-        <div [innerHTML]="item | mapTo: mapToInnerHtml:i"></div>
+        <div [innerHTML]="item | mapTo : mapToInnerHtml : i"></div>
       </ng-template>
     </ng-container>
 
@@ -17,8 +19,8 @@
       <ng-container *ngFor="let action of actions">
         <mat-icon
           (click)="action.callback(item)"
-          *ngIf="action.isVisible | mapTo: mapToVisible:item"
-          [matTooltip]="action?.tooltip | mapTo: mapToTooltip"
+          *ngIf="action.isVisible | mapTo : mapToVisible : item"
+          [matTooltip]="action?.tooltip | mapTo : mapToTooltip"
           class="card-view__button"
           matTooltipPosition="before"
         >

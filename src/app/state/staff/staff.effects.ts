@@ -20,6 +20,7 @@ export class StaffEffects {
       }),
     );
   });
+
   loadNextPageOfStaff$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfStaff),

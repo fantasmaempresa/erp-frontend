@@ -58,7 +58,9 @@ export class OperationsComponent implements OnInit {
   });
 
   concepts$: Observable<ConceptDto[]>;
+
   separatorKeysCodes: number[] = [ENTER, COMMA];
+
   preview!: any;
 
   constructor(

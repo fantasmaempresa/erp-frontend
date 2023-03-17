@@ -27,10 +27,15 @@ export abstract class DynamicViewComponent<T extends EntityDto> {
   mapToFields: { [p: string]: any };
 
   mapToHTML: { [p: string]: any };
+
   pageSize = 10;
+
   pageSizeOptions = [5, 10, 25, 100];
+
   protected loadAction: any;
+
   protected selector: MemoizedSelector<any, any>;
+
   protected loadNextPageAction: (props: { size: number; page: number }) => any;
 
   public constructor(

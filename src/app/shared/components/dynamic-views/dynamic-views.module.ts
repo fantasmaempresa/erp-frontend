@@ -66,4 +66,4 @@ export const LOAD_ACTION = new InjectionToken<any>('load_action');
 export const LOAD_NEXT_ACTION = new InjectionToken<
   (props: { size: number; page: number }) => any
 >('load_next_action');
-export const ACTION_KEY = new InjectionToken<string>("action_key");
+export const ACTION_KEY = new InjectionToken<string>('action_key');

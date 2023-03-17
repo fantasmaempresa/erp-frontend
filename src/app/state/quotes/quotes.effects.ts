@@ -29,6 +29,7 @@ export class QuotesEffects {
       ),
     );
   });
+
   loadQuotesByStatus$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadQuotesByStatus),
@@ -39,6 +40,7 @@ export class QuotesEffects {
       }),
     );
   });
+
   loadNextPageOfQuotes$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfQuotes),

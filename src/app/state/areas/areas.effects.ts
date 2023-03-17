@@ -20,6 +20,7 @@ export class AreasEffects {
       }),
     );
   });
+
   loadNextPageOfAreas = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfAreas),

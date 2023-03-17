@@ -26,6 +26,7 @@ export class ConceptFormComponent implements OnInit {
   conceptForm = this.createForm();
 
   selectedYear!: number;
+
   operations: { value: string; label: string }[] = [
     { value: '+', label: 'Suma' },
     {

@@ -14,7 +14,7 @@
         <div *cdkDragPlaceholder class="draggable-placeholder"></div>
         <div class="d-flex justify-content-between w-100">
           <span class="d-flex align-items-center"
-          >{{ field.key }} - Tipo: {{ field.controlType }}</span
+            >{{ field.key }} - Tipo: {{ field.controlType }}</span
           >
 
           <div>
@@ -63,7 +63,7 @@
     </mat-form-field>
 
     <div
-      *ngIf="form.get('controlType')?.value | mapTo: canShowOptions"
+      *ngIf="form.get('controlType')?.value | mapTo : canShowOptions"
       class="form-options"
       formArrayName="options"
     >
@@ -121,7 +121,7 @@
     </div>
     <div class="row justify-content-between">
       <button class="col-4" color="primary" mat-flat-button>
-        {{ edit | mapTo: labelButton }} Campo
+        {{ edit | mapTo : labelButton }} Campo
       </button>
       <button
         (click)="cancelEdit(f)"

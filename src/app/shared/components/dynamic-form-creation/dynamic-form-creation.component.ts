@@ -40,19 +40,29 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 })
 export class DynamicFormCreationComponent implements OnInit {
   templateControl = new UntypedFormControl(null);
+
   formFields$!: Observable<Formfield<any>[]>;
+
   formFields!: Formfield<any>[];
+
   templateId = 0;
+
   templateName = '';
+
   templateDescription = '';
+
   dynamicFormEssentialData$!: Observable<{
     id: number;
     name: string;
     description: string;
   }>;
+
   isEditable$: Observable<boolean>;
+
   isEdit = false;
+
   saveMessageButtonLabel = '';
+
   types = [
     {
       value: 'textbox',
@@ -85,8 +95,11 @@ export class DynamicFormCreationComponent implements OnInit {
       label: 'Checkbox',
     },
   ];
+
   form!: UntypedFormGroup;
+
   formStructures!: FormStructure[];
+
   errorMessage$: Observable<string>;
 
   constructor(

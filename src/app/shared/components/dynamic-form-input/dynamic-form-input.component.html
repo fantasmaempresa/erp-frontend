@@ -36,7 +36,7 @@
           <mat-option
             *ngFor="let option of input.options; index as i"
             [value]="option.value"
-          >{{ option.value }}</mat-option
+            >{{ option.value }}</mat-option
           >
         </mat-select>
       </mat-form-field>
@@ -48,7 +48,7 @@
           [formControlName]="input.key"
           [value]="input.value"
           color="primary"
-        >{{ input.label }}</mat-checkbox
+          >{{ input.label }}</mat-checkbox
         >
       </section>
     </div>

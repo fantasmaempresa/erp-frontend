@@ -22,6 +22,7 @@ export class QuoteStatusEffects {
       }),
     );
   });
+
   loadNextPageOfQuoteStatus$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(laodNextPageOfQuoteStatus),

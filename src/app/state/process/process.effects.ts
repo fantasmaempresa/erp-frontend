@@ -20,6 +20,7 @@ export class ProcessEffects {
       }),
     );
   });
+
   loadNextPageOfProcess$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfProcess),

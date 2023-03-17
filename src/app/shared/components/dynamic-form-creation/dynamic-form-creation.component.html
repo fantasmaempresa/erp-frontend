@@ -23,7 +23,7 @@
         <div *cdkDragPlaceholder class="example-custom-placeholder"></div>
         <div class="d-flex justify-content-between w-100">
           <span class="d-flex align-items-center"
-          >{{ field.key }} - Tipo: {{ field.controlType }}</span
+            >{{ field.key }} - Tipo: {{ field.controlType }}</span
           >
 
           <div>
@@ -59,7 +59,7 @@
           <mat-option
             *ngFor="let type of types; index as i"
             [value]="type.value"
-          >{{ type.label }}</mat-option
+            >{{ type.label }}</mat-option
           >
         </mat-select>
         <mat-error appErrorMessage></mat-error>

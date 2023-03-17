@@ -24,6 +24,7 @@ export class QuoteTemplateEffects {
       }),
     );
   });
+
   loadNextPageOfQuoteTemplates$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(laodNextPageOfQuoteStatus),

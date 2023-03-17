@@ -41,7 +41,9 @@
               <mat-select formControlName="previous">
                 <mat-option [value]="null">Sin Fase Previa</mat-option>
                 <mat-option
-                  *ngFor="let process of processPhases | mapTo: onlyPrevious:i"
+                  *ngFor="
+                    let process of processPhases | mapTo : onlyPrevious : i
+                  "
                   [value]="process.id"
                 >
                   {{ process.name }}

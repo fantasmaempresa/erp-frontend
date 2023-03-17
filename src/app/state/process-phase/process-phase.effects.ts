@@ -22,6 +22,7 @@ export class ProcessPhaseEffects {
       }),
     );
   });
+
   loadNextPageOfClients$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNextPageOfProcessPhase),

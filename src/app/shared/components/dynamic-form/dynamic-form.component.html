@@ -46,7 +46,7 @@
                 <mat-option
                   *ngFor="let option of formField.options; index as i"
                   [value]="option.value"
-                >{{ option.value }}</mat-option
+                  >{{ option.value }}</mat-option
                 >
               </mat-select>
               <mat-error appErrorMessage></mat-error>
@@ -59,7 +59,7 @@
                 [formControlName]="formField.key"
                 [value]="formField.value"
                 color="primary"
-              >{{ formField.label }}</mat-checkbox
+                >{{ formField.label }}</mat-checkbox
               >
             </section>
           </div>

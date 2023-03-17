@@ -22,17 +22,17 @@
   >
     <th *matHeaderCellDef mat-header-cell>{{ field }}</th>
     <ng-container
-      *ngIf="displayedColumns[i + 1] | mapTo: doesntHaveHtml; else renderHtml"
+      *ngIf="displayedColumns[i + 1] | mapTo : doesntHaveHtml; else renderHtml"
     >
       <td *matCellDef="let element" mat-cell>
-        {{ element | mapTo: mapToGetKey:i + 1 }}
+        {{ element | mapTo : mapToGetKey : i + 1 }}
       </td>
     </ng-container>
 
     <ng-template #renderHtml>
       <td
         *matCellDef="let element"
-        [innerHTML]="element | mapTo: mapToInnerHtml:i + 1"
+        [innerHTML]="element | mapTo : mapToInnerHtml : i + 1"
         mat-cell
       >
         {{ element }}

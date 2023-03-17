@@ -18,9 +18,13 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class ConceptFormDialogComponent implements OnInit {
   isDateInYears = false;
+
   years: number[] = [];
+
   conceptForm = this.createForm();
+
   selectedYear!: number;
+
   operations: { value: string; label: string }[] = [
     { value: '+', label: 'Suma' },
     {
