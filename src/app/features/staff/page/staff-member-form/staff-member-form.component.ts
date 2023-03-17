@@ -5,7 +5,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { AreaService, StaffService } from '../../../../data/services';
+import { AreaService, StaffServiceOld } from '../../../../data/services';
 import { map, Observable } from 'rxjs';
 import { MessageHelper } from 'o2c_core';
 import { StaffDto, WorkAreaDto } from '../../../../data/dto';
@@ -39,15 +39,16 @@ export class StaffMemberFormComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private staffService: StaffService,
-    private areaSerivce: AreaService,
+    private staffService: StaffServiceOld,
+    private areaService: AreaService,
   ) {
-    this.workAreas$ = this.areaSerivce
+    this.workAreas$ = this.areaService
       .fetchAll()
       .pipe(map((areas) => areas.data));
-    if (this.route.snapshot.queryParams.id) {
+    const id = Number(this.route.snapshot.params.id);
+    if (!isNaN(id)) {
       this.isEdit = true;
-      staffService.fetch(this.route.snapshot.queryParams.id).subscribe({
+      staffService.fetch(id).subscribe({
         next: (staffMember) => {
           this.staffMemberForm.addControl('id', new UntypedFormControl(''));
           this.staffMemberForm.patchValue(staffMember);

@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChildrenRouteLayoutComponent } from '../../layout/children-route-layout/children-route-layout.component';
-import { StaffListComponent } from './page/staff-list/staff-list.component';
 import { StaffMemberFormComponent } from './page/staff-member-form/staff-member-form.component';
+import { BasicViewComponent, VIEW_CLAZZ } from 'o2c_core';
+import { StaffView } from '../../data/presentation/staff.view';
 
 const routes: Routes = [
   {
     path: '',
-    component: ChildrenRouteLayoutComponent,
     children: [
       {
         path: '',
@@ -16,18 +15,19 @@ const routes: Routes = [
       },
       {
         path: 'list',
-        component: StaffListComponent,
+        component: BasicViewComponent,
         data: { breadcrumb: 'Lista de personal' },
-      },
-      {
-        path: 'staff-member',
-        component: StaffMemberFormComponent,
-        data: { breadcrumb: 'Editar miembro del personal' },
+        providers: [{ provide: VIEW_CLAZZ, useValue: StaffView }],
       },
       {
         path: 'new',
         component: StaffMemberFormComponent,
         data: { breadcrumb: 'Nuevo miembro del personal' },
+      },
+      {
+        path: ':id',
+        component: StaffMemberFormComponent,
+        data: { breadcrumb: 'Editar miembro del personal' },
       },
     ],
   },

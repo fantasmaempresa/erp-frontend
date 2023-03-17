@@ -12,5 +12,5 @@ export * from './project-quote.service';
 export * from './quote-status.service';
 export * from './quote-template.service';
 export * from './role.service';
-export * from './staff.service';
+export * from './staff-service.service';
 export * from './user.service';

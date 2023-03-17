@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { StaffService } from '../../data/services';
+import { StaffServiceOld } from '../../data/services';
 import {
   loadNextPageOfStaff,
   loadStaff,
@@ -32,5 +32,8 @@ export class StaffEffects {
     );
   });
 
-  constructor(private actions$: Actions, private staffService: StaffService) {}
+  constructor(
+    private actions$: Actions,
+    private staffService: StaffServiceOld,
+  ) {}
 }
