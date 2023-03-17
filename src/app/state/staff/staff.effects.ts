@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { StaffService } from '../../data/services/staff.service';
+import { StaffService } from '../../data/services';
 import {
   loadNextPageOfStaff,
   loadStaff,

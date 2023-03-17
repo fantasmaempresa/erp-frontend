@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { NotificationDto } from '../../data/dto/Notification.dto';
+import { Pagination } from '../../core/interfaces';
+import { NotificationDto } from '../../data/dto';
 
 export enum NotificationActions {
   LOAD_NOTIFICATION = '[Notification] Load notifications',

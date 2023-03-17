@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { ProjectQuoteService } from '../../data/services/project-quote.service';
+import { ProjectQuoteService } from '../../data/services';
 import {
   loadNextPageOfQuotes,
   loadQuotes,
@@ -9,7 +9,7 @@ import {
 } from './quotes.actions';
 import { map, mergeMap, skipWhile, switchMap } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { selectRole } from '../auth/auth.selectors';
+import { selectRole } from '../auth';
 
 @Injectable()
 export class QuotesEffects {

@@ -1,5 +1,4 @@
-import { UserAuthDto } from '../../data/dto/UserAuth.dto';
-import { TokensDto } from '../../data/dto/Tokens.dto';
+import { TokensDto, UserAuthDto } from '../../data/dto';
 
 export interface AuthState {
   tokens: TokensDto | null;

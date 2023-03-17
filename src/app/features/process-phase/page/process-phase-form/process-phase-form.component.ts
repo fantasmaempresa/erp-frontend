@@ -78,10 +78,10 @@ export class ProcessPhaseFormComponent {
     this.step--;
   }
 
-  onSubmit() {
+  async onSubmit() {
     this.form.markAllAsTouched();
     if (this.form.invalid) {
-      MessageHelper.infoMessage('Revisa los campos que te faltan');
+      await MessageHelper.infoMessage('Revisa los campos que te faltan');
       this.setStep(0);
       return;
     }
@@ -91,7 +91,7 @@ export class ProcessPhaseFormComponent {
       : this.processPhaseService.save(this.form.value);
     request$.subscribe({
       next: async () => {
-        MessageHelper.successMessage(
+        await MessageHelper.successMessage(
           '¡Éxito!',
           `La fase ha sido ${message} correctamente.`,
         );

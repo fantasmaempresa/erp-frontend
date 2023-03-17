@@ -1,6 +1,5 @@
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { NotificationDto } from '../../data/dto/Notification.dto';
-import { NotificationPopUpDto } from '../../data/dto/NotificationPopUp.dto';
+import { Pagination } from '../../core/interfaces';
+import { NotificationDto, NotificationPopUpDto } from '../../data/dto';
 
 export interface NotificationState {
   notifications: Pagination<NotificationDto> | null;

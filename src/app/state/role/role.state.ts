@@ -1,5 +1,5 @@
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { RoleDto } from '../../data/dto/Role.dto';
+import { Pagination } from '../../core/interfaces';
+import { RoleDto } from '../../data/dto';
 
 export interface RoleState {
   roles: Pagination<RoleDto> | null;

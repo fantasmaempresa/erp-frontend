@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { UserDto } from '../../data/dto/User.dto';
+import { Pagination } from '../../core/interfaces';
+import { UserDto } from '../../data/dto';
 
 export enum UsersActions {
   LOAD_USERS = '[Users] Load users',

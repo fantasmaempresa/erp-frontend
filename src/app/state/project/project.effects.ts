@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map, mergeMap } from 'rxjs';
-import { ProjectService } from '../../data/services/project.service';
+import { ProjectService } from '../../data/services';
 import {
   loadNextPageOfProjects,
   loadProjects,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { QuoteStatusService } from '../../data/services/quote-status.service';
+import { QuoteStatusService } from '../../data/services';
 import {
   laodNextPageOfQuoteStatus,
   loadQuoteStatuses,

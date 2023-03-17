@@ -1,7 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AuthState } from './auth.state';
-import { UserAuthDto } from '../../data/dto/UserAuth.dto';
-import { UserDto } from '../../data/dto/User.dto';
+import { UserAuthDto, UserDto } from '../../data/dto';
 
 export const AUTH_STATE_NAME = 'auth';
 

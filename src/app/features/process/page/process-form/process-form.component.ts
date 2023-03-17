@@ -5,7 +5,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { ProcessService } from '../../../../data/services/process.service';
+import { ProcessService } from '../../../../data/services';
 import { MessageHelper } from 'o2c_core';
 
 @Component({
@@ -75,7 +75,7 @@ export class ProcessFormComponent {
     } correctamente`;
     request$.subscribe({
       next: async () => {
-        MessageHelper.successMessage('Éxito', message);
+        await MessageHelper.successMessage('Éxito', message);
         await this.back();
       },
     });

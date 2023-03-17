@@ -5,7 +5,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectService } from '../../../../data/services/project.service';
+import {
+  ClientServiceOld,
+  ProcessService,
+  ProjectService,
+} from '../../../../data/services';
 import { MessageHelper } from 'o2c_core';
 import {
   CLAZZ,
@@ -13,16 +17,13 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dynamic-views/dynamic-views.module';
-import { ClientServiceOld } from '../../../../data/services/client.service';
-import { ProcessService } from '../../../../data/services/process.service';
-import { selectProcess } from '../../../../state/process/process.selectors';
 import {
   loadNextPageOfProcess,
   loadProcess,
-} from '../../../../state/process/process.actions';
+  selectProcess,
+} from '../../../../state/process';
 import { format } from 'date-fns';
-import { ClientView } from '../../../../data/presentation/Client.view';
-import { ProcessView } from '../../../../data/presentation/Process.view';
+import { ClientView, ProcessView } from '../../../../data/presentation';
 
 @Component({
   selector: 'app-project-form',
@@ -94,7 +95,7 @@ export class ProjectFormComponent {
     MessageHelper.showLoading('Enviando al Servidor...');
     request$.subscribe({
       next: async () => {
-        MessageHelper.successMessage('Éxito', message);
+        await MessageHelper.successMessage('Éxito', message);
         await this.back();
       },
       error: () => {

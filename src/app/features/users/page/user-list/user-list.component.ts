@@ -3,7 +3,7 @@ import { EntityDto, MessageHelper } from 'o2c_core';
 import { ActionsCard } from '../../../../shared/components/dynamic-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { UserService } from '../../../../data/services/user.service';
+import { UserService } from '../../../../data/services';
 import {
   CLAZZ,
   LOAD_ACTION,
@@ -13,15 +13,15 @@ import {
 import {
   loadNextPageOfUsers,
   loadUsers,
+  selectUsers,
   startToListenUsers,
   stopToListenUsers,
-} from '../../../../state/users/users.actions';
-import { UserDto } from '../../../../data/dto/User.dto';
-import { selectUsers } from '../../../../state/users/users.selectors';
-import { selectUser } from '../../../../state/auth/auth.selectors';
+} from '../../../../state/users';
+import { UserDto } from '../../../../data/dto';
+import { selectUser } from '../../../../state/auth';
 import { Observable } from 'rxjs';
 import { AuthService } from '../../../../core/services/auth.service';
-import { UserView } from '../../../../data/presentation/User.view';
+import { UserView } from '../../../../data/presentation';
 
 @Component({
   selector: 'app-user-list',
@@ -93,14 +93,14 @@ export class UserListComponent implements OnInit, OnDestroy {
       () => {
         const shouldBlockUser = (locked: boolean) => {
           this.authService.closeSystem(this.selectedItem.id, locked).subscribe({
-            next: () => {
-              MessageHelper.successMessage(
+            next: async () => {
+              await MessageHelper.successMessage(
                 'Éxito',
                 'La sesión del Usuario finalizo',
               );
             },
-            error: () => {
-              MessageHelper.errorMessage('Ocurrió un error');
+            error: async () => {
+              await MessageHelper.errorMessage('Ocurrió un error');
             },
           });
         };
@@ -127,14 +127,14 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.authService
           .setLockStatus(this.selectedItem.id, 'locked')
           .subscribe({
-            next: () => {
-              MessageHelper.successMessage(
+            next: async () => {
+              await MessageHelper.successMessage(
                 'Éxito',
                 `[${this.selectedItem?.name}] ha sido bloqueado`,
               );
             },
-            error: () => {
-              MessageHelper.errorMessage('Ocurrió un error');
+            error: async () => {
+              await MessageHelper.errorMessage('Ocurrió un error');
             },
           });
       },
@@ -149,14 +149,14 @@ export class UserListComponent implements OnInit, OnDestroy {
         this.authService
           .setLockStatus(this.selectedItem.id, 'unlocked')
           .subscribe({
-            next: () => {
-              MessageHelper.successMessage(
+            next: async () => {
+              await MessageHelper.successMessage(
                 'Éxito',
                 `[${this.selectedItem?.name}] ha sido desbloqueado`,
               );
             },
-            error: () => {
-              MessageHelper.errorMessage('Ocurrió un error');
+            error: async () => {
+              await MessageHelper.errorMessage('Ocurrió un error');
             },
           });
       },

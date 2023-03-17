@@ -1,5 +1,5 @@
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { WorkAreaDto } from '../../data/dto/WorkArea.dto';
+import { Pagination } from '../../core/interfaces';
+import { WorkAreaDto } from '../../data/dto';
 
 export interface AreasState {
   areas: Pagination<WorkAreaDto> | null;

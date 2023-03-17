@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MyProjectsService } from '../../../../data/services/my-projects.service';
+import { MyProjectsService } from '../../../../data/services';
 import { Observable } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 import { MessageHelper } from 'o2c_core';
@@ -46,11 +46,11 @@ export class CurrentFormComponent implements OnInit {
         comment: 'Comentario random para pasar el proyecto',
       })
       .subscribe({
-        next: (value) => {
-          MessageHelper.successMessage('Éxito', `${value}`);
+        next: async (value) => {
+          await MessageHelper.successMessage('Éxito', `${value}`);
         },
-        error: (value) => {
-          MessageHelper.errorMessage(`${value}`);
+        error: async (value) => {
+          await MessageHelper.errorMessage(`${value}`);
         },
       });
   }
@@ -65,11 +65,11 @@ export class CurrentFormComponent implements OnInit {
         comment: 'Comentario random para ir para atrás en el proyecto',
       })
       .subscribe({
-        next: (value) => {
-          MessageHelper.successMessage('Éxito', `${value}`);
+        next: async (value) => {
+          await MessageHelper.successMessage('Éxito', `${value}`);
         },
-        error: (value) => {
-          MessageHelper.errorMessage(`${value}`);
+        error: async (value) => {
+          await MessageHelper.errorMessage(`${value}`);
         },
       });
   }
@@ -86,11 +86,11 @@ export class CurrentFormComponent implements OnInit {
         },
       })
       .subscribe({
-        next: (value) => {
-          MessageHelper.successMessage('Éxito', `${value}`);
+        next: async (value) => {
+          await MessageHelper.successMessage('Éxito', `${value}`);
         },
-        error: (value) => {
-          MessageHelper.errorMessage(`${value}`);
+        error: async (value) => {
+          await MessageHelper.errorMessage(`${value}`);
         },
       });
   }
@@ -105,11 +105,11 @@ export class CurrentFormComponent implements OnInit {
         comment: 'Otro comentario random nomas para poder avanzar',
       })
       .subscribe({
-        next: (value) => {
-          MessageHelper.successMessage('Éxito', `${value}`);
+        next: async (value) => {
+          await MessageHelper.successMessage('Éxito', `${value}`);
         },
-        error: (value) => {
-          MessageHelper.errorMessage(`${value}`);
+        error: async (value) => {
+          await MessageHelper.errorMessage(`${value}`);
         },
       });
   }

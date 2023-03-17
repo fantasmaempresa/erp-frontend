@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { QuoteTemplateService } from '../../data/services/quote-template.service';
+import { QuoteTemplateService } from '../../data/services';
 import {
   loadQuoteTemplates,
   loadQuoteTemplatesSuccess,
 } from './quote-template.actions';
 import { map, mergeMap } from 'rxjs';
-import { laodNextPageOfQuoteStatus } from '../quote-status/quote-status.actions';
+import { laodNextPageOfQuoteStatus } from '../quote-status';
 
 @Injectable()
 export class QuoteTemplateEffects {

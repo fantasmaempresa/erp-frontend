@@ -5,12 +5,10 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { StaffService } from '../../../../data/services/staff.service';
+import { AreaService, StaffService } from '../../../../data/services';
 import { map, Observable } from 'rxjs';
 import { MessageHelper } from 'o2c_core';
-import { StaffDto } from '../../../../data/dto/Staff.dto';
-import { WorkAreaDto } from '../../../../data/dto/WorkArea.dto';
-import { AreaService } from '../../../../data/services/area.service';
+import { StaffDto, WorkAreaDto } from '../../../../data/dto';
 
 @Component({
   selector: 'app-staff-member-form',
@@ -58,8 +56,8 @@ export class StaffMemberFormComponent {
     }
   }
 
-  backToListRoles() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+  async backToListRoles() {
+    await this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   onSubmit() {
@@ -72,7 +70,7 @@ export class StaffMemberFormComponent {
     request$.subscribe({
       next: async () => {
         let message = this.isEdit ? 'actualizado' : 'registrado';
-        MessageHelper.successMessage(
+        await MessageHelper.successMessage(
           '¡Éxito!',
           `El miembro ha sido ${message} correctamente.`,
         );

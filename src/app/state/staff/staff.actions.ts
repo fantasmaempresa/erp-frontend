@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { StaffDto } from '../../data/dto/Staff.dto';
+import { Pagination } from '../../core/interfaces';
+import { StaffDto } from '../../data/dto';
 
 export enum StaffActions {
   LOAD_STAFF = '[Staff] Load staff',

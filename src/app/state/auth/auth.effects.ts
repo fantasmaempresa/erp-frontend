@@ -5,7 +5,7 @@ import { catchError, delay, exhaustMap, map, of, switchMap, tap } from 'rxjs';
 import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { TokensDto } from '../../data/dto/Tokens.dto';
+import { TokensDto } from '../../data/dto';
 import { RoleService } from '../../data/services';
 
 @Injectable()
@@ -45,8 +45,8 @@ export class AuthEffects {
         ofType(loginSuccess),
         switchMap(() => this.roleService.buildSidebar()),
         delay(100),
-        tap(() => {
-          this.router.navigate(['/app']);
+        tap(async () => {
+          await this.router.navigate(['/app']);
         }),
       );
     },

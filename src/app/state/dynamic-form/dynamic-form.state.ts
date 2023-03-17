@@ -1,4 +1,4 @@
-import { Formfield } from '../../data/dto/Formfield.dto';
+import { Formfield } from '../../data/dto';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 
 export interface DynamicFormState extends EntityState<Formfield<any>> {

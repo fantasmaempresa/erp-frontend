@@ -1,5 +1,5 @@
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { StaffDto } from '../../data/dto/Staff.dto';
+import { Pagination } from '../../core/interfaces';
+import { StaffDto } from '../../data/dto';
 
 export interface StaffState {
   staff: Pagination<StaffDto> | null;

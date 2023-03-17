@@ -5,15 +5,15 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dynamic-views/dynamic-views.module';
-import { selectProcess } from '../../../../state/process/process.selectors';
 import {
   loadNextPageOfProcess,
   loadProcess,
-} from '../../../../state/process/process.actions';
+  selectProcess,
+} from '../../../../state/process';
 import { EntityDto } from 'o2c_core';
 import { ActionsCard } from '../../../../shared/components/dynamic-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProcessView } from '../../../../data/presentation/Process.view';
+import { ProcessView } from '../../../../data/presentation';
 
 @Component({
   selector: 'app-process-list',

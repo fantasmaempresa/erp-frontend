@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { QuoteStatusDto } from '../../data/dto/QuoteStatus.dto';
+import { Pagination } from '../../core/interfaces';
+import { QuoteStatusDto } from '../../data/dto';
 
 export enum QuoteStatusActions {
   LOAD_QUOTE_STATUS = '[Quote status] Load quote status',

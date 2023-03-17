@@ -1,5 +1,5 @@
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { ProcessDto } from '../../data/dto/Process.dto';
+import { Pagination } from '../../core/interfaces';
+import { ProcessDto } from '../../data/dto';
 
 export interface ProcessState {
   processes: Pagination<ProcessDto> | null;

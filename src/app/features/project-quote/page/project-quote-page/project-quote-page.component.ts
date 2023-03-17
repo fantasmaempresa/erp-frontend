@@ -211,9 +211,9 @@ export class ProjectQuotePageComponent
             result: this.quote,
           },
         };
-        this.projectQuoteService.update(quote).subscribe(() => {
-          MessageHelper.successMessage('Éxito', 'Cotización actualizada');
-          this.router.navigate(['../'], { relativeTo: this.route });
+        this.projectQuoteService.update(quote).subscribe(async () => {
+          await MessageHelper.successMessage('Éxito', 'Cotización actualizada');
+          await this.router.navigate(['../'], { relativeTo: this.route });
         });
       });
   }
@@ -238,9 +238,9 @@ export class ProjectQuotePageComponent
             result: this.quote,
           },
         };
-        this.projectQuoteService.save(quote).subscribe(() => {
-          MessageHelper.successMessage('Éxito', 'Cotización guardada');
-          this.router.navigate(['../'], { relativeTo: this.route });
+        this.projectQuoteService.save(quote).subscribe(async () => {
+          await MessageHelper.successMessage('Éxito', 'Cotización guardada');
+          await this.router.navigate(['../'], { relativeTo: this.route });
         });
       });
   }

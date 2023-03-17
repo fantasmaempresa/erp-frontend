@@ -119,20 +119,20 @@ export class ProjectQuoteListComponent
   delete() {
     MessageHelper.decisionMessage(
       `¿Deseas borrar la cotización ${this.selection.selected[0].name}?`,
-      'Una vez borrado no hay marcha atras.',
+      'Una vez borrado no hay marcha atrás.',
       () => {
         this.quotesService.delete(this.selection.selected[0].id).subscribe({
-          next: () => {
+          next: async () => {
             this.selection.clear();
             this.store.dispatch(loadQuotes());
-            MessageHelper.successMessage(
+            await MessageHelper.successMessage(
               'Registro eliminado con éxito',
               'Se ha eliminado satisfactatoriamente el registro',
             );
           },
-          error: ({ error }) => {
+          error: async ({ error }) => {
             console.log(error.error);
-            MessageHelper.errorMessage(error.error);
+            await MessageHelper.errorMessage(error.error);
           },
         });
       },

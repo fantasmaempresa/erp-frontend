@@ -5,15 +5,15 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dynamic-views/dynamic-views.module';
-import { selectProjects } from '../../../../state/project/project.selectors';
 import {
   loadNextPageOfProjects,
   loadProjects,
-} from '../../../../state/project/project.actions';
+  selectProjects,
+} from '../../../../state/project';
 import { EntityDto } from 'o2c_core';
 import { ActionsCard } from '../../../../shared/components/dynamic-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectView } from '../../../../data/presentation/Project.view';
+import { ProjectView } from '../../../../data/presentation';
 
 @Component({
   selector: 'app-project-list',

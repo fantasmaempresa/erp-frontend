@@ -5,11 +5,9 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { UserService } from '../../../../data/services/user.service';
-import { RoleService } from '../../../../data/services/role.service';
+import { RoleService, UserService } from '../../../../data/services';
 import { map, Observable } from 'rxjs';
-import { RoleDto } from '../../../../data/dto/Role.dto';
-import { UserDto } from '../../../../data/dto/User.dto';
+import { RoleDto, UserDto } from '../../../../data/dto';
 import { MessageHelper } from 'o2c_core';
 
 @Component({
@@ -67,7 +65,7 @@ export class UserFormComponent {
     request$.subscribe({
       next: async () => {
         let message = this.isEdit ? 'actualizado' : 'registrado';
-        MessageHelper.successMessage(
+        await MessageHelper.successMessage(
           '¡Éxito!',
           `El usuario ha sido ${message} correctamente.`,
         );

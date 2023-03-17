@@ -127,7 +127,7 @@ export class ProjectQuotePreviewComponent implements OnInit {
       return;
     }
     this.step = this.PREVIEW_STEP;
-    // TODO: Hacer el calculo de operaciones si esta activada la edicion
+    // TODO: Hacer el calculo de operaciones si esta activada la edición
     if (this.isEditing && this.formFill.getFormGroup().dirty) {
       let operations$ = this.quoteTemplate$.pipe(
         switchMap((quoteTemplate) => {
@@ -194,8 +194,8 @@ export class ProjectQuotePreviewComponent implements OnInit {
         }),
       )
       .subscribe({
-        next: () => {
-          MessageHelper.successMessage('Éxito', 'Cotización actualizada');
+        next: async () => {
+          await MessageHelper.successMessage('Éxito', 'Cotización actualizada');
           this.dialogRef.close(true);
         },
         // TODO: Manejar errores

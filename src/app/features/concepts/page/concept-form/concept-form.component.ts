@@ -242,7 +242,7 @@ export class ConceptFormComponent implements OnInit {
         let message;
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
         this.isEdit ? (message = 'actualizado') : (message = 'registrado');
-        MessageHelper.successMessage(
+        await MessageHelper.successMessage(
           '¡Éxito!',
           `El concepto ha sido ${message} correctamente.`,
         );

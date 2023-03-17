@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { ProjectDto } from '../../data/dto/Project.dto';
+import { Pagination } from '../../core/interfaces';
+import { ProjectDto } from '../../data/dto';
 
 export enum ProjectActions {
   LOAD_PROJECTS = '[Projects] Load projects',

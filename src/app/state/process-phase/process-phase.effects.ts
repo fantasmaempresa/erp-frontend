@@ -6,7 +6,7 @@ import {
   loadProcessPhase,
   loadProcessPhaseSuccess,
 } from './process-phase.actions';
-import { ProcessPhaseService } from '../../data/services/process-phase.service';
+import { ProcessPhaseService } from '../../data/services';
 
 @Injectable()
 export class ProcessPhaseEffects {

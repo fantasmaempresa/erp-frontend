@@ -2,12 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Pagination } from '../../../../core/interfaces/Pagination.model';
-import { selectMyProjects } from '../../../../state/my-project/my-project.selectors';
-import { loadMyProjects } from '../../../../state/my-project/my-project.actions';
-import { MyProjectDto } from '../../../../data/dto/MyProject.dto';
-import { MyProjectsService } from '../../../../data/services/my-projects.service';
-import { ProcessDto } from '../../../../data/dto/Process.dto';
+import { Pagination } from '../../../../core/interfaces';
+import { loadMyProjects, selectMyProjects } from '../../../../state/my-project';
+import { MyProjectDto, ProcessDto } from '../../../../data/dto';
+import { MyProjectsService } from '../../../../data/services';
 
 @Component({
   selector: 'app-project-start-list',
@@ -56,12 +54,12 @@ export class ProjectStartListComponent implements OnInit {
     //   .subscribe({
     //     next: async () => {
     //       MessageHelper.getInstanceSwal().close();
-    //       await this.router.navigate(['./process', process.id], {
+    //       await await this.router.navigate(['./process', process.id], {
     //         relativeTo: this.route,
     //       });
     //     },
     //     error: ({ error }) => {
-    //       MessageHelper.errorMessage(error.error);
+    //       await MessageHelper.errorMessage(error.error);
     //     },
     //   });
     await this.router.navigate(['../', project.id, 'process', process.id], {

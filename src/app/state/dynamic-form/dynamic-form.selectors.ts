@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { dynamicFormAdapter, DynamicFormState } from './dynamic-form.state';
-import { QuoteTemplate } from '../../data/dto/QuoteTemplate.dto';
+import { QuoteTemplate } from '../../data/dto';
 
 const selectFormState = createFeatureSelector<DynamicFormState>('dynamicForm');
 export const dynamicFormSelectors = dynamicFormAdapter.getSelectors();

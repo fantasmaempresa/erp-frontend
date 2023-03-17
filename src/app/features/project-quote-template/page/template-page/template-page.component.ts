@@ -130,13 +130,16 @@ export class TemplatePageComponent implements OnInit, OnDestroy {
         return lastValueFrom(request);
       },
     })
-      .then((result) => {
+      .then(async (result) => {
         if (result.isConfirmed) {
-          MessageHelper.successMessage('Exito', 'Plantilla guardada con éxito');
-          this.router.navigate(['../'], { relativeTo: this.route });
+          await MessageHelper.successMessage(
+            'Exito',
+            'Plantilla guardada con éxito',
+          );
+          await this.router.navigate(['../'], { relativeTo: this.route });
         }
       })
-      .catch(() =>
+      .catch(async () =>
         MessageHelper.errorMessage('Ha ocurrido un error, intentelo mas tarde'),
       );
   }
@@ -167,16 +170,16 @@ export class TemplatePageComponent implements OnInit, OnDestroy {
         return lastValueFrom(request);
       },
     })
-      .then((result) => {
+      .then(async (result) => {
         if (result.isConfirmed) {
-          MessageHelper.successMessage(
+          await MessageHelper.successMessage(
             'Exito',
             'Plantilla actualizada con éxito',
           );
-          this.router.navigate(['../'], { relativeTo: this.route });
+          await this.router.navigate(['../'], { relativeTo: this.route });
         }
       })
-      .catch(() =>
+      .catch(async () =>
         MessageHelper.errorMessage('Ha ocurrido un error, intentelo mas tarde'),
       );
   }

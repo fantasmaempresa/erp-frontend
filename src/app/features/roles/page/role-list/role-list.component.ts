@@ -5,17 +5,17 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dynamic-views/dynamic-views.module';
-import { selectRoles } from '../../../../state/role/role.selectors';
+import {
+  loadNextPageOfRoles,
+  loadRoles,
+  selectRoles,
+} from '../../../../state/role';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { EntityDto, MessageHelper } from 'o2c_core';
 import { ActionsCard } from '../../../../shared/components/dynamic-views/card-view/card-view.component';
-import {
-  loadNextPageOfRoles,
-  loadRoles,
-} from '../../../../state/role/role.actions';
-import { RoleService } from '../../../../data/services/role.service';
-import { RoleView } from '../../../../data/presentation/Role.view';
+import { RoleService } from '../../../../data/services';
+import { RoleView } from '../../../../data/presentation';
 
 @Component({
   selector: 'app-role-list',

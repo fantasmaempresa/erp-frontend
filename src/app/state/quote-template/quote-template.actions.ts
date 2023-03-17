@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { QuoteTemplate } from '../../data/dto/QuoteTemplate.dto';
+import { Pagination } from '../../core/interfaces';
+import { QuoteTemplate } from '../../data/dto';
 
 export enum QuoteTemplateActions {
   LOAD_QUOTE_TEMPLATES = '[Quote Template] Load quote template',

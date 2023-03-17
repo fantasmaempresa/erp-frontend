@@ -110,16 +110,16 @@ export class TemplateListComponent implements OnInit, OnDestroy {
       'Una vez borrado no hay marcha atras.',
       () => {
         this.templateService.delete(this.selection.selected[0].id).subscribe({
-          next: () => {
-            MessageHelper.successMessage(
+          next: async () => {
+            await MessageHelper.successMessage(
               'Éxito',
               `Plantilla ${this.selection.selected[0].name} borrada correctamente`,
             );
             this.store.dispatch(loadQuoteTemplates());
             this.selection.clear();
           },
-          error: ({ error }) => {
-            MessageHelper.errorMessage(error.error);
+          error: async ({ error }) => {
+            await MessageHelper.errorMessage(error.error);
           },
         });
       },

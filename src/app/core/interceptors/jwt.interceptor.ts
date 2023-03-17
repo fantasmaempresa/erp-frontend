@@ -76,7 +76,7 @@ export class JwtInterceptor {
         catchError((e: HttpErrorResponse) => {
           this.isRefreshing = false;
           this.authService.logout();
-          this.router.navigate(['auth']);
+          this.router.navigate(['auth']).then();
           return throwError(() => e);
         }),
       );

@@ -194,7 +194,7 @@ export class ConceptFormDialogComponent implements OnInit {
       next: async (value) => {
         let message = 'registrado';
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-        MessageHelper.successMessage(
+        await MessageHelper.successMessage(
           '¡Éxito!',
           `El concepto ha sido ${message} correctamente.`,
         );

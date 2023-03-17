@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { ConceptService } from '../../data/services/concept.service';
+import { ConceptService } from '../../data/services';
 import {
   loadConcepts,
   loadConceptsSuccess,

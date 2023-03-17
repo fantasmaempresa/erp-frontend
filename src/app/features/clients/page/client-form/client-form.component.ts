@@ -63,7 +63,7 @@ export class ClientFormComponent {
     request$.subscribe({
       next: async () => {
         const message = this.isEdit ? 'actualizado' : 'registrado';
-        MessageHelper.successMessage(
+        await MessageHelper.successMessage(
           '¡Éxito!',
           `El cliente ha sido ${message} correctamente.`,
         );

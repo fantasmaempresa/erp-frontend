@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions } from '@ngrx/effects';
-import { ClientServiceOld } from '../../data/services/client.service';
+import { ClientServiceOld } from '../../data/services';
 
 @Injectable()
 export class ClientsEffects {

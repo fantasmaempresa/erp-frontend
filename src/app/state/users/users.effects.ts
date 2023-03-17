@@ -8,7 +8,7 @@ import {
   loadUsersSuccess,
   startToListenUsers,
 } from './users.actions';
-import { UserService } from '../../data/services/user.service';
+import { UserService } from '../../data/services';
 import { RefreshDataSocketService } from '../../core/services/SocketChannels/refresh-data-socket.service';
 
 @Injectable()

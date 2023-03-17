@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { ControlContainer, UntypedFormGroup } from '@angular/forms';
-import { Formfield } from '../../../data/dto/Formfield.dto';
+import { Formfield } from '../../../data/dto';
 
 @Component({
   selector: 'app-dynamic-form-input',

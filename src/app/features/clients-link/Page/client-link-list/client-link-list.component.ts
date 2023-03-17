@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EntityDto } from 'o2c_core';
-import { selectClientsLink } from '../../../../state/clients-link/clients-link.selectors';
 import {
   loadClientsLink,
   loadNextPageOfClientsLink,
-} from '../../../../state/clients-link/clients-link.actions';
+  selectClientsLink,
+} from '../../../../state/clients-link';
 import {
   ACTION_KEY,
   CLAZZ,
@@ -14,7 +14,7 @@ import {
   SELECTOR,
 } from '../../../../shared/components/dynamic-views/dynamic-views.module';
 import { ActionsCard } from '../../../../shared/components/dynamic-views/card-view/card-view.component';
-import { ClientLinkView } from '../../../../data/presentation/ClientLink.view';
+import { ClientLinkView } from '../../../../data/presentation';
 
 @Component({
   selector: 'app-client-link-list',

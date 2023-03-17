@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { RoleDto } from '../../data/dto/Role.dto';
+import { Pagination } from '../../core/interfaces';
+import { RoleDto } from '../../data/dto';
 
 export enum RolesActions {
   LOAD_ROLES = '[Roles] Load roles',

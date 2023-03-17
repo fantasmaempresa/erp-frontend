@@ -2,13 +2,11 @@ import { Component } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {
-  selectLastNotification,
-  selectNumberOfNotifications,
-} from '../../../../state/notifications/notification.selectors';
-import {
   loadNotifications,
   readAllNotificationsServer,
-} from '../../../../state/notifications/notification.actions';
+  selectLastNotification,
+  selectNumberOfNotifications,
+} from '../../../../state/notifications';
 
 @Component({
   selector: 'app-notification',

@@ -20,14 +20,14 @@ import {
   readAllNotificationsServer,
   startListenNotification,
 } from './notification.actions';
-import { NotificationsService } from '../../data/services/notifications.service';
+import { NotificationsService } from '../../data/services';
 import { NotificationSocketService } from '../../core/services/SocketChannels/notification-socket.service';
 import { Store } from '@ngrx/store';
 import {
   selectIncomingNotifications,
   selectUnreadNotifications,
 } from './notification.selectors';
-import { NotificationDto } from '../../data/dto/Notification.dto';
+import { NotificationDto } from '../../data/dto';
 
 @Injectable()
 export class NotificationEffects {

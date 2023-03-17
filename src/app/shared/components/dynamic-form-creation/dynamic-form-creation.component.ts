@@ -310,18 +310,18 @@ export class DynamicFormCreationComponent implements OnInit {
           ),
         )
         .subscribe({
-          next: (resp) => {
+          next: async (resp) => {
             if (!resp) {
               return;
             }
-            MessageHelper.successMessage(
+            await MessageHelper.successMessage(
               'Exito',
               'Estructura de formulario actualizada con éxito',
             );
             this.getFormStructures();
           },
-          error: ({ error }) => {
-            MessageHelper.errorMessage(error.error);
+          error: async ({ error }) => {
+            await MessageHelper.errorMessage(error.error);
           },
         });
     }
@@ -354,18 +354,18 @@ export class DynamicFormCreationComponent implements OnInit {
           ),
         )
         .subscribe({
-          next: (resp) => {
+          next: async (resp) => {
             if (!resp) {
               return;
             }
-            MessageHelper.successMessage(
+            await MessageHelper.successMessage(
               'Exito',
               'Estructura de formulario guardada con éxito',
             );
             this.getFormStructures();
           },
-          error: ({ error }) => {
-            MessageHelper.errorMessage(error.error);
+          error: async ({ error }) => {
+            await MessageHelper.errorMessage(error.error);
           },
         });
     }
@@ -377,17 +377,17 @@ export class DynamicFormCreationComponent implements OnInit {
       'Una vez borrada no hay marcha atras.',
       () => {
         this.formStructureService.delete(this.templateId).subscribe({
-          next: () => {
+          next: async () => {
             this.getFormStructures();
-            MessageHelper.successMessage(
+            await MessageHelper.successMessage(
               'Éxito',
               'Se ha eliminado correctamente',
             );
             this.store.dispatch(emptyForm());
             this.addTotalToTemplate();
           },
-          error: ({ error }) => {
-            MessageHelper.errorMessage(error.error);
+          error: async ({ error }) => {
+            await MessageHelper.errorMessage(error.error);
           },
         });
       },

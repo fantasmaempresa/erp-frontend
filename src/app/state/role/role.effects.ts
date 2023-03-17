@@ -6,7 +6,7 @@ import {
   loadRoles,
   loadRolesSuccess,
 } from './role.actions';
-import { RoleService } from '../../data/services/role.service';
+import { RoleService } from '../../data/services';
 
 @Injectable()
 export class RoleEffects {

@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { ProcessPhaseDto } from '../../data/dto/ProcessPhase.dto';
+import { Pagination } from '../../core/interfaces';
+import { ProcessPhaseDto } from '../../data/dto';
 
 export enum ProcessPhaseActions {
   LOAD_PROCESS_PHASE = '[ProcessPhase] Load processPhase',

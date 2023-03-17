@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { WorkAreaDto } from '../../data/dto/WorkArea.dto';
+import { Pagination } from '../../core/interfaces';
+import { WorkAreaDto } from '../../data/dto';
 
 export enum AreasActions {
   LOAD_AREAS = '[Areas] Load areas',

@@ -1,5 +1,5 @@
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { QuoteTemplate } from '../../data/dto/QuoteTemplate.dto';
+import { Pagination } from '../../core/interfaces';
+import { QuoteTemplate } from '../../data/dto';
 
 export interface QuoteTemplateState {
   quote_templates: Pagination<QuoteTemplate> | null;

@@ -6,7 +6,7 @@ import {
   loadClientsLinkSuccess,
   loadNextPageOfClientsLink,
 } from './clients-link.actions';
-import { ClientLinkService } from '../../data/services/client-link.service';
+import { ClientLinkService } from '../../data/services';
 
 @Injectable()
 export class ClientsLinkEffects {

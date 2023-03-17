@@ -109,7 +109,7 @@ export class AreasListComponent implements OnInit, AfterViewInit, OnDestroy {
   delete() {
     MessageHelper.decisionMessage(
       `¿Deseas borrar el area ${this.selection.selected[0].name}?`,
-      'Una vez borrada no hay marcha atras.',
+      'Una vez borrada no hay marcha atrás.',
       () => {
         this.areaService.delete(this.selection.selected[0].id).subscribe({
           next: () => this.store.dispatch(loadAreas()),

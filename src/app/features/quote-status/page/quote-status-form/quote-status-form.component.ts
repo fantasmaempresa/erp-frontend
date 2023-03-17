@@ -48,7 +48,7 @@ export class QuoteStatusFormComponent {
     }
     request$.subscribe({
       next: async () => {
-        MessageHelper.successMessage(
+        await MessageHelper.successMessage(
           '¡Éxito!',
           `El estado de la cotización ha sido ${
             this.isEdit ? 'actualizado' : 'registrado'

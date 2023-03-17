@@ -7,8 +7,8 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MessageHelper } from 'o2c_core';
-import { ClientLinkDto } from '../../../../data/dto/ClientLink.dto';
-import { ClientLinkService } from '../../../../data/services/client-link.service';
+import { ClientLinkDto } from '../../../../data/dto';
+import { ClientLinkService } from '../../../../data/services';
 
 @Component({
   selector: 'app-client-link-form',
@@ -63,8 +63,8 @@ export class ClientLinkFormComponent {
     }
   }
 
-  back() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+  async back() {
+    await this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   onSubmit() {
@@ -85,7 +85,7 @@ export class ClientLinkFormComponent {
     request$.subscribe({
       next: async () => {
         const message = this.isEdit ? 'actualizado' : 'registrado';
-        MessageHelper.successMessage(
+        await MessageHelper.successMessage(
           '¡Éxito!',
           `El cliente ha sido ${message} correctamente.`,
         );

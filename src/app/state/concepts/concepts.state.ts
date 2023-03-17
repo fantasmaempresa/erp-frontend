@@ -1,5 +1,5 @@
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { ConceptDto } from '../../data/dto/Concept.dto';
+import { Pagination } from '../../core/interfaces';
+import { ConceptDto } from '../../data/dto';
 
 export interface ConceptsState {
   concepts: Pagination<ConceptDto> | null;

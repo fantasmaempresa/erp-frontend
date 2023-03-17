@@ -1,5 +1,5 @@
-import { Pagination } from '../../core/interfaces/Pagination.model';
-import { UserDto } from '../../data/dto/User.dto';
+import { Pagination } from '../../core/interfaces';
+import { UserDto } from '../../data/dto';
 
 export interface UsersState {
   users: Pagination<UserDto> | null;

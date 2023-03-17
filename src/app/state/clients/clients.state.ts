@@ -1,5 +1,5 @@
-import { ClientDto } from '../../data/dto/Client.dto';
-import { Pagination } from '../../core/interfaces/Pagination.model';
+import { ClientDto } from '../../data/dto';
+import { Pagination } from '../../core/interfaces';
 
 export interface ClientsState {
   clients: Pagination<ClientDto> | null;

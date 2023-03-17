@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AreaService } from '../../data/services/area.service';
+import { AreaService } from '../../data/services';
 import {
   loadAreas,
   loadAreasSuccess,

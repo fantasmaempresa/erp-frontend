@@ -26,12 +26,12 @@ export class SystemActionSocketService extends LaravelWebSocket {
   get action$(): Observable<any> {
     return this._subject$.asObservable().pipe(
       withLatestFrom(this.user$),
-      switchMap(([{ action, user }, currentUser]) => {
-        // TODO Debemos cambiar y comprobar el tipo de accion de sistema para realizar algun efecto
+      switchMap(async ([{ action, user }, currentUser]) => {
+        // TODO Debemos cambiar y comprobar el tipo de acción de sistema para realizar algún efecto
         console.log(currentUser, action, user);
         if (currentUser?.id === user.id) {
           this.authService.removeTokens();
-          this.router.navigate(['auth']);
+          await this.router.navigate(['auth']);
         }
         return of(null);
       }),
