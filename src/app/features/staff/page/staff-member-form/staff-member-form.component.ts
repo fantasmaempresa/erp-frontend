@@ -5,7 +5,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { AreaService, StaffServiceOld } from '../../../../data/services';
+import { AreaServiceOld, StaffServiceOld } from '../../../../data/services';
 import { map, Observable } from 'rxjs';
 import { MessageHelper } from 'o2c_core';
 import { StaffDto, WorkAreaDto } from '../../../../data/dto';
@@ -40,7 +40,7 @@ export class StaffMemberFormComponent {
     private router: Router,
     private route: ActivatedRoute,
     private staffService: StaffServiceOld,
-    private areaService: AreaService,
+    private areaService: AreaServiceOld,
   ) {
     this.workAreas$ = this.areaService
       .fetchAll()

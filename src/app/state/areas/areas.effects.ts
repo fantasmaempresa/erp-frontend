@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { AreaService } from '../../data/services';
+import { AreaServiceOld } from '../../data/services';
 import {
   loadAreas,
   loadAreasSuccess,
@@ -32,5 +32,5 @@ export class AreasEffects {
     );
   });
 
-  constructor(private actions$: Actions, private areaService: AreaService) {}
+  constructor(private actions$: Actions, private areaService: AreaServiceOld) {}
 }

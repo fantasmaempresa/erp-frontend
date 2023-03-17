@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { AreaService } from '../../../../data/services';
+import { AreaServiceOld } from '../../../../data/services';
 import { WorkAreaDto } from '../../../../data/dto';
 import { MessageHelper } from 'o2c_core';
 
@@ -27,11 +27,12 @@ export class AreaFormComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private areaService: AreaService,
+    private areaService: AreaServiceOld,
   ) {
-    if (this.route.snapshot.queryParams.id) {
+    const id = Number(this.route.snapshot.params.id);
+    if (!isNaN(id)) {
       this.isEdit = true;
-      areaService.fetch(this.route.snapshot.queryParams.id).subscribe({
+      areaService.fetch(id).subscribe({
         next: (area) => {
           this.areaForm.addControl('id', new UntypedFormControl(''));
           this.areaForm.patchValue(area);
