@@ -1,138 +1,224 @@
-<form
-  (ngSubmit)="onSubmit()"
-  [formGroup]="conceptForm"
-  class="row justify-content-center"
->
-  <div class="col-6 d-flex flex-column">
-    <mat-form-field appearance="outline">
-      <mat-label>Nombre</mat-label>
-      <input autocomplete="off" formControlName="name" matInput type="text" />
-      <mat-error appErrorMessage></mat-error>
-    </mat-form-field>
+<mat-card>
+  <mat-toolbar>
+    <div>
+      <button
+        (click)="backToListConcept()"
+        aria-label="Regresar"
+        mat-icon-button
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="conceptForm"
+    class="row justify-content-center"
+  >
+    <div class="col-6 d-flex flex-column">
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input autocomplete="off" formControlName="name" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Descripción</mat-label>
-      <input formControlName="description" matInput type="text" />
-      <mat-error appErrorMessage></mat-error>
-    </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>Descripción</mat-label>
+        <input formControlName="description" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
 
-    <section class="mb-5" formGroupName="formula">
-      <mat-checkbox class="me-5" color="primary" formControlName="percentage">
-        ¿Es porcentaje?
-      </mat-checkbox>
-      <mat-checkbox color="primary" formControlName="operable"
-        >¿Es operable?
-      </mat-checkbox>
-    </section>
+      <section class="mb-5" formGroupName="formula">
+        <mat-checkbox class="me-5" color="primary" formControlName="percentage">
+          ¿Es porcentaje?
+        </mat-checkbox>
+        <mat-checkbox color="primary" formControlName="operable"
+          >¿Es operable?
+        </mat-checkbox>
+      </section>
 
-    <mat-radio-group
-      class="d-flex justify-content-between"
-      formControlName="operationType"
-    >
-      <mat-radio-button color="primary" value="import"
-        >Solo es un importe
-      </mat-radio-button>
-      <mat-radio-button
-        [disabled]="isPercentage.value || isOperable.value"
-        color="primary"
-        value="validity"
-        >Vigencia
-      </mat-radio-button>
-      <mat-radio-button
-        [disabled]="isPercentage.value || isOperable.value"
-        color="primary"
-        value="range"
-        >Rango numérico
-      </mat-radio-button>
-    </mat-radio-group>
+      <mat-radio-group
+        class="d-flex justify-content-between"
+        formControlName="operationType"
+      >
+        <mat-radio-button color="primary" value="import"
+          >Solo es un importe
+        </mat-radio-button>
+        <mat-radio-button
+          [disabled]="isPercentage.value || isOperable.value"
+          color="primary"
+          value="validity"
+          >Vigencia
+        </mat-radio-button>
+        <mat-radio-button
+          [disabled]="isPercentage.value || isOperable.value"
+          color="primary"
+          value="range"
+          >Rango numérico
+        </mat-radio-button>
+      </mat-radio-group>
 
-    <div [ngSwitch]="operationType.value" class="row mt-5">
-      <ng-container *ngSwitchCase="'validity'" formGroupName="formula">
-        <div formGroupName="validity">
-          <mat-radio-group
-            class="d-flex justify-content-between"
-            formControlName="type"
-          >
-            <mat-radio-button color="primary" value="date"
-              >Fecha
-            </mat-radio-button>
-            <mat-radio-button color="primary" value="range"
-              >Rango de fechas
-            </mat-radio-button>
-          </mat-radio-group>
+      <div [ngSwitch]="operationType.value" class="row mt-5">
+        <ng-container *ngSwitchCase="'validity'" formGroupName="formula">
+          <div formGroupName="validity">
+            <mat-radio-group
+              class="d-flex justify-content-between"
+              formControlName="type"
+            >
+              <mat-radio-button color="primary" value="date"
+                >Fecha
+              </mat-radio-button>
+              <mat-radio-button color="primary" value="range"
+                >Rango de fechas
+              </mat-radio-button>
+            </mat-radio-group>
 
-          <div [ngSwitch]="validityType.value" class="mt-3">
-            <ng-container *ngSwitchCase="'date'">
-              <mat-form-field
-                *ngIf="isDateInYears"
-                appearance="outline"
-                class="col-6"
-              >
-                <mat-label>Cantidad</mat-label>
-                <input
-                  autocomplete="off"
-                  formControlName="amount"
-                  matInput
-                  type="text"
-                />
-                <mat-error appErrorMessage></mat-error>
-              </mat-form-field>
+            <div [ngSwitch]="validityType.value" class="mt-3">
+              <ng-container *ngSwitchCase="'date'">
+                <mat-form-field
+                  *ngIf="isDateInYears"
+                  appearance="outline"
+                  class="col-6"
+                >
+                  <mat-label>Cantidad</mat-label>
+                  <input
+                    autocomplete="off"
+                    formControlName="amount"
+                    matInput
+                    type="text"
+                  />
+                  <mat-error appErrorMessage></mat-error>
+                </mat-form-field>
 
-              <mat-form-field
-                *ngIf="!isDateInYears"
-                appearance="outline"
-                class="col-6"
-              >
-                <mat-label>Año</mat-label>
-                <mat-select formControlName="amount">
-                  <mat-option>-- None --</mat-option>
-                  <mat-option *ngFor="let year of years" [value]="year">{{
-                    year
-                  }}</mat-option>
-                </mat-select>
-                <mat-error appErrorMessage></mat-error>
-              </mat-form-field>
+                <mat-form-field
+                  *ngIf="!isDateInYears"
+                  appearance="outline"
+                  class="col-6"
+                >
+                  <mat-label>Año</mat-label>
+                  <mat-select formControlName="amount">
+                    <mat-option>-- None --</mat-option>
+                    <mat-option *ngFor="let year of years" [value]="year">{{
+                      year
+                    }}</mat-option>
+                  </mat-select>
+                  <mat-error appErrorMessage></mat-error>
+                </mat-form-field>
 
-              <mat-checkbox
-                class="ms-5"
-                color="primary"
-                formControlName="is_date"
-              >
-                Es una cantidad de años
-              </mat-checkbox>
-            </ng-container>
+                <mat-checkbox
+                  class="ms-5"
+                  color="primary"
+                  formControlName="is_date"
+                >
+                  Es una cantidad de años
+                </mat-checkbox>
+              </ng-container>
 
-            <ng-container *ngSwitchCase="'range'" formArrayName="between">
+              <ng-container *ngSwitchCase="'range'" formArrayName="between">
+                <div
+                  *ngFor="let _ of betweenValidity.controls; index as i"
+                  [formGroupName]="i"
+                  class="row"
+                >
+                  <mat-form-field appearance="outline" class="col-3">
+                    <mat-label>Inicio</mat-label>
+                    <mat-select formControlName="min">
+                      <mat-option>-- None --</mat-option>
+                      <mat-option *ngFor="let year of years" [value]="year">{{
+                        year
+                      }}</mat-option>
+                    </mat-select>
+                    <mat-error appErrorMessage></mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" class="col-3">
+                    <mat-label>Fin</mat-label>
+                    <mat-select formControlName="max">
+                      <mat-option>-- None --</mat-option>
+                      <mat-option *ngFor="let year of years" [value]="year">{{
+                        year
+                      }}</mat-option>
+                    </mat-select>
+                    <mat-error appErrorMessage></mat-error>
+                  </mat-form-field>
+                  <!--                <mat-form-field appearance="outline" class="col-3">-->
+                  <!--                  <mat-label>Fin</mat-label>-->
+                  <!--                  <input matInput type="text" autocomplete="off" />-->
+                  <!--                  <mat-error appErrorMessage></mat-error>-->
+                  <!--                </mat-form-field>-->
+                  <mat-form-field appearance="outline" class="col-4">
+                    <mat-label>Monto</mat-label>
+                    <input
+                      autocomplete="off"
+                      formControlName="amount"
+                      matInput
+                      type="text"
+                    />
+                    <mat-error appErrorMessage></mat-error>
+                  </mat-form-field>
+                  <div
+                    class="col-2 d-flex align-items-center"
+                    style="margin-top: -20px"
+                  >
+                    <button
+                      (click)="removeRange('validity', i)"
+                      *ngIf="i !== 0"
+                      class="align-self-center search-button"
+                      color="warn"
+                      mat-mini-fab
+                      matTooltip="Eliminar opción"
+                      type="button"
+                    >
+                      <mat-icon>remove</mat-icon>
+                    </button>
+                  </div>
+                </div>
+                <div class="row justify-content-center">
+                  <div class="col-1">
+                    <button
+                      (click)="addRange('validity')"
+                      class="align-self-center search-button"
+                      color="primary"
+                      mat-fab
+                      matTooltip="Agregar otro rango"
+                      type="button"
+                    >
+                      <mat-icon>add</mat-icon>
+                    </button>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'range'" formGroupName="formula">
+          <div formGroupName="range">
+            <div formGroupName="between">
               <div
-                *ngFor="let _ of betweenValidity.controls; index as i"
+                *ngFor="let _ of betweenRange.controls; index as i"
                 [formGroupName]="i"
                 class="row"
               >
                 <mat-form-field appearance="outline" class="col-3">
                   <mat-label>Inicio</mat-label>
-                  <mat-select formControlName="min">
-                    <mat-option>-- None --</mat-option>
-                    <mat-option *ngFor="let year of years" [value]="year">{{
-                      year
-                    }}</mat-option>
-                  </mat-select>
+                  <input
+                    autocomplete="off"
+                    formControlName="min"
+                    matInput
+                    type="text"
+                  />
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="col-3">
                   <mat-label>Fin</mat-label>
-                  <mat-select formControlName="max">
-                    <mat-option>-- None --</mat-option>
-                    <mat-option *ngFor="let year of years" [value]="year">{{
-                      year
-                    }}</mat-option>
-                  </mat-select>
+                  <input
+                    autocomplete="off"
+                    formControlName="max"
+                    matInput
+                    type="text"
+                  />
                   <mat-error appErrorMessage></mat-error>
                 </mat-form-field>
-                <!--                <mat-form-field appearance="outline" class="col-3">-->
-                <!--                  <mat-label>Fin</mat-label>-->
-                <!--                  <input matInput type="text" autocomplete="off" />-->
-                <!--                  <mat-error appErrorMessage></mat-error>-->
-                <!--                </mat-form-field>-->
                 <mat-form-field appearance="outline" class="col-4">
                   <mat-label>Monto</mat-label>
                   <input
@@ -148,7 +234,7 @@
                   style="margin-top: -20px"
                 >
                   <button
-                    (click)="removeRange('validity', i)"
+                    (click)="removeRange('range', i)"
                     *ngIf="i !== 0"
                     class="align-self-center search-button"
                     color="warn"
@@ -163,7 +249,7 @@
               <div class="row justify-content-center">
                 <div class="col-1">
                   <button
-                    (click)="addRange('validity')"
+                    (click)="addRange('range')"
                     class="align-self-center search-button"
                     color="primary"
                     mat-fab
@@ -174,123 +260,50 @@
                   </button>
                 </div>
               </div>
-            </ng-container>
+            </div>
           </div>
-        </div>
+        </ng-container>
+      </div>
+
+      <ng-container
+        *ngIf="
+          operationType.value === 'import' ||
+          (operationType.value === 'validity' && validityType.value === 'date')
+        "
+      >
+        <mat-form-field appearance="outline">
+          <mat-label>Importe</mat-label>
+          <input formControlName="amount" matInput type="number" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
       </ng-container>
 
-      <ng-container *ngSwitchCase="'range'" formGroupName="formula">
-        <div formGroupName="range">
-          <div formGroupName="between">
-            <div
-              *ngFor="let _ of betweenRange.controls; index as i"
-              [formGroupName]="i"
-              class="row"
+      <div
+        *ngIf="operationType.value === 'import'"
+        class="w-100"
+        formGroupName="formula"
+      >
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Tipo de Operación</mat-label>
+          <mat-select formControlName="operation">
+            <mat-option [value]="null">--Ninguna--</mat-option>
+            <mat-option
+              *ngFor="let operation of operations"
+              [value]="operation.value"
+              >{{ operation.label }}</mat-option
             >
-              <mat-form-field appearance="outline" class="col-3">
-                <mat-label>Inicio</mat-label>
-                <input
-                  autocomplete="off"
-                  formControlName="min"
-                  matInput
-                  type="text"
-                />
-                <mat-error appErrorMessage></mat-error>
-              </mat-form-field>
-              <mat-form-field appearance="outline" class="col-3">
-                <mat-label>Fin</mat-label>
-                <input
-                  autocomplete="off"
-                  formControlName="max"
-                  matInput
-                  type="text"
-                />
-                <mat-error appErrorMessage></mat-error>
-              </mat-form-field>
-              <mat-form-field appearance="outline" class="col-4">
-                <mat-label>Monto</mat-label>
-                <input
-                  autocomplete="off"
-                  formControlName="amount"
-                  matInput
-                  type="text"
-                />
-                <mat-error appErrorMessage></mat-error>
-              </mat-form-field>
-              <div
-                class="col-2 d-flex align-items-center"
-                style="margin-top: -20px"
-              >
-                <button
-                  (click)="removeRange('range', i)"
-                  *ngIf="i !== 0"
-                  class="align-self-center search-button"
-                  color="warn"
-                  mat-mini-fab
-                  matTooltip="Eliminar opción"
-                  type="button"
-                >
-                  <mat-icon>remove</mat-icon>
-                </button>
-              </div>
-            </div>
-            <div class="row justify-content-center">
-              <div class="col-1">
-                <button
-                  (click)="addRange('range')"
-                  class="align-self-center search-button"
-                  color="primary"
-                  mat-fab
-                  matTooltip="Agregar otro rango"
-                  type="button"
-                >
-                  <mat-icon>add</mat-icon>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-container>
-    </div>
+          </mat-select>
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+      <div class="row justify-content-between mt-5">
+        <button class="col-4" color="primary" mat-flat-button>Guardar</button>
+        <button class="col-4" color="warn" mat-flat-button type="button">
+          Cancelar
+        </button>
+      </div>
 
-    <ng-container
-      *ngIf="
-        operationType.value === 'import' ||
-        (operationType.value === 'validity' && validityType.value === 'date')
-      "
-    >
-      <mat-form-field appearance="outline">
-        <mat-label>Importe</mat-label>
-        <input formControlName="amount" matInput type="number" />
-        <mat-error appErrorMessage></mat-error>
-      </mat-form-field>
-    </ng-container>
-
-    <div
-      *ngIf="operationType.value === 'import'"
-      class="w-100"
-      formGroupName="formula"
-    >
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>Tipo de Operación</mat-label>
-        <mat-select formControlName="operation">
-          <mat-option [value]="null">--Ninguna--</mat-option>
-          <mat-option
-            *ngFor="let operation of operations"
-            [value]="operation.value"
-            >{{ operation.label }}</mat-option
-          >
-        </mat-select>
-        <mat-error appErrorMessage></mat-error>
-      </mat-form-field>
+      <!--    <p>{{ conceptForm.value | json }}</p>-->
     </div>
-    <div class="row justify-content-between mt-5">
-      <button class="col-4" color="primary" mat-flat-button>Guardar</button>
-      <button class="col-4" color="warn" mat-flat-button type="button">
-        Cancelar
-      </button>
-    </div>
-
-    <!--    <p>{{ conceptForm.value | json }}</p>-->
-  </div>
-</form>
+  </form>
+</mat-card>

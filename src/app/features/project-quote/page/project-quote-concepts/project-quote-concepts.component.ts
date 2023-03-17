@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { UntypedFormArray, UntypedFormControl } from '@angular/forms';
 import { map, Observable } from 'rxjs';
-import { ConceptService } from '../../../../data/services';
+import { ConceptServiceOld } from '../../../../data/services';
 import { ConceptDto } from '../../../../data/dto';
 
 @Component({
@@ -16,7 +16,7 @@ export class ProjectQuoteConceptsComponent {
     .fetchAll()
     .pipe(map((concepts) => concepts.data));
 
-  constructor(private conceptService: ConceptService) {}
+  constructor(private conceptService: ConceptServiceOld) {}
 
   addNewConcept() {
     this.concepts.push(new UntypedFormControl({}));

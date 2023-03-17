@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { ConceptService } from '../../data/services';
+import { ConceptServiceOld } from '../../data/services';
 import {
   loadConcepts,
   loadConceptsSuccess,
@@ -34,6 +34,6 @@ export class ConceptsEffects {
 
   constructor(
     private actions$: Actions,
-    private conceptService: ConceptService,
+    private conceptService: ConceptServiceOld,
   ) {}
 }

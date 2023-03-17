@@ -17,7 +17,7 @@ import {
   UntypedFormControl,
   UntypedFormGroup,
 } from '@angular/forms';
-import { ConceptService, ProjectQuoteService } from '../../../data/services';
+import { ConceptServiceOld, ProjectQuoteService } from '../../../data/services';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ConceptFormDialogComponent } from '../../../features/concepts/dialog/concept-form-dialog/concept-form-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -65,7 +65,7 @@ export class OperationsComponent implements OnInit {
 
   constructor(
     private store: Store,
-    private conceptService: ConceptService,
+    private conceptService: ConceptServiceOld,
     public dialog: MatDialog,
     private projectQuoteService: ProjectQuoteService,
   ) {

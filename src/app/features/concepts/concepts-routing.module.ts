@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChildrenRouteLayoutComponent } from '../../layout/children-route-layout/children-route-layout.component';
-import { ConceptListComponent } from './page/concept-list/concept-list.component';
-import { ConceptPageComponent } from './page/concept-page/concept-page.component';
+import { BasicViewComponent, VIEW_CLAZZ } from 'o2c_core';
+import { ConceptView } from '../../data/presentation/Concept.view';
+import { ConceptFormComponent } from './page/concept-form/concept-form.component';
 
 const routes: Routes = [
   {
@@ -16,18 +17,19 @@ const routes: Routes = [
       },
       {
         path: 'list',
-        component: ConceptListComponent,
+        component: BasicViewComponent,
         data: { breadcrumb: 'Lista de conceptos' },
-      },
-      {
-        path: 'concept',
-        component: ConceptPageComponent,
-        data: { breadcrumb: 'Editar concepto' },
+        providers: [{ provide: VIEW_CLAZZ, useValue: ConceptView }],
       },
       {
         path: 'new',
-        component: ConceptPageComponent,
+        component: ConceptFormComponent,
         data: { breadcrumb: 'Nuevo concepto' },
+      },
+      {
+        path: ':id',
+        component: ConceptFormComponent,
+        data: { breadcrumb: 'Editar concepto' },
       },
     ],
   },

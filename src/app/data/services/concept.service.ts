@@ -2,18 +2,19 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { ConceptDto } from '../dto';
-import { Pagination } from '../../core/interfaces';
+import { Pagination as PaginationOld } from '../../core/interfaces';
+import { CrudService, Pagination } from 'o2c_core';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ConceptService {
+export class ConceptServiceOld {
   endpoint = `${environment.base_url}/concepts`;
 
   constructor(private http: HttpClient) {}
 
   fetchAll() {
-    return this.http.get<Pagination<ConceptDto>>(this.endpoint);
+    return this.http.get<PaginationOld<ConceptDto>>(this.endpoint);
   }
 
   fetch(id: number) {
@@ -37,9 +38,19 @@ export class ConceptService {
     let params = new HttpParams();
     params = params.append('page', `${page}`);
     params = params.append('paginate', `${size}`);
-    return this.http.get<Pagination<ConceptDto>>(
+    return this.http.get<PaginationOld<ConceptDto>>(
       `${environment.base_url}/concepts`,
       { params },
     );
+  }
+}
+
+@Injectable({ providedIn: 'root' })
+export class ConceptService extends CrudService<
+  ConceptDto,
+  Pagination<ConceptDto>
+> {
+  constructor() {
+    super('concepts');
   }
 }

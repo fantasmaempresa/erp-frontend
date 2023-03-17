@@ -5,7 +5,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { ConceptService } from '../../../../data/services';
+import { ConceptServiceOld } from '../../../../data/services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ConceptDto } from '../../../../data/dto';
@@ -42,14 +42,15 @@ export class ConceptFormComponent implements OnInit {
   ];
 
   constructor(
-    private conceptService: ConceptService,
+    private conceptService: ConceptServiceOld,
     private router: Router,
     private route: ActivatedRoute,
   ) {
     this.createRangeOfYears();
-    if (this.route.snapshot.queryParams.id) {
+    const id = Number(this.route.snapshot.params.id);
+    if (!isNaN(id)) {
       this.isEdit = true;
-      conceptService.fetch(this.route.snapshot.queryParams.id).subscribe({
+      conceptService.fetch(id).subscribe({
         next: (concept) => {
           this.conceptForm.addControl('id', new UntypedFormControl(''));
           this.conceptForm.patchValue(concept);
@@ -356,5 +357,9 @@ export class ConceptFormComponent implements OnInit {
         between: new UntypedFormArray([this.createRange()]),
       }),
     );
+  }
+
+  async backToListConcept() {
+    await this.router.navigate(['../'], { relativeTo: this.route });
   }
 }

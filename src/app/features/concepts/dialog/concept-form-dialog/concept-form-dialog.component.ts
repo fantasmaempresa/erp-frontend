@@ -8,7 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { ConceptDto } from '../../../../data/dto';
 import { MessageHelper } from 'o2c_core';
-import { ConceptService } from '../../../../data/services';
+import { ConceptServiceOld } from '../../../../data/services';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -42,7 +42,7 @@ export class ConceptFormDialogComponent implements OnInit {
   constructor(
     public dialogRef: MatDialogRef<ConceptFormDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
-    private conceptService: ConceptService,
+    private conceptService: ConceptServiceOld,
   ) {}
 
   get operationType() {
