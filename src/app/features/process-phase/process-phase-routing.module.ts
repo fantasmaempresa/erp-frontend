@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChildrenRouteLayoutComponent } from '../../layout/children-route-layout/children-route-layout.component';
-import { ProcessPhaseListComponent } from './page/process-phase-list/process-phase-list.component';
 import { ProcessPhaseFormComponent } from './page/process-phase-form/process-phase-form.component';
+import { BasicViewComponent, VIEW_CLAZZ } from 'o2c_core';
+import { ProcessPhaseView } from '../../data/presentation';
 
 const routes: Routes = [
   {
     path: '',
-    component: ChildrenRouteLayoutComponent,
     children: [
       {
         path: '',
@@ -16,8 +15,14 @@ const routes: Routes = [
       },
       {
         path: 'list',
-        component: ProcessPhaseListComponent,
+        component: BasicViewComponent,
         data: { breadcrumb: 'Lista de Fases' },
+        providers: [
+          {
+            provide: VIEW_CLAZZ,
+            useValue: ProcessPhaseView,
+          },
+        ],
       },
       {
         path: 'new',

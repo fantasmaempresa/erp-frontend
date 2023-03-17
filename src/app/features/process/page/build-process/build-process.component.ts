@@ -28,7 +28,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { debounceTime, forkJoin, Subject, take, takeUntil } from 'rxjs';
-import { ProcessPhaseService, RoleService } from '../../../../data/services';
+import { ProcessPhaseServiceOld, RoleService } from '../../../../data/services';
 import {
   loadNextPageOfRoles,
   loadRoles,
@@ -73,7 +73,7 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
 
   constructor(
     private dialog: MatDialog,
-    private processPhaseService: ProcessPhaseService,
+    private processPhaseService: ProcessPhaseServiceOld,
     public rolesService: RoleService,
   ) {
     this.form.valueChanges

@@ -6,7 +6,7 @@ import {
   loadProcessPhase,
   loadProcessPhaseSuccess,
 } from './process-phase.actions';
-import { ProcessPhaseService } from '../../data/services';
+import { ProcessPhaseServiceOld } from '../../data/services';
 
 @Injectable()
 export class ProcessPhaseEffects {
@@ -38,6 +38,6 @@ export class ProcessPhaseEffects {
 
   constructor(
     private actions$: Actions,
-    private phaseService: ProcessPhaseService,
+    private phaseService: ProcessPhaseServiceOld,
   ) {}
 }

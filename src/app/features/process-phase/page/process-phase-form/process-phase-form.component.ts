@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProcessPhaseService, RoleService } from '../../../../data/services';
+import { ProcessPhaseServiceOld, RoleService } from '../../../../data/services';
 import {
   UntypedFormControl,
   UntypedFormGroup,
@@ -29,7 +29,7 @@ export class ProcessPhaseFormComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private processPhaseService: ProcessPhaseService,
+    private processPhaseService: ProcessPhaseServiceOld,
     private roleService: RoleService,
   ) {
     const id = Number(this.route.snapshot.params.id);

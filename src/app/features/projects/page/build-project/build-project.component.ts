@@ -32,7 +32,7 @@ import {
   selectProcess,
 } from '../../../../state/process';
 import {
-  ProcessPhaseService,
+  ProcessPhaseServiceOld,
   ProcessService,
   RoleService,
 } from '../../../../data/services';
@@ -62,7 +62,7 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
 
   constructor(
     private dialog: MatDialog,
-    private processPhaseService: ProcessPhaseService,
+    private processPhaseService: ProcessPhaseServiceOld,
     private processService: ProcessService,
     private roleService: RoleService,
   ) {
