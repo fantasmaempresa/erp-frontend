@@ -13,7 +13,7 @@ import { loadForm, selectDynamicForm } from '../../../../state/dynamic-form';
 import { Store } from '@ngrx/store';
 import { DynamicFormComponent } from '../../../../shared/components';
 import { QuoteTemplateService } from 'src/app/data/services/quote-template.service';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 import {
   Formfield,
   ProjectQuoteDto,

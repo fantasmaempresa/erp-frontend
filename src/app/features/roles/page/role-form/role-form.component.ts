@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { RoleService, UserService } from '../../../../data/services';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 import { RoleDto } from '../../../../data/dto';
 
 @Component({

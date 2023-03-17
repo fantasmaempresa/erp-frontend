@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { StaffService } from '../../../../data/services/staff.service';
 import { map, Observable } from 'rxjs';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 import { StaffDto } from '../../../../data/dto/Staff.dto';
 import { WorkAreaDto } from '../../../../data/dto/WorkArea.dto';
 import { AreaService } from '../../../../data/services/area.service';

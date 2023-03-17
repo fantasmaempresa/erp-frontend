@@ -8,7 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import { AreaService } from '../../../../data/services';
 import { WorkAreaDto } from '../../../../data/dto';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 
 @Component({
   selector: 'app-area-form',

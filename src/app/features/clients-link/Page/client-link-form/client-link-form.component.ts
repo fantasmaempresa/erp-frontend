@@ -6,7 +6,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 import { ClientLinkDto } from '../../../../data/dto/ClientLink.dto';
 import { ClientLinkService } from '../../../../data/services/client-link.service';
 

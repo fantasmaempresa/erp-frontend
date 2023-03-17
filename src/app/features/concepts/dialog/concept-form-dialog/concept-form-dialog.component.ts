@@ -7,7 +7,7 @@ import {
 } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { ConceptDto } from '../../../../data/dto';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 import { ConceptService } from '../../../../data/services';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 

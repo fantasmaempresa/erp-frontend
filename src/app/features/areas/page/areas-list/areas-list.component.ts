@@ -11,7 +11,7 @@ import { Observable, Subscription, tap } from 'rxjs';
 import { Pagination } from '../../../../core/interfaces';
 import { AreaService } from '../../../../data/services';
 import { WorkAreaDto } from '../../../../data/dto';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 import { Store } from '@ngrx/store';
 import {
   emptyAreaList,

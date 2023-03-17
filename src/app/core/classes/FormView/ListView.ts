@@ -1,9 +1,8 @@
 import { Injector } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Action, Store } from '@ngrx/store';
-import { EntityDto } from 'o2c_core';
+import { EntityDto, MessageHelper } from 'o2c_core';
 import { CrudService } from '../Crud/CrudService';
-import { MessageHelper } from '../../../shared/helpers/MessageHelper';
 import { LOAD_ACTION } from '../../../shared/components/dynamic-views/dynamic-views.module';
 import { ActionsCard } from '../../../shared/components/dynamic-views/card-view/card-view.component';
 

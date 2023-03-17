@@ -10,7 +10,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { Observable, Subscription, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { ProjectQuoteDto, QuoteStatusDto } from '../../../../data/dto';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 import { Pagination } from '../../../../core/interfaces';
 import {
   emptyQuoteList,

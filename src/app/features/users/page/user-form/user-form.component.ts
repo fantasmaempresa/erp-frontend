@@ -10,7 +10,7 @@ import { RoleService } from '../../../../data/services/role.service';
 import { map, Observable } from 'rxjs';
 import { RoleDto } from '../../../../data/dto/Role.dto';
 import { UserDto } from '../../../../data/dto/User.dto';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 
 @Component({
   selector: 'app-user-form',

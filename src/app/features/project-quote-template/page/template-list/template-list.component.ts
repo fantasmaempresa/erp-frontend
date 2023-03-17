@@ -6,7 +6,7 @@ import { Pagination } from '../../../../core/interfaces';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { emptyQuoteList, loadNextPageOfQuotes } from '../../../../state/quotes';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 import {
   loadQuoteTemplates,
   selectQuoteTemplates,

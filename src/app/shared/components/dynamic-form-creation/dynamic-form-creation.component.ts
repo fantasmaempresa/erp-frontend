@@ -21,7 +21,7 @@ import {
 } from '../../../state/dynamic-form';
 import { Formfield, QuoteTemplate } from '../../../data/dto';
 import { map, Observable, of, switchMap } from 'rxjs';
-import { MessageHelper } from '../../helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 import {
   FormStructureService,
   QuoteTemplateService,

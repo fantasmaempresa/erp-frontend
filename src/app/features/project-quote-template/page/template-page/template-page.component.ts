@@ -8,7 +8,7 @@ import {
   selectDynamicFormEssentialData,
 } from '../../../../state/dynamic-form';
 import { catchError, lastValueFrom, take, throwError } from 'rxjs';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 import Swal from 'sweetalert2';
 import {
   FormStructureService,

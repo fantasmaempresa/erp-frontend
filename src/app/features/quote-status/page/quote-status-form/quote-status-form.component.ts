@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 import { QuoteStatusService } from '../../../../data/services';
 import { QuoteStatusDto } from '../../../../data/dto';
 

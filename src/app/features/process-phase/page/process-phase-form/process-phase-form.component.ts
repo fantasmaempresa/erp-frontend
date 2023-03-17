@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { map, Observable, pluck, startWith } from 'rxjs';
 import { RoleDto } from '../../../../data/dto';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 
 @Component({
   selector: 'app-process-phase-form',

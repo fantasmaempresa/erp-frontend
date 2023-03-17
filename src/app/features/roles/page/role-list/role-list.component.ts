@@ -8,8 +8,7 @@ import {
 import { selectRoles } from '../../../../state/role/role.selectors';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { EntityDto } from 'o2c_core';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { EntityDto, MessageHelper } from 'o2c_core';
 import { ActionsCard } from '../../../../shared/components/dynamic-views/card-view/card-view.component';
 import {
   loadNextPageOfRoles,

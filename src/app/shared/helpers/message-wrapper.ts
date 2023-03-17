@@ -1,4 +1,4 @@
-import { MessageHelper } from './MessageHelper';
+import { MessageHelper } from 'o2c_core';
 
 export function messageDecision(title: string, body: string) {
   return (target: any, propertyKey: string, descriptor: PropertyDescriptor) => {

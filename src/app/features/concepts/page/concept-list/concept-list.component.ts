@@ -9,7 +9,7 @@ import { SelectionModel } from '@angular/cdk/collections';
 import { ClientDto, ConceptDto } from '../../../../data/dto';
 import { Observable, Subscription, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 import { ConceptService } from '../../../../data/services';
 import { Pagination } from '../../../../core/interfaces';
 import { Store } from '@ngrx/store';

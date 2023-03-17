@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MyProjectsService } from '../../../../data/services/my-projects.service';
 import { Observable } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 import { messageDecision } from '../../../../shared/helpers/message-wrapper';
 
 @Component({

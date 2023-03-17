@@ -8,7 +8,7 @@ import {
 import { SelectionModel } from '@angular/cdk/collections';
 import { Observable, Subscription, tap } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 import { QuoteStatusDto } from '../../../../data/dto';
 import { QuoteStatusService } from '../../../../data/services';
 import { Pagination } from '../../../../core/interfaces';

@@ -9,7 +9,7 @@ import { ConceptService } from '../../../../data/services';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ConceptDto } from '../../../../data/dto';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 
 @Component({
   selector: 'app-concept-form',

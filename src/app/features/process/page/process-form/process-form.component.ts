@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ProcessService } from '../../../../data/services/process.service';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 
 @Component({
   selector: 'app-process-form',

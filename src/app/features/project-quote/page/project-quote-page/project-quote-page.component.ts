@@ -22,7 +22,7 @@ import {
   selectDynamicForm,
   selectStatus,
 } from '../../../../state/dynamic-form';
-import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
+import { MessageHelper } from 'o2c_core';
 import { DynamicFormComponent } from '../../../../shared/components';
 import { ProjectQuoteFormComponent } from '../project-quote-form/project-quote-form.component';
 
