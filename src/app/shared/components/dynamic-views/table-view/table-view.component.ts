@@ -9,10 +9,11 @@ import {
 } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Subscription, tap } from 'rxjs';
-import { EntityDto, Pagination } from '../../../../core/interfaces';
+import { Pagination } from '../../../../core/interfaces';
 import { DynamicViewComponent } from '../class/dynamic-view.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { EntityDto } from 'o2c_core';
 
 @Component({
   selector: 'app-table-view',

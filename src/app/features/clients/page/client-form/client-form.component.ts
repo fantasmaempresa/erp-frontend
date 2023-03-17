@@ -5,10 +5,10 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { ClientService } from '../../../../data/services/client.service';
+import { ClientServiceOld } from '../../../../data/services';
 import { Observable } from 'rxjs';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { ClientDto } from '../../../../data/dto/Client.dto';
+import { ClientDto } from '../../../../data/dto';
 
 @Component({
   selector: 'app-client-form',
@@ -35,7 +35,7 @@ export class ClientFormComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private clientService: ClientService,
+    private clientService: ClientServiceOld,
   ) {
     const id = Number(this.route.snapshot.params.id);
     if (!isNaN(id)) {
@@ -49,8 +49,8 @@ export class ClientFormComponent {
     }
   }
 
-  backToListRoles() {
-    this.router.navigate(['../'], { relativeTo: this.route });
+  async backToListRoles() {
+    await this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   onSubmit() {

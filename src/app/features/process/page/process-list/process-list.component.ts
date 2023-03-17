@@ -10,7 +10,7 @@ import {
   loadNextPageOfProcess,
   loadProcess,
 } from '../../../../state/process/process.actions';
-import { EntityDto } from '../../../../core/interfaces/Entity.dto';
+import { EntityDto } from 'o2c_core';
 import { ActionsCard } from '../../../../shared/components/dynamic-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProcessView } from '../../../../data/presentation/Process.view';

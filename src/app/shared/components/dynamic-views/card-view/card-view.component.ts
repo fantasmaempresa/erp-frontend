@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DynamicViewComponent } from '../class/dynamic-view.component';
-import { EntityDto } from '../../../../core/interfaces/Entity.dto';
+import { EntityDto } from 'o2c_core';
 
 export interface ActionsCard {
   icon: string;

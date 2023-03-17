@@ -1,5 +1,5 @@
 import { UserDto } from './User.dto';
-import { EntityDto } from '../../core/interfaces';
+import { EntityDto } from 'o2c_core';
 
 export interface ClientDto extends EntityDto {
   email: string;

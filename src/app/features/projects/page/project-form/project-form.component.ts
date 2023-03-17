@@ -13,12 +13,7 @@ import {
   LOAD_NEXT_ACTION,
   SELECTOR,
 } from '../../../../shared/components/dynamic-views/dynamic-views.module';
-import { selectClients } from '../../../../state/clients/clients.selectors';
-import {
-  loadClients,
-  loadNextPageOfClients,
-} from '../../../../state/clients/clients.actions';
-import { ClientService } from '../../../../data/services/client.service';
+import { ClientServiceOld } from '../../../../data/services/client.service';
 import { ProcessService } from '../../../../data/services/process.service';
 import { selectProcess } from '../../../../state/process/process.selectors';
 import {
@@ -41,12 +36,7 @@ export class ProjectFormComponent {
 
   form!: UntypedFormGroup;
 
-  clientProvider: StaticProvider[] = [
-    { provide: SELECTOR, useValue: selectClients },
-    { provide: CLAZZ, useValue: ClientView },
-    { provide: LOAD_ACTION, useValue: loadClients() },
-    { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfClients },
-  ];
+  clientProvider = ClientView;
 
   processProvider: StaticProvider[] = [
     { provide: SELECTOR, useValue: selectProcess },
@@ -59,7 +49,7 @@ export class ProjectFormComponent {
     private router: Router,
     private route: ActivatedRoute,
     private projectService: ProjectService,
-    public clientService: ClientService,
+    public clientService: ClientServiceOld,
     public processService: ProcessService,
   ) {
     this.form = new UntypedFormGroup({

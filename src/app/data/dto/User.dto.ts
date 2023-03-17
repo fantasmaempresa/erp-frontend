@@ -1,4 +1,4 @@
-import { EntityDto } from '../../core/interfaces';
+import { EntityDto } from 'o2c_core';
 import { RoleDto } from './Role.dto';
 
 export interface UserDto extends EntityDto {

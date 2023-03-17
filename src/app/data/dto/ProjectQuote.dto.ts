@@ -1,4 +1,4 @@
-import { EntityDto } from '../../core/interfaces';
+import { EntityDto } from 'o2c_core';
 import { ClientDto } from './Client.dto';
 import { Formfield } from './Formfield.dto';
 import { Operations } from '../models/Operations.model';

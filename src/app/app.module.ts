@@ -19,6 +19,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 import { NotificationModule } from './features/notification/notification.module';
 import { MatPaginatorIntl } from '@angular/material/paginator';
+import { URL_BASE_CRUD_SERVICE } from 'o2c_core';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
   providers: [
     { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: URL_BASE_CRUD_SERVICE, useValue: environment.base_url },
   ],
   bootstrap: [AppComponent],
   exports: [FooterComponent, HeaderComponent],

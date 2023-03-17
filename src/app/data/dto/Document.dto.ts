@@ -1,4 +1,4 @@
-import { EntityDto } from '../../core/interfaces';
+import { EntityDto } from 'o2c_core';
 
 export interface DocumentDto extends EntityDto {
   name: string;

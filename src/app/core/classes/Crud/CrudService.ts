@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
-import { CrudOperations, EntityDto, Pagination } from '../../interfaces';
+import { CrudOperations, Pagination } from '../../interfaces';
+import { EntityDto } from 'o2c_core';
 
 export abstract class CrudService<T extends EntityDto>
   implements CrudOperations<T>

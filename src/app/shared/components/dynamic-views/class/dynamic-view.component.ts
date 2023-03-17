@@ -2,7 +2,7 @@ import { MemoizedSelector, Store } from '@ngrx/store';
 import { Component, Injector } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, shareReplay } from 'rxjs';
-import { EntityDto, Pagination } from '../../../../core/interfaces';
+import { Pagination } from '../../../../core/interfaces';
 import {
   ACTION_KEY,
   CLAZZ,
@@ -13,6 +13,7 @@ import {
 import { Class2ViewBuilderService } from '../services/class2-view-builder.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PageEvent } from '@angular/material/paginator';
+import { EntityDto } from 'o2c_core';
 
 @Component({
   template: '',

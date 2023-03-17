@@ -1,4 +1,4 @@
-import { EntityDto } from '../../core/interfaces';
+import { EntityDto } from 'o2c_core';
 import { Formfield } from './Formfield.dto';
 
 export interface TemplateQuotes extends EntityDto {

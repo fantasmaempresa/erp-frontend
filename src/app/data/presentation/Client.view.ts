@@ -1,35 +1,58 @@
-import {
-  mapToLabel,
-  printLabel,
-} from '../../shared/components/dynamic-views/DynamicViews.decorators';
+import { ViewActions, viewCrud, viewLabel, viewMapTo } from 'o2c_core';
+import { ClientService } from '../services';
+import { ClientDto } from '../dto';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
 
+const goToClientLink = new ViewActions<ClientDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['../', (row as ClientDto).id, 'clientsLink'], {
+      relativeTo: route,
+    });
+  },
+  'people',
+  {
+    tooltip: 'Ver Enlaces',
+    isVisible: (row) => row && row.type === 1,
+    color: 'accent',
+  },
+);
+
+@viewCrud({
+  classProvider: ClientService,
+  registerName: 'Cliente',
+  actions: [goToClientLink],
+  route: DEFAULT_ROUTE_CONFIGURATION,
+})
 export class ClientView {
-  @printLabel('Nombre')
+  @viewLabel('Nombre')
   name: string;
 
-  @printLabel('Correo')
+  @viewLabel('Correo')
   email: string;
 
-  @printLabel('Teléfono')
+  @viewLabel('Teléfono')
   phone: string;
 
-  @printLabel('Apodo')
+  @viewLabel('Apodo')
   nickname: string;
 
-  @printLabel('Dirección')
+  @viewLabel('Dirección')
   address: string;
 
-  @printLabel('RFC')
+  @viewLabel('RFC')
   rfc: string;
 
-  @mapToLabel((value: any) => {
+  @viewMapTo((value: any) => {
     const types = {
       1: 'Moral',
       2: 'Física',
     };
     return types[value as keyof typeof types];
   })
-  @printLabel('Tipo de Persona')
+  @viewLabel('Tipo de Persona')
   type: number;
 
   constructor(

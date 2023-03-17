@@ -1,6 +1,6 @@
 import { ClientDto } from './Client.dto';
 import { UserDto } from './User.dto';
-import { EntityDto } from '../../core/interfaces';
+import { EntityDto } from 'o2c_core';
 
 export interface ProjectDto extends EntityDto {
   name: string;

@@ -1,4 +1,4 @@
-import { EntityDto } from '../../core/interfaces';
+import { EntityDto } from 'o2c_core';
 import { RoleDto } from './Role.dto';
 import { StaffDto } from './Staff.dto';
 import { ClientDto } from './Client.dto';

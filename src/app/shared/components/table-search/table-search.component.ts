@@ -9,7 +9,7 @@ import {
 import { SelectionModel } from '@angular/cdk/collections';
 import { ClientDto } from '../../../data/dto';
 import { Observable, Subscription, tap } from 'rxjs';
-import { ClientService } from '../../../data/services';
+import { ClientServiceOld } from '../../../data/services';
 import { Pagination } from '../../../core/interfaces';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -59,7 +59,7 @@ export class TableSearchComponent implements OnDestroy {
 
   optionSelectedSubscription!: Subscription;
 
-  constructor(private clientService: ClientService) {
+  constructor(private clientService: ClientServiceOld) {
     this.fetchData();
     this.optionSelectedSubscription = this.selection.changed.subscribe(
       (res) => {

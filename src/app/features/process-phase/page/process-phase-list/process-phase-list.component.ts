@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { EntityDto } from '../../../../core/interfaces/Entity.dto';
+import { EntityDto } from 'o2c_core';
 import { ActionsCard } from '../../../../shared/components/dynamic-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import {

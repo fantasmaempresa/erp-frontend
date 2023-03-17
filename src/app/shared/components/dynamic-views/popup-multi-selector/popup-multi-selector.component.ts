@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Observable, Subscription, tap } from 'rxjs';
-import { EntityDto, Pagination } from '../../../../core/interfaces';
+import { Pagination } from '../../../../core/interfaces';
 import { Store } from '@ngrx/store';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DynamicViewComponent } from '../class/dynamic-view.component';
@@ -18,6 +18,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatCheckbox } from '@angular/material/checkbox';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { EntityDto } from 'o2c_core';
 
 interface PopUpMultiData {
   property: string;

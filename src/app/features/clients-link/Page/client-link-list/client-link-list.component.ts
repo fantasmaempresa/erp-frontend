@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { EntityDto } from '../../../../core/interfaces/Entity.dto';
+import { EntityDto } from 'o2c_core';
 import { selectClientsLink } from '../../../../state/clients-link/clients-link.selectors';
 import {
   loadClientsLink,

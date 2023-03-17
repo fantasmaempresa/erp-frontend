@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChildrenRouteLayoutComponent } from '../../layout/children-route-layout/children-route-layout.component';
-import { ClientsListComponent } from './page/clients-list/clients-list.component';
 import { ClientFormComponent } from './page/client-form/client-form.component';
+import { BasicViewComponent, VIEW_CLAZZ } from 'o2c_core';
+import { ClientView } from '../../data/presentation';
 
 const routes: Routes = [
   {
     path: '',
-    component: ChildrenRouteLayoutComponent,
     children: [
       {
         path: '',
@@ -16,8 +15,9 @@ const routes: Routes = [
       },
       {
         path: 'list',
-        component: ClientsListComponent,
+        component: BasicViewComponent,
         data: { breadcrumb: 'Lista de clientes' },
+        providers: [{ provide: VIEW_CLAZZ, useValue: ClientView }],
       },
       {
         path: 'new',

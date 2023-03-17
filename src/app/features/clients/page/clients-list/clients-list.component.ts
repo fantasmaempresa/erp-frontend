@@ -1,5 +1,5 @@
 import { Component, Injector } from '@angular/core';
-import { ClientService } from '../../../../data/services';
+import { ClientServiceOld } from '../../../../data/services';
 import {
   CLAZZ,
   LOAD_ACTION,
@@ -27,7 +27,7 @@ import { ClientView } from '../../../../data/presentation';
   ],
 })
 export class ClientsListComponent extends ListView<ClientDto> {
-  constructor(injector: Injector, private clientService: ClientService) {
+  constructor(injector: Injector, private clientService: ClientServiceOld) {
     super(injector, clientService, 'Cliente');
     this.actions = [
       {

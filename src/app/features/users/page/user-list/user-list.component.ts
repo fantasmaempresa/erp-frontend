@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MessageHelper } from '../../../../shared/helpers/MessageHelper';
-import { EntityDto } from '../../../../core/interfaces/Entity.dto';
+import { EntityDto } from 'o2c_core';
 import { ActionsCard } from '../../../../shared/components/dynamic-views/card-view/card-view.component';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
