@@ -5,7 +5,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { ProcessService } from '../../../../data/services';
+import { ProcessServiceOld } from '../../../../data/services';
 import { MessageHelper } from 'o2c_core';
 
 @Component({
@@ -23,7 +23,7 @@ export class ProcessFormComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private processService: ProcessService,
+    private processService: ProcessServiceOld,
   ) {
     this.form = new UntypedFormGroup({
       name: new UntypedFormControl(null, Validators.required),

@@ -4,11 +4,7 @@
   "
   class="custom-container"
 >
-  <mat-form-field
-    appChipListAutocompleteFix
-    appearance="outline"
-    class="custom-control"
-  >
+  <mat-form-field appearance="outline" class="custom-control">
     <mat-label>{{ label }}</mat-label>
     <mat-chip-grid #chipList>
       <mat-chip (removed)="remove(item)" *ngFor="let item of data">

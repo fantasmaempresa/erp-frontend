@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ProcessService } from './process.service';
+import { ProcessServiceOld } from './process.service';
 
 describe('ProcessService', () => {
-  let service: ProcessService;
+  let service: ProcessServiceOld;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ProcessService);
+    service = TestBed.inject(ProcessServiceOld);
   });
 
   it('should be created', () => {

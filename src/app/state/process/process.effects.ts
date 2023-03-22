@@ -6,7 +6,7 @@ import {
   loadProcess,
   loadProcessSuccess,
 } from './process.actions';
-import { ProcessService } from '../../data/services';
+import { ProcessServiceOld } from '../../data/services';
 
 @Injectable()
 export class ProcessEffects {
@@ -34,6 +34,6 @@ export class ProcessEffects {
 
   constructor(
     private actions$: Actions,
-    private processService: ProcessService,
+    private processService: ProcessServiceOld,
   ) {}
 }

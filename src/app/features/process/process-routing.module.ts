@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChildrenRouteLayoutComponent } from '../../layout/children-route-layout/children-route-layout.component';
 import { ProcessFormComponent } from './page/process-form/process-form.component';
-import { ProcessListComponent } from './page/process-list/process-list.component';
+import { BasicViewComponent, VIEW_CLAZZ } from 'o2c_core';
+import { ProcessView } from '../../data/presentation';
 
 const routes: Routes = [
   {
@@ -16,8 +17,9 @@ const routes: Routes = [
       },
       {
         path: 'list',
-        component: ProcessListComponent,
+        component: BasicViewComponent,
         data: { breadcrumb: 'Lista de Procesos' },
+        providers: [{ provide: VIEW_CLAZZ, useValue: ProcessView }],
       },
       {
         path: 'new',

@@ -1,4 +1,4 @@
-import { Component, forwardRef, Injector, OnDestroy } from '@angular/core';
+import { Component, forwardRef, OnDestroy } from '@angular/core';
 import {
   ControlValueAccessor,
   NG_VALUE_ACCESSOR,
@@ -7,37 +7,23 @@ import {
   UntypedFormGroup,
 } from '@angular/forms';
 import {
-  CLAZZ,
-  LOAD_ACTION,
-  LOAD_NEXT_ACTION,
-  SELECTOR,
-} from '../../../../shared/components/dynamic-views/dynamic-views.module';
-import { PopupMultiSelectorComponent } from '../../../../shared/components/dynamic-views/popup-multi-selector/popup-multi-selector.component';
-import {
-  filter,
   forkJoin,
   lastValueFrom,
   map,
   Observable,
   shareReplay,
   Subject,
-  take,
   takeUntil,
   tap,
 } from 'rxjs';
 import { ProcessDto, ProcessPhaseDto } from '../../../../data/dto';
 import {
-  loadNextPageOfProcess,
-  loadProcess,
-  selectProcess,
-} from '../../../../state/process';
-import {
   ProcessPhaseServiceOld,
-  ProcessService,
+  ProcessServiceOld,
   RoleService,
 } from '../../../../data/services';
 import { ProcessView, ProjectView } from '../../../../data/presentation';
-import { MatDialog } from '@angular/material/dialog';
+import { PopupService } from 'o2c_core';
 
 @Component({
   selector: 'app-build-project',
@@ -61,10 +47,10 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
   private destroy$ = new Subject<boolean>();
 
   constructor(
-    private dialog: MatDialog,
     private processPhaseService: ProcessPhaseServiceOld,
-    private processService: ProcessService,
+    private processService: ProcessServiceOld,
     private roleService: RoleService,
+    private popupService: PopupService,
   ) {
     this.involvedFormArray.valueChanges
       .pipe(takeUntil(this.destroy$))
@@ -206,34 +192,17 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
   }
 
   openDialog() {
-    const inj = Injector.create({
-      providers: [
-        { provide: CLAZZ, useValue: ProcessView },
-        { provide: LOAD_ACTION, useValue: loadProcess() },
-        { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfProcess },
-        { provide: SELECTOR, useValue: selectProcess },
-      ],
-    });
+    const dialogRef = this.popupService.openTablePopup(
+      ProcessView,
+      'Selecciona un proceso',
+      { isMulti: true },
+    );
 
-    const dialogRef = this.dialog.open(PopupMultiSelectorComponent, {
-      data: {
-        title: 'Procesos',
-        property: 'name',
-        inj,
-      },
+    dialogRef.subscribe((processes: any[]) => {
+      console.log('Entra');
+      this.buildInvolvedFormArray(processes);
+      this.processes = processes;
     });
-
-    dialogRef
-      .afterClosed()
-      .pipe(
-        take(1),
-        filter((value: any[]) => !!value),
-      )
-      .subscribe((processes: any[]) => {
-        console.log('Entra');
-        this.buildInvolvedFormArray(processes);
-        this.processes = processes;
-      });
   }
 
   ngOnDestroy(): void {
