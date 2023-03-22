@@ -82,7 +82,7 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
   mapProcessPhase = (process: any): Observable<ProcessPhaseDto> =>
     this.processPhaseService.fetch(process.phase.id).pipe(shareReplay());
 
-  nameMapFn = (value: any) => value.name;
+  nameMapFn = (value: any) => value?.name;
 
   roleGroup = (groupArray: any[]) => {
     const group$ = groupArray.map(({ id }) => this.roleService.fetch(id));
@@ -182,7 +182,7 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
         const references = valueToPatch.map((process) => ({
           phases: process.phases.map((phase: any) => ({
             supervisor_reference: phase.supervisor_reference,
-            work_reference: phase.work_referenc,
+            work_reference: phase.work_reference,
           })),
         }));
         this.involvedFormArray.patchValue(references);
@@ -192,17 +192,13 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
   }
 
   openDialog() {
-    const dialogRef = this.popupService.openTablePopup(
-      ProcessView,
-      'Selecciona un proceso',
-      { isMulti: true },
-    );
-
-    dialogRef.subscribe((processes: any[]) => {
-      console.log('Entra');
-      this.buildInvolvedFormArray(processes);
-      this.processes = processes;
-    });
+    this.popupService
+      .openTablePopup(ProcessView, 'Selecciona un proceso', { isMulti: true })
+      .subscribe((processes: any[]) => {
+        console.log('Entra');
+        this.buildInvolvedFormArray(processes);
+        this.processes = processes;
+      });
   }
 
   ngOnDestroy(): void {

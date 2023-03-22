@@ -27,7 +27,6 @@ import { TableSearchComponent } from './components/table-search/table-search.com
 import { DynamicFormInputComponent } from './components/dynamic-form-input/dynamic-form-input.component';
 import { FromDatePipe } from './pipes';
 import { OperationsComponent } from './components/operations/operations.component';
-import { GenericAutocompleteChipComponent } from './components/generic-autocomplete-chip/generic-autocomplete-chip.component';
 import { InputImageComponent } from './components/input-image/input-image.component';
 import { InputFileComponent } from './components/input-file/input-file.component';
 import { InputCoordinateComponent } from './components/input-coordinate/input-coordinate.component';
@@ -52,7 +51,6 @@ import { DynamicViewsModule } from './components/dynamic-views/dynamic-views.mod
     DynamicFormComponent,
     DynamicFormCreationComponent,
     OperationsComponent,
-    GenericAutocompleteChipComponent,
     InputImageComponent,
     InputFileComponent,
     InputCoordinateComponent,
@@ -87,7 +85,6 @@ import { DynamicViewsModule } from './components/dynamic-views/dynamic-views.mod
     DynamicFormComponent,
     DynamicFormCreationComponent,
     OperationsComponent,
-    GenericAutocompleteChipComponent,
     InputImageComponent,
     InputFileComponent,
     InputCoordinateComponent,

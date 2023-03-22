@@ -30,13 +30,13 @@
       </mat-form-field>
 
       <ng-container formGroupName="config">
-        <app-generic-autocomplete-chip
+        <o2c-autocomplete-chip
           [allData]="modules$ | async"
           [mapFn]="moduleName"
           formControlName="modules"
           label="Módulos"
           placeholder="Escribe el nombre de los módulos"
-        ></app-generic-autocomplete-chip>
+        ></o2c-autocomplete-chip>
 
         <section class="mb-5">
           <mat-checkbox formControlName="view_mode"> Modo vista</mat-checkbox>

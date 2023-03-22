@@ -65,7 +65,7 @@
                     </div>
                   </div>
                   <div class="process-phase__container">
-                    <app-generic-autocomplete-chip
+                    <o2c-autocomplete-chip
                       [allData]="
                         processPhase.involved.supervisor
                           | mapTo : userGroup
@@ -75,7 +75,7 @@
                       formControlName="supervisor_reference"
                       label="Usuarios"
                       placeholder="¿Que usuarios revisaran el proyecto?"
-                    ></app-generic-autocomplete-chip>
+                    ></o2c-autocomplete-chip>
                     <div class="process-phase__config">
                       <div
                         *ngFor="
@@ -133,7 +133,7 @@
                     </div>
                   </div>
                   <div class="process-phase__container">
-                    <app-generic-autocomplete-chip
+                    <o2c-autocomplete-chip
                       [allData]="
                         processPhase.involved.work_group
                           | mapTo : userGroup
@@ -143,7 +143,7 @@
                       formControlName="work_reference"
                       label="Usuarios"
                       placeholder="¿Que usuarios revisaran el proyecto?"
-                    ></app-generic-autocomplete-chip>
+                    ></o2c-autocomplete-chip>
                     <div class="process-phase__config">
                       <div
                         *ngFor="

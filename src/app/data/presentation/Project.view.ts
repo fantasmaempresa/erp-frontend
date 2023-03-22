@@ -1,18 +1,25 @@
-import { printLabel } from '../../shared/components/dynamic-views/DynamicViews.decorators';
+import { viewCrud, viewLabel } from 'o2c_core';
+import { ProjectService } from '../services';
+import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
 
+@viewCrud({
+  classProvider: ProjectService,
+  route: DEFAULT_ROUTE_CONFIGURATION,
+  registerName: 'Project',
+})
 export class ProjectView {
-  @printLabel('Nombre')
+  @viewLabel('Nombre')
   name: string;
 
-  @printLabel('Descripción')
+  @viewLabel('Descripción')
   description: string;
 
-  @printLabel('Fecha')
+  @viewLabel('Fecha')
   estimate_end_date: Date;
 
   quotes: string;
 
-  @printLabel('Folio')
+  @viewLabel('Folio')
   folio: string;
 
   constructor(

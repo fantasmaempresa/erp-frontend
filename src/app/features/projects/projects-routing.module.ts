@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChildrenRouteLayoutComponent } from '../../layout/children-route-layout/children-route-layout.component';
-import { ProjectListComponent } from './page/project-list/project-list.component';
 import { ProjectFormComponent } from './page/project-form/project-form.component';
+import { BasicViewComponent, VIEW_CLAZZ } from 'o2c_core';
+import { ProjectView } from '../../data/presentation';
 
 const routes: Routes = [
   {
@@ -16,8 +17,9 @@ const routes: Routes = [
       },
       {
         path: 'list',
-        component: ProjectListComponent,
+        component: BasicViewComponent,
         data: { breadcrumb: 'Lista de Proyectos' },
+        providers: [{ provide: VIEW_CLAZZ, useValue: ProjectView }],
       },
       {
         path: 'new',

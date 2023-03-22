@@ -5,7 +5,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProjectService } from '../../../../data/services';
+import { ProjectServiceOld } from '../../../../data/services';
 import { MessageHelper } from 'o2c_core';
 import { format } from 'date-fns';
 import { ClientView } from '../../../../data/presentation';
@@ -27,7 +27,7 @@ export class ProjectFormComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private projectService: ProjectService,
+    private projectService: ProjectServiceOld,
   ) {
     this.form = new UntypedFormGroup({
       name: new UntypedFormControl(null, Validators.required),
