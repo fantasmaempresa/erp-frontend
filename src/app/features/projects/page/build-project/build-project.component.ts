@@ -98,11 +98,8 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
       ),
     );
 
-  users = (
-    users$: Observable<any[]>,
-    [i, j, type]: [number, number, string],
-  ) => {
-    return users$.pipe(
+  users = (users$: Observable<any[]>, [i, j, type]: [number, number, string]) =>
+    users$.pipe(
       tap((users) => {
         const phasesArray = (
           this.form.get('involved') as UntypedFormArray
@@ -119,6 +116,7 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
 
           if (teamArray.length < users.length) {
             const user = users[users.length - 1];
+
             teamArray.push(
               BuildProjectComponent.createMandatoryConfig(configType, {
                 id: user.id,
@@ -138,7 +136,6 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
         }
       }),
     );
-  };
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -186,7 +183,6 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
           })),
         }));
         this.involvedFormArray.patchValue(references);
-        this.involvedFormArray.patchValue(valueToPatch);
       });
     }
   }
