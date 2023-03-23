@@ -1,19 +1,22 @@
-import {
-  mapToHTML,
-  mapToLabel,
-  printLabel,
-} from '../../shared/components/dynamic-views/DynamicViews.decorators';
 import { RoleDto } from '../dto';
+import { viewCrud, viewHTML, viewLabel, viewMapTo } from 'o2c_core';
+import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
+import { UserService } from '../services';
 
+@viewCrud({
+  classProvider: UserService,
+  route: DEFAULT_ROUTE_CONFIGURATION,
+  registerName: 'Usuario',
+})
 export class UserView {
-  @printLabel('Nombre')
+  @viewLabel('Nombre')
   name!: string;
 
-  @printLabel('Correo')
+  @viewLabel('Correo')
   email: string;
 
-  @printLabel('Estado de Conexión')
-  @mapToHTML((online) => {
+  @viewLabel('Estado de Conexión')
+  @viewHTML((online) => {
     const status = {
       0: '#f91a1a', //Desconectado
       1: '#3be30e', //Conectado
@@ -23,8 +26,8 @@ export class UserView {
   })
   online: number;
 
-  @printLabel('Acceso a la plataforma')
-  @mapToHTML((online) => {
+  @viewLabel('Acceso a la plataforma')
+  @viewHTML((online) => {
     const status = {
       1: '#f91a1a', //Desconectado
       0: '#3be30e', //Conectado
@@ -34,8 +37,8 @@ export class UserView {
   })
   locked: number;
 
-  @printLabel('Rol')
-  @mapToLabel((value) => value?.name)
+  @viewLabel('Rol')
+  @viewMapTo((value: any) => value?.name)
   role: RoleDto;
 
   constructor(

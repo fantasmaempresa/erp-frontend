@@ -1,13 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChildrenRouteLayoutComponent } from '../../layout/children-route-layout/children-route-layout.component';
-import { UserListComponent } from './page/user-list/user-list.component';
 import { UserFormComponent } from './page/user-form/user-form.component';
+import { BasicViewComponent, VIEW_CLAZZ } from 'o2c_core';
+import { UserView } from '../../data/presentation';
 
 const routes: Routes = [
   {
     path: '',
-    component: ChildrenRouteLayoutComponent,
     children: [
       {
         path: '',
@@ -16,18 +15,19 @@ const routes: Routes = [
       },
       {
         path: 'list',
-        component: UserListComponent,
+        component: BasicViewComponent,
         data: { breadcrumb: 'Lista de usuarios' },
-      },
-      {
-        path: 'user',
-        component: UserFormComponent,
-        data: { breadcrumb: 'Editar usuario' },
+        providers: [{ provide: VIEW_CLAZZ, useValue: UserView }],
       },
       {
         path: 'new',
         component: UserFormComponent,
         data: { breadcrumb: 'Nuevo usuario' },
+      },
+      {
+        path: ':id',
+        component: UserFormComponent,
+        data: { breadcrumb: 'Editar usuario' },
       },
     ],
   },

@@ -1,15 +1,9 @@
-import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap } from 'rxjs';
-import {
-  changeUser,
-  loadNextPageOfUsers,
-  loadUsers,
-  loadUsersSuccess,
-  startToListenUsers,
-} from './users.actions';
-import { UserService } from '../../data/services';
-import { RefreshDataSocketService } from '../../core/services/SocketChannels/refresh-data-socket.service';
+import { Injectable } from "@angular/core";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { map, mergeMap } from "rxjs";
+import { changeUser, loadNextPageOfUsers, loadUsers, loadUsersSuccess, startToListenUsers } from "./users.actions";
+import { UserServiceOld } from "../../data/services";
+import { RefreshDataSocketService } from "../../core/services/SocketChannels/refresh-data-socket.service";
 
 @Injectable()
 export class UsersEffects {
@@ -20,7 +14,7 @@ export class UsersEffects {
         return this.userService
           .fetchAll()
           .pipe(map((users) => loadUsersSuccess({ users })));
-      }),
+      })
     );
   });
 
@@ -31,7 +25,7 @@ export class UsersEffects {
         return this.userService
           .changePage(page, size)
           .pipe(map((users) => loadUsersSuccess({ users })));
-      }),
+      })
     );
   });
 
@@ -39,13 +33,14 @@ export class UsersEffects {
     return this.actions$.pipe(
       ofType(startToListenUsers),
       mergeMap(() => this.userSocket.userStatus$),
-      map((user) => changeUser({ user })),
+      map((user) => changeUser({ user }))
     );
   });
 
   constructor(
     private actions$: Actions,
-    private userService: UserService,
-    private userSocket: RefreshDataSocketService,
-  ) {}
+    private userService: UserServiceOld,
+    private userSocket: RefreshDataSocketService
+  ) {
+  }
 }

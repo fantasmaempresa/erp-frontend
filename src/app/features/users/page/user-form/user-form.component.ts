@@ -1,30 +1,26 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import {
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
-import { RoleServiceOld, UserService } from '../../../../data/services';
-import { map, Observable } from 'rxjs';
-import { RoleDto, UserDto } from '../../../../data/dto';
-import { MessageHelper } from 'o2c_core';
+import { Component } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import { RoleServiceOld, UserServiceOld } from "../../../../data/services";
+import { map, Observable } from "rxjs";
+import { RoleDto, UserDto } from "../../../../data/dto";
+import { MessageHelper } from "o2c_core";
 
 @Component({
-  selector: 'app-user-form',
-  templateUrl: './user-form.component.html',
-  styleUrls: ['./user-form.component.scss'],
+  selector: "app-user-form",
+  templateUrl: "./user-form.component.html",
+  styleUrls: ["./user-form.component.scss"]
 })
 export class UserFormComponent {
   userForm = new UntypedFormGroup({
-    name: new UntypedFormControl('', [Validators.required]),
-    email: new UntypedFormControl('', [Validators.required, Validators.email]),
-    password: new UntypedFormControl('', [
+    name: new UntypedFormControl("", [Validators.required]),
+    email: new UntypedFormControl("", [Validators.required, Validators.email]),
+    password: new UntypedFormControl("", [
       Validators.required,
-      Validators.minLength(6),
+      Validators.minLength(6)
     ]),
     role_id: new UntypedFormControl(null, [Validators.required]),
-    config: new UntypedFormControl({ test: 'test' }),
+    config: new UntypedFormControl({ test: "test" })
   });
 
   isEdit = false;
@@ -36,23 +32,24 @@ export class UserFormComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private userService: UserService,
-    private roleService: RoleServiceOld,
+    private userService: UserServiceOld,
+    private roleService: RoleServiceOld
   ) {
     this.roles$ = roleService.fetchAll().pipe(map((roles) => roles.data));
-    if (this.route.snapshot.queryParams.id) {
+    const id = Number(this.route.snapshot.params.id);
+    if (!isNaN(id)) {
       this.isEdit = true;
-      userService.fetch(this.route.snapshot.queryParams.id).subscribe({
+      userService.fetch(id).subscribe({
         next: (user) => {
-          this.userForm.addControl('id', new UntypedFormControl(''));
+          this.userForm.addControl("id", new UntypedFormControl(""));
           this.userForm.patchValue(user);
-        },
+        }
       });
     }
   }
 
   async backToListUsers() {
-    await this.router.navigate(['../'], { relativeTo: this.route });
+    await this.router.navigate(["../"], { relativeTo: this.route });
   }
 
   onSubmit() {
@@ -64,13 +61,13 @@ export class UserFormComponent {
     }
     request$.subscribe({
       next: async () => {
-        let message = this.isEdit ? 'actualizado' : 'registrado';
+        let message = this.isEdit ? "actualizado" : "registrado";
         await MessageHelper.successMessage(
-          '¡Éxito!',
-          `El usuario ha sido ${message} correctamente.`,
+          "¡Éxito!",
+          `El usuario ha sido ${message} correctamente.`
         );
         await this.backToListUsers();
-      },
+      }
     });
   }
 }

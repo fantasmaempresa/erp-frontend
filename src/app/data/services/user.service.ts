@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { UserDto } from '../dto';
-import { CrudService } from '../../core/classes/Crud/CrudService';
-import { Pagination } from '../../core/interfaces';
+import { CrudService as CrudServiceOld } from '../../core/classes/Crud/CrudService';
+import { Pagination as PaginationOld } from '../../core/interfaces';
+import { CrudService, Pagination } from 'o2c_core';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserService extends CrudService<UserDto> {
+export class UserServiceOld extends CrudServiceOld<UserDto> {
   endpoint = `${environment.base_url}/users`;
 
   constructor(private http: HttpClient) {
@@ -19,8 +20,17 @@ export class UserService extends CrudService<UserDto> {
     let params = new HttpParams();
     params = params.append('page', `${page}`);
     params = params.append('paginate', `${size}`);
-    return this.http.get<Pagination<UserDto>>(`${this.endpoint}`, {
+    return this.http.get<PaginationOld<UserDto>>(`${this.endpoint}`, {
       params,
     });
+  }
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UserService extends CrudService<UserDto, Pagination<UserDto>> {
+  constructor() {
+    super('users');
   }
 }
