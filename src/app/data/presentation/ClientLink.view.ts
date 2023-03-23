@@ -1,28 +1,35 @@
-import { printLabel } from '../../shared/components/dynamic-views/DynamicViews.decorators';
+import { viewCrud, viewLabel } from 'o2c_core';
+import { ClientLinkService } from '../services';
+import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
 
+@viewCrud({
+  classProvider: ClientLinkService,
+  route: DEFAULT_ROUTE_CONFIGURATION,
+  registerName: 'Enlace',
+})
 export class ClientLinkView {
-  @printLabel('Nombre')
+  @viewLabel('Nombre')
   name: string;
 
-  @printLabel('Correo')
+  @viewLabel('Correo')
   email: string;
 
-  @printLabel('Teléfono')
+  @viewLabel('Teléfono')
   phone: string;
 
-  @printLabel('Nombre')
+  @viewLabel('Nombre')
   nickname: string;
 
-  @printLabel('Dirección')
+  @viewLabel('Dirección')
   address: string;
 
-  @printLabel('RFC')
+  @viewLabel('RFC')
   rfc: string;
 
-  @printLabel('Profesión')
+  @viewLabel('Profesión')
   profession: string;
 
-  @printLabel('Grado de Estudios')
+  @viewLabel('Grado de Estudios')
   degree: string;
 
   constructor(

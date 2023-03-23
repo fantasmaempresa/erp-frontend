@@ -6,7 +6,7 @@ import {
   loadClientsLinkSuccess,
   loadNextPageOfClientsLink,
 } from './clients-link.actions';
-import { ClientLinkService } from '../../data/services';
+import { ClientLinkServiceOld } from '../../data/services';
 
 @Injectable()
 export class ClientsLinkEffects {
@@ -34,6 +34,6 @@ export class ClientsLinkEffects {
 
   constructor(
     private actions$: Actions,
-    private clientLinkService: ClientLinkService,
+    private clientLinkService: ClientLinkServiceOld,
   ) {}
 }

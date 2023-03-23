@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MessageHelper } from 'o2c_core';
 import { ClientLinkDto } from '../../../../data/dto';
-import { ClientLinkService } from '../../../../data/services';
+import { ClientLinkServiceOld } from '../../../../data/services';
 
 @Component({
   selector: 'app-client-link-form',
@@ -49,7 +49,7 @@ export class ClientLinkFormComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private clientLinkService: ClientLinkService,
+    private clientLinkService: ClientLinkServiceOld,
   ) {
     const id = Number(this.route.snapshot.params.id);
     if (!isNaN(id)) {
