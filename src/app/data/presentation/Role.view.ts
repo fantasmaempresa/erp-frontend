@@ -1,10 +1,17 @@
-import { printLabel } from '../../shared/components/dynamic-views/DynamicViews.decorators';
+import { viewCrud, viewLabel } from 'o2c_core';
+import { RoleService } from '../services';
+import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
 
+@viewCrud({
+  classProvider: RoleService,
+  route: DEFAULT_ROUTE_CONFIGURATION,
+  registerName: 'Rol',
+})
 export class RoleView {
-  @printLabel('Rol')
+  @viewLabel('Rol')
   name: string;
 
-  @printLabel('Descripción')
+  @viewLabel('Descripción')
   description: string;
 
   constructor(name: string, description: string) {

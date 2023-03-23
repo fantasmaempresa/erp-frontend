@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { RoleService, UserService } from '../../../../data/services';
+import { RoleServiceOld, UserService } from '../../../../data/services';
 import { MessageHelper } from 'o2c_core';
 import { RoleDto } from '../../../../data/dto';
 
@@ -33,13 +33,14 @@ export class RoleFormComponent {
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
-    private roleService: RoleService,
+    private roleService: RoleServiceOld,
   ) {
     this.modules$ = this.roleService.getPermissions();
 
-    if (this.route.snapshot.queryParams.id) {
+    const id = Number(this.route.snapshot.params.id);
+    if (!isNaN(id)) {
       this.isEdit = true;
-      roleService.fetch(this.route.snapshot.queryParams.id).subscribe({
+      roleService.fetch(id).subscribe({
         next: (role) => {
           this.roleForm.addControl('id', new UntypedFormControl(''));
           this.roleForm.patchValue(role);

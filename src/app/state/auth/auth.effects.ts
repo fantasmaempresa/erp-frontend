@@ -6,7 +6,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { TokensDto } from '../../data/dto';
-import { RoleService } from '../../data/services';
+import { RoleServiceOld } from '../../data/services';
 
 @Injectable()
 export class AuthEffects {
@@ -70,7 +70,7 @@ export class AuthEffects {
     private actions$: Actions,
     private authService: AuthService,
     private router: Router,
-    private roleService: RoleService,
+    private roleService: RoleServiceOld,
     private store: Store,
   ) {}
 }

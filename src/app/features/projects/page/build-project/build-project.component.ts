@@ -20,7 +20,7 @@ import { ProcessDto, ProcessPhaseDto } from '../../../../data/dto';
 import {
   ProcessPhaseServiceOld,
   ProcessServiceOld,
-  RoleService,
+  RoleServiceOld,
 } from '../../../../data/services';
 import { ProcessView, ProjectView } from '../../../../data/presentation';
 import { PopupService } from 'o2c_core';
@@ -49,7 +49,7 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
   constructor(
     private processPhaseService: ProcessPhaseServiceOld,
     private processService: ProcessServiceOld,
-    private roleService: RoleService,
+    private roleService: RoleServiceOld,
     private popupService: PopupService,
   ) {
     this.involvedFormArray.valueChanges

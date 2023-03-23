@@ -6,7 +6,7 @@ import {
   loadRoles,
   loadRolesSuccess,
 } from './role.actions';
-import { RoleService } from '../../data/services';
+import { RoleServiceOld } from '../../data/services';
 
 @Injectable()
 export class RoleEffects {
@@ -32,5 +32,5 @@ export class RoleEffects {
     );
   });
 
-  constructor(private actions$: Actions, private roleService: RoleService) {}
+  constructor(private actions$: Actions, private roleService: RoleServiceOld) {}
 }

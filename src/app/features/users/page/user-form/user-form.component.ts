@@ -5,7 +5,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { RoleService, UserService } from '../../../../data/services';
+import { RoleServiceOld, UserService } from '../../../../data/services';
 import { map, Observable } from 'rxjs';
 import { RoleDto, UserDto } from '../../../../data/dto';
 import { MessageHelper } from 'o2c_core';
@@ -37,7 +37,7 @@ export class UserFormComponent {
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
-    private roleService: RoleService,
+    private roleService: RoleServiceOld,
   ) {
     this.roles$ = roleService.fetchAll().pipe(map((roles) => roles.data));
     if (this.route.snapshot.queryParams.id) {

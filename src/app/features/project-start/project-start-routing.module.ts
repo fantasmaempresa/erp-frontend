@@ -1,13 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ChildrenRouteLayoutComponent } from '../../layout/children-route-layout/children-route-layout.component';
 import { ProjectStartListComponent } from './page/project-start-list/project-start-list.component';
 import { CurrentFormComponent } from './page/current-form/current-form.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ChildrenRouteLayoutComponent,
     children: [
       {
         path: '',
