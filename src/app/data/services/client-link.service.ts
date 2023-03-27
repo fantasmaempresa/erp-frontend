@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import { CrudService as CrudServiceOld } from '../../core/classes/Crud/CrudService';
 import { ClientLinkDto } from '../dto';
 import { Pagination as PaginationOld } from '../../core/interfaces';
-import { CrudService, Pagination } from 'o2c_core';
+import { CrudService, Pagination, ViewContextService } from 'o2c_core';
 import { ActivatedRoute } from '@angular/router';
 
 @Injectable({
@@ -39,18 +39,21 @@ export class ClientLinkService extends CrudService<
   ClientLinkDto,
   Pagination<ClientLinkDto>
 > {
-  constructor(protected route: ActivatedRoute) {
+  constructor(private contextService: ViewContextService) {
     super('clientLinks');
   }
 
-  fetchAll(params?: HttpParams): Observable<Pagination<ClientLinkDto>> {
-    const activatedRouteSnapshot = this.route.snapshot;
-    console.log(activatedRouteSnapshot);
-    const clientId = activatedRouteSnapshot.parent?.params.id ?? 0;
-
-    params = new HttpParams({
-      fromObject: { client_id: `${clientId}` },
-    });
-    return super.fetchAll(params);
+  fetchAll(): Observable<Pagination<ClientLinkDto>> {
+    return this.contextService.injector$.pipe(
+      map((injector) => injector.get(ActivatedRoute)),
+      map((route: ActivatedRoute) => route.snapshot.parent?.params.id ?? 0),
+      map(
+        (clientId) =>
+          new HttpParams({
+            fromObject: { client_id: `${clientId}` },
+          }),
+      ),
+      switchMap((p) => super.fetchAll(p)),
+    );
   }
 }
