@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { MyProjectsService } from '../../../../data/services';
-import { Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 import { MessageHelper } from 'o2c_core';
 import { messageDecision } from '../../../../shared/helpers/message-wrapper';
@@ -20,6 +20,8 @@ export class CurrentFormComponent implements OnInit {
 
   formControl = new UntypedFormControl();
 
+  controls: any;
+
   constructor(
     private route: ActivatedRoute,
     private myProjectService: MyProjectsService,
@@ -30,10 +32,12 @@ export class CurrentFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.form$ = this.myProjectService.getCurrentForm(
-      this.projectId,
-      this.processId,
-    );
+    this.form$ = this.myProjectService
+      .getCurrentForm(this.projectId, this.processId)
+      .pipe(
+        tap(({ controls }: any) => (this.controls = controls)),
+        map(({ form }: any) => form),
+      );
   }
 
   @messageDecision('¿Pasar Fase?', '¿Estas seguro?')
