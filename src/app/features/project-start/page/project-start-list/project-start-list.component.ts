@@ -6,6 +6,7 @@ import { Pagination } from '../../../../core/interfaces';
 import { loadMyProjects, selectMyProjects } from '../../../../state/my-project';
 import { MyProjectDto, ProcessDto } from '../../../../data/dto';
 import { MyProjectsService } from '../../../../data/services';
+import { MessageHelper } from 'o2c_core';
 
 @Component({
   selector: 'app-project-start-list',
@@ -44,28 +45,29 @@ export class ProjectStartListComponent implements OnInit {
   }
 
   startProcess = async (project: MyProjectDto, process: ProcessDto) => {
-    // MessageHelper.showLoading('Iniciando Proyecto...');
-    // this.myProjectService
-    //   .startProcess({
-    //     projectId: project.id,
-    //     processId: process.id,
-    //     comment: 'Comentario para comenzar este pedo',
-    //   })
-    //   .subscribe({
-    //     next: async () => {
-    //       MessageHelper.getInstanceSwal().close();
-    //       await await this.router.navigate(['./process', process.id], {
-    //         relativeTo: this.route,
-    //       });
-    //     },
-    //     error: ({ error }) => {
-    //       await MessageHelper.errorMessage(error.error);
-    //     },
-    //   });
+    MessageHelper.showLoading('Iniciando Proyecto...');
+    this.myProjectService
+      .startProcess({
+        projectId: project.id,
+        processId: process.id,
+        comment: 'Comentario para comenzar este pedo',
+      })
+      .subscribe({
+        next: async () => {
+          MessageHelper.getInstanceSwal().close();
+          await this.goToCurrentForm(project, process);
+        },
+        error: async ({ error }) => {
+          await MessageHelper.errorMessage(error.error);
+        },
+      });
+  };
+
+  async goToCurrentForm(project: MyProjectDto, process: ProcessDto) {
     await this.router.navigate(['../', project.id, 'process', process.id], {
       relativeTo: this.route,
     });
-  };
+  }
 
   ngOnInit(): void {
     this.store.dispatch(loadMyProjects());
