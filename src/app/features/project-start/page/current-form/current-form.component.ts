@@ -20,7 +20,15 @@ export class CurrentFormComponent implements OnInit {
 
   formControl = new UntypedFormControl();
 
-  controls: any;
+  controls: {
+    next: boolean;
+    prev: boolean;
+    supervision: boolean;
+  } = {
+    next: false,
+    prev: false,
+    supervision: false,
+  };
 
   constructor(
     private route: ActivatedRoute,

@@ -4,16 +4,36 @@
 ></app-preview-form-builder>
 
 <div class="container-buttons">
-  <button (click)="prevPhase()" color="primary" mat-stroked-button>
+  <button
+    *ngIf="controls.prev"
+    (click)="prevPhase()"
+    color="primary"
+    mat-stroked-button
+  >
     Formulario Anterior
   </button>
-  <button (click)="supervise()" color="primary" mat-flat-button>
+  <button
+    *ngIf="controls.supervision"
+    (click)="supervise()"
+    color="primary"
+    mat-flat-button
+  >
     Supervisar
   </button>
-  <button (click)="saveForm()" color="primary" mat-flat-button>
+  <button
+    *ngIf="!controls.supervision"
+    (click)="saveForm()"
+    color="primary"
+    mat-flat-button
+  >
     Guardar Información
   </button>
-  <button (click)="nextPhase()" color="primary" mat-stroked-button>
+  <button
+    *ngIf="controls.next"
+    (click)="nextPhase()"
+    color="primary"
+    mat-stroked-button
+  >
     Formulario Siguiente
   </button>
 </div>
