@@ -14,7 +14,7 @@ export const selectNotification = createSelector(
 export const selectLastNotification = createSelector(
   selectNotificationState,
   (state) => {
-    return state.notifications?.data.slice(0, 25);
+    return state.notifications ? state.notifications.data.slice(0, 25) : [];
   },
 );
 
@@ -27,11 +27,12 @@ export const selectIncomingNotifications = createSelector(
 
 export const selectNumberOfNotifications = createSelector(
   selectNotificationState,
-  (state) => {
-    return state.notifications?.data
-      .slice(0, 25)
-      .filter((notification) => !notification.check).length;
-  },
+  (state) =>
+    state.notifications
+      ? state.notifications.data
+          .slice(0, 25)
+          .filter((notification) => !notification.check).length
+      : 0,
 );
 
 export const selectUnreadNotifications = createSelector(

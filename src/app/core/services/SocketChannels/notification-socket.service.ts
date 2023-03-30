@@ -1,14 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  bufferTime,
-  filter,
-  map,
-  Observable,
-  pluck,
-  take,
-  tap,
-  timer,
-} from 'rxjs';
+import { bufferTime, filter, map, Observable, take, tap, timer } from 'rxjs';
 import { LaravelWebSocket } from '../../classes/laravel-web-socket';
 
 // const ANIMATION_TIME = 18_000;
@@ -19,7 +10,8 @@ import { LaravelWebSocket } from '../../classes/laravel-web-socket';
 export class NotificationSocketService extends LaravelWebSocket {
   constructor() {
     super();
-    this.subscribeToChannel('notification', 'NotificationEvent');
+    // this.subscribeToChannel('notification', 'NotificationEvent');
+    this.subscribeToChannelTest();
   }
 
   get notifications$(): Observable<any> {
@@ -36,7 +28,7 @@ export class NotificationSocketService extends LaravelWebSocket {
     // );
 
     return this._subject$.asObservable().pipe(
-      pluck('notification'),
+      map((data) => data.notification),
       bufferTime(1_000, null, 3),
       filter((data: any) => data.length),
       // zipWith(timer$),
@@ -73,11 +65,11 @@ export class NotificationSocketService extends LaravelWebSocket {
           check: false,
         };
       }),
-      take(1),
+      take(10),
     );
     generateRandomNotifications$.subscribe((notification: any) => {
       this._subject$.next(notification);
-      // console.log(notification);
+      console.log(notification);
     });
   }
 }

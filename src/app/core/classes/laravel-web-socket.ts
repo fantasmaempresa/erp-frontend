@@ -8,7 +8,7 @@ export abstract class LaravelWebSocket {
 
   protected channel!: Channel;
 
-  protected _subject$!: Subject<any>;
+  protected _subject$ = new Subject<any>();
 
   protected constructor() {
     this.echo = new Echo({

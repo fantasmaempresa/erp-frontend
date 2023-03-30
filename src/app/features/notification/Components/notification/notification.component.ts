@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { Store } from '@ngrx/store';
 import {
   loadNotifications,
@@ -7,6 +7,7 @@ import {
   selectLastNotification,
   selectNumberOfNotifications,
 } from '../../../../state/notifications';
+import { NotificationDto } from '../../../../data/dto';
 
 @Component({
   selector: 'app-notification',
@@ -16,12 +17,14 @@ import {
 export class NotificationComponent {
   isOpened = false;
 
-  notifications$!: Observable<any>;
+  notifications$: Observable<NotificationDto[]>;
 
-  numberNotification$!: Observable<any>;
+  numberNotification$: Observable<number>;
 
   constructor(private store: Store) {
-    this.notifications$ = this.store.select(selectLastNotification);
+    this.notifications$ = this.store
+      .select(selectLastNotification)
+      .pipe(tap((notification) => console.log({ message: notification })));
     this.numberNotification$ = this.store.select(selectNumberOfNotifications);
     this.store.dispatch(loadNotifications());
   }
