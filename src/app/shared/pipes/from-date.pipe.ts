@@ -6,11 +6,11 @@ import { es } from 'date-fns/locale';
   name: 'fromDate',
 })
 export class FromDatePipe implements PipeTransform {
-  transform(_date: Date | string | undefined): string {
-    if (typeof _date === 'undefined') {
+  transform(date: Date | string | undefined): string {
+    if (typeof date === 'undefined') {
       return '';
     }
 
-    return formatDistanceToNow(new Date(_date), { locale: es });
+    return formatDistanceToNow(new Date(date), { locale: es, addSuffix: true });
   }
 }
