@@ -18,13 +18,15 @@
   padding: 3rem 2rem;
   display: flex;
   flex-direction: column;
-  background: var(--bgColor);
+  color: var(--text-primary-color);
+  background: var(--primary-color);
   box-shadow: 0 0 32px 12px rgba(0, 0, 0, 0.325);
   animation: 12s ease-in-out enterToArea;
   animation-fill-mode: forwards;
   overflow: hidden;
   border-radius: 8px;
   pointer-events: all;
+  opacity: 0;
 
   &:not(:last-child) {
     margin-top: 2rem;
@@ -45,7 +47,7 @@
     font-size: 2.5rem;
     padding: 1rem;
     cursor: pointer;
-    color: var(--primaryColor);
+    color: var(--accent-color);
   }
 
   &-body {
@@ -64,6 +66,7 @@
     padding-bottom: 0.5rem;
     font-weight: 600;
     font-size: 1.8rem;
+    color: var(--accent-color);
   }
 
   &-label {
@@ -81,7 +84,6 @@
 
 @keyframes enterToArea {
   0% {
-    opacity: 0;
     transform: translate(100%, 0%);
   }
 
@@ -116,12 +118,13 @@
 
 @keyframes closeNotification {
   0% {
+    opacity: 1;
     transform: translate(0, 0);
   }
 
   100% {
     transform: translate(0, -40rem);
-    opacity: 0;
+    opacity: 0 !important;
     display: none !important;
   }
 }

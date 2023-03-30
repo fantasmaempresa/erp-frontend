@@ -8,7 +8,6 @@ import {
   mergeMap,
   of,
   switchMap,
-  take,
 } from 'rxjs';
 import {
   addIncomingNotification,
@@ -27,17 +26,15 @@ import {
   selectIncomingNotifications,
   selectUnreadNotifications,
 } from './notification.selectors';
-import { NotificationDto } from '../../data/dto';
+import { NotificationDto, NotificationPopUpDto } from '../../data/dto';
 
 @Injectable()
 export class NotificationEffects {
   loadNotification$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadNotifications),
-      mergeMap(() => {
-        return this.notificationsService.getLast();
-      }),
-      map((notifications) => loadNotificationsSuccess({ notifications })),
+      mergeMap(() => this.notificationsService.getLast()),
+      map((notifications: any) => loadNotificationsSuccess({ notifications })),
     );
   });
 
@@ -45,19 +42,16 @@ export class NotificationEffects {
     return this.actions$.pipe(
       ofType(startListenNotification),
       mergeMap(() => this.socketService.notifications$),
-      map((notifications: any) => {
-        return incomingNotification({ notifications });
-      }),
-      // tap((data) => console.log(data)),
+      map((notifications: NotificationPopUpDto[]) =>
+        incomingNotification({ notifications }),
+      ),
     );
   });
 
   addNotification$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(incomingNotification),
-      mergeMap(() => {
-        return this.store.select(selectIncomingNotifications).pipe(take(1));
-      }),
+      mergeMap(() => this.store.select(selectIncomingNotifications)),
       map((notifications: any) => addIncomingNotification({ notifications })),
     );
   });
@@ -65,9 +59,7 @@ export class NotificationEffects {
   readNotificationsServer$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(readAllNotificationsServer),
-      switchMap(() =>
-        this.store.select(selectUnreadNotifications).pipe(take(1)),
-      ),
+      switchMap(() => this.store.select(selectUnreadNotifications)),
       filter((notifications: any) =>
         notifications.some(
           (notification: NotificationDto) => !notification.check,

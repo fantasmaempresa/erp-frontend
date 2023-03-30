@@ -22,7 +22,7 @@
           class="notifications__item"
         >
           <span class="notifications__item-title">{{
-            notification.notification?.title
+            notification.notification.title
           }}</span>
           <div class="notifications__item-body">
             <span class="material-icons notifications__item-icon"
@@ -33,7 +33,7 @@
             }}</span>
           </div>
           <span class="notifications__item-date">{{
-            notification?.created_at | fromDate
+            notification.created_at | fromDate
           }}</span>
         </li>
       </ul>
