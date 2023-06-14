@@ -1,11 +1,11 @@
-import { Component, forwardRef, OnDestroy } from '@angular/core';
+import { Component, forwardRef, OnDestroy } from "@angular/core";
 import {
   ControlValueAccessor,
   NG_VALUE_ACCESSOR,
   UntypedFormArray,
   UntypedFormControl,
-  UntypedFormGroup,
-} from '@angular/forms';
+  UntypedFormGroup
+} from "@angular/forms";
 import {
   forkJoin,
   lastValueFrom,
@@ -14,28 +14,28 @@ import {
   shareReplay,
   Subject,
   takeUntil,
-  tap,
-} from 'rxjs';
-import { ProcessDto, ProcessPhaseDto } from '../../../../data/dto';
+  tap
+} from "rxjs";
+import { ProcessDto, ProcessPhaseDto } from "../../../../data/dto";
 import {
   ProcessPhaseServiceOld,
   ProcessServiceOld,
-  RoleServiceOld,
-} from '../../../../data/services';
-import { ProcessView, ProjectView } from '../../../../data/presentation';
-import { PopupService } from 'o2c_core';
+  RoleServiceOld
+} from "../../../../data/services";
+import { ProcessView, ProjectView } from "../../../../data/presentation";
+import { PopupService } from "o2c_core";
 
 @Component({
-  selector: 'app-build-project',
-  templateUrl: './build-project.component.html',
-  styleUrls: ['./build-project.component.scss'],
+  selector: "app-build-project",
+  templateUrl: "./build-project.component.html",
+  styleUrls: ["./build-project.component.scss"],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => BuildProjectComponent),
-      multi: true,
-    },
-  ],
+      multi: true
+    }
+  ]
 })
 export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
   involvedFormArray = new UntypedFormArray([]);
@@ -44,13 +44,17 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
 
   processes: any[] = [];
 
+  users_data: any[] = [];
+
+  roles: any[] = [];
+
   private destroy$ = new Subject<boolean>();
 
   constructor(
     private processPhaseService: ProcessPhaseServiceOld,
     private processService: ProcessServiceOld,
     private roleService: RoleServiceOld,
-    private popupService: PopupService,
+    private popupService: PopupService
   ) {
     this.involvedFormArray.valueChanges
       .pipe(takeUntil(this.destroy$))
@@ -61,81 +65,91 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
   }
 
   private static createMandatoryConfig(
-    keyType: 'mandatory_supervision' | 'mandatory_work',
+    keyType: "mandatory_supervision" | "mandatory_work",
     { id, user } = {
       id: 0,
-      user: false,
-    },
+      user: false
+    }
   ) {
     return new UntypedFormGroup({
       id: new UntypedFormControl(id),
       [keyType]: new UntypedFormControl(false),
-      user: new UntypedFormControl(user),
+      user: new UntypedFormControl(user)
     });
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  onChange = (_: any) => {};
-
-  onTouch = () => {};
-
-  mapProcessPhase = (process: any): Observable<ProcessPhaseDto> =>
-    this.processPhaseService.fetch(process.phase.id).pipe(shareReplay());
-
-  nameMapFn = (value: any) => value?.name;
-
-  roleGroup = (groupArray: any[]) => {
-    const group$ = groupArray.map(({ id }) => this.roleService.fetch(id));
-    return forkJoin(group$).pipe(shareReplay());
+  onChange = (_: any) => {
   };
 
-  userGroup = (groupArray: any[]) =>
-    this.roleGroup(groupArray).pipe(
-      map((roles: any[]) =>
-        roles
-          .map((rol) => rol.user)
-          .reduce((prev, curr) => [...prev, ...curr], []),
-      ),
+  onTouch = () => {
+  };
+
+  mapProcessPhase = (phaseProcess: any, [process]: [any]) => {
+    console.log("process -->", process, phaseProcess);
+    if ("roles" in process) {
+      this.roles = process.roles;
+    }
+    const phase = process.phases.filter((x: any) => x.id === phaseProcess.phase.id);
+    console.log("process -->", phase[0]);
+    return phase[0];
+  };
+  // this.processPhaseService.fetch(process.phase.id).pipe(shareReplay());
+
+  nameMapFn = (value: any) => {
+    console.log('value?.name --> ', value);
+    return value?.name;
+  };
+
+  roleGroup = (groupArray: any[]) => {
+    return this.roles.filter((x: any) =>
+      groupArray.some((y: any) => y.id === x.id)
     );
+  };
 
-  users = (users$: Observable<any[]>, [i, j, type]: [number, number, string]) =>
-    users$.pipe(
-      tap((users) => {
-        const phasesArray = (
-          this.form.get('involved') as UntypedFormArray
-        ).controls[i].get('phases') as UntypedFormArray;
+  userGroup = (groupArray: any[]) => {
+    const roles = this.roleGroup(groupArray);
 
-        const arrayKey = type === 'work' ? 'work_user' : 'supervisor_user';
-        const teamArray = (phasesArray.controls[j] as UntypedFormGroup).get(
-          arrayKey,
-        ) as UntypedFormArray;
+    const users = roles.map((rol: any) => rol.user)
+      .reduce((prev: any[], curr: any[]) => [...prev, ...curr], []);
 
-        if (users) {
-          const configType =
-            type === 'work' ? 'mandatory_work' : 'mandatory_supervision';
+    return users;
+  };
 
-          if (teamArray.length < users.length) {
-            const user = users[users.length - 1];
+  users = (users$: Observable<any[]>, [i, j, type]: [number, number, string]) => {
+    const phasesArray = (this.form.get("involved") as UntypedFormArray).controls[i].get("phases") as UntypedFormArray;
 
-            teamArray.push(
-              BuildProjectComponent.createMandatoryConfig(configType, {
-                id: user.id,
-                user: true,
-              }),
-            );
-          } else {
-            const auxControls = teamArray.controls.filter((ctrl) =>
-              users.some((user) => user.id === ctrl.value.id),
-            );
-            teamArray.clear();
-            teamArray.controls = auxControls;
-            teamArray.updateValueAndValidity();
-          }
-        } else {
-          teamArray.clear();
-        }
-      }),
-    );
+    const arrayKey = type === "work" ? "work_user" : "supervisor_user";
+    const teamArray = (phasesArray.controls[j] as UntypedFormGroup).get(
+      arrayKey
+    ) as UntypedFormArray;
+
+    if (this.users_data) {
+      const configType =
+        type === "work" ? "mandatory_work" : "mandatory_supervision";
+
+      if (teamArray.length < this.users_data.length) {
+
+        const user = this.users_data[this.users_data.length - 1];
+
+        teamArray.push(
+          BuildProjectComponent.createMandatoryConfig(configType, {
+            id: user.id,
+            user: true
+          })
+        );
+      } else {
+        const auxControls = teamArray.controls.filter((ctrl) =>
+          this.users_data.some((user) => user.id === ctrl.value.id)
+        );
+        teamArray.clear();
+        teamArray.controls = auxControls;
+        teamArray.updateValueAndValidity();
+      }
+    } else {
+      teamArray.clear();
+    }
+  };
 
   registerOnChange(fn: any): void {
     this.onChange = fn;
@@ -145,53 +159,61 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
     this.onTouch = fn;
   }
 
-  writeValue(
-    configProcess: {
-      process: { id: number };
-      phases: { phase: { id: number }; involved: any }[];
-    }[],
-  ) {
+  // configProcess: {
+  //   process: { id: number };
+  //   phases: { phase: { id: number }; involved: any }[];
+  // }[],
+  async writeValue(configProcess: any) {
     if (configProcess) {
-      const requests$: Observable<ProcessDto>[] = configProcess.map(
-        ({ process: { id } }) => this.processService.fetch(id),
+      this.processes = configProcess[1];
+      this.users_data = configProcess[0];
+      this.roles = configProcess[3];
+      this.buildInvolvedFormArray(configProcess[1]);
+
+      // const processPhase = await Promise.all(
+      //   this.processes.map(async ({ config }: any) =>
+      //     Promise.all(
+      //       config.order_phases.map(async (phase: any) => ({
+      //         supervisor: this.userGroup(phase.involved.supervisor),
+      //         work_group: this.userGroup(phase.involved.work_group)
+      //       }))
+      //     )
+      //   )
+      // );
+
+      const processPhase = [];
+
+      for (const { config } of this.processes) {
+        const phases = [];
+
+        for (const phase of config.order_phases) {
+          const supervisor = this.userGroup(phase.involved.supervisor);
+          const work_group = this.userGroup(phase.involved.work_group);
+
+          phases.push({ supervisor, work_group });
+        }
+
+        processPhase.push(phases);
+      }
+
+      const valueToPatch = ProjectView.mapToProcessOnWrite(
+        configProcess[2],
+        processPhase
       );
-      forkJoin(requests$).subscribe(async (processes: ProcessDto[]) => {
-        this.processes = processes;
-        this.buildInvolvedFormArray(processes);
-        const processPhase = await Promise.all(
-          processes.map(async ({ config }: any) =>
-            Promise.all(
-              config.order_phases.map(async (phase: any) => ({
-                supervisor: await lastValueFrom(
-                  this.userGroup(phase.involved.supervisor),
-                ),
-                work_group: await lastValueFrom(
-                  this.userGroup(phase.involved.work_group),
-                ),
-              })),
-            ),
-          ),
-        );
-        const valueToPatch = ProjectView.mapToProcessOnWrite(
-          configProcess,
-          processPhase,
-        );
-        const references = valueToPatch.map((process) => ({
-          phases: process.phases.map((phase: any) => ({
-            supervisor_reference: phase.supervisor_reference,
-            work_reference: phase.work_reference,
-          })),
-        }));
-        this.involvedFormArray.patchValue(references);
-      });
+      const references = valueToPatch.map((process) => ({
+        phases: process.phases.map((phase: any) => ({
+          supervisor_reference: phase.supervisor_reference,
+          work_reference: phase.work_reference
+        }))
+      }));
+      this.involvedFormArray.patchValue(references);
     }
   }
 
   openDialog() {
     this.popupService
-      .openTablePopup(ProcessView, 'Selecciona un proceso', { isMulti: true })
+      .openTablePopup(ProcessView, "Selecciona un proceso", { isMulti: true })
       .subscribe((processes: any[]) => {
-        console.log('Entra');
         this.buildInvolvedFormArray(processes);
         this.processes = processes;
       });
@@ -208,13 +230,13 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
       this.involvedFormArray.push(
         new UntypedFormGroup({
           process: new UntypedFormControl({ id: process.id }),
-          phases: new UntypedFormArray([]),
-        }),
+          phases: new UntypedFormArray([])
+        })
       );
       for (const phase of process.config.order_phases) {
         const phasesArrayControl = this.involvedFormArray
           .at(this.involvedFormArray.length - 1)
-          .get('phases') as UntypedFormArray;
+          .get("phases") as UntypedFormArray;
         phasesArrayControl.push(
           new UntypedFormGroup({
             phase: new UntypedFormControl({ id: phase.phase.id }),
@@ -222,26 +244,26 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
             supervisor: new UntypedFormArray([
               ...phase.involved.supervisor.map(({ id }: { id: number }) =>
                 BuildProjectComponent.createMandatoryConfig(
-                  'mandatory_supervision',
+                  "mandatory_supervision",
                   {
                     id,
-                    user: false,
-                  },
-                ),
-              ),
+                    user: false
+                  }
+                )
+              )
             ]),
             supervisor_user: new UntypedFormArray([]),
             work_reference: new UntypedFormControl(),
             work_group: new UntypedFormArray([
               ...phase.involved.work_group.map(({ id }: { id: number }) =>
-                BuildProjectComponent.createMandatoryConfig('mandatory_work', {
+                BuildProjectComponent.createMandatoryConfig("mandatory_work", {
                   id,
-                  user: false,
-                }),
-              ),
+                  user: false
+                })
+              )
             ]),
-            work_user: new UntypedFormArray([]),
-          }),
+            work_user: new UntypedFormArray([])
+          })
         );
       }
     }

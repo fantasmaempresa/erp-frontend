@@ -79,6 +79,14 @@ const routes: Routes = [
         },
       },
       {
+        path: 'documents',
+        loadChildren: () =>
+          import('./features/documents/documents.module').then((m) => m.DocumentsModule),
+        data: {
+          breadcrumb: 'Áreas',
+        },
+      },
+      {
         path: 'concepts',
         loadChildren: () =>
           import('./features/concepts/concepts.module').then(

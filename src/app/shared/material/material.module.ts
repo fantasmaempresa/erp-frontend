@@ -47,6 +47,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatListModule } from '@angular/material/list';
 import { MatInputModule } from '@angular/material/input';
+import {PdfViewerModule} from "ng2-pdf-viewer";
 
 @NgModule({
   exports: [
@@ -95,6 +96,7 @@ import { MatInputModule } from '@angular/material/input';
     OverlayModule,
     PortalModule,
     ScrollingModule,
+    PdfViewerModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es-MX' }],
 })

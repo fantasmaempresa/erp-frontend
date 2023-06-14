@@ -24,15 +24,16 @@
           formArrayName="involved"
         >
           <div
-            *ngFor="let processPhase of $any(phases); let j = index"
+            *ngFor="let processPhase of phases; let j = index"
             class="process-phase"
             formGroupName="{{ i }}"
           >
             <ng-container
-              *ngIf="processPhase | mapTo : mapProcessPhase | async as phase"
+              *ngIf="processPhase | mapTo : mapProcessPhase : process as phase"
             >
               <div class="process-phase__name">
-                {{ $any(phase).name }}
+<!--                {{ $any(phase).name }}-->
+                {{ phase.name }}
               </div>
             </ng-container>
             <div class="process-phase__involved" formArrayName="phases">
@@ -44,8 +45,7 @@
                       <div
                         *ngFor="
                           let role of processPhase.involved.supervisor
-                            | mapTo : roleGroup
-                            | async;
+                            | mapTo : roleGroup;
                           let k = index
                         "
                         class="process-phase__config-row"
@@ -69,7 +69,6 @@
                       [allData]="
                         processPhase.involved.supervisor
                           | mapTo : userGroup
-                          | async
                       "
                       [mapFn]="nameMapFn"
                       formControlName="supervisor_reference"
@@ -112,8 +111,7 @@
                       <div
                         *ngFor="
                           let role of processPhase.involved.work_group
-                            | mapTo : roleGroup
-                            | async;
+                            | mapTo : roleGroup;
                           let k = index
                         "
                         class="process-phase__config-row"
@@ -137,7 +135,6 @@
                       [allData]="
                         processPhase.involved.work_group
                           | mapTo : userGroup
-                          | async
                       "
                       [mapFn]="nameMapFn"
                       formControlName="work_reference"

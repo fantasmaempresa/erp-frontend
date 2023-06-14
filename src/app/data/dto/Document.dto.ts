@@ -4,4 +4,5 @@ export interface DocumentDto extends EntityDto {
   name: string;
   description: string;
   quote: string;
+  url?: string;
 }

@@ -31,6 +31,8 @@ import { InputImageComponent } from './components/input-image/input-image.compon
 import { InputFileComponent } from './components/input-file/input-file.component';
 import { InputCoordinateComponent } from './components/input-coordinate/input-coordinate.component';
 import { DynamicViewsModule } from './components/dynamic-views/dynamic-views.module';
+import { DialogPreviewPdfComponent } from './components/dialog-preview-pdf/dialog-preview-pdf.component';
+import {SanitizerPipe} from "./pipes/sanitizer.pipe";
 
 @NgModule({
   declarations: [
@@ -55,6 +57,8 @@ import { DynamicViewsModule } from './components/dynamic-views/dynamic-views.mod
     InputFileComponent,
     InputCoordinateComponent,
     OnSaveDialogComponent,
+    DialogPreviewPdfComponent,
+    SanitizerPipe,
   ],
   imports: [
     CommonModule,

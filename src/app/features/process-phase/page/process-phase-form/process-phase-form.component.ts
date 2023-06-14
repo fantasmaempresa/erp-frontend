@@ -48,10 +48,12 @@ export class ProcessPhaseFormComponent {
     });
 
     if (!isNaN(id)) {
+      console.log('value edit ---> true');
       this.edit = true;
       this.processPhaseService.fetch(id).subscribe({
         next: (value: any) => {
           this.form.addControl('id', new UntypedFormControl());
+          console.log('value edit ---> ', value);
           this.form.patchValue(value);
         },
       });

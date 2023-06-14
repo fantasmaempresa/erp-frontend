@@ -5,10 +5,11 @@
   appDragFile
   class="input-file"
 >
+  <!--    accept="xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf"-->
   <input
     #fileInput
     (change)="uploadFile($any($event.target).files)"
-    accept="xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf"
+    accept=".pdf"
     hidden
     type="file"
   />

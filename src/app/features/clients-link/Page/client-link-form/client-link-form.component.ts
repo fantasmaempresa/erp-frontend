@@ -72,12 +72,12 @@ export class ClientLinkFormComponent {
     let request$: Observable<ClientLinkDto>;
     const clientId = Number(this.route.snapshot.parent?.params.id);
     if (!this.isEdit) {
-      request$ = this.clientLinkService.save({
+      request$ = this.clientLinkService.update({
         ...this.form.value,
         client_id: clientId,
       });
     } else {
-      request$ = this.clientLinkService.update({
+      request$ = this.clientLinkService.save({
         ...this.form.value,
         client_id: clientId,
       });

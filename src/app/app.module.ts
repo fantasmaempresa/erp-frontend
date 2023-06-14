@@ -21,6 +21,8 @@ import { NotificationModule } from './features/notification/notification.module'
 import { MatPaginatorIntl } from '@angular/material/paginator';
 import { URL_BASE_CRUD_SERVICE } from 'o2c_core';
 import { environment } from '../environments/environment';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+
 
 @NgModule({
   declarations: [
@@ -46,6 +48,7 @@ import { environment } from '../environments/environment';
     { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: URL_BASE_CRUD_SERVICE, useValue: environment.base_url },
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
   bootstrap: [AppComponent],
   exports: [FooterComponent, HeaderComponent],

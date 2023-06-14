@@ -27,7 +27,7 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { debounceTime, forkJoin, Subject, take, takeUntil } from 'rxjs';
+import { debounceTime, Subject, take, takeUntil } from 'rxjs';
 import {
   ProcessPhaseServiceOld,
   RoleServiceOld,
@@ -147,17 +147,23 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
 
   writeValue(obj: any): void {
     if (obj) {
+      console.log('obj -----> ', obj);
       // eslint-disable-next-line @typescript-eslint/naming-convention
       const { order_phases, phases_process } =
         ProcessView.mapConfigOnWrite(obj);
-      const arrayRequest$ = phases_process.map(({ id }) =>
-        this.processPhaseService.fetch(id),
-      );
-      forkJoin(arrayRequest$).subscribe((phasesProcess: ProcessPhaseDto[]) => {
-        this.processPhases = phasesProcess;
-        this.buildOrderFormArray();
-        this.orderFormArray.patchValue(order_phases);
-      });
+      // const arrayRequest$ = phases_process.map(({ id }) =>
+      //   this.processPhaseService.fetch(id),
+      // );
+      // forkJoin(arrayRequest$).subscribe((phasesProcess: ProcessPhaseDto[]) => {
+      //   this.processPhases = phasesProcess;
+      //   this.buildOrderFormArray();
+      //   this.orderFormArray.patchValue(order_phases);
+      //   console.log('order_phases -->', phasesProcess);
+      // });
+
+      this.processPhases = obj.phases;
+      this.buildOrderFormArray();
+      this.orderFormArray.patchValue(order_phases);
     }
   }
 

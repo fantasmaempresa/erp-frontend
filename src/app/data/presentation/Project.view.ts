@@ -66,11 +66,14 @@ export class ProjectView {
         const { supervisor, work_group } = involved;
         const { supervisor: supervisorUsers, work_group: workUsers } =
           processPhase[i][j];
+        console.log('supervisor, work_group', supervisor, work_group, processPhase);
         return {
           supervisor_reference: supervisor
             .filter(({ user }: { user: boolean }) => user)
-            .map(({ id }: { id: number }) =>
-              supervisorUsers.find((element: any) => element.id === id),
+            .map(({ id }: { id: number }) =>{
+              console.log('supervisorUsers -->', supervisorUsers);
+              return supervisorUsers.find((element: any) => element.id === id);
+            }
             ),
           supervisor: supervisor.filter(({ user }: { user: boolean }) => !user),
           supervisor_user: supervisor.filter(

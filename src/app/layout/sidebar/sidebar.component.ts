@@ -103,6 +103,7 @@ export class SidebarComponent {
     this.role$ = store.select(selectRole);
 
     this.menus = [JSON.parse(localStorage.getItem(KEY_LS_MENUS) ?? '[]')];
+    console.log("this.menu -->", this.menus);
   }
 
   dropdown(submenu: any) {

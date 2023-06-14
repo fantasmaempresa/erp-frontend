@@ -1,5 +1,6 @@
 import { UserDto } from './User.dto';
 import { EntityDto } from 'o2c_core';
+import { DocumentDto } from "./Document.dto";
 
 export interface ClientDto extends EntityDto {
   email: string;
@@ -17,4 +18,6 @@ export interface ClientDto extends EntityDto {
   type: number;
 
   user?: UserDto;
+
+  documents?: DocumentDto[];
 }

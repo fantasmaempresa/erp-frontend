@@ -37,6 +37,14 @@ const routes: Routes = [
           ),
         data: { breadcrumb: 'Enlaces' },
       },
+      {
+        path: ':id/documentsLink',
+        loadChildren: () =>
+          import('../document-link/document-link.module').then(
+            (m) => m.DocumentLinkModule,
+          ),
+        data: { breadcrumb: 'Documentos' },
+      },
     ],
   },
 ];

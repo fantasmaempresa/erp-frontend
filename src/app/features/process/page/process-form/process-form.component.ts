@@ -37,6 +37,16 @@ export class ProcessFormComponent {
       processService.fetch(id).subscribe({
         next: (process) => {
           this.form.addControl('id', new UntypedFormControl(''));
+          console.log('process ---> ', process);
+          const config = {
+            ...process.config,
+            // order_phases: process.config.order_phases,
+            // phases_process: process.config.phases_process,
+            phases: process.phases,
+            roles: process.roles,
+          };
+          process.config = config;
+          console.log('process ---> ', process);
           this.form.patchValue(process);
         },
       });

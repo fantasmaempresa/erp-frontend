@@ -1,0 +1,58 @@
+@import './src/assets/styles/abstracts/mixins';
+
+pdf-viewer {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+
+  @include respond(tabLand) {
+    padding: 0.75rem;
+  }
+}
+
+.pdf__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 85vh;
+  width: 65vw;
+  background: #747474;
+  overflow-y: auto;
+  border-radius: 8px;
+
+  @include respond(tabLand) {
+    height: 90vh;
+    width: 70vw;
+  }
+
+  @include respond {
+    height: 50vh;
+  }
+}
+
+.pdf__download {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 1rem;
+  right: 2.25rem;
+  padding: 1.25rem;
+  font-size: 2.5rem;
+  color: white;
+  background: var(--primary);
+  border-radius: 50%;
+
+  @include respond(tabLand) {
+    right: 2rem;
+    padding: 1.1rem;
+    font-size: 1.25rem;
+  }
+
+  @include respond {
+    right: 1rem;
+    padding: 1rem;
+    font-size: 1rem;
+  }
+}

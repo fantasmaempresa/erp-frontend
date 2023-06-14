@@ -1,58 +1,75 @@
-import { ViewActions, viewCrud, viewLabel, viewMapTo } from 'o2c_core';
-import { ClientService } from '../services';
-import { ClientDto } from '../dto';
-import { ActivatedRoute, Router } from '@angular/router';
-import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
+import { ViewActions, viewCrud, viewLabel, viewMapTo } from "o2c_core";
+import { ClientService } from "../services";
+import { ClientDto } from "../dto";
+import { ActivatedRoute, Router } from "@angular/router";
+import { DEFAULT_ROUTE_CONFIGURATION } from "../../core/constants/routes.constants";
 
 const goToClientLink = new ViewActions<ClientDto>(
   async ({ row, injector }) => {
     const router = injector.get(Router);
     const route = injector.get(ActivatedRoute);
-    await router.navigate(['../', (row as ClientDto).id, 'clientsLink'], {
-      relativeTo: route,
+    await router.navigate(["../", (row as ClientDto).id, "clientsLink"], {
+      relativeTo: route
     });
   },
-  'people',
+  "people",
   {
-    tooltip: 'Ver Enlaces',
+    tooltip: "Ver Enlaces",
     isVisible: (row) => row && row.type === 1,
-    color: 'accent',
+    color: "accent"
+  }
+);
+
+
+const goToDocumentsLink = new ViewActions<ClientDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(["../", (row as ClientDto).id, "documentsLink"], {
+      relativeTo: route
+    });
   },
+  "contact_page",
+  {
+    tooltip: "Expediente de cliente",
+    color: "accent",
+    isVisible: (row) => row && (row.type === 1 || row.type === 2)
+  }
 );
 
 @viewCrud({
   classProvider: ClientService,
-  registerName: 'Cliente',
-  actions: [goToClientLink],
-  route: DEFAULT_ROUTE_CONFIGURATION,
+  registerName: "Cliente",
+  actions: [goToClientLink, goToDocumentsLink],
+  route: DEFAULT_ROUTE_CONFIGURATION
 })
 export class ClientView {
-  @viewLabel('Nombre')
+  @viewLabel("Nombre")
   name: string;
 
-  @viewLabel('Correo')
+  @viewLabel("Correo")
   email: string;
 
-  @viewLabel('Teléfono')
+  @viewLabel("Teléfono")
   phone: string;
 
-  @viewLabel('Apodo')
+  @viewLabel("Apodo")
   nickname: string;
 
-  @viewLabel('Dirección')
+  @viewLabel("Dirección")
   address: string;
 
-  @viewLabel('RFC')
+  @viewLabel("RFC")
   rfc: string;
 
   @viewMapTo((value: any) => {
     const types = {
-      1: 'Moral',
-      2: 'Física',
+      1: "Moral",
+      2: "Física"
     };
     return types[value as keyof typeof types];
   })
-  @viewLabel('Tipo de Persona')
+  @viewLabel("Tipo de Persona")
   type: number;
 
   constructor(
@@ -62,7 +79,7 @@ export class ClientView {
     nickname: string,
     address: string,
     rfc: string,
-    type: number,
+    type: number
   ) {
     this.name = name;
     this.email = email;
