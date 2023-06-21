@@ -15,6 +15,9 @@ export class InputFileComponent implements ControlValueAccessor {
   @Input()
   label = "label";
 
+  @Input()
+  accept = '.xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf';
+
   file!: File;
 
   fileURL!: string | ArrayBuffer | null;

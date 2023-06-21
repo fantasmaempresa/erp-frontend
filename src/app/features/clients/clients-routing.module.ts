@@ -43,7 +43,7 @@ const routes: Routes = [
           import('../document-link/document-link.module').then(
             (m) => m.DocumentLinkModule,
           ),
-        data: { breadcrumb: 'Documentos' },
+        data: { breadcrumb: 'Documentos', view: 'client' },
       },
     ],
   },

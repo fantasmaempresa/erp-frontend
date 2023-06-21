@@ -5,6 +5,9 @@ import { RoleServiceOld, UserServiceOld } from "../../../../data/services";
 import { map, Observable } from "rxjs";
 import { RoleDto, UserDto } from "../../../../data/dto";
 import { MessageHelper } from "o2c_core";
+import { DocumentView } from "../../../../data/presentation/Document.view";
+import { ClientView } from "../../../../data/presentation";
+import { StaffView } from "../../../../data/presentation/staff.view";
 
 @Component({
   selector: "app-user-form",
@@ -29,6 +32,11 @@ export class UserFormComponent {
 
   roles$!: Observable<RoleDto[]>;
 
+  clientProvider = ClientView;
+
+  staffProvider = StaffView;
+
+  disable = true;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -70,4 +78,6 @@ export class UserFormComponent {
       }
     });
   }
+
+  protected readonly DocumentView = DocumentView;
 }

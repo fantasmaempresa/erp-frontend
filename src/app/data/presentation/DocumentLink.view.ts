@@ -11,7 +11,7 @@ import { DocumentView } from "./Document.view";
 const goToViewDocument = new ViewActions<DocumentDto>(
   async ({ row, injector }) => {
     console.log('rowww --> ', row);
-    const document = (row as DocumentView);
+    const document = (row as DocumentDto);
     const dialog = injector.get(MatDialog);
     dialog.open(DialogPreviewPdfComponent, {
       data: {
@@ -24,7 +24,7 @@ const goToViewDocument = new ViewActions<DocumentDto>(
   {
     tooltip: "Ver documento",
     color: "accent",
-    isVisible: (row: DocumentDto) => row.id !== null,
+    isVisible: (row: DocumentDto) => row.url !== null,
   }
 );
 

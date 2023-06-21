@@ -6,7 +6,7 @@ import { DEFAULT_ROUTE_CONFIGURATION } from "../../core/constants/routes.constan
 @viewCrud({
   classProvider: DocumentService,
   registerName: "Documento",
-  route: DEFAULT_ROUTE_CONFIGURATION
+  route: DEFAULT_ROUTE_CONFIGURATION,
 })
 export class DocumentView {
   @viewLabel("Nombre")

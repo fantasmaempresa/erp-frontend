@@ -1,4 +1,4 @@
-import { RoleDto } from '../dto';
+import { RoleDto, StaffDto } from "../dto";
 import { viewCrud, viewHTML, viewLabel, viewMapTo } from 'o2c_core';
 import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
 import { UserService } from '../services';
@@ -41,17 +41,24 @@ export class UserView {
   @viewMapTo((value: any) => value?.name)
   role: RoleDto;
 
+  @viewLabel('Staff')
+  @viewMapTo((value: any) => value?.name)
+  staff: StaffDto;
+
+
   constructor(
     name: string,
     email: string,
     online: number,
     locked: number,
     role: RoleDto,
+    staff: StaffDto,
   ) {
     this.name = name;
     this.email = email;
     this.online = online;
     this.locked = locked;
     this.role = role;
+    this.staff = staff;
   }
 }

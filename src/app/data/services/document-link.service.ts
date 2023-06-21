@@ -1,9 +1,9 @@
 import { Injectable } from "@angular/core";
 import { DocumentDto } from "../dto";
 import { HttpParams } from "@angular/common/http";
-import { map, Observable, switchMap } from "rxjs";
+import { filter, map, Observable, pluck, switchMap } from "rxjs";
 import { CrudService, Pagination, ViewContextService } from "o2c_core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, ActivationEnd, Router, RouterEvent } from "@angular/router";
 
 // @Injectable({
 //   providedIn: 'root',
@@ -31,28 +31,54 @@ import { ActivatedRoute } from "@angular/router";
 // }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root"
 })
 export class DocumentLinkService extends CrudService<
   DocumentDto,
   Pagination<DocumentDto>
 > {
   constructor(private contextService: ViewContextService) {
-    super('documentLink');
+    super("documentLink");
   }
 
   fetchAll(): Observable<Pagination<DocumentDto>> {
+
     return this.contextService.injector$.pipe(
       map((injector) => injector.get(ActivatedRoute)),
-      map((route: ActivatedRoute) => route.snapshot.parent?.params.id ?? 0),
+      map((route: ActivatedRoute) => ({
+        client_id: route.snapshot.parent?.params.id ?? 0,
+        view: route.snapshot.data.view,
+      })),
       map(
-        (clientId) =>
+        ({ client_id, view }) =>
           new HttpParams({
-            fromObject: { client_id: `${clientId}` },
-          }),
+            fromObject: { client_id: `${client_id}`, view: `${view}`}
+          })
       ),
-      switchMap((p) => super.fetchAll(p)),
+      switchMap((p) => super.fetchAll(p))
     );
+
+    // return this.contextService.injector$.pipe(
+    //   map((injector) => injector.get(ActivatedRoute)),
+    //   map((route: ActivatedRoute) => route.snapshot.parent?.params.id ?? 0),
+    //   switchMap((clientId) => {
+    //     return this.contextService.injector$.pipe(
+    //       map((injector) => {
+    //         const router = injector.get(Router);
+    //
+    //       }),
+    //       switchMap((view) => {
+    //          // Acceder a la propiedad view dentro de la suscripción
+    //         console.log("data.view --> ", view);
+    //         const params = new HttpParams({
+    //           fromObject: { client_id: `${clientId}`, view: 'client' }
+    //         });
+    //         return super.fetchAll(params);
+    //       })
+    //     );
+    //   })
+    // );
+
   }
 
   save(t: any, params?: HttpParams): Observable<any> {

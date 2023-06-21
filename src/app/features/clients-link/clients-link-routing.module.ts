@@ -29,6 +29,14 @@ const routes: Routes = [
         component: ClientLinkFormComponent,
         data: { breadcrumb: 'Editar Enlace' },
       },
+      {
+        path: ':id/documentsLink',
+        loadChildren: () =>
+          import('../document-link/document-link.module').then(
+            (m) => m.DocumentLinkModule,
+          ),
+        data: { breadcrumb: 'Documentos', view: 'client_link' },
+      },
     ],
   },
 ];

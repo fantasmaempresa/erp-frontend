@@ -33,6 +33,8 @@ import { InputCoordinateComponent } from './components/input-coordinate/input-co
 import { DynamicViewsModule } from './components/dynamic-views/dynamic-views.module';
 import { DialogPreviewPdfComponent } from './components/dialog-preview-pdf/dialog-preview-pdf.component';
 import {SanitizerPipe} from "./pipes/sanitizer.pipe";
+import { DialogAssignUserComponent } from './components/dialog-assign-user/dialog-assign-user.component';
+import { ViewsModule } from "o2c_core";
 
 @NgModule({
   declarations: [
@@ -59,6 +61,7 @@ import {SanitizerPipe} from "./pipes/sanitizer.pipe";
     OnSaveDialogComponent,
     DialogPreviewPdfComponent,
     SanitizerPipe,
+    DialogAssignUserComponent,
   ],
   imports: [
     CommonModule,
@@ -68,6 +71,7 @@ import {SanitizerPipe} from "./pipes/sanitizer.pipe";
     BreadcrumbModule,
     MaterialModule,
     DynamicViewsModule,
+    ViewsModule
   ],
   exports: [
     CommonModule,
