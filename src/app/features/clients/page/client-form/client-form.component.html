@@ -19,6 +19,19 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
+        <mat-label>Apellido Paterno</mat-label>
+        <input formControlName="last_name" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field appearance="outline">
+        <mat-label>Apellido materno</mat-label>
+        <input formControlName="mother_last_name" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
         <mat-label>Correo</mat-label>
         <input
           formControlName="email"

@@ -1,23 +1,23 @@
-import { ViewActions, viewCrud, viewLabel } from "o2c_core";
-import { ClientLinkService } from "../services";
-import { DEFAULT_ROUTE_CONFIGURATION } from "../../core/constants/routes.constants";
-import { ClientLinkDto } from "../dto";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ViewActions, viewCrud, viewLabel } from 'o2c_core';
+import { ClientLinkService } from '../services';
+import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
+import { ClientLinkDto } from '../dto';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const goToDocumentsLink = new ViewActions<ClientLinkDto>(
   async ({ row, injector }) => {
     const router = injector.get(Router);
     const route = injector.get(ActivatedRoute);
-    await router.navigate(["../", (row as ClientLinkDto).id, "documentsLink"], {
+    await router.navigate(['../', (row as ClientLinkDto).id, 'documentsLink'], {
       relativeTo: route,
     });
   },
-  "contact_page",
+  'contact_page',
   {
-    tooltip: "Expediente de cliente",
-    color: "accent",
-    isVisible: (row) => row && (row.id > 0)
-  }
+    tooltip: 'Expediente de cliente',
+    color: 'accent',
+    isVisible: (row) => row && row.id > 0,
+  },
 );
 @viewCrud({
   classProvider: ClientLinkService,
@@ -28,6 +28,12 @@ const goToDocumentsLink = new ViewActions<ClientLinkDto>(
 export class ClientLinkView {
   @viewLabel('Nombre')
   name: string;
+
+  @viewLabel('Apellido Paterno')
+  last_name: string;
+
+  @viewLabel('Apellido Materno')
+  mother_last_name: string;
 
   @viewLabel('Correo')
   email: string;
@@ -52,6 +58,8 @@ export class ClientLinkView {
 
   constructor(
     name: string,
+    last_name: string,
+    mother_last_name: string,
     email: string,
     phone: string,
     nickname: string,
@@ -61,6 +69,8 @@ export class ClientLinkView {
     degree: string,
   ) {
     this.name = name;
+    this.last_name = last_name;
+    this.mother_last_name = mother_last_name;
     this.email = email;
     this.phone = phone;
     this.nickname = nickname;

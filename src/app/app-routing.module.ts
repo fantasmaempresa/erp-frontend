@@ -155,6 +155,14 @@ const routes: Routes = [
         data: { breadcrumb: 'Comenzar Proyectos' },
       },
       {
+        path: 'operations',
+        loadChildren: () =>
+          import('./features/operations/operations.module').then(
+            (m) => m.OperationsModule,
+          ),
+        data: { breadcrumb: 'Operaciones' },
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',

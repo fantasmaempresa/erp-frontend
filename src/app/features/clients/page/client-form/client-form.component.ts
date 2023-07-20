@@ -18,6 +18,8 @@ import { ClientDto } from '../../../../data/dto';
 export class ClientFormComponent {
   clientForm = new UntypedFormGroup({
     name: new UntypedFormControl('', [Validators.required]),
+    last_name: new UntypedFormControl('', [Validators.required]),
+    mother_last_name: new UntypedFormControl('', [Validators.required]),
     email: new UntypedFormControl('', [Validators.required, Validators.email]),
     phone: new UntypedFormControl('', [Validators.required]),
     nickname: new UntypedFormControl(null),

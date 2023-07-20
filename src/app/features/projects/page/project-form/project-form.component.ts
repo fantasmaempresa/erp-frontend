@@ -35,7 +35,8 @@ export class ProjectFormComponent {
       description: new UntypedFormControl(null, Validators.required),
       estimate_end_date: new UntypedFormControl(null, Validators.required),
       client_id: new UntypedFormControl(null, Validators.required),
-      config: new UntypedFormControl(null, Validators.required)
+      project_quote_id: new UntypedFormControl(null, Validators.required),
+      config: new UntypedFormControl(null, Validators.required),
     });
 
     const id = Number(this.route.snapshot.params.id);

@@ -34,24 +34,34 @@ export class StaffView {
   @viewLabel('Nombre')
   name: string;
 
+  @viewLabel('Apellido Paterno')
+  last_name: string;
+
+  @viewLabel('Apellido Materno')
+  mother_last_name: string;
+
   @viewLabel('Correo')
   email: string;
 
   @viewLabel('Teléfono')
   phone: string;
 
-  @viewLabel('Información extra')
-  extra_information: string;
+  // @viewLabel('Información extra')
+  // extra_information: string;
 
   constructor(
     name: string,
+    last_name: string,
+    mother_last_name: string,
     email: string,
     phone: string,
-    extra_information: string,
+    // extra_information: string,
   ) {
     this.name = name;
+    this.last_name = last_name;
+    this.mother_last_name = mother_last_name;
     this.email = email;
     this.phone = phone;
-    this.extra_information = extra_information;
+    // this.extra_information = extra_information;
   }
 }

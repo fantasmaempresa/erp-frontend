@@ -8,7 +8,8 @@ export const environment = {
   // client_id: '9745ffe6-38e5-437c-8e03-3fc06538aa93',
   // client_secret: 'XOVnpU6cwyA18GcT8KdbrvpAtVYWNFPC0I8IaGxl',
   // SEVIDOR PROD
-  base_url: 'http://notaria4puebla.com.mx:7201/api',
+  // base_url: 'http://notaria4puebla.com.mx:7201/api',
+  base_url: 'https://back.notaria4puebla.com.mx/api',
   client_id: '991eded4-f69c-4444-a7a8-a2fdeefa6149',
   client_secret: 'NFRbQirZHQTPQhY4ZTuWqlKIjG5IO3XV6wbaUJLC',
   grant_type: 'password',

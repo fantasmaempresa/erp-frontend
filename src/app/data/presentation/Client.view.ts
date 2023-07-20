@@ -41,11 +41,17 @@ const goToDocumentsLink = new ViewActions<ClientDto>(
   classProvider: ClientService,
   registerName: "Cliente",
   actions: [goToClientLink, goToDocumentsLink],
-  route: DEFAULT_ROUTE_CONFIGURATION
+  route: DEFAULT_ROUTE_CONFIGURATION,
 })
 export class ClientView {
   @viewLabel("Nombre")
   name: string;
+
+  @viewLabel("Apellido paterno")
+  last_name: string;
+
+  @viewLabel("Apellido materno")
+  mother_last_name: string;
 
   @viewLabel("Correo")
   email: string;
@@ -74,6 +80,8 @@ export class ClientView {
 
   constructor(
     name: string,
+    last_name: string,
+    mother_last_name: string,
     email: string,
     phone: string,
     nickname: string,
@@ -82,6 +90,8 @@ export class ClientView {
     type: number
   ) {
     this.name = name;
+    this.last_name = last_name;
+    this.mother_last_name = mother_last_name;
     this.email = email;
     this.phone = phone;
     this.nickname = nickname;
