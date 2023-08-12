@@ -163,6 +163,38 @@ const routes: Routes = [
         data: { breadcrumb: 'Operaciones' },
       },
       {
+        path: 'places',
+        loadChildren: () =>
+          import('./features/place/place.module').then(
+            (m) => m.PlaceModule,
+          ),
+        data: { breadcrumb: 'Lugares' },
+      },
+      {
+        path: 'grantors',
+        loadChildren: () =>
+          import('./features/grantor/grantor.module').then(
+            (m) => m.GrantorModule,
+          ),
+        data: { breadcrumb: 'Otorgantes' },
+      },
+      {
+        path: 'shapes',
+        loadChildren: () =>
+          import('./features/shape/shape.module').then(
+            (m) => m.ShapeModule,
+          ),
+        data: { breadcrumb: 'Lugares' },
+      },
+      {
+        path: 'procedures',
+        loadChildren: () =>
+          import('./features/procedures/procedures.module').then(
+            (m) => m.ProceduresModule,
+          ),
+        data: { breadcrumb: 'Trámites' },
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',

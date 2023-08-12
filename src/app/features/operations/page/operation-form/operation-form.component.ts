@@ -1,14 +1,9 @@
-import { Component } from '@angular/core';
-import {
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
-import { Observable } from 'rxjs';
-import { DocumentDto } from '../../../../data/dto';
-import { MessageHelper } from 'o2c_core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { OperationService } from '../../../../data/services/operation.service';
+import { Component } from "@angular/core";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import { Observable } from "rxjs";
+import { MessageHelper } from "o2c_core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { OperationService } from "../../../../data/services/operation.service";
 import { OperationsDto } from "../../../../data/dto/Operations.dto";
 
 @Component({

@@ -22,3 +22,4 @@ export * from './Tokens.dto';
 export * from './User.dto';
 export * from './UserAuth.dto';
 export * from './WorkArea.dto';
+export * from './Procedure.dto';

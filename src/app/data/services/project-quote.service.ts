@@ -6,8 +6,10 @@ import { environment } from '../../../environments/environment';
 import { CrudService } from '../../core/classes/Crud/CrudService';
 import { Pagination } from '../../core/interfaces';
 import { Operations } from '../models/Operations.model';
-import { ProjectQuoteDto, QuoteTemplate } from '../dto';
+import { ProjectQuoteDto, QuoteTemplate, WorkAreaDto } from '../dto';
 import { selectFormToOperations } from '../../state/dynamic-form';
+import { CrudService as CrudServiceNew, Pagination as PaginationNew } from 'o2c_core';
+
 
 @Injectable({
   providedIn: 'root',
@@ -90,5 +92,16 @@ export class ProjectQuoteService extends CrudService<ProjectQuoteDto> {
       operation_fields: concepts,
       operation_total: total,
     };
+  }
+}
+@Injectable({
+  providedIn: 'root',
+})
+export class ProjectQuoteServiceNew extends CrudServiceNew<
+  ProjectQuoteDto,
+  PaginationNew<ProjectQuoteDto>
+> {
+  constructor() {
+    super('projectQuotes');
   }
 }

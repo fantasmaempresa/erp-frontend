@@ -1,0 +1,196 @@
+<mat-card>
+  <mat-toolbar>
+    <div>
+      <button
+        (click)="backToListDocuments()"
+        aria-label="Regresar"
+        mat-icon-button
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="procedureForm"
+    class="row justify-content-center"
+  >
+    <div class="col-8 d-flex flex-column">
+      <mat-form-field appearance="outline">
+        <mat-label>Expediente</mat-label>
+        <input formControlName="name" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Operación</mat-label>
+        <input
+          [viewClassBuilder]="operationProvider"
+          title="Selecciona un tipo de operación"
+          o2cSinglePopup
+          formControlName="operation_id"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <div class="row">
+        <div class="col-10">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Cliente</mat-label>
+            <input
+              [viewClassBuilder]="clientProvider"
+              title="Selecciona un cliente"
+              o2cSinglePopup
+              formControlName="client_id"
+              matInput
+              type="text"
+            />
+            <mat-icon matSuffix>search</mat-icon>
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-2">
+          <button type="button" color="primary" mat-raised-button>
+            <mat-icon>add</mat-icon>
+            Nuevo cliente
+          </button>
+        </div>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Otorgantes</mat-label>
+        <input
+          [viewClassBuilder]="grantorProvider"
+          title="Selecciona un Otorgante"
+          o2cMultiPopup
+          formControlName="grantors"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Documentos</mat-label>
+        <input
+          [viewClassBuilder]="documentProvider"
+          title="Selecciona un Otorgante"
+          o2cMultiPopup
+          formControlName="documents"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Lugar</mat-label>
+        <input
+          [viewClassBuilder]="placeProvider"
+          title="Selecciona un lugar"
+          o2cSinglePopup
+          formControlName="place_id"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Responsable</mat-label>
+        <input
+          [viewClassBuilder]="staffProvider"
+          title="Selecciona un encargo"
+          o2cSinglePopup
+          formControlName="staff_id"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de trámite</mat-label>
+        <input
+          (focus)="dateForm.open()"
+          [matDatepicker]="dateForm"
+          class="clickable"
+          formControlName="date_proceedings"
+          matInput
+        />
+        <mat-datepicker-toggle
+          [for]="dateForm"
+          matSuffix
+        ></mat-datepicker-toggle>
+        <mat-datepicker #dateForm></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de firma</mat-label>
+        <input
+          (focus)="dateForm1.open()"
+          [matDatepicker]="dateForm1"
+          class="clickable"
+          formControlName="date"
+          matInput
+        />
+        <mat-datepicker-toggle
+          [for]="dateForm1"
+          matSuffix
+        ></mat-datepicker-toggle>
+        <mat-datepicker #dateForm1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Valor de operación</mat-label>
+        <input formControlName="value_operation" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Instrumento</mat-label>
+        <input formControlName="instrument" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Volumen</mat-label>
+        <input formControlName="volume" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Del folio</mat-label>
+        <input formControlName="folio_min" matInput type="number" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Al Folio</mat-label>
+        <input formControlName="folio_max" matInput type="number" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Credito</mat-label>
+        <input formControlName="credit" matInput type="number" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Observaciones</mat-label>
+        <textarea formControlName="observation" matInput> </textarea>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <button color="primary" mat-flat-button>Guardar</button>
+    </div>
+  </form>
+</mat-card>

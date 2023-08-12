@@ -1,0 +1,352 @@
+<mat-card>
+  <mat-toolbar>
+    <div>
+      <button
+        (click)="backToListDocuments()"
+        aria-label="Regresar"
+        mat-icon-button
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="shapeForm"
+    class="row justify-content-center"
+  >
+    <mat-accordion class="example-headers-align">
+      <mat-expansion-panel
+        (opened)="step = 0"
+        [expanded]="step === 0"
+        hideToggle
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>Selección de forma</mat-panel-title>
+          <mat-panel-description
+            >Seleccione el trámite y una forma</mat-panel-description
+          >
+        </mat-expansion-panel-header>
+        <div class="row justify-content-center">
+          <div class="col-6 d-flex flex-column pe-0">
+            <mat-form-field appearance="outline">
+              <mat-label>Seleccione una forma</mat-label>
+              <mat-select
+                formControlName="template_shape_id"
+                (valueChange)="changeShape($event)"
+              >
+                <mat-option>-- None --</mat-option>
+                <mat-option
+                  *ngFor="let template of templateShapes; index as i"
+                  [value]="template"
+                >
+                  {{ template.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Trámite</mat-label>
+              <input
+                [viewClassBuilder]="procedureProvider"
+                title="Selecciona un trámite"
+                o2cSinglePopup
+                formControlName="procedure_id"
+                matInput
+                type="text"
+              />
+              <mat-icon matSuffix>search</mat-icon>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <mat-action-row>
+          <button (click)="goToNext()" color="primary" mat-button>
+            Siguiente
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel
+        (opened)="step = 1"
+        [expanded]="step === 1"
+        hideToggle
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>Datos generales</mat-panel-title>
+          <mat-panel-description>
+            Datos acerca generales de la forma
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="row justify-content-center">
+          <div class="col-6 d-flex flex-column pe-0">
+            <mat-form-field appearance="outline">
+              <mat-label>Folio</mat-label>
+              <input formControlName="folio" matInput type="text" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Notario</mat-label>
+              <mat-select formControlName="notary">
+                <mat-option value="NORMA ROMERO CORTÉS"
+                  >NORMA ROMERO CORTÉS (Notario Titular)</mat-option
+                >
+                <mat-option value="NORMA ALMA CORTÉS CABALLERO"
+                  >NORMA ALMA CORTÉS CABALLERO (Notario Auxiliar)</mat-option
+                >
+              </mat-select>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Escritura</mat-label>
+              <input formControlName="scriptures" matInput type="text" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Cuenta predial</mat-label>
+              <input formControlName="property_account" matInput type="text" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Fecha de firma</mat-label>
+              <input
+                (focus)="dateForm.open()"
+                [matDatepicker]="dateForm"
+                class="clickable"
+                formControlName="signature_date"
+                matInput
+              />
+              <mat-datepicker-toggle
+                [for]="dateForm"
+                matSuffix
+              ></mat-datepicker-toggle>
+              <mat-datepicker #dateForm></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Partida presupuestal</mat-label>
+              <input formControlName="departure" matInput type="text" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Inscripción</mat-label>
+              <input formControlName="inscription" matInput type="text" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Fojas</mat-label>
+              <input formControlName="sheets" matInput type="number" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Tomo</mat-label>
+              <input formControlName="took" matInput type="number" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Libro</mat-label>
+              <input formControlName="book" matInput type="number" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Monto de operación</mat-label>
+              <input formControlName="operation_value" matInput type="number" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Total</mat-label>
+              <input formControlName="total" matInput type="number" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Descripción</mat-label>
+              <textarea formControlName="description" matInput></textarea>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <mat-action-row>
+          <button (click)="goToPrev()" color="warn" mat-button>Atras</button>
+          <button (click)="goToNext()" color="primary" mat-button>
+            Siguiente
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel
+        (opened)="step = 2"
+        [expanded]="step === 2"
+        hideToggle
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>Enajenante</mat-panel-title>
+          <mat-panel-description> Datos de enajenante</mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="row justify-content-center">
+          <div class="col-6 d-flex flex-column pe-0">
+            <!--      DATOS DE ENAGENANTE-->
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre completo de adquiriente</mat-label>
+              <input formControlName="acquirer_name" matInput type="text" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre completo de enagenante</mat-label>
+              <input formControlName="alienating_name" matInput type="text" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Calle</mat-label>
+              <input
+                formControlName="alienating_street"
+                matInput
+                type="text"
+              />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Número exterior </mat-label>
+              <input
+                formControlName="alienating_outdoor_number"
+                matInput
+                type="number"
+              />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Número interior</mat-label>
+              <input
+                formControlName="alienating_interior_number"
+                matInput
+                type="number"
+              />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Colonia</mat-label>
+              <input
+                formControlName="alienating_colony"
+                matInput
+                type="text"
+              />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Localidad</mat-label>
+              <input
+                formControlName="alienating_locality"
+                matInput
+                type="text"
+              />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Municipio</mat-label>
+              <input
+                formControlName="alienating_municipality"
+                matInput
+                type="text"
+              />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Entidad</mat-label>
+              <input
+                formControlName="alienating_entity"
+                matInput
+                type="text"
+              />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Código postal</mat-label>
+              <input
+                formControlName="alienating_zipcode"
+                matInput
+                type="number"
+              />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Télefono</mat-label>
+              <input
+                formControlName="alienating_phone"
+                matInput
+                type="number"
+              />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+        <mat-action-row>
+          <button (click)="goToPrev()" color="warn" mat-button>Atras</button>
+          <button (click)="goToNext()" color="primary" mat-button>
+            Siguiente
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <!--      DATOS DE FORMA SELECCIONADA -->
+      <mat-expansion-panel
+        (opened)="step = 3"
+        [expanded]="step === 3"
+        hideToggle
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title> Completar datos </mat-panel-title>
+          <mat-panel-description>
+            Completar los datos de la forma seleccionada
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <form
+          *ngIf="builderForm"
+          [formGroup]="builderForm"
+          (ngSubmit)="onSubmit()"
+        >
+          <div class="row justify-content-center">
+            <div class="col-6 d-flex flex-column pe-0">
+              <mat-form-field appearance="outline" *ngFor="let field of fields">
+                <mat-label>{{ field.label }}</mat-label>
+                <input
+                  [formControlName]="field.name"
+                  matInput
+                  [type]="field.type"
+                />
+                <mat-error appErrorMessage></mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </form>
+
+        <mat-action-row>
+          <button (click)="goToPrev()" color="warn" mat-button>Atras</button>
+          <button color="primary" mat-button>Guardar</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</mat-card>

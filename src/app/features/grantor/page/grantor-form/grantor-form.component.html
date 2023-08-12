@@ -1,0 +1,59 @@
+<mat-card>
+  <mat-toolbar>
+    <div>
+      <button
+        (click)="backToListDocuments()"
+        aria-label="Regresar"
+        mat-icon-button
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="grantorForm"
+    class="row justify-content-center"
+  >
+    <div class="col-6 d-flex flex-column">
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de persona (fisica o moral)</mat-label>
+        <mat-select formControlName="type" (valueChange)="changeTypeGrantor($event)">
+          <mat-option [value]="2">Física</mat-option>
+          <mat-option [value]="1">Moral</mat-option>
+        </mat-select>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input formControlName="name" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Apellido Paterno</mat-label>
+        <input formControlName="father_last_name" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Apellido Materno</mat-label>
+        <input formControlName="mother_last_name" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Participación</mat-label>
+        <input formControlName="stake" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-checkbox class="me-5" color="primary" formControlName="beneficiary">
+        Beneficiario
+      </mat-checkbox>
+
+      <button color="primary" mat-flat-button>Guardar</button>
+    </div>
+  </form>
+</mat-card>

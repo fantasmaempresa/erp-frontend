@@ -15,6 +15,34 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
+        <mat-label>Expediete</mat-label>
+        <input
+          [viewClassBuilder]="procedureProvider"
+          title="Selecciona un expediente"
+          o2cSinglePopup
+          formControlName="procedure_id"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Selecciona una cotiazación</mat-label>
+        <input
+          [viewClassBuilder]="projectQuoteProvider"
+          title="Selecciona una cotiazación"
+          o2cSinglePopup
+          formControlName="project_quote_id"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
         <mat-label>Folio</mat-label>
         <input formControlName="folio" matInput type="text" />
         <mat-error appErrorMessage></mat-error>

@@ -1,10 +1,8 @@
 import { Component } from "@angular/core";
 import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { DocumentView } from "../../../../data/presentation/Document.view";
-import { ClientView } from "../../../../data/presentation";
 import { ActivatedRoute, ActivationEnd, Router, RouterEvent } from "@angular/router";
-import { filter, map, Observable } from "rxjs";
-import { ClientLinkDto } from "../../../../data/dto";
+import { filter, map } from "rxjs";
 import { DocumentLinkService } from "../../../../data/services/document-link.service";
 import { MessageHelper } from "o2c_core";
 import Swal from "sweetalert2";

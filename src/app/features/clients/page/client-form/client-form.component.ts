@@ -1,14 +1,10 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import {
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
-import { ClientServiceOld } from '../../../../data/services';
-import { Observable } from 'rxjs';
-import { MessageHelper } from 'o2c_core';
-import { ClientDto } from '../../../../data/dto';
+import { Component } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
+import { ClientServiceOld } from "../../../../data/services";
+import { Observable } from "rxjs";
+import { MessageHelper } from "o2c_core";
+import { ClientDto } from "../../../../data/dto";
 
 @Component({
   selector: 'app-client-form',
