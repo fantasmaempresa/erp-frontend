@@ -1,7 +1,7 @@
 <mat-card>
-  <mat-toolbar>
+  <mat-toolbar *ngIf="!isDialog">
     <div>
-      <button (click)="backToListRoles()" aria-label="Regresar" mat-icon-button>
+      <button (click)="backToListUsers()" aria-label="Regresar" mat-icon-button>
         <mat-icon>arrow_back</mat-icon>
       </button>
     </div>

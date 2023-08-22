@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { RoleDto, UserDto } from '../../data/dto';
@@ -10,7 +10,8 @@ import { KEY_LS_MENUS } from '../../data/services';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
+  imageProfile: string = 'assets/images/profile_picture.jpg';
   // menus = [
   //   {
   //     menuName: 'Menu',
@@ -103,7 +104,17 @@ export class SidebarComponent {
     this.role$ = store.select(selectRole);
 
     this.menus = [JSON.parse(localStorage.getItem(KEY_LS_MENUS) ?? '[]')];
-    console.log("this.menu -->", this.menus);
+    console.log('this.menu -->', this.menus);
+  }
+
+  ngOnInit(): void {
+    let user = JSON.parse(localStorage.getItem('auth') ?? '[]');
+    user = user.user;
+    console.log('----> ', user);
+    if (user.url) {
+      console.log('user.url --> ', user.url);
+      this.imageProfile = user.url;
+    }
   }
 
   dropdown(submenu: any) {

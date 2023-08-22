@@ -9,8 +9,8 @@ import { OperationService } from '../../../../data/services/operation.service';
 import { Observable } from 'rxjs';
 import { OperationsDto } from '../../../../data/dto/Operations.dto';
 import { MessageHelper } from 'o2c_core';
-import { PlaceService } from "../../../../data/services/place.service";
-import { PlaceDto } from "../../../../data/dto/Place.dto";
+import { PlaceService } from '../../../../data/services/place.service';
+import { PlaceDto } from '../../../../data/dto/Place.dto';
 
 @Component({
   selector: 'app-place-form',
@@ -24,11 +24,18 @@ export class PlaceFormComponent {
 
   isEdit: boolean = false;
 
+  isDialog: boolean = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private placeService: PlaceService,
   ) {
+    const currentRoute = this.route.snapshot.routeConfig?.path;
+    if (typeof currentRoute === 'undefined') {
+      this.isDialog = true;
+    }
+
     const id = Number(this.route.snapshot.params.id);
     if (!isNaN(id)) {
       this.isEdit = true;
@@ -41,8 +48,12 @@ export class PlaceFormComponent {
     }
   }
 
-  async backToListDocuments() {
-    await this.router.navigate(['../'], { relativeTo: this.route });
+  async backToListPlaces() {
+    if (this.isDialog) {
+      return;
+    } else {
+      await this.router.navigate(['../'], { relativeTo: this.route });
+    }
   }
 
   onSubmit() {
@@ -59,7 +70,13 @@ export class PlaceFormComponent {
           '¡Éxito!',
           `Lugar ha sido ${message} correctamente.`,
         );
-        await this.backToListDocuments();
+        await this.backToListPlaces();
+      },
+      error: async () => {
+        await MessageHelper.errorMessage(
+          'Ocurrio un error inesperado, intente más tarde',
+          'Error',
+        );
       },
     });
   }

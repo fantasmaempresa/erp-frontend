@@ -37,6 +37,14 @@ const routes: Routes = [
         data: { breadcrumb: 'Dashboard' },
       },
       {
+        path: 'profile',
+        loadChildren: () =>
+          import('./features/profile/profile.module').then(
+            (m) => m.ProfileModule,
+          ),
+        data: { breadcrumb: 'Perfil' },
+      },
+      {
         path: 'users',
         loadChildren: () =>
           import('./features/users/users.module').then((m) => m.UsersModule),
@@ -81,7 +89,9 @@ const routes: Routes = [
       {
         path: 'documents',
         loadChildren: () =>
-          import('./features/documents/documents.module').then((m) => m.DocumentsModule),
+          import('./features/documents/documents.module').then(
+            (m) => m.DocumentsModule,
+          ),
         data: {
           breadcrumb: 'Áreas',
         },
@@ -165,9 +175,7 @@ const routes: Routes = [
       {
         path: 'places',
         loadChildren: () =>
-          import('./features/place/place.module').then(
-            (m) => m.PlaceModule,
-          ),
+          import('./features/place/place.module').then((m) => m.PlaceModule),
         data: { breadcrumb: 'Lugares' },
       },
       {
@@ -181,9 +189,7 @@ const routes: Routes = [
       {
         path: 'shapes',
         loadChildren: () =>
-          import('./features/shape/shape.module').then(
-            (m) => m.ShapeModule,
-          ),
+          import('./features/shape/shape.module').then((m) => m.ShapeModule),
         data: { breadcrumb: 'Lugares' },
       },
       {

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { logout } from '../../state/auth';
 import { ThemeManagerService } from '../../core/services/theme-manager.service';
@@ -9,7 +9,9 @@ import { MatSlideToggleChange } from '@angular/material/slide-toggle';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+  imageProfile: string = 'assets/images/profile_picture.jpg';
+
   @Output()
   readonly darkModeSwitched = new EventEmitter<boolean>();
 
@@ -27,5 +29,15 @@ export class HeaderComponent {
   changeTheme({ checked }: MatSlideToggleChange) {
     this.themeManager.toggleDarkTheme(checked);
     this.isDark = checked;
+  }
+
+  ngOnInit(): void {
+    let user = JSON.parse(localStorage.getItem('auth') ?? '[]');
+    user = user.user;
+    console.log('----> ', user);
+    if (user.url) {
+      console.log('user.url --> ', user.url);
+      this.imageProfile = user.url;
+    }
   }
 }

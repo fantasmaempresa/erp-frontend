@@ -6,7 +6,6 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { OperationsDto } from '../../../../data/dto/Operations.dto';
 import { MessageHelper } from 'o2c_core';
 import { GrantorService } from '../../../../data/services/grantor.service';
 import { GrantorDto } from '../../../../data/dto/Grantor.dto';
@@ -28,6 +27,8 @@ export class GrantorFormComponent {
 
   isEdit: boolean = false;
 
+  isDialog: boolean = false;
+
   typePerson = [
     { id: 1, label: 'Fisica' },
     { id: 2, label: 'Moral' },
@@ -38,6 +39,12 @@ export class GrantorFormComponent {
     private route: ActivatedRoute,
     private grantorService: GrantorService,
   ) {
+    const currentRoute = this.route.snapshot.routeConfig?.path;
+
+    if (typeof currentRoute === 'undefined') {
+      this.isDialog = true;
+    }
+
     const id = Number(this.route.snapshot.params.id);
     if (!isNaN(id)) {
       this.isEdit = true;
@@ -50,8 +57,12 @@ export class GrantorFormComponent {
     }
   }
 
-  async backToListDocuments() {
-    await this.router.navigate(['../'], { relativeTo: this.route });
+  async backToListGrantors() {
+    if (this.isDialog) {
+      return;
+    } else {
+      await this.router.navigate(['../'], { relativeTo: this.route });
+    }
   }
 
   onSubmit() {
@@ -68,7 +79,7 @@ export class GrantorFormComponent {
           '¡Éxito!',
           `La operación ha sido ${message} correctamente.`,
         );
-        await this.backToListDocuments();
+        await this.backToListGrantors();
       },
     });
   }

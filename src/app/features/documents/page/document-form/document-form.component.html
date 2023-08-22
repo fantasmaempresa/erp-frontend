@@ -1,5 +1,5 @@
 <mat-card>
-  <mat-toolbar>
+  <mat-toolbar *ngIf="!isDialog">
     <div>
       <button (click)="backToListDocuments()" aria-label="Regresar" mat-icon-button>
         <mat-icon>arrow_back</mat-icon>

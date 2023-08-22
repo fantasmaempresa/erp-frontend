@@ -35,6 +35,7 @@ import { DialogPreviewPdfComponent } from './components/dialog-preview-pdf/dialo
 import {SanitizerPipe} from "./pipes/sanitizer.pipe";
 import { DialogAssignUserComponent } from './components/dialog-assign-user/dialog-assign-user.component';
 import { ViewsModule } from "o2c_core";
+import { DialogDynamicAddItemComponent } from './components/dialog-dynamic-add-item/dialog-dynamic-add-item.component';
 
 @NgModule({
   declarations: [
@@ -62,6 +63,7 @@ import { ViewsModule } from "o2c_core";
     DialogPreviewPdfComponent,
     SanitizerPipe,
     DialogAssignUserComponent,
+    DialogDynamicAddItemComponent,
   ],
   imports: [
     CommonModule,

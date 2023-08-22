@@ -17,6 +17,13 @@ import { ClientView } from '../../../../data/presentation';
 import { StaffView } from '../../../../data/presentation/staff.view';
 import { GrantorView } from '../../../../data/presentation/Grantor.view';
 import { DocumentView } from '../../../../data/presentation/Document.view';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogDynamicAddItemComponent } from '../../../../shared/components/dialog-dynamic-add-item/dialog-dynamic-add-item.component';
+import { ClientFormComponent } from '../../../clients/page/client-form/client-form.component';
+import { GrantorFormComponent } from '../../../grantor/page/grantor-form/grantor-form.component';
+import { DocumentFormComponent } from '../../../documents/page/document-form/document-form.component';
+import { PlaceFormComponent } from '../../../place/page/place-form/place-form.component';
+import { StaffMemberFormComponent } from '../../../staff/page/staff-member-form/staff-member-form.component';
 
 @Component({
   selector: 'app-procedures-form',
@@ -72,10 +79,34 @@ export class ProceduresFormComponent {
 
   documentProvider = DocumentView;
 
+  addItems = [
+    {
+      component: ClientFormComponent,
+      title: 'Agregar nuevo cliente',
+    },
+    {
+      component: GrantorFormComponent,
+      title: 'Agregar nuevo otrogante',
+    },
+    {
+      component: DocumentFormComponent,
+      title: 'Agregar nuevo documento',
+    },
+    {
+      component: PlaceFormComponent,
+      title: 'Agregar nuevo lugar',
+    },
+    {
+      component: StaffMemberFormComponent,
+      title: 'Agregar nuevo responsalbe',
+    },
+  ];
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private procedureService: ProcedureService,
+    public dialog: MatDialog,
   ) {
     const id = Number(this.route.snapshot.params.id);
     if (!isNaN(id)) {
@@ -174,5 +205,12 @@ export class ProceduresFormComponent {
       debounceTime(300),
       map((isUnique) => (isUnique ? null : { uniqueValue: true })),
     );
+  }
+
+  addItem(item: { component: any; title: string }) {
+    this.dialog.open(DialogDynamicAddItemComponent, {
+      data: { component: item.component, title: item.title },
+      width: '800px',
+    });
   }
 }

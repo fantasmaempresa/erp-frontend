@@ -24,6 +24,7 @@ export const validationMessages = {
 export const genericErrorMessages: { [key: string]: any } = {
   uniqueValue: () => 'this value was already used',
   greaterThan: () => 'this value must be greater',
+  notEquals: () => 'this value not equals',
   required: () => 'This field is required',
   email: () => 'This mail is invalid',
   pattern: () => 'This field does not match the pattern',

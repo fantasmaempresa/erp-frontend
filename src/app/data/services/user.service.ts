@@ -37,4 +37,8 @@ export class UserService extends CrudService<UserDto, Pagination<UserDto>> {
   assignUser(data: { view: string, entity_id: number, user_id: number }) {
     return this._http.post(`${environment.base_url}/user/assign`, data);
   }
+
+  updateMyInfo(data: any) {
+    return this._http.post(`${environment.base_url}/user/updateMyInfo`, data);
+  }
 }

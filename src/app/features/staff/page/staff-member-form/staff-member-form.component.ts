@@ -38,12 +38,19 @@ export class StaffMemberFormComponent {
 
   workAreas$!: Observable<WorkAreaDto[]>;
 
+  isDialog: boolean = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private staffService: StaffServiceOld,
     private areaService: AreaServiceOld,
   ) {
+    const currentRoute = this.route.snapshot.routeConfig?.path;
+    if (typeof currentRoute === 'undefined') {
+      this.isDialog = true;
+    }
+
     this.workAreas$ = this.areaService
       .fetchAll()
       .pipe(map((areas) => areas.data));
@@ -59,8 +66,12 @@ export class StaffMemberFormComponent {
     }
   }
 
-  async backToListRoles() {
-    await this.router.navigate(['../'], { relativeTo: this.route });
+  async backToListStaff() {
+    if (this.isDialog) {
+      return;
+    } else {
+      await this.router.navigate(['../'], { relativeTo: this.route });
+    }
   }
 
   onSubmit() {
@@ -77,7 +88,7 @@ export class StaffMemberFormComponent {
           '¡Éxito!',
           `El miembro ha sido ${message} correctamente.`,
         );
-        await this.backToListRoles();
+        await this.backToListStaff();
       },
     });
   }

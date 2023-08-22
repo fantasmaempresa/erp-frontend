@@ -1,8 +1,6 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
 import { BasicViewComponent, VIEW_CLAZZ } from "o2c_core";
-import { OperationView } from "../../data/presentation/Operation.view";
-import { OperationFormComponent } from "../operations/page/operation-form/operation-form.component";
 import { GrantorView } from "../../data/presentation/Grantor.view";
 import { GrantorFormComponent } from "./page/grantor-form/grantor-form.component";
 

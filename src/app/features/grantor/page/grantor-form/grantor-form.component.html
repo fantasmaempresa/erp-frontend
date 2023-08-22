@@ -1,8 +1,8 @@
 <mat-card>
-  <mat-toolbar>
+  <mat-toolbar *ngIf="!isDialog">
     <div>
       <button
-        (click)="backToListDocuments()"
+        (click)="backToListGrantors()"
         aria-label="Regresar"
         mat-icon-button
       >

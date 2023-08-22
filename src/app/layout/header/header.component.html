@@ -30,13 +30,12 @@
         <img
           alt=""
           class="profile-img"
-          src="assets/images/profile_picture.jpg"
+          [src]="imageProfile"
         />
         <span class="header__profile-label">Patrick</span>
         <span class="material-icons">expand_more</span>
       </button>
       <mat-menu #profileMenu="matMenu" xPosition="before">
-        <button mat-menu-item>Item 1</button>
         <mat-slide-toggle #slide (change)="changeTheme($event)" color="primary"
           >Modo {{ slide.checked ? 'Oscuro' : 'Claro' }}
         </mat-slide-toggle>

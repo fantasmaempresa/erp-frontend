@@ -1,0 +1,62 @@
+<mat-card>
+  <mat-toolbar>
+    <div>
+      <button (click)="back()" aria-label="Regresar" mat-icon-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <div>
+
+  </div>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="profileForm"
+    class="row justify-content-center"
+  >
+    <div class="col-6 d-flex flex-column">
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input autocomplete="off" formControlName="name" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Correo</mat-label>
+        <input
+          formControlName="email"
+          matInput
+          placeholder="ejemplo@email.com"
+          type="email"
+        />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nueva Contraseña</mat-label>
+        <input formControlName="change_password" matInput type="password" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Confirmar Nueva Contraseña</mat-label>
+        <input formControlName="confirm_change_password" matInput type="password" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Contraseña</mat-label>
+        <input formControlName="password" matInput type="password" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <ng-container>
+        <app-input-file formControlName="file" label="Foto de perfil" accept="*.jpg|*.png"></app-input-file>
+      </ng-container>
+
+
+      <button color="primary" mat-flat-button>Guardar</button>
+    </div>
+  </form>
+</mat-card>

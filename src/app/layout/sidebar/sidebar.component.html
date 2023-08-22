@@ -17,7 +17,7 @@
       <img
         alt=""
         class="profile-img profile-img--sidebar-header"
-        src="assets/images/profile_picture.jpg"
+        [src]="imageProfile"
       />
       <h3 class="sidebar-header__profile-name">{{ user.name }}</h3>
       <span *ngIf="role$ | async as role" class="sidebar-header__profile-place">
