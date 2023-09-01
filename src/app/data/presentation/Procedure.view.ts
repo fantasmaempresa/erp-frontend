@@ -1,28 +1,44 @@
-import { ViewActions, viewCrud, viewLabel } from "o2c_core";
-import { DEFAULT_ROUTE_CONFIGURATION } from "../../core/constants/routes.constants";
-import { ProcedureService } from "../services/procedure.service";
-import { ActivatedRoute, Router } from "@angular/router";
-import { ProcedureDto } from "../dto";
+import { ViewActions, viewCrud, viewLabel } from 'o2c_core';
+import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
+import { ProcedureService } from '../services/procedure.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProcedureDto } from '../dto';
 
 const goToDocumentsLink = new ViewActions<ProcedureDto>(
   async ({ row, injector }) => {
     const router = injector.get(Router);
     const route = injector.get(ActivatedRoute);
-    await router.navigate(["../", (row as ProcedureDto).id, "documentsLink"], {
-      relativeTo: route
+    await router.navigate(['../', (row as ProcedureDto).id, 'documentsLink'], {
+      relativeTo: route,
     });
   },
-  "contact_page",
+  'contact_page',
   {
-    tooltip: "Expediente de trámite",
-    color: "accent",
-    isVisible: (row) => (row.id > 0)
-  }
+    tooltip: 'Expediente de trámite',
+    color: 'accent',
+    isVisible: (row) => row && row.id > 0,
+  },
+);
+
+const goToShapesLink = new ViewActions<ProcedureDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['../', (row as ProcedureDto).id, 'shapeLink'], {
+      relativeTo: route,
+    });
+  },
+  'description',
+  {
+    tooltip: 'Formas del expediente',
+    color: 'accent',
+    isVisible: (row) => row && row.id > 0,
+  },
 );
 @viewCrud({
   classProvider: ProcedureService,
   registerName: 'Trámites',
-  actions: [goToDocumentsLink],
+  actions: [goToDocumentsLink, goToShapesLink],
   route: DEFAULT_ROUTE_CONFIGURATION,
 })
 export class ProcedureView {

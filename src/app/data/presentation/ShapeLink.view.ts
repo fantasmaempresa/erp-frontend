@@ -1,7 +1,7 @@
-import { MessageHelper, ViewActions, viewCrud, viewLabel } from 'o2c_core';
-import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
-import { ShapeService } from '../services/shape.service';
-import { ShapeDto } from '../dto/Shape.dto';
+import { MessageHelper, viewActions, ViewActions, viewLabel } from "o2c_core";
+import { ShapeService } from "../services/shape.service";
+import { ShapeDto } from "../dto/Shape.dto";
+import { ShapeLinkService } from "../services/shape-link.service";
 
 const generetePdf = new ViewActions<ShapeDto>(
   async ({ row, injector }) => {
@@ -45,13 +45,13 @@ const generetePdf = new ViewActions<ShapeDto>(
   },
 );
 
-@viewCrud({
-  classProvider: ShapeService,
-  registerName: 'Formas',
-  route: DEFAULT_ROUTE_CONFIGURATION,
+@viewActions({
+  classProvider: ShapeLinkService,
+  // registerName: 'Formas',
+  // route: DEFAULT_ROUTE_CONFIGURATION,
   actions: [generetePdf],
 })
-export class ShapeView {
+export class ShapeLinkView {
   @viewLabel('Folio')
   folio: string;
 

@@ -37,6 +37,14 @@ const routes: Routes = [
           ),
         data: { breadcrumb: 'Documentos', view: 'procedures' },
       },
+      {
+        path: ':id/shapeLink',
+        loadChildren: () =>
+          import('../shape-link/shape-link.module').then(
+            (m) => m.ShapeLinkModule,
+          ),
+        data: { breadcrumb: 'Formas', view: 'procedures' },
+      },
     ],
   },
 ];

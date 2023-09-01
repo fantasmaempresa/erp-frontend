@@ -6,7 +6,6 @@ import { DialogPreviewPdfComponent } from '../../shared/components/dialog-previe
 
 const goToViewDocument = new ViewActions<DocumentDto>(
   async ({ row, injector }) => {
-    console.log('rowww --> ', row);
     const document = row as DocumentDto;
     const dialog = injector.get(MatDialog);
     dialog.open(DialogPreviewPdfComponent, {

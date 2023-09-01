@@ -1,8 +1,8 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
 import { BasicViewComponent, VIEW_CLAZZ } from "o2c_core";
-import { ShapeView } from "../../data/presentation/Shape.view";
-import { ShapeFormComponent } from "./page/shape-form/shape-form.component";
+import { ShapeFormComponent } from "../shape/page/shape-form/shape-form.component";
+import { ShapeLinkView } from "../../data/presentation/ShapeLink.view";
 
 const routes: Routes = [
   {
@@ -16,8 +16,8 @@ const routes: Routes = [
       {
         path: 'list',
         component: BasicViewComponent,
-        data: { breadcrumb: 'Lista de operaciones' },
-        providers: [{ provide: VIEW_CLAZZ, useValue: ShapeView }],
+        data: { breadcrumb: 'Lista de formas' },
+        providers: [{ provide: VIEW_CLAZZ, useValue: ShapeLinkView }],
       },
       {
         path: 'new',
@@ -37,4 +37,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class ShapeRoutingModule { }
+export class ShapeLinkRoutingModule { }
