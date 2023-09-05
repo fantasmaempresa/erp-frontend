@@ -190,7 +190,7 @@ const routes: Routes = [
         path: 'shapes',
         loadChildren: () =>
           import('./features/shape/shape.module').then((m) => m.ShapeModule),
-        data: { breadcrumb: 'Lugares' },
+        data: { breadcrumb: 'Formas' },
       },
       {
         path: 'procedures',

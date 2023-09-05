@@ -88,9 +88,16 @@ export class ShapeFormComponent {
     if (!isNaN(id)) {
       this.isEdit = true;
       shapeService.fetch(id).subscribe({
-        next: (document) => {
+        next: (shape: ShapeDto) => {
           this.shapeForm.addControl('id', new UntypedFormControl(''));
-          this.shapeForm.patchValue(document);
+          this.shapeForm.patchValue(shape);
+          this.templateShapes.forEach((template: TemplateShapeDto) => {
+            if (template.id == shape.template_shape_id) {
+              this.shapeForm.get('template_shape_id')?.setValue(template);
+              this.changeShape(template);
+              this.builderForm.patchValue(shape.data_form);
+            }
+          });
         },
       });
     }

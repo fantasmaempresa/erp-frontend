@@ -16,7 +16,7 @@ const routes: Routes = [
       {
         path: 'list',
         component: BasicViewComponent,
-        data: { breadcrumb: 'Lista de operaciones' },
+        data: { breadcrumb: 'Lista de formas' },
         providers: [{ provide: VIEW_CLAZZ, useValue: ShapeView }],
       },
       {
