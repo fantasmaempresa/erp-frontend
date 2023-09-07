@@ -97,7 +97,7 @@ export class ShapeFormComponent {
               this.changeShape(template);
               this.builderForm.patchValue(shape.data_form);
             }
-          });
+          });   
         },
       });
     }
