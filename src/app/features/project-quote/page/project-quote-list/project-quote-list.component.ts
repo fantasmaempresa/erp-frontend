@@ -150,6 +150,12 @@ export class ProjectQuoteListComponent
     }
   }
 
+  downloadQuote(row?: ProjectQuoteDto) {
+    if (this.selection.selected.length > 0){
+
+    }
+  }
+
   onPaginateChange(event: PageEvent) {
     let page = event.pageIndex;
     let size = event.pageSize;

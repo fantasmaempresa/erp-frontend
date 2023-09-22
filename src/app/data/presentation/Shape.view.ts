@@ -10,14 +10,14 @@ const generetePdf = new ViewActions<ShapeDto>(
 
     MessageHelper.showLoading('Generando pdf');
 
-    shapeService.generateShape(shape.procedure_id).subscribe({
+    shapeService.generateShape(shape.id).subscribe({
       next: async (response) => {
         // @ts-ignore
         const blob = new Blob([response.body], {
           type: response.headers.get('content-type'),
         });
         // @ts-ignore
-        const filename = 'forma-pdf';
+        const filename = 'forma-pdf-' + shape.folio;
 
         // Crea un enlace temporal y simula un clic para descargar el archivo
         const link = document.createElement('a');

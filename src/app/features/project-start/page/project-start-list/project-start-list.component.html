@@ -11,15 +11,24 @@
         <div class="card-view__field-header">{{ process.name }}</div>
         <div class="card-view__field-actions">
           <mat-icon
+            *ngIf="process?.pivot?.status == 0"
             color="accent"
             (click)="startProcess(project, process)"
             matTooltip="Comenzar Proceso"
             >start
           </mat-icon>
           <mat-icon
+            *ngIf="process?.pivot?.status == 1"
             (click)="goToCurrentForm(project, process)"
             matTooltip="Continuar Proceso"
             >skip_next
+          </mat-icon>
+
+          <mat-icon
+            *ngIf="process?.pivot?.status == 1"
+            (click)="goToResumeProcess(project, process)"
+            matTooltip="Ver resumen del proceso"
+          >info
           </mat-icon>
         </div>
       </div>

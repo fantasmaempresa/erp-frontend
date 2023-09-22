@@ -26,6 +26,16 @@
     <mat-icon>preview</mat-icon>
   </button>
   <button
+    (click)="preview()"
+    *ngIf="selection.selected.length !== 0"
+    [matTooltipPosition]="'below'"
+    aria-label="Descargar cotización"
+    mat-icon-button
+    matTooltip="Descargar cotización"
+  >
+    <mat-icon>download</mat-icon>
+  </button>
+  <button
     (click)="edit()"
     *ngIf="selection.selected.length !== 0"
     [matTooltipPosition]="'below'"

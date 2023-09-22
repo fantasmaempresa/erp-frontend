@@ -69,6 +69,15 @@ export class ProjectStartListComponent implements OnInit {
     });
   }
 
+  async goToResumeProcess(project: MyProjectDto, process: ProcessDto) {
+    await this.router.navigate(
+      ['../', project.id, 'process', process.id, 'resume'],
+      {
+        relativeTo: this.route,
+      },
+    );
+  }
+
   ngOnInit(): void {
     this.store.dispatch(loadMyProjects());
   }
