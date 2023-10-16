@@ -139,7 +139,13 @@ export class ProceduresFormComponent {
     }
 
     const datosFormulario = this.procedureForm.value;
-    datosFormulario.folio_min = datosFormulario.folio_min.toString();
+    if (datosFormulario.folio_min)
+      datosFormulario.folio_min = datosFormulario.folio_min.toString();
+
+    if (datosFormulario.credit)
+      datosFormulario.credit = datosFormulario.credit.toString();
+
+
     datosFormulario.folio_max = datosFormulario.folio_max.toString();
 
     request$.subscribe({

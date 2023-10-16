@@ -115,4 +115,10 @@ export class MyProjectsService {
       { form },
     );
   }
+
+  getResumeProcess(project_id: number, process_id: number) {
+    return this.http.get(
+      `${this._base}/filter/resumeProcess/project/${project_id}/process/${process_id}`,
+    );
+  }
 }

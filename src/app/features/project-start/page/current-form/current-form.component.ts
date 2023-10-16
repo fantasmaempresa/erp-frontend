@@ -24,11 +24,15 @@ export class CurrentFormComponent implements OnInit {
     next: boolean;
     prev: boolean;
     supervision: boolean;
+    saveForm: boolean;
   } = {
     next: false,
     prev: false,
     supervision: false,
+    saveForm: false,
   };
+
+  viewAction = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -88,23 +92,43 @@ export class CurrentFormComponent implements OnInit {
 
   @messageDecision('Enviar formulario', '¿Estas seguro?')
   saveForm() {
-    MessageHelper.showLoading();
-    this.myProjectService
-      .saveForm({
-        projectId: this.projectId,
-        processId: this.processId,
-        form: {
-          ...this.formControl.value,
-        },
-      })
-      .subscribe({
-        next: async (value) => {
-          await MessageHelper.successMessage('Éxito', `${value}`);
-        },
-        error: async (value) => {
-          await MessageHelper.errorMessage(`${value}`);
-        },
-      });
+    console.log(this.formControl);
+    const values = this.formControl.value;
+    if (values) {
+      let complete = true;
+      for (let value in values) {
+        console.log('---> value', values[value]);
+        if (values[value]) {
+          continue;
+        } else {
+          MessageHelper.errorMessage('faltan datos del formulario');
+          complete = false;
+          break;
+        }
+      }
+      if (complete) {
+        MessageHelper.showLoading();
+        this.myProjectService
+          .saveForm({
+            projectId: this.projectId,
+            processId: this.processId,
+            form: {
+              ...this.formControl.value,
+            },
+          })
+          .subscribe({
+            next: async (value) => {
+              await MessageHelper.successMessage('Éxito', `${value}`);
+            },
+            error: async (value) => {
+              console.log(value.error);
+              await MessageHelper.errorMessage(value.error.error);
+            },
+          });
+      }
+    } else {
+      MessageHelper.errorMessage('faltan datos del formulario');
+    }
   }
 
   @messageDecision('¿La información es correcta?', '¿Estas seguro?')
@@ -114,7 +138,7 @@ export class CurrentFormComponent implements OnInit {
       .supervisionProject({
         projectId: this.projectId,
         processId: this.processId,
-        comment: 'Otro comentario random nomas para poder avanzar',
+        comment: 'comment',
       })
       .subscribe({
         next: async (value) => {

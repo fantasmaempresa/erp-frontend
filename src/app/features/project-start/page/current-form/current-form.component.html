@@ -5,7 +5,7 @@
 
 <div class="container-buttons">
   <button
-    *ngIf="controls.prev"
+    *ngIf="controls.prev && viewAction"
     (click)="prevPhase()"
     color="primary"
     mat-stroked-button
@@ -13,7 +13,7 @@
     Formulario Anterior
   </button>
   <button
-    *ngIf="controls.supervision"
+    *ngIf="controls.supervision && viewAction"
     (click)="supervise()"
     color="primary"
     mat-flat-button
@@ -21,7 +21,7 @@
     Supervisar
   </button>
   <button
-    *ngIf="!controls.supervision"
+    *ngIf="!controls.supervision && viewAction && controls.saveForm"
     (click)="saveForm()"
     color="primary"
     mat-flat-button
@@ -29,7 +29,7 @@
     Guardar Información
   </button>
   <button
-    *ngIf="controls.next"
+    *ngIf="controls.next && viewAction"
     (click)="nextPhase()"
     color="primary"
     mat-stroked-button

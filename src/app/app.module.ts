@@ -22,7 +22,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { URL_BASE_CRUD_SERVICE } from 'o2c_core';
 import { environment } from '../environments/environment';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-
+import {NgxGraphModule} from "@swimlane/ngx-graph";
 
 @NgModule({
   declarations: [
@@ -43,6 +43,7 @@ import { HashLocationStrategy, LocationStrategy } from '@angular/common';
     AppRoutingModule,
     BrowserAnimationsModule,
     NotificationModule,
+    NgxGraphModule,
   ],
   providers: [
     { provide: MatPaginatorIntl, useValue: getSpanishPaginatorIntl() },

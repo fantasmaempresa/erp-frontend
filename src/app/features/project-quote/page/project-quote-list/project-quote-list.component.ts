@@ -24,6 +24,7 @@ import { ProjectQuotePreviewComponent } from '../../dialog/project-quote-preview
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import Swal from "sweetalert2";
 
 @Component({
   selector: 'app-project-quote-list',
@@ -150,9 +151,36 @@ export class ProjectQuoteListComponent
     }
   }
 
-  downloadQuote(row?: ProjectQuoteDto) {
-    if (this.selection.selected.length > 0){
+  downloadQuote() {
+    if (this.selection.selected.length > 0) {
+      const row: ProjectQuoteDto = this.selection.selected[0];
+      Swal.showLoading();
+      this.quotesService.getReportProjectQuote(row).subscribe({
+        next: async (response) => {
+          // @ts-ignore
+          const blob = new Blob([response.body], {
+            type: response.headers.get('content-type'),
+          });
+          // @ts-ignore
+          const filename = 'cotizacion-pdf-' + row.name;
 
+          // Crea un enlace temporal y simula un clic para descargar el archivo
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = filename;
+          link.click();
+          URL.revokeObjectURL(link.href);
+          await MessageHelper.successMessage(
+            'Cotización generada con éxito',
+            'La cotización se genero con éxito',
+          );
+        },
+        error: async () => {
+          await MessageHelper.errorMessage(
+            'No se puede generar la cotización en este momento intente más tarde',
+          );
+        },
+      });
     }
   }
 

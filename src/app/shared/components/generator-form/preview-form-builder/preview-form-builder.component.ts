@@ -3,6 +3,7 @@ import {
   forwardRef,
   Input,
   OnChanges,
+  Output,
   SimpleChanges,
 } from '@angular/core';
 import { Formfield } from '../../../../data/dto';
@@ -11,6 +12,7 @@ import {
   NG_VALUE_ACCESSOR,
   UntypedFormControl,
   UntypedFormGroup,
+  Validators,
 } from '@angular/forms';
 
 @Component({
@@ -41,9 +43,11 @@ export class PreviewFormBuilderComponent
 
   buildFormGroup(): UntypedFormGroup {
     const group: any = {};
-    //Todo add creation of validators
     for (const control of this.formFields) {
-      group[control.key] = new UntypedFormControl(null);
+      group[control.key] = new UntypedFormControl(
+        control.value ? control.value : null,
+        [Validators.required],
+      );
     }
     return new UntypedFormGroup(group);
   }

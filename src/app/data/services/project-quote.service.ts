@@ -8,8 +8,10 @@ import { Pagination } from '../../core/interfaces';
 import { Operations } from '../models/Operations.model';
 import { ProjectQuoteDto, QuoteTemplate, WorkAreaDto } from '../dto';
 import { selectFormToOperations } from '../../state/dynamic-form';
-import { CrudService as CrudServiceNew, Pagination as PaginationNew } from 'o2c_core';
-
+import {
+  CrudService as CrudServiceNew,
+  Pagination as PaginationNew,
+} from 'o2c_core';
 
 @Injectable({
   providedIn: 'root',
@@ -92,6 +94,17 @@ export class ProjectQuoteService extends CrudService<ProjectQuoteDto> {
       operation_fields: concepts,
       operation_total: total,
     };
+  }
+
+  getReportProjectQuote(projectQuote: ProjectQuoteDto) {
+    return this._http.post(
+      `${environment.base_url}/projectQuote/getReport`,
+      projectQuote,
+      {
+        responseType: 'blob',
+        observe: 'response',
+      }
+    );
   }
 }
 @Injectable({

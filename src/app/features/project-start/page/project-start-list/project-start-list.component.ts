@@ -8,6 +8,7 @@ import { MyProjectDto, ProcessDto } from '../../../../data/dto';
 import { MyProjectsService } from '../../../../data/services';
 import { MessageHelper } from 'o2c_core';
 
+
 @Component({
   selector: 'app-project-start-list',
   templateUrl: './project-start-list.component.html',
