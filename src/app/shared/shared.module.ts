@@ -36,6 +36,8 @@ import {SanitizerPipe} from "./pipes/sanitizer.pipe";
 import { DialogAssignUserComponent } from './components/dialog-assign-user/dialog-assign-user.component';
 import { ViewsModule } from "o2c_core";
 import { DialogDynamicAddItemComponent } from './components/dialog-dynamic-add-item/dialog-dynamic-add-item.component';
+import { DialogResumeProjectComponent } from './components/dialog-resume-project/dialog-resumen-project.component';
+// import { GeneratorFormModule } from "./components/generator-form/generator-form.module";
 
 @NgModule({
   declarations: [
@@ -64,6 +66,7 @@ import { DialogDynamicAddItemComponent } from './components/dialog-dynamic-add-i
     SanitizerPipe,
     DialogAssignUserComponent,
     DialogDynamicAddItemComponent,
+    DialogResumeProjectComponent,
   ],
   imports: [
     CommonModule,
@@ -73,7 +76,8 @@ import { DialogDynamicAddItemComponent } from './components/dialog-dynamic-add-i
     BreadcrumbModule,
     MaterialModule,
     DynamicViewsModule,
-    ViewsModule
+    ViewsModule,
+    // GeneratorFormModule,
   ],
   exports: [
     CommonModule,

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from "@angular/router";
 import { MyProjectsService } from '../../../../data/services';
 import { map, Observable, tap } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
@@ -24,12 +24,14 @@ export class CurrentFormComponent implements OnInit {
     next: boolean;
     prev: boolean;
     supervision: boolean;
-    saveForm: boolean;
+    saveData: boolean;
+    completeProcess: boolean;
   } = {
     next: false,
     prev: false,
     supervision: false,
-    saveForm: false,
+    saveData: false,
+    completeProcess: false,
   };
 
   viewAction = true;
@@ -37,6 +39,7 @@ export class CurrentFormComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private myProjectService: MyProjectsService,
+    private router: Router,
   ) {
     const { id, idProcess } = this.route.snapshot.params;
     this.projectId = Number(id);
@@ -64,9 +67,10 @@ export class CurrentFormComponent implements OnInit {
       .subscribe({
         next: async (value) => {
           await MessageHelper.successMessage('Éxito', `${value}`);
+          this.ngOnInit();
         },
         error: async (value) => {
-          await MessageHelper.errorMessage(`${value}`);
+          await MessageHelper.errorMessage(value.error.error);
         },
       });
   }
@@ -83,9 +87,10 @@ export class CurrentFormComponent implements OnInit {
       .subscribe({
         next: async (value) => {
           await MessageHelper.successMessage('Éxito', `${value}`);
+          this.ngOnInit();
         },
         error: async (value) => {
-          await MessageHelper.errorMessage(`${value}`);
+          await MessageHelper.errorMessage(value.error.error);
         },
       });
   }
@@ -119,6 +124,7 @@ export class CurrentFormComponent implements OnInit {
           .subscribe({
             next: async (value) => {
               await MessageHelper.successMessage('Éxito', `${value}`);
+              this.ngOnInit();
             },
             error: async (value) => {
               console.log(value.error);
@@ -143,9 +149,31 @@ export class CurrentFormComponent implements OnInit {
       .subscribe({
         next: async (value) => {
           await MessageHelper.successMessage('Éxito', `${value}`);
+          this.ngOnInit();
         },
         error: async (value) => {
-          await MessageHelper.errorMessage(`${value}`);
+          await MessageHelper.errorMessage(value.error.error);
+        },
+      });
+  }
+
+  @messageDecision('¿La información es correcta?', '¿Estas seguro?')
+  completeProcess() {
+    MessageHelper.showLoading();
+    this.myProjectService
+      .completeProcessProject({
+        projectId: this.projectId,
+        processId: this.processId,
+      })
+      .subscribe({
+        next: async (value) => {
+          await MessageHelper.successMessage('Éxito', `${value}`);
+          await this.router.navigate([`../`], {
+            relativeTo: this.route,
+          });
+        },
+        error: async (value) => {
+          await MessageHelper.errorMessage(value.error.error);
         },
       });
   }

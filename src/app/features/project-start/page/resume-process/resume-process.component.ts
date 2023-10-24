@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
-import { Node, Edge, ClusterNode } from '@swimlane/ngx-graph';
+import { Edge, Node } from '@swimlane/ngx-graph';
 import { MyProjectsService } from '../../../../data/services';
+import { ActivatedRoute, Router } from "@angular/router";
+import { ResumeProcessProjectDto } from '../../../../data/dto/ResumeProcessProject.dto';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogResumeProjectComponent } from '../../../../shared/components/dialog-resume-project/dialog-resumen-project.component';
 
 @Component({
   selector: 'app-resume-process',
@@ -8,75 +12,60 @@ import { MyProjectsService } from '../../../../data/services';
   styleUrls: ['./resume-process.component.scss'],
 })
 export class ResumeProcessComponent {
-  edges: Edge[] = [
-    {
-      id: 'a',
-      source: '1',
-      target: '2',
-    },
-    {
-      id: 'b',
-      source: '1',
-      target: '3',
-    },
-    {
-      id: 'c',
-      source: '3',
-      target: '4',
-    },
-    {
-      id: 'd',
-      source: '3',
-      target: '5',
-    },
-    {
-      id: 'e',
-      source: '4',
-      target: '5',
-    },
-    {
-      id: 'f',
-      source: '2',
-      target: '6',
-    },
-  ];
+  projectId!: number;
 
-  nodes: Node[] = [
-    {
-      id: '1',
-      label: 'Node A',
-    },
-    {
-      id: '2',
-      label: 'Node B',
-    },
-    {
-      id: '3',
-      label: 'Node C',
-    },
-    {
-      id: '4',
-      label: 'Node D',
-    },
-    {
-      id: '5',
-      label: 'Node E',
-    },
-    {
-      id: '6',
-      label: 'Node F',
-    },
-  ];
+  processId!: number;
 
-  constructor(myProjects: MyProjectsService) {
-    myProjects.getResumeProcess(1,1).subscribe({
-      next: async (resume) => {
+  edges: Edge[] = [];
+
+  nodes: Node[] = [];
+
+  constructor(
+    myProjects: MyProjectsService,
+    private route: ActivatedRoute,
+    private dialog: MatDialog,
+    private router: Router,
+  ) {
+    const { id, idProcess } = this.route.snapshot.params;
+    this.projectId = Number(id);
+    this.processId = Number(idProcess);
+
+    myProjects.getResumeProcess(this.projectId, this.processId).subscribe({
+      next: async (resume: ResumeProcessProjectDto[]) => {
         console.log('resume --> ', resume);
+        this.constructDiagram(resume);
       },
     });
   }
 
-  click(node: Node) {
-    console.log('click -->', node);
+  constructDiagram(resumeProcessProject: ResumeProcessProjectDto[]) {
+    let beforeResume: ResumeProcessProjectDto;
+    resumeProcessProject.forEach((resume: ResumeProcessProjectDto) => {
+      let node: Node = {
+        id: resume.id.toString(),
+        label: resume.detail_project.phase?.name,
+        data: resume.detail_project.form_data,
+      };
+      if (beforeResume) {
+        this.edges.push({
+          id: resume.id.toString(),
+          source: beforeResume.id.toString(),
+          target: resume.id.toString(),
+        });
+      }
+      beforeResume = resume;
+      this.nodes.push(node);
+    });
+    this.nodes = [...this.nodes];
+    this.edges = [...this.edges];
   }
+
+  click(node: Node) {
+     console.log('node.data --> ', node.data);
+    this.dialog.open(DialogResumeProjectComponent, { data: node.data });
+  }
+
+  // async back() {
+  //   await this.router.navigate(["project-start/list"]);
+  // }
 }

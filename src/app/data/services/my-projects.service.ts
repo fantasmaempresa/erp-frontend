@@ -4,6 +4,7 @@ import { environment } from '../../../environments/environment';
 import { Pagination } from '../../core/interfaces';
 import { MyProjectDto } from '../dto';
 import { Observable } from 'rxjs';
+import { ResumeProcessProjectDto } from '../dto/ResumeProcessProject.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -101,6 +102,18 @@ export class MyProjectsService {
     );
   }
 
+  completeProcessProject({
+    projectId,
+    processId,
+  }: {
+    projectId: number;
+    processId: number;
+  }) {
+    return this.http.get(
+      `${this._base}/action/complete/project/${projectId}/process/${processId}`,
+    );
+  }
+
   saveForm({
     projectId,
     processId,
@@ -117,8 +130,12 @@ export class MyProjectsService {
   }
 
   getResumeProcess(project_id: number, process_id: number) {
-    return this.http.get(
+    return this.http.get<ResumeProcessProjectDto[]>(
       `${this._base}/filter/resumeProcess/project/${project_id}/process/${process_id}`,
     );
+  }
+
+  finishProject(projectId: number) {
+    return this.http.get(`${this._base}/action/finish/project/${projectId}`);
   }
 }

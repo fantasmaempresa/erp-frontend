@@ -7,7 +7,7 @@ import { loadMyProjects, selectMyProjects } from '../../../../state/my-project';
 import { MyProjectDto, ProcessDto } from '../../../../data/dto';
 import { MyProjectsService } from '../../../../data/services';
 import { MessageHelper } from 'o2c_core';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-project-start-list',
@@ -16,6 +16,8 @@ import { MessageHelper } from 'o2c_core';
 })
 export class ProjectStartListComponent implements OnInit {
   myProjects$!: Observable<Pagination<MyProjectDto> | null>;
+
+  isAdmin: boolean = false;
 
   displayedInfo: { key: keyof MyProjectDto; label: string }[] = [
     {
@@ -81,5 +83,37 @@ export class ProjectStartListComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(loadMyProjects());
+    let user = JSON.parse(localStorage.getItem('auth') ?? '[]');
+    console.log('useruseruseruser --> ', user);
+    if(user.user.role.id == 1) {
+      this.isAdmin = true;
+    }
+  }
+
+  endProject(project: MyProjectDto) {
+    console.log('projectproject--> ', project);
+
+    MessageHelper.decisionMessage(
+      '¿Estas seguro de finalizar el proyecto?',
+      'Si finalizas ahora ya no podrás revertir la operación',
+      () => {
+        this.myProjectService.finishProject(project.id).subscribe({
+          next: (value) => {
+            MessageHelper.successMessage(
+              'Éxito al finalizar el proyecto',
+              'El proyecto fue finalizado con éxito',
+            );
+            this.ngOnInit();
+          },
+          error: (err) => {
+            console.log('err -->', err);
+            MessageHelper.errorMessage(
+              'Ocurrio un error al finalizar el proyecto, intente más tarde',
+              'Error al finalizar el proyecto',
+            );
+          },
+        });
+      },
+    );
   }
 }

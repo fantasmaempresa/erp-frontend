@@ -1,5 +1,14 @@
 <div *ngIf="(myProjects$ | async)?.data as projects" class="card-container">
-  <div *ngFor="let project of projects" class="card-view">
+  <div *ngFor="let project of projects; index as i" class="card-view">
+    <div class="w-100 d-flex justify-content-end" *ngIf="isAdmin">
+      <button
+        (click)="endProject(project)"
+        aria-label="Finalizar proyecto"
+        mat-icon-button
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
     <ng-container *ngFor="let info of displayedInfo">
       <span class="card-view__field">{{ info.label }}</span>
       <span class="card-view__value">{{ project[info.key] }}</span>
@@ -25,10 +34,10 @@
           </mat-icon>
 
           <mat-icon
-            *ngIf="process?.pivot?.status == 1"
+            *ngIf="process?.pivot?.status == 1 || process?.pivot?.status == 2"
             (click)="goToResumeProcess(project, process)"
             matTooltip="Ver resumen del proceso"
-          >info
+            >info
           </mat-icon>
         </div>
       </div>

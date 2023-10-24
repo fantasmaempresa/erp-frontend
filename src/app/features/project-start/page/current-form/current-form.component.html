@@ -21,7 +21,7 @@
     Supervisar
   </button>
   <button
-    *ngIf="!controls.supervision && viewAction && controls.saveForm"
+    *ngIf="!controls.supervision && viewAction && controls.saveData"
     (click)="saveForm()"
     color="primary"
     mat-flat-button
@@ -35,5 +35,14 @@
     mat-stroked-button
   >
     Formulario Siguiente
+  </button>
+
+  <button
+    *ngIf="controls.completeProcess && viewAction"
+    (click)="completeProcess()"
+    color="primary"
+    mat-stroked-button
+  >
+    Completar Proceso
   </button>
 </div>

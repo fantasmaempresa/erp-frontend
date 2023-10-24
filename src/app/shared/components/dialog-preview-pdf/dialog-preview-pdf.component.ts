@@ -7,6 +7,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
   styleUrls: ['./dialog-preview-pdf.component.scss'],
 })
 export class DialogPreviewPdfComponent {
+
   constructor(
     public dialogRef: MatDialogRef<DialogPreviewPdfComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { name: string; file: string },
