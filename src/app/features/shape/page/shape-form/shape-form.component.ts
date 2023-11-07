@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   FormBuilder,
   UntypedFormControl,
@@ -13,13 +13,19 @@ import { ShapeDto } from '../../../../data/dto/Shape.dto';
 import { TemplateShapeService } from '../../../../data/services/template-shape.service';
 import { ProcedureView } from '../../../../data/presentation/Procedure.view';
 import { TemplateShapeDto } from '../../../../data/dto/TemplateShape.dto';
+import { Editor } from 'ngx-editor';
 
 @Component({
   selector: 'app-shape-form',
   templateUrl: './shape-form.component.html',
   styleUrls: ['./shape-form.component.scss'],
 })
-export class ShapeFormComponent {
+export class ShapeFormComponent implements OnInit, OnDestroy {
+  // @ts-ignore
+  editor: Editor;
+
+  html = '';
+
   step = 0;
 
   builderFormStructure: any;
@@ -60,6 +66,7 @@ export class ShapeFormComponent {
     data_form: new UntypedFormControl('', []),
     template_shape_id: new UntypedFormControl('', [Validators.required]),
     procedure_id: new UntypedFormControl('', [Validators.required]),
+    reverse: new UntypedFormControl('', []),
   });
 
   isEdit: boolean = false;
@@ -97,10 +104,18 @@ export class ShapeFormComponent {
               this.changeShape(template);
               this.builderForm.patchValue(shape.data_form);
             }
-          });   
+          });
         },
       });
     }
+  }
+
+  ngOnInit(): void {
+    this.editor = new Editor();
+  }
+
+  ngOnDestroy(): void {
+    this.editor.destroy();
   }
 
   async backToListDocuments() {
@@ -123,6 +138,7 @@ export class ShapeFormComponent {
 
     let dataForm = this.shapeForm.value;
     dataForm.data_form = this.builderForm.value;
+    dataForm.data_form.reverse = this.shapeForm.get('reverse')?.value;
     dataForm.template_shape_id = this.builderFormStructure.id;
     dataForm.sheets = dataForm.sheets.toString();
     dataForm.took = dataForm.took.toString();
@@ -135,7 +151,7 @@ export class ShapeFormComponent {
     dataForm.alienating_zipcode = dataForm.alienating_zipcode.toString();
     dataForm.alienating_phone = dataForm.alienating_phone.toString();
     dataForm.total = dataForm.total.toString();
-
+    // dataForm.reverse = this.;
     let request$: Observable<ShapeDto>;
     if (!this.isEdit) {
       request$ = this.shapeService.save(dataForm);
@@ -147,7 +163,7 @@ export class ShapeFormComponent {
         const message = this.isEdit ? 'actualizado' : 'registrado';
         await MessageHelper.successMessage(
           '¡Éxito!',
-          `El cliente ha sido ${message} correctamente.`,
+          `La forma se ha registrado con ${message} correctamente.`,
         );
         await this.backToListDocuments();
       },
@@ -161,8 +177,8 @@ export class ShapeFormComponent {
   }
 
   goToNext() {
-    console.log('neext ---> ', this.step);
-    if (this.step == 3) return;
+    console.log('next ---> ', this.step);
+    if (this.step == 4) return;
 
     this.step++;
   }

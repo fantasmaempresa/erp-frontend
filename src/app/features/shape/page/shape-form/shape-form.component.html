@@ -213,11 +213,7 @@
 
             <mat-form-field appearance="outline">
               <mat-label>Calle</mat-label>
-              <input
-                formControlName="alienating_street"
-                matInput
-                type="text"
-              />
+              <input formControlName="alienating_street" matInput type="text" />
               <mat-error appErrorMessage></mat-error>
             </mat-form-field>
 
@@ -243,11 +239,7 @@
 
             <mat-form-field appearance="outline">
               <mat-label>Colonia</mat-label>
-              <input
-                formControlName="alienating_colony"
-                matInput
-                type="text"
-              />
+              <input formControlName="alienating_colony" matInput type="text" />
               <mat-error appErrorMessage></mat-error>
             </mat-form-field>
 
@@ -273,11 +265,7 @@
 
             <mat-form-field appearance="outline">
               <mat-label>Entidad</mat-label>
-              <input
-                formControlName="alienating_entity"
-                matInput
-                type="text"
-              />
+              <input formControlName="alienating_entity" matInput type="text" />
               <mat-error appErrorMessage></mat-error>
             </mat-form-field>
 
@@ -344,9 +332,40 @@
 
         <mat-action-row>
           <button (click)="goToPrev()" color="warn" mat-button>Atras</button>
+          <button (click)="goToNext()" color="primary" mat-button>
+            Siguiente
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <!--      CAMPO LIBRE PARA EL REVERSO DE LA HOJA-->
+      <mat-expansion-panel
+        (opened)="step = 4"
+        [expanded]="step === 4"
+        hideToggle
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title> Reverso de la hoja </mat-panel-title>
+          <mat-panel-description>
+            Completar los datos de la forma seleccionada
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="NgxEditor__Wrapper">
+          <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
+          <ngx-editor
+            [editor]="editor"
+            formControlName="reverse"
+            [placeholder]="'Escribe aquí el reverso de la hoja'"
+          ></ngx-editor>
+        </div>
+
+        <mat-action-row>
+          <button (click)="goToPrev()" color="warn" mat-button>Atras</button>
           <button color="primary" mat-button>Guardar</button>
         </mat-action-row>
       </mat-expansion-panel>
+
     </mat-accordion>
   </form>
 </mat-card>
