@@ -1,35 +1,38 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { GrantorRoutingModule } from './grantor-routing.module';
-import { GrantorFormComponent } from './page/grantor-form/grantor-form.component';
+import { StakeRoutingModule } from './stake-routing.module';
+import { StakeFormComponent } from './page/stake-form/stake-form.component';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatCardModule } from "@angular/material/card";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
+import { MatOptionModule } from "@angular/material/core";
+import { MatSelectModule } from "@angular/material/select";
 import { MatToolbarModule } from "@angular/material/toolbar";
-import { ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "../../shared/shared.module";
-import { ViewsModule } from "o2c_core";
 
 
 @NgModule({
   declarations: [
-    GrantorFormComponent
+    StakeFormComponent
   ],
   imports: [
     CommonModule,
-    GrantorRoutingModule,
+    StakeRoutingModule,
+    FormsModule,
     MatButtonModule,
     MatCardModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatOptionModule,
+    MatSelectModule,
     MatToolbarModule,
     ReactiveFormsModule,
-    SharedModule,
-    ViewsModule
+    SharedModule
   ]
 })
-export class GrantorModule { }
+export class StakeModule { }

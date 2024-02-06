@@ -201,6 +201,12 @@ const routes: Routes = [
         data: { breadcrumb: 'Trámites' },
       },
       {
+        path: 'stakes',
+        loadChildren: () =>
+          import('./features/stake/stake.module').then((m) => m.StakeModule),
+        data: { breadcrumb: 'Participaciones' },
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',

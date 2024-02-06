@@ -36,6 +36,8 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
 
   fields: any[] = [];
 
+  send: boolean = false;
+
   shapeForm = new UntypedFormGroup({
     folio: new UntypedFormControl('', [Validators.required]),
     notary: new UntypedFormControl('', [Validators.required]),
@@ -48,19 +50,6 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     took: new UntypedFormControl('', [Validators.required]),
     book: new UntypedFormControl('', [Validators.required]),
     operation_value: new UntypedFormControl('', [Validators.required]),
-    alienating_name: new UntypedFormControl('', [Validators.required]),
-    alienating_street: new UntypedFormControl('', [Validators.required]),
-    alienating_outdoor_number: new UntypedFormControl('', [
-      Validators.required,
-    ]),
-    alienating_interior_number: new UntypedFormControl('', []),
-    alienating_colony: new UntypedFormControl('', [Validators.required]),
-    alienating_locality: new UntypedFormControl('', [Validators.required]),
-    alienating_municipality: new UntypedFormControl('', [Validators.required]),
-    alienating_entity: new UntypedFormControl('', [Validators.required]),
-    alienating_zipcode: new UntypedFormControl('', [Validators.required]),
-    alienating_phone: new UntypedFormControl('', [Validators.required]),
-    acquirer_name: new UntypedFormControl('', [Validators.required]),
     description: new UntypedFormControl('', [Validators.required]),
     total: new UntypedFormControl('', [Validators.required]),
     data_form: new UntypedFormControl('', []),
@@ -123,10 +112,13 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
+
+    if(this.step < 3) return;
+
+
     this.builderForm.markAsTouched();
     console.log('this.shapeForm', this.shapeForm.value);
     console.log('this.builderForm', this.builderForm.value);
-
     if (this.shapeForm.invalid || this.builderForm.invalid) {
       console.log(
         'Alguno de los formularios no es valido',
@@ -144,12 +136,6 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     dataForm.took = dataForm.took.toString();
     dataForm.book = dataForm.book.toString();
     dataForm.operation_value = dataForm.operation_value.toString();
-    dataForm.alienating_outdoor_number =
-      dataForm.alienating_outdoor_number.toString();
-    dataForm.alienating_interior_number =
-      dataForm.alienating_interior_number.toString();
-    dataForm.alienating_zipcode = dataForm.alienating_zipcode.toString();
-    dataForm.alienating_phone = dataForm.alienating_phone.toString();
     dataForm.total = dataForm.total.toString();
     // dataForm.reverse = this.;
     let request$: Observable<ShapeDto>;
@@ -178,13 +164,19 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
 
   goToNext() {
     console.log('next ---> ', this.step);
-    if (this.step == 4) return;
+    // @ts-ignore
+    event.preventDefault();
+    if (this.step == 3) {
+      return;
+    }
 
     this.step++;
   }
 
   goToPrev() {
     console.log('prev ---> ', this.step);
+    // @ts-ignore
+    event.preventDefault();
     if (this.step == 0) return;
 
     this.step--;

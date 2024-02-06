@@ -1,0 +1,22 @@
+<mat-card>
+  <mat-toolbar *ngIf="!isDialog">
+    <div>
+      <button (click)="backToListStake()" aria-label="Regresar" mat-icon-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <form (ngSubmit)="onSubmit()" [formGroup]="stakeForm">
+    <div class="row justify-content-center">
+      <div class="col-9 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input formControlName="name" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+
+        <button color="primary" mat-flat-button>Guardar</button>
+      </div>
+    </div>
+  </form>
+</mat-card>

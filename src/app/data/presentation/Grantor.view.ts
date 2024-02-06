@@ -1,6 +1,7 @@
-import { viewCrud, viewLabel } from 'o2c_core';
+import { viewCrud, viewLabel, viewMapTo } from "o2c_core";
 import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
 import { GrantorService } from '../services/grantor.service';
+import { StakeDto } from "../dto/Stake.dto";
 
 @viewCrud({
   classProvider: GrantorService,
@@ -18,12 +19,28 @@ export class GrantorView {
   mother_last_name: string;
 
   @viewLabel('Tipo de persona')
+  @viewMapTo((value: any) => {
+    const types = {
+      1: 'Moral',
+      2: 'Física',
+      bk: 'Respaldo',
+    };
+    return types[value as keyof typeof types];
+  })
   type: string;
 
   @viewLabel('Participación')
-  stake: string;
+  @viewMapTo((value: any) => value?.name)
+  stake: StakeDto;
 
   @viewLabel('Beneficiario')
+  @viewMapTo((value: any) => {
+    const types = {
+      0: 'NO BENEFICIARIO',
+      1: 'BENEFICIARIO',
+    };
+    return types[value as keyof typeof types];
+  })
   beneficiary: boolean;
 
   constructor(
@@ -31,7 +48,7 @@ export class GrantorView {
     father_last_name: string,
     mother_last_name: string,
     type: string,
-    stake: string,
+    stake: StakeDto,
     beneficiary: boolean,
   ) {
     this.name = name;

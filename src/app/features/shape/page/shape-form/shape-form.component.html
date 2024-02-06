@@ -187,121 +187,10 @@
         </mat-action-row>
       </mat-expansion-panel>
 
+      <!--      DATOS DE FORMA SELECCIONADA -->
       <mat-expansion-panel
         (opened)="step = 2"
         [expanded]="step === 2"
-        hideToggle
-      >
-        <mat-expansion-panel-header>
-          <mat-panel-title>Enajenante</mat-panel-title>
-          <mat-panel-description> Datos de enajenante</mat-panel-description>
-        </mat-expansion-panel-header>
-        <div class="row justify-content-center">
-          <div class="col-6 d-flex flex-column pe-0">
-            <!--      DATOS DE ENAGENANTE-->
-            <mat-form-field appearance="outline">
-              <mat-label>Nombre completo de adquiriente</mat-label>
-              <input formControlName="acquirer_name" matInput type="text" />
-              <mat-error appErrorMessage></mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Nombre completo de enagenante</mat-label>
-              <input formControlName="alienating_name" matInput type="text" />
-              <mat-error appErrorMessage></mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Calle</mat-label>
-              <input formControlName="alienating_street" matInput type="text" />
-              <mat-error appErrorMessage></mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Número exterior </mat-label>
-              <input
-                formControlName="alienating_outdoor_number"
-                matInput
-                type="number"
-              />
-              <mat-error appErrorMessage></mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Número interior</mat-label>
-              <input
-                formControlName="alienating_interior_number"
-                matInput
-                type="number"
-              />
-              <mat-error appErrorMessage></mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Colonia</mat-label>
-              <input formControlName="alienating_colony" matInput type="text" />
-              <mat-error appErrorMessage></mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Localidad</mat-label>
-              <input
-                formControlName="alienating_locality"
-                matInput
-                type="text"
-              />
-              <mat-error appErrorMessage></mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Municipio</mat-label>
-              <input
-                formControlName="alienating_municipality"
-                matInput
-                type="text"
-              />
-              <mat-error appErrorMessage></mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Entidad</mat-label>
-              <input formControlName="alienating_entity" matInput type="text" />
-              <mat-error appErrorMessage></mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Código postal</mat-label>
-              <input
-                formControlName="alienating_zipcode"
-                matInput
-                type="number"
-              />
-              <mat-error appErrorMessage></mat-error>
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Télefono</mat-label>
-              <input
-                formControlName="alienating_phone"
-                matInput
-                type="number"
-              />
-              <mat-error appErrorMessage></mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-        <mat-action-row>
-          <button (click)="goToPrev()" color="warn" mat-button>Atras</button>
-          <button (click)="goToNext()" color="primary" mat-button>
-            Siguiente
-          </button>
-        </mat-action-row>
-      </mat-expansion-panel>
-
-      <!--      DATOS DE FORMA SELECCIONADA -->
-      <mat-expansion-panel
-        (opened)="step = 3"
-        [expanded]="step === 3"
         hideToggle
       >
         <mat-expansion-panel-header>
@@ -340,8 +229,8 @@
 
       <!--      CAMPO LIBRE PARA EL REVERSO DE LA HOJA-->
       <mat-expansion-panel
-        (opened)="step = 4"
-        [expanded]="step === 4"
+        (opened)="step = 3"
+        [expanded]="step === 3"
         hideToggle
       >
         <mat-expansion-panel-header>

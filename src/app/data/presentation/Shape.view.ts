@@ -85,39 +85,6 @@ export class ShapeView {
   @viewLabel('Monto de operación')
   operation_value: string;
 
-  // @viewLabel('alienating_name')
-  alienating_name: string;
-
-  // @viewLabel('alienating_street')
-  alienating_street: string;
-
-  // @viewLabel('alienating_outdoor_number')
-  alienating_outdoor_number: string;
-
-  // @viewLabel('alienating_interior_number')
-  alienating_interior_number: string;
-
-  // @viewLabel('alienating_colony')
-  alienating_colony: string;
-
-  // @viewLabel('alienating_locality')
-  alienating_locality: string;
-
-  // @viewLabel('alienating_municipality')
-  alienating_municipality: string;
-
-  // @viewLabel('alienating_entity')
-  alienating_entity: string;
-
-  // @viewLabel('alienating_zipcode')
-  alienating_zipcode: string;
-
-  // @viewLabel('alienating_phone')
-  alienating_phone: string;
-
-  @viewLabel('Nombre de adquiriente')
-  acquirer_name: string;
-
   // @viewLabel('description')
   description: string;
 
@@ -145,17 +112,6 @@ export class ShapeView {
     took: string,
     book: string,
     operation_value: string,
-    alienating_name: string,
-    alienating_street: string,
-    alienating_outdoor_number: string,
-    alienating_interior_number: string,
-    alienating_colony: string,
-    alienating_locality: string,
-    alienating_municipality: string,
-    alienating_entity: string,
-    alienating_zipcode: string,
-    alienating_phone: string,
-    acquirer_name: string,
     description: string,
     total: string,
     data_form: [],
@@ -173,17 +129,6 @@ export class ShapeView {
     this.took = took;
     this.book = book;
     this.operation_value = operation_value;
-    this.alienating_name = alienating_name;
-    this.alienating_street = alienating_street;
-    this.alienating_outdoor_number = alienating_outdoor_number;
-    this.alienating_interior_number = alienating_interior_number;
-    this.alienating_colony = alienating_colony;
-    this.alienating_locality = alienating_locality;
-    this.alienating_municipality = alienating_municipality;
-    this.alienating_entity = alienating_entity;
-    this.alienating_zipcode = alienating_zipcode;
-    this.alienating_phone = alienating_phone;
-    this.acquirer_name = acquirer_name;
     this.description = description;
     this.total = total;
     this.data_form = data_form;

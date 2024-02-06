@@ -10,50 +10,209 @@
       </button>
     </div>
   </mat-toolbar>
-  <form
-    (ngSubmit)="onSubmit()"
-    [formGroup]="grantorForm"
-    class="row justify-content-center"
-  >
-    <div class="col-6 d-flex flex-column">
-      <mat-form-field appearance="outline">
-        <mat-label>Tipo de persona (fisica o moral)</mat-label>
-        <mat-select formControlName="type" (valueChange)="changeTypeGrantor($event)">
-          <mat-option [value]="2">Física</mat-option>
-          <mat-option [value]="1">Moral</mat-option>
-        </mat-select>
-        <mat-error appErrorMessage></mat-error>
-      </mat-form-field>
+  <form (ngSubmit)="onSubmit()" [formGroup]="grantorForm">
+    <div class="row justify-content-center">
+      <div class="col-9 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Tipo de persona (fisica o moral)</mat-label>
+          <mat-select
+            formControlName="type"
+            (valueChange)="changeTypeGrantor($event)"
+          >
+            <mat-option [value]="2">Física</mat-option>
+            <mat-option [value]="1">Moral</mat-option>
+          </mat-select>
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Nombre</mat-label>
-        <input formControlName="name" matInput type="text" />
-        <mat-error appErrorMessage></mat-error>
-      </mat-form-field>
+    <div class="row justify-content-center">
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input formControlName="name" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Apellido Paterno</mat-label>
-        <input formControlName="father_last_name" matInput type="text" />
-        <mat-error appErrorMessage></mat-error>
-      </mat-form-field>
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Apellido Paterno</mat-label>
+          <input formControlName="father_last_name" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Apellido Materno</mat-label>
-        <input formControlName="mother_last_name" matInput type="text" />
-        <mat-error appErrorMessage></mat-error>
-      </mat-form-field>
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Apellido Materno</mat-label>
+          <input formControlName="mother_last_name" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Participación</mat-label>
-        <input formControlName="stake" matInput type="text" />
-        <mat-error appErrorMessage></mat-error>
-      </mat-form-field>
+    <div class="row justify-content-center">
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Número de télefono</mat-label>
+          <input formControlName="phone" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
 
-      <mat-checkbox class="me-5" color="primary" formControlName="beneficiary">
-        Beneficiario
-      </mat-checkbox>
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Lugar de nacimiento</mat-label>
+          <input formControlName="place_of_birth" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
 
-      <button color="primary" mat-flat-button>Guardar</button>
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Fecha de Nacimiento</mat-label>
+          <input
+            (focus)="dateForm.open()"
+            [matDatepicker]="dateForm"
+            class="clickable"
+            formControlName="birthdate"
+            matInput
+          />
+          <mat-datepicker-toggle
+            [for]="dateForm"
+            matSuffix
+          ></mat-datepicker-toggle>
+          <mat-datepicker #dateForm></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Estado civil</mat-label>
+          <input formControlName="civil_status" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>RFC</mat-label>
+          <input formControlName="rfc" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>CURP</mat-label>
+          <input formControlName="curp" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Municipio</mat-label>
+          <input formControlName="municipality" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Colonia</mat-label>
+          <input formControlName="colony" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Número exterior</mat-label>
+          <input formControlName="no_ext" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Número interior</mat-label>
+          <input formControlName="no_int" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Número de localidad</mat-label>
+          <input formControlName="no_locality" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Localidad</mat-label>
+          <input formControlName="locality" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Código postal</mat-label>
+          <input formControlName="zipcode" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Ocupación</mat-label>
+          <input formControlName="occupation" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Participación</mat-label>
+          <input
+            [viewClassBuilder]="stakeProvider"
+            title="Selecciona una participación"
+            o2cSinglePopup
+            formControlName="stake_id"
+            matInput
+            type="text"
+          />
+          <mat-icon matSuffix>search</mat-icon>
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="row justify-content-center">
+      <div class="col-9 d-flex flex-column">
+        <mat-checkbox
+          class="me-5"
+          color="primary"
+          formControlName="beneficiary"
+        >
+          Beneficiario
+        </mat-checkbox>
+
+        <button color="primary" mat-flat-button>Guardar</button>
+      </div>
     </div>
   </form>
 </mat-card>

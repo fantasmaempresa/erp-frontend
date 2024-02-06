@@ -12,17 +12,6 @@ export interface ShapeDto extends EntityDto {
   took: string;
   book: string;
   operation_value: string;
-  alienating_name: string;
-  alienating_street: string;
-  alienating_outdoor_number: string;
-  alienating_interior_number: string;
-  alienating_colony: string;
-  alienating_locality: string;
-  alienating_municipality: string;
-  alienating_entity: string;
-  alienating_zipcode: string;
-  alienating_phone: string;
-  acquirer_name: string;
   description: string;
   total: string;
   data_form: [];
