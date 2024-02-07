@@ -68,7 +68,7 @@ export class DocumentLinkFormComponent {
       next: async () => {
         await MessageHelper.successMessage(
           "¡Éxito!",
-          "El cliente ha sido registrado correctamente"
+          "El documento ha sido registrado correctamente"
         );
         await this.back();
       },

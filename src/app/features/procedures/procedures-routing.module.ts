@@ -1,8 +1,8 @@
-import { NgModule } from "@angular/core";
-import { RouterModule, Routes } from "@angular/router";
-import { BasicViewComponent, VIEW_CLAZZ } from "o2c_core";
-import { ProceduresFormComponent } from "./pages/procedures-form/procedures-form.component";
-import { ProcedureView } from "../../data/presentation/Procedure.view";
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { BasicViewComponent, VIEW_CLAZZ } from 'o2c_core';
+import { ProceduresFormComponent } from './pages/procedures-form/procedures-form.component';
+import { ProcedureView } from '../../data/presentation/Procedure.view';
 
 const routes: Routes = [
   {
@@ -30,6 +30,14 @@ const routes: Routes = [
         data: { breadcrumb: 'Editar trámite' },
       },
       {
+        path: ':id/comments',
+        loadChildren: () =>
+          import('../procedure-comment/procedure-comment.module').then(
+            (m) => m.ProcedureCommentModule,
+          ),
+        data: { breadcrumb: 'Documentos', view: 'procedures' },
+      },
+      {
         path: ':id/documentsLink',
         loadChildren: () =>
           import('../document-link/document-link.module').then(
@@ -51,6 +59,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class ProceduresRoutingModule { }
+export class ProceduresRoutingModule {}
