@@ -11,9 +11,13 @@ import { MessageHelper } from 'o2c_core';
 import { ShapeService } from '../../../../data/services/shape.service';
 import { ShapeDto } from '../../../../data/dto/Shape.dto';
 import { TemplateShapeService } from '../../../../data/services/template-shape.service';
-import { ProcedureView } from '../../../../data/presentation/Procedure.view';
 import { TemplateShapeDto } from '../../../../data/dto/TemplateShape.dto';
 import { Editor } from 'ngx-editor';
+import { GrantorView } from '../../../../data/presentation/Grantor.view';
+import { DialogDynamicAddItemComponent } from '../../../../shared/components/dialog-dynamic-add-item/dialog-dynamic-add-item.component';
+import { MatDialog } from '@angular/material/dialog';
+import { ProcedureView } from '../../../../data/presentation/Procedure.view';
+import { GrantorFormComponent } from '../../../grantor/page/grantor-form/grantor-form.component';
 
 @Component({
   selector: 'app-shape-form',
@@ -30,13 +34,19 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
 
   builderFormStructure: any;
 
-  procedureProvider = ProcedureView;
+  grantorProvider = GrantorView;
 
   builderForm: any;
 
   fields: any[] = [];
 
   send: boolean = false;
+
+  isEdit: boolean = false;
+
+  templateShapes!: TemplateShapeDto[];
+
+  procedureProvider = ProcedureView;
 
   shapeForm = new UntypedFormGroup({
     folio: new UntypedFormControl('', [Validators.required]),
@@ -56,11 +66,10 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     template_shape_id: new UntypedFormControl('', [Validators.required]),
     procedure_id: new UntypedFormControl('', [Validators.required]),
     reverse: new UntypedFormControl('', []),
+    alienating: new UntypedFormControl('', [Validators.required]),
+    acquirer: new UntypedFormControl('', [Validators.required]),
+    grantors: new UntypedFormControl('', []),
   });
-
-  isEdit: boolean = false;
-
-  templateShapes!: TemplateShapeDto[];
 
   constructor(
     private router: Router,
@@ -68,6 +77,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     private shapeService: ShapeService,
     private templateShapeService: TemplateShapeService,
     private fb: FormBuilder,
+    public dialog: MatDialog,
   ) {
     // this.builderForm = this.fb.group({});
 
@@ -112,9 +122,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
   }
 
   onSubmit() {
-
-    if(this.step < 3) return;
-
+    if (this.step < 4) return;
 
     this.builderForm.markAsTouched();
     console.log('this.shapeForm', this.shapeForm.value);
@@ -130,7 +138,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
 
     let dataForm = this.shapeForm.value;
     dataForm.data_form = this.builderForm.value;
-    dataForm.data_form.reverse = this.shapeForm.get('reverse')?.value;
+    // dataForm.data_form.reverse = this.shapeForm.get('reverse')?.value;
     dataForm.template_shape_id = this.builderFormStructure.id;
     dataForm.sheets = dataForm.sheets.toString();
     dataForm.took = dataForm.took.toString();
@@ -166,7 +174,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     console.log('next ---> ', this.step);
     // @ts-ignore
     event.preventDefault();
-    if (this.step == 3) {
+    if (this.step == 4) {
       return;
     }
 
@@ -196,5 +204,15 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
       );
     });
     this.fields = value.form;
+  }
+
+  openNewGrantor() {
+    this.dialog.open(DialogDynamicAddItemComponent, {
+      data: {
+        component: GrantorFormComponent,
+        title: 'Agregar nuevo otrogante',
+      },
+      width: '800px',
+    });
   }
 }
