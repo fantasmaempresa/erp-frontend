@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   UntypedFormControl,
@@ -15,7 +15,7 @@ import { ClientDto } from '../../../../data/dto';
   templateUrl: './client-form.component.html',
   styleUrls: ['./client-form.component.scss'],
 })
-export class ClientFormComponent {
+export class ClientFormComponent implements OnInit {
   clientForm = new UntypedFormGroup({
     name: new UntypedFormControl('', [Validators.required]),
     last_name: new UntypedFormControl('', [Validators.required]),
@@ -61,12 +61,33 @@ export class ClientFormComponent {
     }
   }
 
+  ngOnInit(): void {
+    this.clientForm.get('type')?.valueChanges.subscribe((value) => {
+      this.updateValidators(value);
+    });
+
+    this.updateValidators(this.clientForm.get('type')?.value);
+  }
+
   async backToListUsers() {
     if (this.isDialog) {
       return;
     } else {
       await this.router.navigate(['../'], { relativeTo: this.route });
     }
+  }
+
+  updateValidators(type: number) {
+    if (type === 1) {
+      this.clientForm.get('mother_last_name')?.clearValidators();
+      this.clientForm.get('last_name')?.clearValidators();
+    } else {
+      this.clientForm.get('mother_last_name')?.setValidators(Validators.required);
+      this.clientForm.get('last_name')?.setValidators(Validators.required);
+    }
+
+    this.clientForm.get('mother_last_name')?.updateValueAndValidity();
+    this.clientForm.get('last_name')?.updateValueAndValidity();
   }
 
   onSubmit() {

@@ -1,12 +1,16 @@
-import { Component } from "@angular/core";
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Observable } from "rxjs";
-import { MessageHelper } from "o2c_core";
-import { GrantorService } from "../../../../data/services/grantor.service";
-import { GrantorDto } from "../../../../data/dto/Grantor.dto";
-import { OperationView } from "../../../../data/presentation/Operation.view";
-import { StakeView } from "src/app/data/presentation/Stake.view";
+import { Component } from '@angular/core';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { MessageHelper } from 'o2c_core';
+import { GrantorService } from '../../../../data/services/grantor.service';
+import { GrantorDto } from '../../../../data/dto/Grantor.dto';
+import { OperationView } from '../../../../data/presentation/Operation.view';
+import { StakeView } from 'src/app/data/presentation/Stake.view';
 
 @Component({
   selector: 'app-grantor-form',
@@ -14,6 +18,9 @@ import { StakeView } from "src/app/data/presentation/Stake.view";
   styleUrls: ['./grantor-form.component.scss'],
 })
 export class GrantorFormComponent {
+  CURP_REGEX =
+    '/^([A-Z][AEIOUX][A-Z]{2}\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d])(\\d)$/';
+
   grantorForm = new UntypedFormGroup({
     name: new UntypedFormControl('', [Validators.required]),
     father_last_name: new UntypedFormControl('', []),
@@ -22,7 +29,10 @@ export class GrantorFormComponent {
     birthdate: new UntypedFormControl('', [Validators.required]),
     place_of_birth: new UntypedFormControl('', [Validators.required]),
     rfc: new UntypedFormControl('', [Validators.required]),
-    curp: new UntypedFormControl('', [Validators.required]),
+    curp: new UntypedFormControl('', [
+      Validators.required,
+      Validators.pattern(this.CURP_REGEX),
+    ]),
     civil_status: new UntypedFormControl('', [Validators.required]),
     municipality: new UntypedFormControl('', [Validators.required]),
     colony: new UntypedFormControl('', [Validators.required]),

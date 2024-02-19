@@ -11,9 +11,16 @@ export class ShapeService extends CrudService<ShapeDto, Pagination<ShapeDto>> {
     super('shape');
   }
 
-  generateShape(shape_id: number) {
+  /**
+   * 
+   * @param shape_id 
+   * @param reportExtension | 1 pdf | 2 word | 3 excel 
+   * @returns 
+   */
+  generateShape(shape_id: number, reportExtension: number = 1) {
+    
     return this._http.get(
-      `${environment.base_url}/report/generator/procedure/shape/${shape_id}`,
+      `${environment.base_url}/report/generator/procedure/shape/${shape_id}?reportExtension=${reportExtension}`,
       {
         responseType: 'blob',
         observe: 'response',

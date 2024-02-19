@@ -2,40 +2,50 @@ import { MessageHelper, viewActions, ViewActions, viewLabel } from "o2c_core";
 import { ShapeService } from "../services/shape.service";
 import { ShapeDto } from "../dto/Shape.dto";
 import { ShapeLinkService } from "../services/shape-link.service";
+import Swal from "sweetalert2";
 
 const generetePdf = new ViewActions<ShapeDto>(
   async ({ row, injector }) => {
     const shape = row as ShapeDto;
     const shapeService = injector.get(ShapeService);
 
-    MessageHelper.showLoading('Generando pdf');
+    const callback = (type : number) => {
+      Swal.showLoading();
+      shapeService.generateShape(shape.id, type).subscribe({
+        next: async (response) => {
+          // @ts-ignore
+          const blob = new Blob([response.body], {
+            type: response.headers.get('content-type'),
+          });
+          // @ts-ignore
+          const filename = 'forma-' + shape.folio;
+  
+          // Crea un enlace temporal y simula un clic para descargar el archivo
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(blob);
+          link.download = filename;
+          link.click();
+          URL.revokeObjectURL(link.href);
+          await MessageHelper.successMessage(
+            'Reporte Generado',
+            'El reporte se genero con éxito',
+          );
+        },
+        error: async () => {
+          await MessageHelper.errorMessage(
+            'No se puede generar el reporte en este momento intente más tarde',
+          );
+        },
+      });
+    };
 
-    shapeService.generateShape(shape.id).subscribe({
-      next: async (response) => {
-        // @ts-ignore
-        const blob = new Blob([response.body], {
-          type: response.headers.get('content-type'),
-        });
-        // @ts-ignore
-        const filename = 'forma-pdf-' + shape.folio;;
+    MessageHelper.decisionMessage(
+      'Generar formato', 
+      '¿Desea generar en formato .docx (Formato editable con word)?',
+      callback.bind(this, 3),
+      callback.bind(this, 1),
+      );
 
-        // Crea un enlace temporal y simula un clic para descargar el archivo
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = filename;
-        link.click();
-        URL.revokeObjectURL(link.href);
-        await MessageHelper.successMessage(
-          'Reporte Generado',
-          'El reporte se genero con éxito',
-        );
-      },
-      error: async () => {
-        await MessageHelper.errorMessage(
-          'No se puede generar el pdf en este momento intente más tarde',
-        );
-      },
-    });
   },
   'download',
   {

@@ -54,11 +54,11 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     scriptures: new UntypedFormControl('', [Validators.required]),
     property_account: new UntypedFormControl('', [Validators.required]),
     signature_date: new UntypedFormControl('', [Validators.required]),
-    departure: new UntypedFormControl('', [Validators.required]),
+    departure: new UntypedFormControl('', []),
     inscription: new UntypedFormControl('', [Validators.required]),
-    sheets: new UntypedFormControl('', [Validators.required]),
-    took: new UntypedFormControl('', [Validators.required]),
-    book: new UntypedFormControl('', [Validators.required]),
+    sheets: new UntypedFormControl('', []),
+    took: new UntypedFormControl('', []),
+    book: new UntypedFormControl('', []),
     operation_value: new UntypedFormControl('', [Validators.required]),
     description: new UntypedFormControl('', [Validators.required]),
     total: new UntypedFormControl('', [Validators.required]),
@@ -68,6 +68,8 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     reverse: new UntypedFormControl('', []),
     alienating: new UntypedFormControl('', [Validators.required]),
     acquirer: new UntypedFormControl('', [Validators.required]),
+    extra_alienating: new UntypedFormControl('', [Validators.required]),
+    extra_acquirers: new UntypedFormControl('', []),
     grantors: new UntypedFormControl('', []),
   });
 
@@ -145,6 +147,10 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     dataForm.book = dataForm.book.toString();
     dataForm.operation_value = dataForm.operation_value.toString();
     dataForm.total = dataForm.total.toString();
+    dataForm.grantors = {
+      alienating : this.shapeForm.get('extra_alienating')?.value,
+      acquirer : this.shapeForm.get('extra_acquirers')?.value,
+    };
     // dataForm.reverse = this.;
     let request$: Observable<ShapeDto>;
     if (!this.isEdit) {

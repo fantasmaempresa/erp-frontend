@@ -13,6 +13,14 @@
   >
     <div class="col-6 d-flex flex-column">
       <mat-form-field appearance="outline">
+        <mat-label>Tipo de Persona</mat-label>
+        <mat-select formControlName="type">
+          <mat-option [value]="1">Moral</mat-option>
+          <mat-option [value]="2">Física</mat-option>
+        </mat-select>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
         <input formControlName="name" matInput type="text" />
         <mat-error appErrorMessage></mat-error>
@@ -21,18 +29,23 @@
       <mat-form-field appearance="outline">
         <mat-label>Apellido Paterno</mat-label>
         <input formControlName="last_name" matInput type="text" />
-        <mat-error appErrorMessage></mat-error>
+        <mat-error
+          *ngIf="clientForm.get('mother_last_name')?.errors?.required"
+          appErrorMessage
+        ></mat-error>
       </mat-form-field>
-
 
       <mat-form-field appearance="outline">
         <mat-label>Apellido materno</mat-label>
         <input formControlName="mother_last_name" matInput type="text" />
-        <mat-error appErrorMessage></mat-error>
+        <mat-error
+          *ngIf="clientForm.get('last_name')?.errors?.required"
+          appErrorMessage
+        ></mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Correo</mat-label>
+        <mat-label>Correo personal u otro de contacto</mat-label>
         <input
           formControlName="email"
           matInput
@@ -43,7 +56,7 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Teléfono</mat-label>
+        <mat-label>Teléfono celular personal u otro de contacto</mat-label>
         <input formControlName="phone" matInput type="tel" />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
@@ -63,15 +76,6 @@
       <mat-form-field appearance="outline">
         <mat-label>RFC</mat-label>
         <input formControlName="rfc" matInput type="text" />
-        <mat-error appErrorMessage></mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Tipo de Persona</mat-label>
-        <mat-select formControlName="type">
-          <mat-option [value]="1">Moral</mat-option>
-          <mat-option [value]="2">Física</mat-option>
-        </mat-select>
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 

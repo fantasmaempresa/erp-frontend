@@ -188,8 +188,8 @@
       </mat-expansion-panel>
 
       <mat-expansion-panel
-        (opened)="step = 3"
-        [expanded]="step === 3"
+        (opened)="step = 2"
+        [expanded]="step === 2"
         hideToggle
       >
         <mat-expansion-panel-header>
@@ -229,6 +229,20 @@
         </div>
 
         <mat-form-field appearance="outline" class="w-100">
+          <mat-label>Primeros participantes extra Reverso</mat-label>
+          <input
+            [viewClassBuilder]="grantorProvider"
+            title="Selecciona los participantes del reverso"
+            o2cMultiPopup
+            formControlName="extra_alienating"
+            matInput
+            type="text"
+          />
+          <mat-icon matSuffix>search</mat-icon>
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="w-100">
           <mat-label>Segundo participante</mat-label>
           <input
             [viewClassBuilder]="grantorProvider"
@@ -243,12 +257,12 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Participantes Reverso</mat-label>
+          <mat-label>Segundos Participantes extra Reverso</mat-label>
           <input
             [viewClassBuilder]="grantorProvider"
             title="Selecciona los participantes del reverso"
             o2cMultiPopup
-            formControlName="grantors"
+            formControlName="extra_acquirers"
             matInput
             type="text"
           />
@@ -266,8 +280,8 @@
 
       <!--      DATOS DE FORMA SELECCIONADA -->
       <mat-expansion-panel
-        (opened)="step = 2"
-        [expanded]="step === 2"
+        (opened)="step = 3"
+        [expanded]="step === 3"
         hideToggle
       >
         <mat-expansion-panel-header>

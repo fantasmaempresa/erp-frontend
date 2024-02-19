@@ -6,6 +6,7 @@ import { ClientLinkDto } from '../dto';
 import { Pagination as PaginationOld } from '../../core/interfaces';
 import { CrudService, Pagination, ViewContextService } from 'o2c_core';
 import { ActivatedRoute } from '@angular/router';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -54,6 +55,13 @@ export class ClientLinkService extends CrudService<
           }),
       ),
       switchMap((p) => super.fetchAll(p)),
+    );
+  }
+
+  activeClientLink(clientLink_id: number) {
+    return this._http.put(
+      `${environment.base_url}/clientLinks/active/${clientLink_id}`,
+      {},
     );
   }
 }

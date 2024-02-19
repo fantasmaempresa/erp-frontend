@@ -22,4 +22,6 @@ export interface ClientLinkDto extends EntityDto {
   degree: string;
 
   client_id: number;
+
+  active?: number;
 }
