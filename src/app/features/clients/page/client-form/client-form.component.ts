@@ -24,6 +24,7 @@ export class ClientFormComponent implements OnInit {
     phone: new UntypedFormControl('', [
       Validators.required,
       Validators.minLength(10),
+      Validators.maxLength(10),
     ]),
     nickname: new UntypedFormControl(null),
     address: new UntypedFormControl(null),
