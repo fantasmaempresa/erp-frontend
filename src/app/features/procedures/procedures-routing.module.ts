@@ -53,6 +53,14 @@ const routes: Routes = [
           ),
         data: { breadcrumb: 'Formas', view: 'procedures' },
       },
+      {
+        path: ':id/registrationData',
+        loadChildren: () =>
+          import('../registration-procedure-data/registration-procedure-data.module').then(
+            (m) => m.RegistrationProcedureDataModule,
+          ),
+        data: { breadcrumb: 'Registro'},
+      },
     ],
   },
 ];
@@ -61,4 +69,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class ProceduresRoutingModule {}
+export class ProceduresRoutingModule { }
