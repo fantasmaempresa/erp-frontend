@@ -1,0 +1,52 @@
+<mat-card>
+    <mat-toolbar>
+      <div>
+        <button (click)="back()" aria-label="Regresar" mat-icon-button>
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+    <form
+      (ngSubmit)="onSubmit()"
+      [formGroup]="form"
+      autocomplete="off"
+      class="row justify-content-center"
+    >
+      <div class="col-6 d-flex flex-column form-container">
+        
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input formControlName="name" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Tipo de documento</mat-label>
+          <input formControlName="rule" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Descripción</mat-label>
+          <textarea formControlName="description" matInput type="textarea"> </textarea>
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+  
+        <ng-container>
+          <app-input-file
+            formControlName="file"
+            label="Archivo"
+            accept=".pdf"
+          ></app-input-file>
+        </ng-container>
+  
+        <!--      {{ form.get('config')?.value | json }}-->
+        <div class="d-flex justify-content-end">
+          <button color="primary" mat-flat-button type="submit">
+            {{ edit ? 'Actualizar' : 'Agregar' }} documento
+          </button>
+        </div>
+      </div>
+    </form>
+  </mat-card>
+  
