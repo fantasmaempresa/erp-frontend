@@ -13,8 +13,14 @@ import { DocumentService } from "../../../../data/services/document.service";
 })
 export class DocumentFormComponent {
   documentForm = new UntypedFormGroup({
-    name: new UntypedFormControl('', [Validators.required]),
-    description: new UntypedFormControl('', []),
+    name: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(110),
+    ]),
+    description: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(400)
+    ]),
     quote: new UntypedFormControl('', []),
   });
 
