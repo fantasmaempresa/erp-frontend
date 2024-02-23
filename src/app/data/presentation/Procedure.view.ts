@@ -4,6 +4,22 @@ import { ProcedureService } from '../services/procedure.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProcedureDto } from '../dto';
 
+const goToRegistrationData = new ViewActions<ProcedureDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['../', (row as ProcedureDto).id, 'registrationData'], {
+      relativeTo: route,
+    });
+  },
+  'folder_supervised',
+  {
+    tooltip: 'Registro',
+    color: 'accent',
+    isVisible: (row) => row && row.id > 0,
+  },
+);
+
 const goToComments = new ViewActions<ProcedureDto>(
   async ({ row, injector }) => {
     const router = injector.get(Router);
@@ -54,7 +70,12 @@ const goToShapesLink = new ViewActions<ProcedureDto>(
 @viewCrud({
   classProvider: ProcedureService,
   registerName: 'Trámites',
-  actions: [goToDocumentsLink, goToShapesLink, goToComments],
+  actions: [
+    goToDocumentsLink,
+    goToShapesLink,
+    goToComments,
+    goToRegistrationData,
+  ],
   route: DEFAULT_ROUTE_CONFIGURATION,
 })
 export class ProcedureView {

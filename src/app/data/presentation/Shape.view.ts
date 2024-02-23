@@ -42,7 +42,7 @@ const generetePdf = new ViewActions<ShapeDto>(
     MessageHelper.decisionMessage(
       'Generar formato', 
       '¿Desea generar en formato .docx (Formato editable con word)?',
-      callback.bind(this, 3),
+      callback.bind(this, 2),
       callback.bind(this, 1),
       );
 

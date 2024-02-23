@@ -207,6 +207,12 @@ const routes: Routes = [
         data: { breadcrumb: 'Participaciones' },
       },
       {
+        path: 'isoDocumentation',
+        loadChildren: () =>
+          import('./features/iso-documentation/iso-documentation.module').then((m) => m.IsoDocumentationModule),
+        data: { breadcrumb: 'Documentación interna norma ISO' },
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',

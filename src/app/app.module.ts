@@ -22,7 +22,7 @@ import { MatPaginatorIntl } from '@angular/material/paginator';
 import { URL_BASE_CRUD_SERVICE } from 'o2c_core';
 import { environment } from '../environments/environment';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
-import {NgxGraphModule} from "@swimlane/ngx-graph";
+import { NgxGraphModule } from "@swimlane/ngx-graph";
 
 @NgModule({
   declarations: [
@@ -54,4 +54,4 @@ import {NgxGraphModule} from "@swimlane/ngx-graph";
   bootstrap: [AppComponent],
   exports: [FooterComponent, HeaderComponent],
 })
-export class AppModule {}
+export class AppModule { }

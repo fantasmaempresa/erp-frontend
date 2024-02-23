@@ -1,0 +1,92 @@
+<mat-card>
+  <mat-toolbar>
+    <div>
+      <button (click)="back()" aria-label="Regresar" mat-icon-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="form"
+    autocomplete="off"
+    class="row justify-content-center"
+  >
+    <div class="col-6 d-flex flex-column form-container">
+      <mat-form-field appearance="outline">
+        <mat-label>Documento</mat-label>
+        <input
+          [viewClassBuilder]="documentProvider"
+          title="Selecciona un documento"
+          o2cSinglePopup
+          formControlName="document_id"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Inscripción</mat-label>
+        <input formControlName="inscription" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fojas</mat-label>
+        <input formControlName="sheets" matInput type="number" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tomo</mat-label>
+        <input formControlName="took" matInput type="number" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de firma</mat-label>
+        <input
+          (focus)="dateForm.open()"
+          [matDatepicker]="dateForm"
+          class="clickable"
+          formControlName="date"
+          matInput
+        />
+        <mat-datepicker-toggle
+          [for]="dateForm"
+          matSuffix
+        ></mat-datepicker-toggle>
+        <mat-datepicker #dateForm></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Indice de predios</mat-label>
+        <input formControlName="property" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Descripcion o comentarios</mat-label>
+        <textarea formControlName="description" matInput> </textarea>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <ng-container>
+        <app-input-file
+          formControlName="file"
+          label="Archivo"
+          accept=".pdf"
+        ></app-input-file>
+      </ng-container>
+
+      <!--      {{ form.get('config')?.value | json }}-->
+      <div class="d-flex justify-content-end">
+        <button color="primary" mat-flat-button type="submit">
+          {{ edit ? 'Actualizar' : 'Agregar' }} documento
+        </button>
+      </div>
+    </div>
+  </form>
+</mat-card>
