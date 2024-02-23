@@ -307,8 +307,15 @@ export class ConceptFormComponent implements OnInit {
 
   createForm() {
     return new UntypedFormGroup({
-      name: new UntypedFormControl('', Validators.required),
-      description: new UntypedFormControl('', [Validators.required]),
+      name: new UntypedFormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50),
+      ]),
+      description: new UntypedFormControl('', [
+        Validators.required,
+        Validators.maxLength(400),
+      ]),
       amount: new UntypedFormControl(null),
       operationType: new UntypedFormControl('import'),
       formula: new UntypedFormGroup({
