@@ -9,6 +9,7 @@ import { ClientServiceOld } from '../../../../data/services';
 import { Observable } from 'rxjs';
 import { MessageHelper } from 'o2c_core';
 import { ClientDto } from '../../../../data/dto';
+import { validate } from 'uuid';
 
 @Component({
   selector: 'app-client-form',
@@ -17,22 +18,34 @@ import { ClientDto } from '../../../../data/dto';
 })
 export class ClientFormComponent implements OnInit {
   clientForm = new UntypedFormGroup({
-    name: new UntypedFormControl('', [Validators.required]),
-    last_name: new UntypedFormControl('', [Validators.required]),
-    mother_last_name: new UntypedFormControl('', [Validators.required]),
+    name: new UntypedFormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(50),
+    ]),
+    last_name: new UntypedFormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(50),
+    ]),
+    mother_last_name: new UntypedFormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(50),
+    ]),
     email: new UntypedFormControl('', [Validators.required, Validators.email]),
     phone: new UntypedFormControl('', [
       Validators.required,
       Validators.minLength(10),
       Validators.maxLength(10),
+      Validators.pattern(/^[0-9]+$/)
     ]),
-    nickname: new UntypedFormControl(null),
-    address: new UntypedFormControl(null),
+    nickname: new UntypedFormControl('',Validators.maxLength(50)),
+    address: new UntypedFormControl(null, Validators.required),
     type: new UntypedFormControl(null, Validators.required),
     rfc: new UntypedFormControl('', [
       Validators.required,
-      Validators.minLength(10),
-      Validators.maxLength(13),
+      Validators.pattern(/^[A-Za-z&Ññ]{3,4}(\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))[A-Za-z\d]{2}[A\d]$/)
     ]),
   });
 
