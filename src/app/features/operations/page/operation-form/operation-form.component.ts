@@ -13,8 +13,14 @@ import { OperationsDto } from "../../../../data/dto/Operations.dto";
 })
 export class OperationFormComponent {
   operationForm = new UntypedFormGroup({
-    name: new UntypedFormControl('', [Validators.required]),
-    description: new UntypedFormControl('', []),
+    name: new UntypedFormControl('', [
+      Validators.required,
+      Validators.minLength(3),
+      Validators.maxLength(50),
+    ]),
+    description: new UntypedFormControl('', [
+      Validators.maxLength(400),
+    ]),
   });
 
   isEdit: boolean = false;
