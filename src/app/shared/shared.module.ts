@@ -37,6 +37,7 @@ import { DialogAssignUserComponent } from './components/dialog-assign-user/dialo
 import { ViewsModule } from "o2c_core";
 import { DialogDynamicAddItemComponent } from './components/dialog-dynamic-add-item/dialog-dynamic-add-item.component';
 import { DialogResumeProjectComponent } from './components/dialog-resume-project/dialog-resumen-project.component';
+import { DialogGrantorsComponent } from './components/dialog-grantors/dialog-grantors.component';
 // import { GeneratorFormModule } from "./components/generator-form/generator-form.module";
 
 @NgModule({
@@ -67,6 +68,7 @@ import { DialogResumeProjectComponent } from './components/dialog-resume-project
     DialogAssignUserComponent,
     DialogDynamicAddItemComponent,
     DialogResumeProjectComponent,
+    DialogGrantorsComponent,
   ],
   imports: [
     CommonModule,
