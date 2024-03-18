@@ -22,7 +22,10 @@ export class ProcedureCommentFormComponent {
     private _procedureCommentService: ProcedureCommentService,
   ) {
     this.form = new UntypedFormGroup({
-      comment: new UntypedFormControl(null, Validators.required),
+      comment: new UntypedFormControl(null,[
+        Validators.required,
+        Validators.maxLength(400)
+      ]),
       procedure_id: new UntypedFormControl(null, Validators.required),
     });
 
