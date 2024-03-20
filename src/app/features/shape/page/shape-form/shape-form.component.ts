@@ -49,19 +49,40 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
   procedureProvider = ProcedureView;
 
   shapeForm = new UntypedFormGroup({
-    folio: new UntypedFormControl('', [Validators.required]),
+    folio: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
     notary: new UntypedFormControl('', [Validators.required]),
-    scriptures: new UntypedFormControl('', [Validators.required]),
-    property_account: new UntypedFormControl('', [Validators.required]),
+    scriptures: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
+    property_account: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
     signature_date: new UntypedFormControl('', [Validators.required]),
-    departure: new UntypedFormControl('', []),
-    inscription: new UntypedFormControl('', [Validators.required]),
+    departure: new UntypedFormControl('', [Validators.maxLength(50)]),
+    inscription: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
     sheets: new UntypedFormControl('', []),
     took: new UntypedFormControl('', []),
     book: new UntypedFormControl('', []),
-    operation_value: new UntypedFormControl('', [Validators.required]),
-    description: new UntypedFormControl('', [Validators.required]),
-    total: new UntypedFormControl('', [Validators.required]),
+    operation_value: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
+    description: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(400),
+    ]),
+    total: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
     data_form: new UntypedFormControl('', []),
     template_shape_id: new UntypedFormControl('', [Validators.required]),
     procedure_id: new UntypedFormControl('', [Validators.required]),
@@ -206,7 +227,10 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     value.form.forEach((field: any) => {
       this.builderForm.addControl(
         field.name,
-        this.fb.control('', [Validators.required]),
+        this.fb.control('', [
+          Validators.required,
+          Validators.maxLength(200),
+        ]),
       );
     });
     this.fields = value.form;

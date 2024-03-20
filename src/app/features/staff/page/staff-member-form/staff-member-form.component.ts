@@ -17,18 +17,28 @@ import { StaffDto, WorkAreaDto } from '../../../../data/dto';
 })
 export class StaffMemberFormComponent {
   staffMemberForm = new UntypedFormGroup({
-    name: new UntypedFormControl('', [Validators.required]),
-    last_name: new UntypedFormControl('', [Validators.required]),
-    mother_last_name: new UntypedFormControl('', [Validators.required]),
+    name: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
+    last_name: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
+    mother_last_name: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(100)
+    ]),
     email: new UntypedFormControl('', [Validators.required, Validators.email]),
     phone: new UntypedFormControl('', [
       Validators.required,
       Validators.minLength(10),
       Validators.maxLength(10),
+      Validators.pattern(/^[0-9]+$/)
     ]),
-    nickname: new UntypedFormControl(null),
+    nickname: new UntypedFormControl(null,[Validators.maxLength(50)]),
     extra_information: new UntypedFormControl(null),
-    work_area_id: new UntypedFormControl(null),
+    work_area_id: new UntypedFormControl(null,[Validators.required]),
     user_id: new UntypedFormControl(null),
   });
 

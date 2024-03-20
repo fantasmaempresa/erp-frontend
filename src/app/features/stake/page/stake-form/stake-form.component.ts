@@ -13,7 +13,10 @@ import { StakeDto } from "../../../../data/dto/Stake.dto";
 })
 export class StakeFormComponent {
   stakeForm = new UntypedFormGroup({
-    name: new UntypedFormControl('', [Validators.required]),
+    name: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
   });
 
   isEdit: boolean = false;

@@ -13,8 +13,14 @@ import { RoleDto } from "../../../../data/dto";
 })
 export class RoleFormComponent {
   roleForm = new UntypedFormGroup({
-    name: new UntypedFormControl("", [Validators.required]),
-    description: new UntypedFormControl("", [Validators.required]),
+    name: new UntypedFormControl("", [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
+    description: new UntypedFormControl("", [
+      Validators.required,
+      Validators.maxLength(200),
+    ]),
     config: new UntypedFormGroup({
       modules: new UntypedFormControl(null),
       view_mode: new UntypedFormControl(null)

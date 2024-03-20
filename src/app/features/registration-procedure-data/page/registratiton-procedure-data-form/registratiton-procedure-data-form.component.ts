@@ -27,14 +27,20 @@ export class RegistratitonProcedureDataFormComponent {
     private _registrationService: RegistrationProcedureDataService) {
 
     this.form = new UntypedFormGroup({
-      inscription: new UntypedFormControl(null, [Validators.required]),
+      inscription: new UntypedFormControl(null, [
+        Validators.required,
+        Validators.maxLength(100),
+      ]),
       sheets: new UntypedFormControl(null, []),
       took: new UntypedFormControl(null, []),
-      date: new UntypedFormControl(null, []),
+      date: new UntypedFormControl(null, [Validators.required]),
       property: new UntypedFormControl(null, []),
       procedure_id: new UntypedFormControl(null, [Validators.required]),
       document_id: new UntypedFormControl(null, [Validators.required]),
-      description: new UntypedFormControl(null, []),
+      description: new UntypedFormControl(null, [
+        Validators.required,
+        Validators.maxLength(200),
+      ]),
       file: new UntypedFormControl(null, [Validators.required]),
     });
 

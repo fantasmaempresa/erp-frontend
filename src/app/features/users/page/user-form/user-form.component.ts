@@ -20,7 +20,10 @@ import { StaffView } from '../../../../data/presentation/staff.view';
 })
 export class UserFormComponent {
   userForm = new UntypedFormGroup({
-    name: new UntypedFormControl('', [Validators.required]),
+    name: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
     email: new UntypedFormControl('', [Validators.required, Validators.email]),
     password: new UntypedFormControl('', [
       Validators.required,

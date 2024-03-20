@@ -20,7 +20,10 @@ export class ProfileFormComponent {
   profileForm = new UntypedFormGroup(
     {
       id: new UntypedFormControl('', [Validators.required]),
-      name: new UntypedFormControl('', [Validators.required]),
+      name: new UntypedFormControl('', [
+        Validators.required,
+        Validators.maxLength(50),
+      ]),
       email: new UntypedFormControl('', [
         Validators.required,
         Validators.email,
