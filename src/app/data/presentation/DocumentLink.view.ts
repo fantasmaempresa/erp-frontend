@@ -1,8 +1,9 @@
-import { ViewActions, viewActions, viewLabel } from 'o2c_core';
+import { ViewActions, viewActions, viewCrud, viewLabel } from 'o2c_core';
 import { DocumentLinkService } from '../services/document-link.service';
 import { DocumentDto } from '../dto';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogPreviewPdfComponent } from '../../shared/components/dialog-preview-pdf/dialog-preview-pdf.component';
+import { DEFAULT_ROUTE_CONFIGURATION } from 'src/app/core/constants/routes.constants';
 
 const goToViewDocument = new ViewActions<DocumentDto>(
   async ({ row, injector }) => {
@@ -23,13 +24,11 @@ const goToViewDocument = new ViewActions<DocumentDto>(
   },
 );
 
-@viewActions({
+@viewCrud({
   classProvider: DocumentLinkService,
-  // route: DEFAULT_ROUTE_CONFIGURATION,
-  // registerName: 'Expediente',
+  route: DEFAULT_ROUTE_CONFIGURATION,
+  registerName: 'Expediente digital',
   actions: [
-    ViewActions.ACTION_ADD('../new'),
-    ViewActions.ACTION_DELETE(DocumentLinkService),
     goToViewDocument,
   ],
 })

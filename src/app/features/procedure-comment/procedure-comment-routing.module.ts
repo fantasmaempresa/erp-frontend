@@ -24,6 +24,11 @@ const routes: Routes = [
         component: ProcedureCommentFormComponent,
         data: { breadcrumb: 'Agregar comentarios al expediente' },
       },
+      {
+        path: ':idProcedureCommnet',
+        component: ProcedureCommentFormComponent,
+        data: { breadcrumb: 'Editar comentario' },
+      },
     ],
   },
 ];

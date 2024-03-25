@@ -180,23 +180,7 @@
           </button>
         </div>
       </div>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha de trámite</mat-label>
-        <input
-          (focus)="dateForm.open()"
-          [matDatepicker]="dateForm"
-          class="clickable"
-          formControlName="date_proceedings"
-          matInput
-        />
-        <mat-datepicker-toggle
-          [for]="dateForm"
-          matSuffix
-        ></mat-datepicker-toggle>
-        <mat-datepicker #dateForm></mat-datepicker>
-      </mat-form-field>
-
+      
       <mat-form-field appearance="outline">
         <mat-label>Fecha de firma</mat-label>
         <input

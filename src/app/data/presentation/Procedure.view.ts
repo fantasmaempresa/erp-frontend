@@ -24,6 +24,25 @@ const goToViewGrantors = new ViewActions<ProcedureDto>(
   },
 );
 
+const goToProcessingIncome = new ViewActions<ProcedureDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(
+      ['../', (row as ProcedureDto).id, 'incoming'],
+      {
+        relativeTo: route,
+      },
+    );
+  },
+  'input',
+  {
+    tooltip: 'Historia de ingresos',
+    color: 'accent',
+    isVisible: (row) => row && row.id > 0,
+  },
+);
+
 const goToRegistrationData = new ViewActions<ProcedureDto>(
   async ({ row, injector }) => {
     const router = injector.get(Router);
@@ -99,6 +118,7 @@ const goToShapesLink = new ViewActions<ProcedureDto>(
     goToComments,
     goToRegistrationData,
     goToViewGrantors,
+    goToProcessingIncome,
   ],
   route: DEFAULT_ROUTE_CONFIGURATION,
 })

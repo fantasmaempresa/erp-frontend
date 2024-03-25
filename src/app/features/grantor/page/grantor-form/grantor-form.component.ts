@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   UntypedFormControl,
   UntypedFormGroup,
@@ -17,9 +17,8 @@ import { StakeView } from 'src/app/data/presentation/Stake.view';
   templateUrl: './grantor-form.component.html',
   styleUrls: ['./grantor-form.component.scss'],
 })
-export class GrantorFormComponent {
-  CURP_REGEX =
-    '/^([A-Z][AEIOUX][A-Z]{2}\\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\\d|3[01])[HM](?:AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}[A-Z\\d])(\\d)$/';
+export class GrantorFormComponent implements OnInit {
+  CURP_REGEX = "^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}([A-Z\d])(\d))$";
 
   grantorForm = new UntypedFormGroup({
     name: new UntypedFormControl('', [Validators.required]),
@@ -31,7 +30,6 @@ export class GrantorFormComponent {
     rfc: new UntypedFormControl('', [Validators.required]),
     curp: new UntypedFormControl('', [
       Validators.required,
-      Validators.pattern(this.CURP_REGEX),
     ]),
     civil_status: new UntypedFormControl('', [Validators.required]),
     municipality: new UntypedFormControl('', [Validators.required]),
@@ -44,7 +42,7 @@ export class GrantorFormComponent {
     occupation: new UntypedFormControl('', [Validators.required]),
     type: new UntypedFormControl('', [Validators.required]),
     stake_id: new UntypedFormControl('', [Validators.required]),
-    beneficiary: new UntypedFormControl('', [Validators.required]),
+    beneficiary: new UntypedFormControl(false, [Validators.required]),
   });
 
   isEdit: boolean = false;
@@ -81,6 +79,15 @@ export class GrantorFormComponent {
     }
   }
 
+  ngOnInit(): void {
+    this.grantorForm.get('type')?.valueChanges.subscribe((value) => {
+      this.updateValidators(value);
+      this.changeTypeGrantor(value);
+    });
+
+    this.updateValidators(this.grantorForm.get('type')?.value);
+  }
+
   async backToListGrantors() {
     if (this.isDialog) {
       return;
@@ -105,6 +112,11 @@ export class GrantorFormComponent {
         );
         await this.backToListGrantors();
       },
+      error: async () => {
+        await MessageHelper.errorMessage(
+          'Hubo un error, intente más tarde por favor',
+        )
+      }
     });
   }
 
@@ -112,12 +124,55 @@ export class GrantorFormComponent {
     if (event === 1) {
       this.grantorForm.controls.father_last_name.disable();
       this.grantorForm.controls.mother_last_name.disable();
+      this.grantorForm.controls.rfc.disable()
+      this.grantorForm.controls.curp.disable();
+      this.grantorForm.controls.civil_status.disable();
+      this.grantorForm.controls.no_int.disable();
+      this.grantorForm.controls.phone.disable();
+      this.grantorForm.controls.place_of_birth.disable();
+      this.grantorForm.controls.occupation.disable();
     }
     if (event === 2) {
       this.grantorForm.controls.father_last_name.enable();
       this.grantorForm.controls.mother_last_name.enable();
+      this.grantorForm.controls.rfc.enable()
+      this.grantorForm.controls.curp.enable();
+      this.grantorForm.controls.civil_status.enable();
+      this.grantorForm.controls.no_int.enable();
+      this.grantorForm.controls.phone.enable();
+      this.grantorForm.controls.place_of_birth.enable();
+      this.grantorForm.controls.occupation.enable();
     }
   }
 
-  protected readonly OperationView = OperationView;
+  updateValidators(type: number) {
+    if (type === 1) {
+      this.grantorForm.get('mother_last_name')?.clearValidators();
+      this.grantorForm.get('last_name')?.clearValidators();
+      this.grantorForm.get('rfc')?.clearValidators();
+      this.grantorForm.get('curp')?.clearValidators();
+      this.grantorForm.get('civil_status')?.clearValidators();
+      this.grantorForm.get('no_int')?.clearValidators();
+      this.grantorForm.get('phone')?.clearValidators();
+      this.grantorForm.get('place_of_birth')?.clearValidators();
+      this.grantorForm.get('occupation')?.clearValidators();
+    } else {
+      this.grantorForm
+        .get('mother_last_name')
+        ?.setValidators(Validators.required);
+      this.grantorForm.get('last_name')?.setValidators(Validators.required);
+      this.grantorForm.get('rfc')?.setValidators(Validators.required);
+      this.grantorForm.get('curp')?.setValidators([Validators.required]);
+      this.grantorForm.get('civil_status')?.setValidators(Validators.required);
+      this.grantorForm.get('no_int')?.setValidators(Validators.required);
+      this.grantorForm.get('phone')?.setValidators(Validators.required);
+      this.grantorForm
+        .get('place_of_birth')
+        ?.setValidators(Validators.required);
+      this.grantorForm.get('occupation')?.setValidators(Validators.required);
+    }
+
+    this.grantorForm.get('mother_last_name')?.updateValueAndValidity();
+    this.grantorForm.get('last_name')?.updateValueAndValidity();
+  }
 }

@@ -20,14 +20,10 @@ import Swal from 'sweetalert2';
 export class RegistratitonProcedureDataFormComponent {
   edit = false;
 
-  step = 0;
-
   form!: UntypedFormGroup;
 
   documentProvider = DocumentView;
   placeProvider = PlaceView;
-
-  view: string = '';
 
   constructor(
     private router: Router,
@@ -64,8 +60,6 @@ export class RegistratitonProcedureDataFormComponent {
 
     this.form.get('document_id')?.valueChanges.subscribe((value) => {
       this.form.get('file')?.setValidators(Validators.required);
-      this.form.get('mother_last_name')?.updateValueAndValidity();
-    this.form.get('last_name')?.updateValueAndValidity();
     });
   }
 

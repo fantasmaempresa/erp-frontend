@@ -34,6 +34,8 @@ export class DocumentLinkFormComponent {
     });
 
     const id = Number(this.route.snapshot.params.id);
+    const idDoc = Number(this.route.snapshot.params.idDoc);
+    console.log('view idddd --> ', id, idDoc);
     if (!isNaN(id)) {
       this.getDataRoute().subscribe(({ view }) => {
         if (view instanceof Object) {
@@ -45,7 +47,11 @@ export class DocumentLinkFormComponent {
       });
 
       this.form.get("client_id")?.setValue(id);
+    }
 
+    if(!isNaN(idDoc)) {
+      this.form.get("document_id")?.setValue(idDoc);
+      this.edit =  true;
     }
   }
 
@@ -64,18 +70,33 @@ export class DocumentLinkFormComponent {
     formData.append("document_id", this.form.value.document_id);
     formData.append("view", this.view);
     Swal.showLoading();
-    this._documentLinkService.save(formData).subscribe({
-      next: async () => {
-        await MessageHelper.successMessage(
-          "¡Éxito!",
-          "El documento ha sido registrado correctamente"
-        );
-        await this.back();
-      },
-      error: async () => {
-        await MessageHelper.errorMessage("Error al cargar el archivo");
-      }
-    });
+    if(this.edit){
+      this._documentLinkService.updateAlternative(formData).subscribe({
+        next: async () => {
+          await MessageHelper.successMessage(
+            "¡Éxito!",
+            "El documento ha sido actualizado correctamente"
+          );
+          await this.back();
+        },
+        error: async () => {
+          await MessageHelper.errorMessage("Error al cargar el archivo");
+        }
+      })
+    }else {
+      this._documentLinkService.save(formData).subscribe({
+        next: async () => {
+          await MessageHelper.successMessage(
+            "¡Éxito!",
+            "El documento ha sido registrado correctamente"
+          );
+          await this.back();
+        },
+        error: async () => {
+          await MessageHelper.errorMessage("Error al cargar el archivo");
+        }
+      });
+    }
   }
 
   getDataRoute() {

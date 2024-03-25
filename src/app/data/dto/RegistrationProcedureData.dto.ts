@@ -1,7 +1,6 @@
 import { EntityDto } from 'o2c_core';
 import { UserDto } from './User.dto';
 import { DocumentDto } from './Document.dto';
-import { ProcedureCommentDto } from './ProcedureComment.dto';
 import { PlaceDto } from './Place.dto';
 
 export interface RegistrationProcedureDataDto extends EntityDto {

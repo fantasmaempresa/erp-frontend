@@ -1,0 +1,107 @@
+import { ViewActions, viewCrud, viewLabel, viewMapTo } from 'o2c_core';
+import { DEFAULT_ROUTE_CONFIGURATION } from 'src/app/core/constants/routes.constants';
+import { DocumentDto, ProcedureDto, StaffDto, UserDto } from '../dto';
+import { OperationsDto } from '../dto/Operations.dto';
+import { PlaceDto } from '../dto/Place.dto';
+import { ProcessingIncomeService } from '../services/processing-income.service';
+import { ProcessingIncomeDto } from '../dto/ProcessingIncome.dto';
+import { ActivatedRoute, Router } from '@angular/router';
+
+const goToDocumentsLink = new ViewActions<ProcessingIncomeDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['../', (row as ProcessingIncomeDto).id, 'documentsLink'], {
+      relativeTo: route,
+    });
+  },
+  'contact_page',
+  {
+    tooltip: 'Documentos de ingreso',
+    color: 'accent',
+    isVisible: (row) => row && row.id > 0,
+  },
+);
+
+const goToComments = new ViewActions<ProcessingIncomeDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['../', (row as ProcessingIncomeDto).id, 'comments'], {
+      relativeTo: route,
+    });
+  },
+  'chat',
+  {
+    tooltip: 'Comentarios de trámite',
+    color: 'accent',
+    isVisible: (row) => row && row.id > 0,
+  },
+);
+
+@viewCrud({
+  classProvider: ProcessingIncomeService,
+  registerName: 'Información de registro',
+  actions: [goToDocumentsLink,goToComments],
+  route: DEFAULT_ROUTE_CONFIGURATION,
+})
+export class ProcessingIncomeView {
+
+  @viewLabel('Información de registro')  
+  name: string;
+
+  @viewLabel('Fecha de ingreso')
+  date_income: string;
+
+  config: string;
+  @viewLabel('Gestor')
+  @viewMapTo((value: any) => value?.name)
+  staff: StaffDto;
+  procedure_id: number;
+  operation_id: number;
+  staff_id: number;
+  place_id: number;
+  user_id: number;
+  
+  @viewLabel('User')
+  @viewMapTo((value: any) => value?.name)
+  user?: UserDto;
+  @viewLabel('Lugar')
+  @viewMapTo((value: any) => value?.name)
+  place?: PlaceDto;
+  operation?: OperationsDto
+  procedure?: ProcedureDto;
+  documents?: DocumentDto[];
+
+  constructor(
+    name: string,
+    date_income: string,
+    config: string,
+    staff: StaffDto,
+    procedure_id: number,
+    operation_id: number,
+    staff_id: number,
+    place_id: number,
+    user_id: number,
+    user?: UserDto,
+    place?: PlaceDto,
+    operation?: OperationsDto,
+    procedure?: ProcedureDto,
+    documents?: DocumentDto[],
+  ) {
+    this.name = name;
+    this.date_income = date_income;
+    this.config = config;
+    this.staff = staff;
+    this.procedure_id = procedure_id;
+    this.operation_id = operation_id;
+    this.staff_id = staff_id;
+    this.place_id = place_id;
+    this.user_id = user_id;
+    this.user = user;
+    this.place = place;
+    this.operation = operation;
+    this.procedure = procedure;
+    this.documents = documents;
+  }
+}

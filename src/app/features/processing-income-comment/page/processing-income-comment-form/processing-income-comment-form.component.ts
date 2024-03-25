@@ -1,21 +1,17 @@
 import { Component } from '@angular/core';
-import {
-  UntypedFormControl,
-  UntypedFormGroup,
-  Validators,
-} from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProcedureCommentService } from '../../../../data/services/procedure-comment.service';
 import { MessageHelper } from 'o2c_core';
 import { Observable } from 'rxjs';
+import { ProcessingIncomeCommentService } from 'src/app/data/services/processing-income-comment.service';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-procedure-comment-form',
-  templateUrl: './procedure-comment-form.component.html',
-  styleUrls: ['./procedure-comment-form.component.scss'],
+  selector: 'app-processing-income-comment-form',
+  templateUrl: './processing-income-comment-form.component.html',
+  styleUrls: ['./processing-income-comment-form.component.scss'],
 })
-export class ProcedureCommentFormComponent {
+export class ProcessingIncomeCommentFormComponent {
   edit = false;
 
   form!: UntypedFormGroup;
@@ -25,22 +21,23 @@ export class ProcedureCommentFormComponent {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private _procedureCommentService: ProcedureCommentService,
+    private _processingIncomeCommentService: ProcessingIncomeCommentService,
   ) {
     this.form = new UntypedFormGroup({
       comment: new UntypedFormControl(null, Validators.required),
-      procedure_id: new UntypedFormControl(null, Validators.required),
+      processing_income_id: new UntypedFormControl(null, Validators.required),
     });
 
-    const id = Number(this.route.snapshot.params.id);
+    const id = Number(this.route.snapshot.params.idProcessingIncome);
+    const idComment = Number(this.route.snapshot.params.idProcessingIncomeComment);
     if (!isNaN(id)) {
-      this.form.get('procedure_id')?.setValue(id);
+      this.form.get('processing_income_id')?.setValue(id);
+    }else {
+      this.back();
     }
-
-    const idComment = Number(this.route.snapshot.params.idProcedureCommnet);
     if (!isNaN(idComment)) {
       this.edit = true;
-      this._procedureCommentService.fetch(idComment).subscribe({
+      this._processingIncomeCommentService.fetch(idComment).subscribe({
         next: (row) => {
           this.form.addControl('id', new UntypedFormControl(''));
           this.form.patchValue(row);
@@ -59,9 +56,9 @@ export class ProcedureCommentFormComponent {
     let request$: Observable<any>;
 
     if (!this.edit) {
-      request$ = this._procedureCommentService.save(this.form.value);
+      request$ = this._processingIncomeCommentService.save(this.form.value);
     } else {
-      request$ = this._procedureCommentService.update(this.form.value);
+      request$ = this._processingIncomeCommentService.update(this.form.value);
     }
 
     Swal.showLoading();

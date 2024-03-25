@@ -14,16 +14,23 @@ export class ProcedureService extends CrudService<
     super('procedures');
   }
 
-  checkValueUnique(name: string) {
+  checkValueUnique(name: string, id?: number) {
+    let idParam = '';
+    if (id) {
+      idParam = `&id=${id}`;
+    }
     return this._http.get(
-      `${environment.base_url}/procedure/validator/uniqueValue/${name}`,
+      `${environment.base_url}/procedure/validator/uniqueValue/${name}?${idParam}`,
     );
   }
 
-  checkFolioMinValueUnique(folio: number) {
+  checkFolioMinValueUnique(folio: number, range: string, id?: number) {
+    let idParam = '';
+    if (id) {
+      idParam = `&id=${id}`;
+    }
     return this._http.get(
-      `${environment.base_url}/procedure/validator/uniqueFolioValue/${folio}`,
+      `${environment.base_url}/procedure/validator/uniqueFolioValue/${folio}?range=${range}${idParam}`,
     );
   }
-
 }
