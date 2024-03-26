@@ -51,6 +51,7 @@ export class DocumentLinkService extends CrudService<
             fromObject: { client_id: `${client_id}`, view: `${view}`}
           })
       ),
+      //ts:ignore
       switchMap((p) => super.delete(id, p))
     );
   }
