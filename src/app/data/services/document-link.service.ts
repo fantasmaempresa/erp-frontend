@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { DocumentDto } from "../dto";
 import { HttpParams } from "@angular/common/http";
-import { filter, map, Observable, pluck, switchMap } from "rxjs";
+import { Injectable } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { CrudService, Pagination, ViewContextService } from "o2c_core";
-import { ActivatedRoute, ActivationEnd, Router, RouterEvent } from "@angular/router";
+import { map, Observable, switchMap } from "rxjs";
+import { DocumentDto } from "../dto";
 
 @Injectable({
   providedIn: "root"
