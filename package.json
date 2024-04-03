@@ -42,7 +42,7 @@
     "ng2-pdf-viewer": "^9.1.5",
     "ngrx-store-localstorage": "^15.0.0",
     "ngx-editor": "^15.3.0",
-    "o2c_core": "^0.5.0",
+    "o2c_core": "0.5.0",
     "pdf-viewer": "^0.8.1",
     "pusher-js": "^8.0.1",
     "reflect-metadata": "^0.1.13",
