@@ -21,7 +21,11 @@
       "dom"
     ],
     "esModuleInterop": true,
-    "useDefineForClassFields": false
+    "useDefineForClassFields": false,
+    "paths": {
+      "o2c_core": ["../core-project-angular-frontend/dist/o2c-core"],
+      "@angular/*": ["node_modules/@angular/*"],
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
