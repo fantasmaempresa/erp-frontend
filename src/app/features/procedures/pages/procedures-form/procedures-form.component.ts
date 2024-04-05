@@ -38,22 +38,21 @@ export class ProceduresFormComponent {
         asyncValidators: [this.uniqueValueValidator.bind(this)],
         updateOn: 'blur',
       }),
-      value_operation: new UntypedFormControl('', [Validators.required]),
-      date_proceedings: new UntypedFormControl('', [Validators.required]),
+      value_operation: new UntypedFormControl('', []),
       instrument: new UntypedFormControl('', [Validators.required]),
       date: new UntypedFormControl('', [Validators.required]),
       volume: new UntypedFormControl('', [Validators.required]),
       folio_min: new UntypedFormControl('', {
         validators: [],
-        asyncValidators: [this.uniqueFolioValueValidator.bind(this)],
+        asyncValidators: [this.uniqueFolioValueValidatorMin.bind(this)],
       }),
       folio_max: new UntypedFormControl('', {
         validators: [Validators.required],
-        asyncValidators: [this.uniqueFolioValueValidator.bind(this)],
+        asyncValidators: [this.uniqueFolioValueValidatorMax.bind(this)],
       }),
       credit: new UntypedFormControl('', []),
       observation: new UntypedFormControl('', []),
-      documents: new UntypedFormControl('', [Validators.required]),
+      documents: new UntypedFormControl('', []),
       grantors: new UntypedFormControl('', [Validators.required]),
       operation_id: new UntypedFormControl('', [Validators.required]),
       place_id: new UntypedFormControl('', [Validators.required]),
@@ -192,22 +191,46 @@ export class ProceduresFormComponent {
     control: AbstractControl,
   ): Observable<ValidationErrors | null> {
     console.log('se ejecuto el validador');
+    let id = null;
+    if(this.isEdit){
+      id = this.procedureForm.get('id')?.value;
+    }
     const value: string = control.value;
-    return this.procedureService.checkValueUnique(value).pipe(
+    return this.procedureService.checkValueUnique(value, id).pipe(
       debounceTime(200),
       map((isUnique) => (isUnique ? null : { uniqueValue: true })),
     );
   }
 
-  uniqueFolioValueValidator(
+  uniqueFolioValueValidatorMin(
     control: AbstractControl,
   ): Observable<ValidationErrors | null> {
-    console.log('se ejecuto el validador folio');
+    let id = null;
+    if(this.isEdit){
+      id = this.procedureForm.get('id')?.value;
+    }
+
     const value: number = control.value;
 
-    if (value == 0) return of(null);
+    if (value == 0 || value == null) return of(null);
 
-    return this.procedureService.checkFolioMinValueUnique(value).pipe(
+    return this.procedureService.checkFolioMinValueUnique(value, 'folio_min', id).pipe(
+      debounceTime(300),
+      map((isUnique) => (isUnique ? null : { uniqueValue: true })),
+    );
+  }
+
+  uniqueFolioValueValidatorMax(
+    control: AbstractControl,
+  ): Observable<ValidationErrors | null> {
+    let id = null;
+    if(this.isEdit){
+      id = this.procedureForm.get('id')?.value;
+    }
+
+    const value: number = control.value;
+
+    return this.procedureService.checkFolioMinValueUnique(value, 'folio_max', id).pipe(
       debounceTime(300),
       map((isUnique) => (isUnique ? null : { uniqueValue: true })),
     );

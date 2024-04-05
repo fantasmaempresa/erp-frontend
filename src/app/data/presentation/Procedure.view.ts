@@ -3,14 +3,56 @@ import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constan
 import { ProcedureService } from '../services/procedure.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProcedureDto } from '../dto';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogGrantorsComponent } from 'src/app/shared/components/dialog-grantors/dialog-grantors.component';
+
+const goToViewGrantors = new ViewActions<ProcedureDto>(
+  async ({ row, injector }) => {
+    const procedure = row as ProcedureDto;
+    const dialog = injector.get(MatDialog);
+    dialog.open(DialogGrantorsComponent, {
+      data: {
+        grantors: procedure.grantors,
+      },
+    });
+  },
+  'visibility',
+  {
+    tooltip: 'Ver otorgantes',
+    color: 'accent',
+    isVisible: (row: ProcedureDto) => row.grantors.length > 0,
+  },
+);
+
+const goToProcessingIncome = new ViewActions<ProcedureDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(
+      ['../', (row as ProcedureDto).id, 'incoming'],
+      {
+        relativeTo: route,
+      },
+    );
+  },
+  'input',
+  {
+    tooltip: 'Historia de ingresos',
+    color: 'accent',
+    isVisible: (row) => row && row.id > 0,
+  },
+);
 
 const goToRegistrationData = new ViewActions<ProcedureDto>(
   async ({ row, injector }) => {
     const router = injector.get(Router);
     const route = injector.get(ActivatedRoute);
-    await router.navigate(['../', (row as ProcedureDto).id, 'registrationData'], {
-      relativeTo: route,
-    });
+    await router.navigate(
+      ['../', (row as ProcedureDto).id, 'registrationData'],
+      {
+        relativeTo: route,
+      },
+    );
   },
   'folder_supervised',
   {
@@ -75,6 +117,8 @@ const goToShapesLink = new ViewActions<ProcedureDto>(
     goToShapesLink,
     goToComments,
     goToRegistrationData,
+    goToViewGrantors,
+    goToProcessingIncome,
   ],
   route: DEFAULT_ROUTE_CONFIGURATION,
 })

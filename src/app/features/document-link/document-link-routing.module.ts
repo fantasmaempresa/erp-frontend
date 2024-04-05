@@ -23,7 +23,12 @@ const routes: Routes = [
         path: "new",
         component: DocumentLinkFormComponent,
         data: { breadcrumb: "Agregar documentos" }
-      }
+      },
+      {
+        path: ':idDoc',
+        component: DocumentLinkFormComponent,
+        data: { breadcrumb: 'Editar Documento' },
+      },
     ]
   }
 ];

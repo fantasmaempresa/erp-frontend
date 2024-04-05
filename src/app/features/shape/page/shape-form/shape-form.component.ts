@@ -18,6 +18,7 @@ import { DialogDynamicAddItemComponent } from '../../../../shared/components/dia
 import { MatDialog } from '@angular/material/dialog';
 import { ProcedureView } from '../../../../data/presentation/Procedure.view';
 import { GrantorFormComponent } from '../../../grantor/page/grantor-form/grantor-form.component';
+import { OperationView } from 'src/app/data/presentation/Operation.view';
 
 @Component({
   selector: 'app-shape-form',
@@ -27,6 +28,11 @@ import { GrantorFormComponent } from '../../../grantor/page/grantor-form/grantor
 export class ShapeFormComponent implements OnInit, OnDestroy {
   // @ts-ignore
   editor: Editor;
+
+  // @ts-ignore
+  editorDescription: Editor;
+
+  placeholderDescription: string = 'Descripción';
 
   html = '';
 
@@ -48,6 +54,8 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
 
   procedureProvider = ProcedureView;
 
+  operationProvider = OperationView;
+
   shapeForm = new UntypedFormGroup({
     folio: new UntypedFormControl('', [
       Validators.required,
@@ -63,6 +71,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
       Validators.maxLength(50),
     ]),
     signature_date: new UntypedFormControl('', [Validators.required]),
+<<<<<<< HEAD
     departure: new UntypedFormControl('', [Validators.maxLength(50)]),
     inscription: new UntypedFormControl('', [
       Validators.required,
@@ -83,13 +92,24 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
       Validators.required,
       Validators.maxLength(50),
     ]),
+=======
+    departure: new UntypedFormControl('', []),
+    inscription: new UntypedFormControl('', []),
+    sheets: new UntypedFormControl('', []),
+    took: new UntypedFormControl('', []),
+    book: new UntypedFormControl('', []),
+    operation_value: new UntypedFormControl('', []),
+    description: new UntypedFormControl('', []),
+    total: new UntypedFormControl('', []),
+>>>>>>> 3ecee602882d37b64c5070cf4e01f3e485d57e61
     data_form: new UntypedFormControl('', []),
     template_shape_id: new UntypedFormControl('', [Validators.required]),
     procedure_id: new UntypedFormControl('', [Validators.required]),
+    operation_id: new UntypedFormControl('', [Validators.required]),
     reverse: new UntypedFormControl('', []),
     alienating: new UntypedFormControl('', [Validators.required]),
-    acquirer: new UntypedFormControl('', [Validators.required]),
-    extra_alienating: new UntypedFormControl('', [Validators.required]),
+    acquirer: new UntypedFormControl('', []),
+    extra_alienating: new UntypedFormControl('', []),
     extra_acquirers: new UntypedFormControl('', []),
     grantors: new UntypedFormControl('', []),
   });
@@ -134,6 +154,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.editor = new Editor();
+    this.editorDescription = new Editor();
   }
 
   ngOnDestroy(): void {
@@ -169,8 +190,8 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     dataForm.operation_value = dataForm.operation_value.toString();
     dataForm.total = dataForm.total.toString();
     dataForm.grantors = {
-      alienating : this.shapeForm.get('extra_alienating')?.value,
-      acquirer : this.shapeForm.get('extra_acquirers')?.value,
+      alienating: this.shapeForm.get('extra_alienating')?.value,
+      acquirer: this.shapeForm.get('extra_acquirers')?.value,
     };
     // dataForm.reverse = this.;
     let request$: Observable<ShapeDto>;
@@ -221,10 +242,18 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
   }
 
   changeShape(value: any) {
+    if (value.id == 1) {
+      this.placeholderDescription =
+        'Descripción del inmueble y ubicación oficial actual';
+    } else {
+      this.placeholderDescription =
+        'Descripción de la operación';
+    }
     console.log('value----> ', value.form);
     this.builderFormStructure = value;
     this.builderForm = this.fb.group({});
     value.form.forEach((field: any) => {
+<<<<<<< HEAD
       this.builderForm.addControl(
         field.name,
         this.fb.control('', [
@@ -232,6 +261,9 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
           Validators.maxLength(200),
         ]),
       );
+=======
+      this.builderForm.addControl(field.name, this.fb.control('', []));
+>>>>>>> 3ecee602882d37b64c5070cf4e01f3e485d57e61
     });
     this.fields = value.form;
   }

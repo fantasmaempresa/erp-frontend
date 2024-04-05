@@ -61,6 +61,14 @@ const routes: Routes = [
           ),
         data: { breadcrumb: 'Registro'},
       },
+      {
+        path: ':id/incoming',
+        loadChildren: () =>
+          import('../processing-income/processing-income.module').then(
+            (m) => m.ProcessingIncomeModule,
+          ),
+        data: { breadcrumb: 'Ingresos', view: 'incomming' },
+      },
     ],
   },
 ];

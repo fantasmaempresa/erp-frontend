@@ -1,0 +1,152 @@
+<mat-card>
+  <mat-toolbar>
+    <div>
+      <button (click)="back()" aria-label="Regresar" mat-icon-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="form"
+    autocomplete="off"
+    class="row justify-content-center"
+  >
+    <div class="col-6 d-flex flex-column form-container">
+      
+        <mat-form-field appearance="outline">
+        <mat-label>Comentarios</mat-label>
+        <textarea formControlName="name" matInput> </textarea>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de ingreso</mat-label>
+        <input
+          (focus)="dateForm.open()"
+          [matDatepicker]="dateForm"
+          class="clickable"
+          formControlName="date_income"
+          matInput
+        />
+        <mat-datepicker-toggle
+          [for]="dateForm"
+          matSuffix
+        ></mat-datepicker-toggle>
+        <mat-datepicker #dateForm></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de operación</mat-label>
+        <input
+          [viewClassBuilder]="operationProvider"
+          title="Selecciona una operación"
+          o2cSinglePopup
+          formControlName="operation_id"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Lugar de Ingreso </mat-label>
+        <input
+          [viewClassBuilder]="placeProvider"
+          title="Selecciona un lugar"
+          o2cSinglePopup
+          formControlName="place_id"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Gestor responsable del ingreso </mat-label>
+        <input
+          [viewClassBuilder]="staffProvider"
+          title="Selecciona un gestor"
+          o2cSinglePopup
+          formControlName="staff_id"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de documento de registro</mat-label>
+        <input
+          [viewClassBuilder]="documentProvider"
+          title="Selecciona un documento"
+          o2cSinglePopup
+          formControlName="document_id_incommign"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+      <!-- <ng-container>
+        <app-input-file
+          formControlName="file"
+          label="Archivo"
+          accept=".pdf"
+        ></app-input-file>
+      </ng-container> -->
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de documento de salida</mat-label>
+        <input
+          [viewClassBuilder]="documentProvider"
+          title="Selecciona un documento"
+          o2cSinglePopup
+          formControlName="document_id_out"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <!-- <ng-container>
+        <app-input-file
+          formControlName="file"
+          label="Archivo"
+          accept=".pdf"
+        ></app-input-file>
+      </ng-container> -->
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de documento que regresa</mat-label>
+        <input
+          [viewClassBuilder]="documentProvider"
+          title="Selecciona un documento"
+          o2cSinglePopup
+          formControlName="document_id_in"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <!-- <ng-container>
+        <app-input-file
+          formControlName="file"
+          label="Archivo"
+          accept=".pdf"
+        ></app-input-file>
+      </ng-container> -->
+      <!--      {{ form.get('config')?.value | json }}-->
+      <div class="d-flex justify-content-end">
+        <button color="primary" mat-flat-button type="submit">
+          {{ edit ? 'Actualizar' : 'Agregar' }} documento
+        </button>
+      </div>
+    </div>
+  </form>
+</mat-card>

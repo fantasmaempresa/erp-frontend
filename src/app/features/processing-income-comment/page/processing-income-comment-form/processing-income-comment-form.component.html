@@ -1,0 +1,25 @@
+<mat-card>
+    <mat-toolbar>
+      <div>
+        <button (click)="back()" aria-label="Regresar" mat-icon-button>
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off" class="row justify-content-center">
+      <div class="col-6 d-flex flex-column form-container">
+        <mat-form-field appearance="outline">
+          <mat-label>Descripción</mat-label>
+          <textarea formControlName="comment" matInput></textarea>
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+        <!--      {{ form.get('config')?.value | json }}-->
+        <div class="d-flex justify-content-end">
+          <button color="primary" mat-flat-button type="submit">
+            {{ edit ? 'Actualizar' : 'Agregar' }} comentario
+          </button>
+        </div>
+      </div>
+    </form>
+  </mat-card>
+  

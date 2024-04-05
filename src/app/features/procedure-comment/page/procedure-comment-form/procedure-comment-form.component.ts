@@ -1,8 +1,14 @@
-import { Component } from "@angular/core";
-import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
-import { ProcedureCommentService } from "../../../../data/services/procedure-comment.service";
-import { MessageHelper } from "o2c_core";
+import { Component } from '@angular/core';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProcedureCommentService } from '../../../../data/services/procedure-comment.service';
+import { MessageHelper } from 'o2c_core';
+import { Observable } from 'rxjs';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-procedure-comment-form',
@@ -33,6 +39,17 @@ export class ProcedureCommentFormComponent {
     if (!isNaN(id)) {
       this.form.get('procedure_id')?.setValue(id);
     }
+
+    const idComment = Number(this.route.snapshot.params.idProcedureCommnet);
+    if (!isNaN(idComment)) {
+      this.edit = true;
+      this._procedureCommentService.fetch(idComment).subscribe({
+        next: (row) => {
+          this.form.addControl('id', new UntypedFormControl(''));
+          this.form.patchValue(row);
+        },
+      });
+    }
   }
 
   async back() {
@@ -42,16 +59,27 @@ export class ProcedureCommentFormComponent {
   onSubmit() {
     if (this.form.invalid) return;
 
-    this._procedureCommentService.save(this.form.value).subscribe({
+    let request$: Observable<any>;
+
+    if (!this.edit) {
+      request$ = this._procedureCommentService.save(this.form.value);
+    } else {
+      request$ = this._procedureCommentService.update(this.form.value);
+    }
+
+    Swal.showLoading();
+
+    request$.subscribe({
       next: async () => {
+        const message = this.edit ? 'actualizada' : 'registrada';
         await MessageHelper.successMessage(
           '¡Éxito!',
-          'El comentario ha sido registrado correctamente',
+          `La operación ha sido ${message} correctamente.`,
         );
         await this.back();
       },
       error: async () => {
-        await MessageHelper.errorMessage('Error al guardar el comentario');
+        await MessageHelper.errorMessage('Ocurrio un error, intente más tarde');
       },
     });
   }

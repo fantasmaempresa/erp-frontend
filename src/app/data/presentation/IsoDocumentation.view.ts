@@ -34,13 +34,13 @@ const goToViewDocument = new ViewActions<IsoDocumentationDto>(
   // route: DEFAULT_ROUTE_CONFIGURATION,
 })
 export class IsoDocumentationView {
-  @viewLabel('Incripción')
+  @viewLabel('Nombre')
   name: string;
-  @viewLabel('Fojas')
+  @viewLabel('Tipo de documento')
   rule: string;
-  @viewLabel('Tomo')
+  @viewLabel('Descripción')
   description: string;
-
+  
   constructor(name: string, rule: string, description: string) {
     this.name = name;
     this.rule = rule;

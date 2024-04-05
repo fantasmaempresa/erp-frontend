@@ -24,7 +24,7 @@
         <mat-expansion-panel-header>
           <mat-panel-title>Selección de forma</mat-panel-title>
           <mat-panel-description
-            >Seleccione el trámite y una forma</mat-panel-description
+            >Configuración de la forma</mat-panel-description
           >
         </mat-expansion-panel-header>
         <div class="row justify-content-center">
@@ -75,19 +75,13 @@
         hideToggle
       >
         <mat-expansion-panel-header>
-          <mat-panel-title>Datos generales</mat-panel-title>
+          <mat-panel-title>Encabezado</mat-panel-title>
           <mat-panel-description>
-            Datos acerca generales de la forma
+            Datos de encabezado de la forma y datos del registro público
           </mat-panel-description>
         </mat-expansion-panel-header>
         <div class="row justify-content-center">
           <div class="col-6 d-flex flex-column pe-0">
-            <mat-form-field appearance="outline">
-              <mat-label>Folio</mat-label>
-              <input formControlName="folio" matInput type="text" />
-              <mat-error appErrorMessage></mat-error>
-            </mat-form-field>
-
             <mat-form-field>
               <mat-label>Notario</mat-label>
               <mat-select formControlName="notary">
@@ -102,7 +96,13 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>Escritura</mat-label>
+              <mat-label>Folio</mat-label>
+              <input formControlName="folio" matInput type="text" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Número de escritura</mat-label>
               <input formControlName="scriptures" matInput type="text" />
               <mat-error appErrorMessage></mat-error>
             </mat-form-field>
@@ -114,7 +114,7 @@
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>Fecha de firma</mat-label>
+              <mat-label>Fecha de firma de la operación</mat-label>
               <input
                 (focus)="dateForm.open()"
                 [matDatepicker]="dateForm"
@@ -143,39 +143,50 @@
 
             <mat-form-field appearance="outline">
               <mat-label>Fojas</mat-label>
-              <input formControlName="sheets" matInput type="number" />
+              <input formControlName="sheets" matInput type="text" />
               <mat-error appErrorMessage></mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Tomo</mat-label>
-              <input formControlName="took" matInput type="number" />
+              <input formControlName="took" matInput type="text" />
               <mat-error appErrorMessage></mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>Libro</mat-label>
-              <input formControlName="book" matInput type="number" />
+              <mat-label>Libro Num.</mat-label>
+              <input formControlName="book" matInput type="text" />
               <mat-error appErrorMessage></mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>Monto de operación</mat-label>
-              <input formControlName="operation_value" matInput type="number" />
+              <mat-label>Valor de la operación</mat-label>
+              <input formControlName="operation_value" matInput type="text" />
               <mat-error appErrorMessage></mat-error>
             </mat-form-field>
 
             <mat-form-field appearance="outline">
-              <mat-label>Total</mat-label>
-              <input formControlName="total" matInput type="number" />
+              <mat-label>Tipo de operación</mat-label>
+              <input
+                [viewClassBuilder]="operationProvider"
+                title="Selecciona una operación"
+                o2cSinglePopup
+                formControlName="operation_id"
+                matInput
+                type="text"
+              />
+              <mat-icon matSuffix>search</mat-icon>
               <mat-error appErrorMessage></mat-error>
             </mat-form-field>
 
-            <mat-form-field appearance="outline">
-              <mat-label>Descripción</mat-label>
-              <textarea formControlName="description" matInput></textarea>
-              <mat-error appErrorMessage></mat-error>
-            </mat-form-field>
+            <div class="NgxEditor__Wrapper">
+              <ngx-editor-menu [editor]="editorDescription"> </ngx-editor-menu>
+              <ngx-editor
+                [editor]="editorDescription"
+                formControlName="description"
+                [placeholder]="placeholderDescription"
+              ></ngx-editor>
+            </div>
           </div>
         </div>
 
@@ -195,7 +206,7 @@
         <mat-expansion-panel-header>
           <mat-panel-title> Participantes </mat-panel-title>
           <mat-panel-description>
-            Seleccionar los participantes de la forma
+            Datos de identificación de los participantes
           </mat-panel-description>
         </mat-expansion-panel-header>
 
@@ -309,6 +320,15 @@
             </div>
           </div>
         </form>
+        <div class="row justify-content-center">
+          <div class="col-6 d-flex flex-column pe-0">
+            <mat-form-field appearance="outline">
+              <mat-label>Total</mat-label>
+              <input formControlName="total" matInput type="text" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+          </div>
+        </div>
 
         <mat-action-row>
           <button (click)="goToPrev()" color="warn" mat-button>Atras</button>
@@ -327,7 +347,7 @@
         <mat-expansion-panel-header>
           <mat-panel-title> Reverso de la hoja </mat-panel-title>
           <mat-panel-description>
-            Completar los datos de la forma seleccionada
+            Agregar texto en el reverso de la hoja
           </mat-panel-description>
         </mat-expansion-panel-header>
 

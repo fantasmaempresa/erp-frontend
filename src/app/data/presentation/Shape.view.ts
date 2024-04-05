@@ -17,8 +17,10 @@ const generetePdf = new ViewActions<ShapeDto>(
           const blob = new Blob([response.body], {
             type: response.headers.get('content-type'),
           });
+          const extension = type == 2 ? '.rft' : '';
           // @ts-ignore
-          const filename = 'forma-' + shape.folio;
+          const filename = 'forma-' + shape.folio + extension;
+          
   
           // Crea un enlace temporal y simula un clic para descargar el archivo
           const link = document.createElement('a');

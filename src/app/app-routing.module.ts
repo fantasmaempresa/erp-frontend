@@ -213,6 +213,30 @@ const routes: Routes = [
         data: { breadcrumb: 'Documentación interna norma ISO' },
       },
       {
+        path: 'nationalConsumer',
+        loadChildren: () =>
+          import('./features/national-consumer-price-index/national-consumer-price-index-routing.module').then((m) => m.NationalConsumerPriceIndexRoutingModule),
+        data: { breadcrumb: 'Precio al Consumidor Nacional' },
+      },
+      {
+        path: 'inversionUnit',
+        loadChildren: () =>
+          import('./features/inversion-unit/inversion-unit-routing.module').then((m) => m.InversionUnitRoutingModule),
+        data: { breadcrumb: 'Unidad de inversión' },
+      },
+      {
+        path: 'rate',
+        loadChildren: () =>
+          import('./features/rate/rate-routing.module').then((m) => m.RateRoutingModule),
+        data: { breadcrumb: 'Tasa' },
+      },
+      {
+        path: 'disponsalOperation',
+        loadChildren: () =>
+          import('./features/type-disposal-operation/type-disposal-operation-routing.module').then((m) => m.TypeDisposalOperationRoutingModule),
+        data: { breadcrumb: 'Operaciones de eliminación' },
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',
