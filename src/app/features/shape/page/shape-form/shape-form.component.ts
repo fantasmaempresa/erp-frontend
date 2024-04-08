@@ -152,11 +152,11 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     dataForm.data_form = this.builderForm.value;
     // dataForm.data_form.reverse = this.shapeForm.get('reverse')?.value;
     dataForm.template_shape_id = this.builderFormStructure.id;
-    dataForm.sheets = dataForm.sheets.toString();
-    dataForm.took = dataForm.took.toString();
-    dataForm.book = dataForm.book.toString();
-    dataForm.operation_value = dataForm.operation_value.toString();
-    dataForm.total = dataForm.total.toString();
+    // dataForm.sheets = dataForm.sheets == null ? dataForm.sheets : dataForm.sheets.toString();
+    // dataForm.took = dataForm.took == null ? dataForm.took : dataForm.took.toString();
+    // dataForm.book = dataForm.book == null ? dataForm.book : dataForm.book.toString();
+    // dataForm.operation_value = dataForm.operation_value == null ? dataForm.operation_value : dataForm.operation_value.toString();
+    // dataForm.total = dataForm.total == null ? dataForm.total : dataForm.total.toString();
     dataForm.grantors = {
       alienating: this.shapeForm.get('extra_alienating')?.value,
       acquirer: this.shapeForm.get('extra_acquirers')?.value,
