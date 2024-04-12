@@ -109,6 +109,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
           this.shapeForm.addControl('id', new UntypedFormControl(''));
           this.shapeForm.patchValue(shape);
           this.shapeForm.get('alienating')?.setValue(shape?.alienator);
+          this.shapeForm.get('alienating')?.setValue(shape?.alienator);
           this.shapeForm.get('extra_alienating')?.setValue(shape?.grantors?.alienators);
           this.shapeForm.get('extra_acquirers')?.setValue(shape?.grantors?.acquirers);
           this.templateShapes.forEach((template: TemplateShapeDto) => {
@@ -180,10 +181,27 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
         );
         await this.backToListDocuments();
       },
-      error: async () => {
-        await MessageHelper.errorMessage(
-          'Ocurrio un error inesperado, intente más tarde',
-        );
+      error: async (error) => {
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof(error.error.error) === 'object') {
+            await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
+          }else{
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
         this.shapeForm.value.template_shape_id = this.builderFormStructure;
       },
     });

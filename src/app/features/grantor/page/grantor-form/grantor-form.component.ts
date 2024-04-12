@@ -18,19 +18,19 @@ import { StakeView } from 'src/app/data/presentation/Stake.view';
   styleUrls: ['./grantor-form.component.scss'],
 })
 export class GrantorFormComponent implements OnInit {
-  CURP_REGEX = "^([A-Z][AEIOUX][A-Z]{2}\d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]\d|3[01])[HM](AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}([A-Z\d])(\d))$";
+  CURP_REGEX =
+    '^([A-Z][AEIOUX][A-Z]{2}d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]d|3[01])[HM](AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}([A-Zd])(d))$';
 
   grantorForm = new UntypedFormGroup({
     name: new UntypedFormControl('', [Validators.required]),
     father_last_name: new UntypedFormControl('', []),
     mother_last_name: new UntypedFormControl('', []),
+    email: new UntypedFormControl('', [Validators.email]),
     phone: new UntypedFormControl('', [Validators.required]),
     birthdate: new UntypedFormControl('', [Validators.required]),
     place_of_birth: new UntypedFormControl('', [Validators.required]),
     rfc: new UntypedFormControl('', [Validators.required]),
-    curp: new UntypedFormControl('', [
-      Validators.required,
-    ]),
+    curp: new UntypedFormControl('', [Validators.required]),
     civil_status: new UntypedFormControl('', [Validators.required]),
     municipality: new UntypedFormControl('', [Validators.required]),
     colony: new UntypedFormControl('', [Validators.required]),
@@ -97,6 +97,9 @@ export class GrantorFormComponent implements OnInit {
   }
 
   onSubmit() {
+    if (this.grantorForm.invalid) {
+      return;
+    }
     let request$: Observable<GrantorDto>;
     if (!this.isEdit) {
       request$ = this.grantorService.save(this.grantorForm.value);
@@ -112,11 +115,28 @@ export class GrantorFormComponent implements OnInit {
         );
         await this.backToListGrantors();
       },
-      error: async () => {
-        await MessageHelper.errorMessage(
-          'Hubo un error, intente más tarde por favor',
-        )
-      }
+      error: async (error) => {
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof(error.error.error) === 'object') {
+            await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
+          }else{
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
+      },
     });
   }
 
@@ -124,7 +144,7 @@ export class GrantorFormComponent implements OnInit {
     if (event === 1) {
       this.grantorForm.controls.father_last_name.disable();
       this.grantorForm.controls.mother_last_name.disable();
-      this.grantorForm.controls.rfc.disable()
+      this.grantorForm.controls.rfc.disable();
       this.grantorForm.controls.curp.disable();
       this.grantorForm.controls.civil_status.disable();
       this.grantorForm.controls.no_int.disable();
@@ -135,7 +155,7 @@ export class GrantorFormComponent implements OnInit {
     if (event === 2) {
       this.grantorForm.controls.father_last_name.enable();
       this.grantorForm.controls.mother_last_name.enable();
-      this.grantorForm.controls.rfc.enable()
+      this.grantorForm.controls.rfc.enable();
       this.grantorForm.controls.curp.enable();
       this.grantorForm.controls.civil_status.enable();
       this.grantorForm.controls.no_int.enable();
@@ -164,7 +184,7 @@ export class GrantorFormComponent implements OnInit {
       this.grantorForm.get('rfc')?.setValidators(Validators.required);
       this.grantorForm.get('curp')?.setValidators([Validators.required]);
       this.grantorForm.get('civil_status')?.setValidators(Validators.required);
-      this.grantorForm.get('no_int')?.setValidators(Validators.required);
+      // this.grantorForm.get('no_int')?.setValidators(Validators.required);
       this.grantorForm.get('phone')?.setValidators(Validators.required);
       this.grantorForm
         .get('place_of_birth')

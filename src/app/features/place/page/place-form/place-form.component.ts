@@ -72,11 +72,27 @@ export class PlaceFormComponent {
         );
         await this.backToListPlaces();
       },
-      error: async () => {
-        await MessageHelper.errorMessage(
-          'Ocurrio un error inesperado, intente más tarde',
-          'Error',
-        );
+      error: async (error) => {
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof(error.error.error) === 'object') {
+            await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
+          }else{
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
       },
     });
   }
