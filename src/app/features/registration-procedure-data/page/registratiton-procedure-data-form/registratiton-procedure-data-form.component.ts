@@ -7,6 +7,8 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from 'o2c_core';
+import { Observable } from 'rxjs';
+import { RegistrationProcedureDataDto } from 'src/app/data/dto/RegistrationProcedureData.dto';
 import { DocumentView } from 'src/app/data/presentation/Document.view';
 import { PlaceView } from 'src/app/data/presentation/Place.view';
 import { RegistrationProcedureDataService } from 'src/app/data/services/registration-procedure-data.service';
@@ -48,12 +50,24 @@ export class RegistratitonProcedureDataFormComponent {
     });
 
     const id = Number(this.route.snapshot.params.id);
+    const idRegistration = Number(this.route.snapshot.params.idRegistration);
 
     if (!isNaN(id)) {
       this.form.get('procedure_id')?.setValue(id);
       this._registrationService.fetch(id).subscribe({
         next: (value) => {
             this.form.patchValue(value);
+        },
+      });
+    }
+
+    if (!isNaN(idRegistration)) {
+      this.edit = true;
+      this.edit = true;
+      _registrationService.fetch(idRegistration).subscribe({
+        next: (client) => {
+          this.form.addControl('id', new UntypedFormControl(''));
+          this.form.patchValue(client);
         },
       });
     }
@@ -90,8 +104,16 @@ export class RegistratitonProcedureDataFormComponent {
     formData.append('document_id', this.form.value.document_id);
     formData.append('place_id', this.form.value.place_id);
     Swal.showLoading();
+    
+    let request$: Observable<RegistrationProcedureDataDto>;
+    if (!this.edit) {
+      request$ = this._registrationService.save(formData);
+    } else {
+      formData.append('id', this.form.value.id);
+      request$ = this._registrationService.updateAlternative(this.form.value.id, formData);
+    }
 
-    this._registrationService.save(formData).subscribe({
+    request$.subscribe({
       next: async () => {
         await MessageHelper.successMessage(
           '¡Éxito!',

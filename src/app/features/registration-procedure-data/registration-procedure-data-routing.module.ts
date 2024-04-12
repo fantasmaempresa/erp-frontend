@@ -30,7 +30,7 @@ const routes: Routes = [
         data: { breadcrumb: 'Agregar Registro' },
       },
       {
-        path: ':id',
+        path: ':idRegistration',
         component: RegistratitonProcedureDataFormComponent,
         data: { breadcrumb: 'Editar Registro' },
       },
