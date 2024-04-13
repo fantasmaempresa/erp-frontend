@@ -37,11 +37,11 @@ const goToDelete = new ViewActions<RegistrationProcedureDataDto>(
     //@ts-ignore
     deleteService.delete((row as RegistrationProcedureDataDto).id).subscribe({
       next: async () => {
+        viewContextService.reloadView();
         await MessageHelper.successMessage(
           'Éxito',
           `${(row as RegistrationProcedureDataDto).date} ha sido eliminado`
         );
-        viewContextService.reloadView();
       },
     });
   },

@@ -64,7 +64,7 @@ export class DocumentLinkFormComponent {
   }
 
   async back() {
-    await this.router.navigate(["../"], { relativeTo: this.route });
+    await this.router.navigate(["../../../"], { relativeTo: this.route });
   }
 
   onSubmit() {
