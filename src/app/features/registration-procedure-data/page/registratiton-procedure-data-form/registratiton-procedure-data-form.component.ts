@@ -94,12 +94,12 @@ export class RegistratitonProcedureDataFormComponent {
     formData.append('inscription', this.form.value.inscription);
     formData.append('sheets', this.form.value.sheets);
     formData.append('took', this.form.value.took);
-    formData.append('book', this.form.value.took);
+    formData.append('book', this.form.value.book);
     formData.append('departure', this.form.value.departure);
-    formData.append('folio_real_estate', this.form.value.departure);
-    formData.append('folio_electronic_merchant', this.form.value.departure);
-    formData.append('nci', this.form.value.departure);
-    formData.append('description', this.form.value.departure);
+    formData.append('folio_real_estate', this.form.value.folio_real_estate);
+    formData.append('folio_electronic_merchant', this.form.value.folio_electronic_merchant);
+    formData.append('nci', this.form.value.nci);
+    formData.append('description', this.form.value.description);
     formData.append('procedure_id', this.form.value.procedure_id);
     formData.append('document_id', this.form.value.document_id);
     formData.append('place_id', this.form.value.place_id);
