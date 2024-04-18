@@ -5,6 +5,7 @@ export * from './concept.service';
 export * from './form-structure.service';
 export * from './my-projects.service';
 export * from './notifications.service';
+export * from './national-consumer-price-index.service'
 export * from './process.service';
 export * from './process-phase.service';
 export * from './project.service';

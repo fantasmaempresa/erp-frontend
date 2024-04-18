@@ -215,7 +215,7 @@ const routes: Routes = [
       {
         path: 'nationalConsumer',
         loadChildren: () =>
-          import('./features/national-consumer-price-index/national-consumer-price-index-routing.module').then((m) => m.NationalConsumerPriceIndexRoutingModule),
+          import('./features/national-consumer-price-index/national-consumer-price-index.module').then((m) => m.NationalConsumerPriceIndexModule),
         data: { breadcrumb: 'Precio al Consumidor Nacional' },
       },
       {
@@ -227,13 +227,13 @@ const routes: Routes = [
       {
         path: 'rate',
         loadChildren: () =>
-          import('./features/rate/rate-routing.module').then((m) => m.RateRoutingModule),
+          import('./features/rate/rate.module').then((m) => m.RateModule),
         data: { breadcrumb: 'Tasa' },
       },
       {
         path: 'disponsalOperation',
         loadChildren: () =>
-          import('./features/type-disposal-operation/type-disposal-operation-routing.module').then((m) => m.TypeDisposalOperationRoutingModule),
+          import('./features/type-disposal-operation/type-disposal-operation.module').then((m) => m.TypeDisposalOperationModule),
         data: { breadcrumb: 'Operaciones de eliminación' },
       },
       {

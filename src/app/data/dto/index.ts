@@ -6,6 +6,7 @@ export * from './DetailProjects.dto';
 export * from './Document.dto';
 export * from './Formfield.dto';
 export * from './MyProject.dto';
+export * from './NationalConsumerPriceIndex.dto'
 export * from './Notification.dto';
 export * from './NotificationPopUp.dto';
 export * from './NotificationResponse.dto';
