@@ -31,23 +31,6 @@ export class RegistratitonProcedureDataFormComponent {
     private _registrationService: RegistrationProcedureDataService,
   ) {
     this.form = new UntypedFormGroup({
-<<<<<<< HEAD
-      inscription: new UntypedFormControl(null, [
-        Validators.required,
-        Validators.maxLength(100),
-      ]),
-      sheets: new UntypedFormControl(null, []),
-      took: new UntypedFormControl(null, []),
-      date: new UntypedFormControl(null, [Validators.required]),
-      property: new UntypedFormControl(null, []),
-      procedure_id: new UntypedFormControl(null, [Validators.required]),
-      document_id: new UntypedFormControl(null, [Validators.required]),
-      description: new UntypedFormControl(null, [
-        Validators.required,
-        Validators.maxLength(200),
-      ]),
-      file: new UntypedFormControl(null, [Validators.required]),
-=======
       date: new UntypedFormControl(null, [Validators.required]),
       place_id: new UntypedFormControl(null, [Validators.required]),
       inscription: new UntypedFormControl(null, []),
@@ -62,7 +45,6 @@ export class RegistratitonProcedureDataFormComponent {
       procedure_id: new UntypedFormControl(null, [Validators.required]),
       document_id: new UntypedFormControl(null, []),
       file: new UntypedFormControl(null, []),
->>>>>>> 3ecee602882d37b64c5070cf4e01f3e485d57e61
     });
 
     const id = Number(this.route.snapshot.params.id);

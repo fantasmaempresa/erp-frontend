@@ -71,28 +71,6 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
       Validators.maxLength(50),
     ]),
     signature_date: new UntypedFormControl('', [Validators.required]),
-<<<<<<< HEAD
-    departure: new UntypedFormControl('', [Validators.maxLength(50)]),
-    inscription: new UntypedFormControl('', [
-      Validators.required,
-      Validators.maxLength(100),
-    ]),
-    sheets: new UntypedFormControl('', []),
-    took: new UntypedFormControl('', []),
-    book: new UntypedFormControl('', []),
-    operation_value: new UntypedFormControl('', [
-      Validators.required,
-      Validators.maxLength(50),
-    ]),
-    description: new UntypedFormControl('', [
-      Validators.required,
-      Validators.maxLength(400),
-    ]),
-    total: new UntypedFormControl('', [
-      Validators.required,
-      Validators.maxLength(50),
-    ]),
-=======
     departure: new UntypedFormControl('', []),
     inscription: new UntypedFormControl('', []),
     sheets: new UntypedFormControl('', []),
@@ -101,7 +79,6 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     operation_value: new UntypedFormControl('', []),
     description: new UntypedFormControl('', []),
     total: new UntypedFormControl('', []),
->>>>>>> 3ecee602882d37b64c5070cf4e01f3e485d57e61
     data_form: new UntypedFormControl('', []),
     template_shape_id: new UntypedFormControl('', [Validators.required]),
     procedure_id: new UntypedFormControl('', [Validators.required]),
@@ -253,17 +230,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     this.builderFormStructure = value;
     this.builderForm = this.fb.group({});
     value.form.forEach((field: any) => {
-<<<<<<< HEAD
-      this.builderForm.addControl(
-        field.name,
-        this.fb.control('', [
-          Validators.required,
-          Validators.maxLength(200),
-        ]),
-      );
-=======
       this.builderForm.addControl(field.name, this.fb.control('', []));
->>>>>>> 3ecee602882d37b64c5070cf4e01f3e485d57e61
     });
     this.fields = value.form;
   }
