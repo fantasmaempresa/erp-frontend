@@ -7,6 +7,8 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from 'o2c_core';
+import { Observable } from 'rxjs';
+import { RegistrationProcedureDataDto } from 'src/app/data/dto/RegistrationProcedureData.dto';
 import { DocumentView } from 'src/app/data/presentation/Document.view';
 import { PlaceView } from 'src/app/data/presentation/Place.view';
 import { RegistrationProcedureDataService } from 'src/app/data/services/registration-procedure-data.service';
@@ -48,12 +50,24 @@ export class RegistratitonProcedureDataFormComponent {
     });
 
     const id = Number(this.route.snapshot.params.id);
+    const idRegistration = Number(this.route.snapshot.params.idRegistration);
 
     if (!isNaN(id)) {
       this.form.get('procedure_id')?.setValue(id);
       this._registrationService.fetch(id).subscribe({
         next: (value) => {
             this.form.patchValue(value);
+        },
+      });
+    }
+
+    if (!isNaN(idRegistration)) {
+      this.edit = true;
+      this.edit = true;
+      _registrationService.fetch(idRegistration).subscribe({
+        next: (client) => {
+          this.form.addControl('id', new UntypedFormControl(''));
+          this.form.patchValue(client);
         },
       });
     }
@@ -80,18 +94,26 @@ export class RegistratitonProcedureDataFormComponent {
     formData.append('inscription', this.form.value.inscription);
     formData.append('sheets', this.form.value.sheets);
     formData.append('took', this.form.value.took);
-    formData.append('book', this.form.value.took);
+    formData.append('book', this.form.value.book);
     formData.append('departure', this.form.value.departure);
-    formData.append('folio_real_estate', this.form.value.departure);
-    formData.append('folio_electronic_merchant', this.form.value.departure);
-    formData.append('nci', this.form.value.departure);
-    formData.append('description', this.form.value.departure);
+    formData.append('folio_real_estate', this.form.value.folio_real_estate);
+    formData.append('folio_electronic_merchant', this.form.value.folio_electronic_merchant);
+    formData.append('nci', this.form.value.nci);
+    formData.append('description', this.form.value.description);
     formData.append('procedure_id', this.form.value.procedure_id);
     formData.append('document_id', this.form.value.document_id);
     formData.append('place_id', this.form.value.place_id);
     Swal.showLoading();
+    
+    let request$: Observable<RegistrationProcedureDataDto>;
+    if (!this.edit) {
+      request$ = this._registrationService.save(formData);
+    } else {
+      formData.append('id', this.form.value.id);
+      request$ = this._registrationService.updateAlternative(this.form.value.id, formData);
+    }
 
-    this._registrationService.save(formData).subscribe({
+    request$.subscribe({
       next: async () => {
         await MessageHelper.successMessage(
           '¡Éxito!',
@@ -100,10 +122,26 @@ export class RegistratitonProcedureDataFormComponent {
         await this.back();
       },
       error: async (error) => {
-        await MessageHelper.errorMessage(
-          '¡Error!',
-          `El registro no ha sido guardado correctamente.`,
-        );
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof(error.error.error) === 'object') {
+            await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
+          }else{
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
       },
     });
   }

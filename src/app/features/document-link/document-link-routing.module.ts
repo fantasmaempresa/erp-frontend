@@ -25,7 +25,7 @@ const routes: Routes = [
         data: { breadcrumb: "Agregar documentos" }
       },
       {
-        path: ':idDoc',
+        path: ':idDoc/edit/:timestamp',
         component: DocumentLinkFormComponent,
         data: { breadcrumb: 'Editar Documento' },
       },

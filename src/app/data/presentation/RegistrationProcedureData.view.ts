@@ -1,5 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
-import { MessageHelper, ViewActions, viewCrud, viewLabel, viewMapTo } from 'o2c_core';
+import { MessageHelper, ViewActions, ViewContextService, viewActions, viewCrud, viewLabel, viewMapTo } from 'o2c_core';
 import { DEFAULT_ROUTE_CONFIGURATION } from 'src/app/core/constants/routes.constants';
 import { DialogPreviewPdfComponent } from 'src/app/shared/components/dialog-preview-pdf/dialog-preview-pdf.component';
 import { DocumentDto, UserDto } from '../dto';
@@ -30,13 +30,38 @@ const goToViewDocument = new ViewActions<RegistrationProcedureDataDto>(
   },
 );
 
-@viewCrud({
+const goToDelete = new ViewActions<RegistrationProcedureDataDto>(
+  async ({ row, injector }) => {
+    const viewContextService = injector.get(ViewContextService);
+    const deleteService = injector.get(RegistrationProcedureDataService);
+    //@ts-ignore
+    deleteService.delete((row as RegistrationProcedureDataDto).id).subscribe({
+      next: async () => {
+        viewContextService.reloadView();
+        await MessageHelper.successMessage(
+          'Éxito',
+          `${(row as RegistrationProcedureDataDto).date} ha sido eliminado`
+        );
+      },
+    });
+  },
+  'delete',
+  {
+    isVisible: (row) => !!row,
+    messageBeforeAction: `¿Deseas eliminar este Registro?`,
+  }
+);
+
+@viewActions({
   classProvider: RegistrationProcedureDataService,
-  registerName: 'Información de registro',
+  // registerName: 'Información de registro',
   actions: [
+    ViewActions.ACTION_ADD('../new'),
+    ViewActions.ACTION_EDIT('../'),
+    goToDelete,
     goToViewDocument,
   ],
-  route: DEFAULT_ROUTE_CONFIGURATION,
+  // route: DEFAULT_ROUTE_CONFIGURATION,
 })
 export class RegistrationProcedureDataView {
   @viewLabel('Incripción')

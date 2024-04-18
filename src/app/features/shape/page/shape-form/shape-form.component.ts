@@ -117,6 +117,10 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
         next: (shape: ShapeDto) => {
           this.shapeForm.addControl('id', new UntypedFormControl(''));
           this.shapeForm.patchValue(shape);
+          this.shapeForm.get('alienating')?.setValue(shape?.alienator);
+          this.shapeForm.get('alienating')?.setValue(shape?.alienator);
+          this.shapeForm.get('extra_alienating')?.setValue(shape?.grantors?.alienators);
+          this.shapeForm.get('extra_acquirers')?.setValue(shape?.grantors?.acquirers);
           this.templateShapes.forEach((template: TemplateShapeDto) => {
             if (template.id == shape.template_shape_id) {
               this.shapeForm.get('template_shape_id')?.setValue(template);
@@ -161,11 +165,11 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     dataForm.data_form = this.builderForm.value;
     // dataForm.data_form.reverse = this.shapeForm.get('reverse')?.value;
     dataForm.template_shape_id = this.builderFormStructure.id;
-    dataForm.sheets = dataForm.sheets.toString();
-    dataForm.took = dataForm.took.toString();
-    dataForm.book = dataForm.book.toString();
-    dataForm.operation_value = dataForm.operation_value.toString();
-    dataForm.total = dataForm.total.toString();
+    // dataForm.sheets = dataForm.sheets == null ? dataForm.sheets : dataForm.sheets.toString();
+    // dataForm.took = dataForm.took == null ? dataForm.took : dataForm.took.toString();
+    // dataForm.book = dataForm.book == null ? dataForm.book : dataForm.book.toString();
+    // dataForm.operation_value = dataForm.operation_value == null ? dataForm.operation_value : dataForm.operation_value.toString();
+    // dataForm.total = dataForm.total == null ? dataForm.total : dataForm.total.toString();
     dataForm.grantors = {
       alienating: this.shapeForm.get('extra_alienating')?.value,
       acquirer: this.shapeForm.get('extra_acquirers')?.value,
@@ -186,10 +190,27 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
         );
         await this.backToListDocuments();
       },
-      error: async () => {
-        await MessageHelper.errorMessage(
-          'Ocurrio un error inesperado, intente más tarde',
-        );
+      error: async (error) => {
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof(error.error.error) === 'object') {
+            await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
+          }else{
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
         this.shapeForm.value.template_shape_id = this.builderFormStructure;
       },
     });

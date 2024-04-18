@@ -3,7 +3,7 @@ import { CrudService, Pagination, ViewContextService } from 'o2c_core';
 import { RegistrationProcedureDataDto } from '../dto/RegistrationProcedureData.dto';
 import { Observable, map, switchMap } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { HttpParams } from '@angular/common/http';
+import { HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -35,5 +35,9 @@ export class RegistrationProcedureDataService extends CrudService<
 
   save(t: any, params?: HttpParams): Observable<any> {
     return this._http.post<any>(this._base, t, { params });
+  }
+
+  updateAlternative(id: number, t: any, params?: HttpParams): Observable<any> {
+    return this._http.post<any>(`${this._base}/updateAlternative/${id}`, t, { params });
   }
 }

@@ -1,4 +1,5 @@
 import { EntityDto } from 'o2c_core';
+import { GrantorDto } from './Grantor.dto';
 
 export interface ShapeDto extends EntityDto {
   folio: string;
@@ -17,4 +18,6 @@ export interface ShapeDto extends EntityDto {
   data_form: [];
   template_shape_id: number;
   procedure_id: number;
+  alienator: GrantorDto;
+  grantors?: {acquirers: GrantorDto[], alienators: GrantorDto[]};
 }

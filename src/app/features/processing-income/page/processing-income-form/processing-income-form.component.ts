@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from 'o2c_core';
 import { Observable } from 'rxjs';
@@ -13,7 +17,7 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-processing-income-form',
   templateUrl: './processing-income-form.component.html',
-  styleUrls: ['./processing-income-form.component.scss']
+  styleUrls: ['./processing-income-form.component.scss'],
 })
 export class ProcessingIncomeFormComponent {
   edit = false;
@@ -49,14 +53,16 @@ export class ProcessingIncomeFormComponent {
       this.form.get('procedure_id')?.setValue(id);
       this._processingService.fetch(id).subscribe({
         next: (value) => {
-            this.form.patchValue(value);
+          this.form.patchValue(value);
         },
       });
-    }else{
+    } else {
       this.back();
     }
 
-    const idProcessingIncome = Number(this.route.snapshot.params.idProcessingIncome);
+    const idProcessingIncome = Number(
+      this.route.snapshot.params.idProcessingIncome,
+    );
     if (!isNaN(idProcessingIncome)) {
       this.edit = true;
       this._processingService.fetch(idProcessingIncome).subscribe({
@@ -82,12 +88,14 @@ export class ProcessingIncomeFormComponent {
     if (this.form.invalid) {
       return;
     }
-    
-    this.form.get('documents')?.setValue([
-      {id: this.form.get('document_id_incommign')?.value},
-      {id: this.form.get('document_id_out')?.value},
-      {id: this.form.get('document_id_in')?.value},
-    ]);
+
+    this.form
+      .get('documents')
+      ?.setValue({
+        register: { id: this.form.get('document_id_incommign')?.value },
+        output: { id: this.form.get('document_id_out')?.value },
+        return: { id: this.form.get('document_id_in')?.value },
+      });
     let request$: Observable<any>;
     if (!this.edit) {
       request$ = this._processingService.save(this.form.value);
@@ -106,10 +114,28 @@ export class ProcessingIncomeFormComponent {
         );
         await this.back();
       },
-      error: async () => {
-        await MessageHelper.errorMessage('Ocurrio un error, intente más tarde');
+      error: async (error) => {
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof(error.error.error) === 'object') {
+            await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
+          }else{
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
       },
     });
-
   }
 }
