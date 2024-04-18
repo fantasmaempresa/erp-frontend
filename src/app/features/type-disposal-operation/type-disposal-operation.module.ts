@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { TypeDisposalOperationRoutingModule } from './type-disposal-operation-routing.module';
 import { TypeDisposalOperationFormComponent } from './page/type-disposal-operation-form/type-disposal-operation-form.component';
-
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -11,7 +11,8 @@ import { TypeDisposalOperationFormComponent } from './page/type-disposal-operati
   ],
   imports: [
     CommonModule,
-    TypeDisposalOperationRoutingModule
+    TypeDisposalOperationRoutingModule,
+    SharedModule,
   ]
 })
 export class TypeDisposalOperationModule { }

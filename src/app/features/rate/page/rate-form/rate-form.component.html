@@ -1,1 +1,49 @@
-<p>rate-form works!</p>
+<mat-card>
+    <!--<p>rate-form works!</p>-->
+    <mat-toolbar *ngIf="!isDialog">
+        <div>
+            <button (click)="backToListRate()" aria-label="Regresar" mat-icon-button>
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <form
+        (ngSubmit)="onSubmit()"
+        [formGroup]="rateForm"
+        class="row justify-content-center"
+    >
+        <div class="col-6 d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>Año</mat-label>
+                <input formControlName="year" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Límite Inferior</mat-label>
+                <input formControlName="lower_limit" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Límite Superior</mat-label>
+                <input formControlName="upper_limit" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Cuota Fija</mat-label>
+                <input formControlName="fixed_fee" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+                <mat-label>Excedente</mat-label>
+                <input formControlName="surplus" matInput type="number" />
+            </mat-form-field>
+
+            <button color="primary" mat-flat-button>Guardar</button>
+        </div>
+    </form>
+</mat-card>

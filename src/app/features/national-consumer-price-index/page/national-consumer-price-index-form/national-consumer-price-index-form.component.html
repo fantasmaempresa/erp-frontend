@@ -1,1 +1,38 @@
-<p>national-consumer-price-index-form works!</p>
+<mat-card>
+    <!--<p>national-consumer-price-index-form works!!!</p>-->
+    <mat-toolbar *ngIf="!isDialog">
+        <div>
+            <button (click)="backToListNationalConsumerPriceIndex()" aria-label="Regresar" mat-icon-button>
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <form 
+        (ngSubmit)="onSubmit()"
+        [formGroup]="nationalConsumerPriceIndexForm"
+        class="row justify-content-center"
+    >
+        <div class="col-6 d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>Año</mat-label>
+                <input formControlName="year" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Mes</mat-label>
+                <input formControlName="month" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Valor</mat-label>
+                <input formControlName="value" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <button color="primary" mat-flat-button>Guardar</button>
+        </div>
+    </form>
+</mat-card>

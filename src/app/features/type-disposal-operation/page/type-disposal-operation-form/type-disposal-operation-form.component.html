@@ -1,1 +1,27 @@
-<p>type-disposal-operation-form works!</p>
+<mat-card>
+    <!--<p>type-disposal-operation-form works!</p>-->
+    <mat-toolbar *ngIf="!isDialog">
+        <div>
+            <button (click)="backToListTypeDisposalOperation()" aria-label="Regresar" mat-icon-button>
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <form
+        (ngSubmit)="onSubmit()"
+        [formGroup]="typeDisposalOperationForm"
+        class="row justify-content-center"
+    >
+        <div class="col-6 d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo</mat-label>
+                <input formControlName="type" matInput type="text" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <button color="primary" mat-flat-button>Guardar</button>
+        </div>
+    </form>
+
+</mat-card>

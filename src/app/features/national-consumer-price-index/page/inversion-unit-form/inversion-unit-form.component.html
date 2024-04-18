@@ -1,1 +1,41 @@
-<p>inversion-unit-form works!</p>
+<mat-card>
+    <mat-toolbar *ngIf="!isDialog">
+        <div>
+            <button (click)="backToListInversionUnit()" aria-label="Regresar" mat-icon-button>
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+    
+    <form
+        (ngSubmit)="onSubmit()"
+        [formGroup]="inversionUnitForm"
+        class="row justify-content-center"
+    >
+        <div class="col-6 d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha Inversión</mat-label>
+                <input
+                    (focus)="dateForm.open()"
+                    [matDatepicker]="dateForm"
+                    class="clickable"
+                    formControlName="date"
+                    matInput
+                />
+                <mat-datepicker-toggle
+                    [for]="dateForm"
+                    matSuffix
+                ></mat-datepicker-toggle>
+                <mat-datepicker #dateForm></mat-datepicker>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Factor</mat-label>
+                <input formControlName="factor" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <button color="primary" mat-flat-button>Guardar</button>
+        </div>
+    </form>
+</mat-card>
