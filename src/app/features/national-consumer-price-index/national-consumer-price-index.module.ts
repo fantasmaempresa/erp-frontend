@@ -9,7 +9,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 @NgModule({
   declarations: [
     NationalConsumerPriceIndexFormComponent,
-    InversionUnitFormComponent,
+    /*InversionUnitFormComponent,*/
   ],
   imports: [
     CommonModule,

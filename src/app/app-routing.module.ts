@@ -221,7 +221,7 @@ const routes: Routes = [
       {
         path: 'inversionUnit',
         loadChildren: () =>
-          import('./features/inversion-unit/inversion-unit-routing.module').then((m) => m.InversionUnitRoutingModule),
+          import('./features/inversion-unit/inversion-unit.module').then((m) => m.InversionUnitModule),
         data: { breadcrumb: 'Unidad de inversión' },
       },
       {

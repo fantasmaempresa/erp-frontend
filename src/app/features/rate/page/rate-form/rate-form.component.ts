@@ -22,6 +22,8 @@ export class RateFormComponent {
       Validators.required,
       Validators.minLength(4),
       Validators.maxLength(4),
+      Validators.min(1800),
+      Validators.pattern(/^[0-9]+$/),
     ]),
     lower_limit: new UntypedFormControl('', [Validators.required]),
     upper_limit: new UntypedFormControl('', [Validators.required]),

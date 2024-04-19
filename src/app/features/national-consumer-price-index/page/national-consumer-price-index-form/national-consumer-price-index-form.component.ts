@@ -21,10 +21,15 @@ export class NationalConsumerPriceIndexFormComponent {
       Validators.required,
       Validators.minLength(4),
       Validators.maxLength(4),
+      Validators.min(1800),
+      Validators.pattern(/^[0-9]+$/),
     ]),
     month: new UntypedFormControl('',[
       Validators.required,
       Validators.maxLength(2),
+      Validators.min(1),
+      Validators.max(12),
+      Validators.pattern(/^[0-9]+$/),
     ]),
     value: new UntypedFormControl('',[
       Validators.required,
