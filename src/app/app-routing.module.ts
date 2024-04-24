@@ -231,7 +231,19 @@ const routes: Routes = [
         data: { breadcrumb: 'Tasa' },
       },
       {
-        path: 'disponsalOperation',
+        path: 'unit',
+        loadChildren: () =>
+          import('./features/unit/unit.module').then((m) => m.UnitModule),
+        data: { breadcrumb: 'Unidades' },
+      },
+      {
+        path: 'vulnerableOperations',
+        loadChildren: () =>
+          import('./features/vulnerable-operations/vulnerable-operations.module').then((m) => m.VulnerableOperationsModule),
+        data: { breadcrumb: 'Operaciones vulnerables' },
+      },
+      {
+        path: 'disposalOperation',
         loadChildren: () =>
           import('./features/type-disposal-operation/type-disposal-operation.module').then((m) => m.TypeDisposalOperationModule),
         data: { breadcrumb: 'Operaciones de eliminación' },

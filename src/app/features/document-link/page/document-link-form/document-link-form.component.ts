@@ -55,11 +55,6 @@ export class DocumentLinkFormComponent {
       this.form.get("document_id")?.setValue(idDoc);
       this.form.get("document_pivot_id")?.setValue(timestamp);
       this.edit =  true;
-      // this._documentLinkService.fetch(idDoc).subscribe({
-      //   next: (docuument: DocumentDto) => {
-      //     if(docuument.url)
-      //   } 
-      // })
     }
   }
 
