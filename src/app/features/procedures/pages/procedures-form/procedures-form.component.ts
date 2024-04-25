@@ -24,7 +24,9 @@ import { GrantorFormComponent } from '../../../grantor/page/grantor-form/grantor
 import { DocumentFormComponent } from '../../../documents/page/document-form/document-form.component';
 import { PlaceFormComponent } from '../../../place/page/place-form/place-form.component';
 import { StaffMemberFormComponent } from '../../../staff/page/staff-member-form/staff-member-form.component';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-procedures-form',
   templateUrl: './procedures-form.component.html',
@@ -160,8 +162,13 @@ export class ProceduresFormComponent {
         console.log(error);
         if (error.error.code != null && error.error.code == 422) {
           if (typeof(error.error.error) === 'object') {
-            await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
-          }else{
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);          }else{
             await MessageHelper.errorMessage(error.error.error);
           }
         } else if (error.error.code != null && error.error.code == 409) {

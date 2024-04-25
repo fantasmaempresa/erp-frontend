@@ -1,17 +1,19 @@
-import { Component } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
 import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Observable } from "rxjs";
 import { MessageHelper } from "o2c_core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { OperationService } from "../../../../data/services/operation.service";
 import { OperationsDto } from "../../../../data/dto/Operations.dto";
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-operation-form',
   templateUrl: './operation-form.component.html',
   styleUrls: ['./operation-form.component.scss'],
 })
-export class OperationFormComponent {
+export class OperationFormComponent implements OnDestroy {
   operationForm = new UntypedFormGroup({
     name: new UntypedFormControl('', [
       Validators.required,
@@ -41,6 +43,9 @@ export class OperationFormComponent {
       });
     }
   }
+  ngOnDestroy(): void {
+    throw new Error("Method not implemented.");
+  }
 
   async backToListDocuments() {
     await this.router.navigate(['../'], { relativeTo: this.route });
@@ -66,7 +71,13 @@ export class OperationFormComponent {
         console.log(error);
         if (error.error.code != null && error.error.code == 422) {
           if (typeof(error.error.error) === 'object') {
-            await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
           }else{
             await MessageHelper.errorMessage(error.error.error);
           }

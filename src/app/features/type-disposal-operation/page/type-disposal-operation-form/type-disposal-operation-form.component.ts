@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   UntypedFormControl,
@@ -9,13 +9,15 @@ import {
  import { Observable } from 'rxjs';
  import { MessageHelper } from 'o2c_core';
  import { TypeDisposalOperationDto } from 'src/app/data/dto/TypeDisposalOperation.dto';
+ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+ @AutoUnsubscribe()
 @Component({
   selector: 'app-type-disposal-operation-form',
   templateUrl: './type-disposal-operation-form.component.html',
   styleUrls: ['./type-disposal-operation-form.component.scss']
 })
-export class TypeDisposalOperationFormComponent {
+export class TypeDisposalOperationFormComponent implements OnDestroy {
   typeDisposalOperationForm = new UntypedFormGroup({
     type: new UntypedFormControl('', [
       Validators.required,
@@ -48,6 +50,9 @@ export class TypeDisposalOperationFormComponent {
       });
     }
   }
+   ngOnDestroy(): void {
+     throw new Error('Method not implemented.');
+   }
 
   async backToListTypeDisposalOperation(){
     if (this.isDialog) {
@@ -73,11 +78,33 @@ export class TypeDisposalOperationFormComponent {
         );
         await this.backToListTypeDisposalOperation();
       },
-      error: async () => {
-        await MessageHelper.errorMessage(
-          'Hubo un error, intente mas tarde por favor',
-          'Error',
-        );
+      error: async (error) => {
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof(error.error.error) === 'object') {
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
+          }else{
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
       },
     });
   }

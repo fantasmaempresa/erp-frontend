@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   UntypedFormControl,
@@ -9,13 +9,16 @@ import { Observable } from 'rxjs';
 import { AreaServiceOld } from '../../../../data/services';
 import { WorkAreaDto } from '../../../../data/dto';
 import { MessageHelper } from 'o2c_core';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+
+@AutoUnsubscribe()
 
 @Component({
   selector: 'app-area-form',
   templateUrl: './area-form.component.html',
   styleUrls: ['./area-form.component.scss'],
 })
-export class AreaFormComponent {
+export class AreaFormComponent implements OnDestroy {
   areaForm = new UntypedFormGroup({
     name: new UntypedFormControl('', [Validators.required]),
     description: new UntypedFormControl('', [Validators.required]),
@@ -39,6 +42,9 @@ export class AreaFormComponent {
         },
       });
     }
+  }
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
   }
 
   async backToListAreas() {
@@ -65,7 +71,13 @@ export class AreaFormComponent {
         console.log(error);
         if (error.error.code != null && error.error.code == 422) {
           if (typeof(error.error.error) === 'object') {
-            await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
           }
           await MessageHelper.errorMessage(error.error.error);
         } else if (error.error.code != null && error.error.code == 409) {

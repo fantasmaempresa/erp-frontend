@@ -1,22 +1,23 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { 
+import { Component, OnDestroy } from '@angular/core';
+import {
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { RateService } from 'src/app/data/services/rate.service';
-import { Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from 'o2c_core';
+import { Observable } from 'rxjs';
 import { RateDto } from 'src/app/data/dto/Rate.dto';
-import { es } from 'date-fns/locale';
+import { RateService } from 'src/app/data/services/rate.service';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-rate-form',
   templateUrl: './rate-form.component.html',
   styleUrls: ['./rate-form.component.scss']
 })
-export class RateFormComponent {
+export class RateFormComponent implements OnDestroy {
   rateForm = new UntypedFormGroup({
     year: new UntypedFormControl('', [
       Validators.required,
@@ -56,6 +57,9 @@ export class RateFormComponent {
       });
     }
   }
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
+  }
 
   async backToListRate(){
     if (this.isDialog) {
@@ -81,11 +85,33 @@ export class RateFormComponent {
         );
         await this.backToListRate();
       },
-      error: async () => {
-        await MessageHelper.errorMessage(
-          'Hubo un error, intente más tarde por favor',
-          'Error',
-        );
+      error: async (error) => {
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof(error.error.error) === 'object') {
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
+          }else{
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
       },
     });
   }

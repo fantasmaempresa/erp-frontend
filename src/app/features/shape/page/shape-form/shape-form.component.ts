@@ -19,7 +19,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProcedureView } from '../../../../data/presentation/Procedure.view';
 import { GrantorFormComponent } from '../../../grantor/page/grantor-form/grantor-form.component';
 import { OperationView } from 'src/app/data/presentation/Operation.view';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-shape-form',
   templateUrl: './shape-form.component.html',
@@ -194,7 +196,13 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
         console.log(error);
         if (error.error.code != null && error.error.code == 422) {
           if (typeof(error.error.error) === 'object') {
-            await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
           }else{
             await MessageHelper.errorMessage(error.error.error);
           }

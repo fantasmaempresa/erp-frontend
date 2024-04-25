@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from 'o2c_core';
 import { IsoDocumentationService } from 'src/app/data/services/iso-documentation.service';
 import Swal from 'sweetalert2';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-iso-documentation-form',
   templateUrl: './iso-documentation-form.component.html',
   styleUrls: ['./iso-documentation-form.component.scss']
 })
-export class IsoDocumentationFormComponent {
+export class IsoDocumentationFormComponent implements OnDestroy {
   edit = false;
 
   form!: UntypedFormGroup;
@@ -33,6 +35,9 @@ export class IsoDocumentationFormComponent {
     if (!isNaN(id)) {
       this.form.get("id")?.setValue(id);
     }
+  }
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
   }
 
   async back() {
@@ -68,7 +73,13 @@ export class IsoDocumentationFormComponent {
         console.log(error);
         if (error.error.code != null && error.error.code == 422) {
           if (typeof(error.error.error) === 'object') {
-            await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
           }else{
             await MessageHelper.errorMessage(error.error.error);
           }

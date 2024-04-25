@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   UntypedFormControl,
   UntypedFormGroup,
@@ -9,15 +9,16 @@ import { Observable } from 'rxjs';
 import { MessageHelper } from 'o2c_core';
 import { GrantorService } from '../../../../data/services/grantor.service';
 import { GrantorDto } from '../../../../data/dto/Grantor.dto';
-import { OperationView } from '../../../../data/presentation/Operation.view';
 import { StakeView } from 'src/app/data/presentation/Stake.view';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-grantor-form',
   templateUrl: './grantor-form.component.html',
   styleUrls: ['./grantor-form.component.scss'],
 })
-export class GrantorFormComponent implements OnInit {
+export class GrantorFormComponent implements OnInit, OnDestroy {
   CURP_REGEX =
     '^([A-Z][AEIOUX][A-Z]{2}d{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[12]d|3[01])[HM](AS|B[CS]|C[CLMSH]|D[FG]|G[TR]|HG|JC|M[CNS]|N[ETL]|OC|PL|Q[TR]|S[PLR]|T[CSL]|VZ|YN|ZS)[B-DF-HJ-NP-TV-Z]{3}([A-Zd])(d))$';
 
@@ -78,6 +79,9 @@ export class GrantorFormComponent implements OnInit {
       });
     }
   }
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
+  }
 
   ngOnInit(): void {
     this.grantorForm.get('type')?.valueChanges.subscribe((value) => {
@@ -119,7 +123,13 @@ export class GrantorFormComponent implements OnInit {
         console.log(error);
         if (error.error.code != null && error.error.code == 422) {
           if (typeof(error.error.error) === 'object') {
-            await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
           }else{
             await MessageHelper.errorMessage(error.error.error);
           }

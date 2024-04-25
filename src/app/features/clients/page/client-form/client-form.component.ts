@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   UntypedFormControl,
@@ -9,14 +9,15 @@ import { ClientServiceOld } from '../../../../data/services';
 import { Observable } from 'rxjs';
 import { MessageHelper } from 'o2c_core';
 import { ClientDto } from '../../../../data/dto';
-import { validate } from 'uuid';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-client-form',
   templateUrl: './client-form.component.html',
   styleUrls: ['./client-form.component.scss'],
 })
-export class ClientFormComponent implements OnInit {
+export class ClientFormComponent implements OnInit, OnDestroy {
   clientForm = new UntypedFormGroup({
     name: new UntypedFormControl('', [
       Validators.required,
@@ -124,7 +125,13 @@ export class ClientFormComponent implements OnInit {
         console.log(error);
         if (error.error.code != null && error.error.code == 422) {
           if (typeof(error.error.error) === 'object') {
-            await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
           }else{
             await MessageHelper.errorMessage(error.error.error);
           }
@@ -144,4 +151,6 @@ export class ClientFormComponent implements OnInit {
       },
     });
   }
+
+  ngOnDestroy() {}
 }

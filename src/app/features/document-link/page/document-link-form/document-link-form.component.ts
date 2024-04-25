@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
 import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, ActivationEnd, Router, RouterEvent } from "@angular/router";
 import { MessageHelper } from "o2c_core";
@@ -6,13 +6,16 @@ import { filter, map } from "rxjs";
 import Swal from "sweetalert2";
 import { DocumentView } from "../../../../data/presentation/Document.view";
 import { DocumentLinkService } from "../../../../data/services/document-link.service";
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+
+@AutoUnsubscribe()
 
 @Component({
   selector: "app-document-link-form",
   templateUrl: "./document-link-form.component.html",
   styleUrls: ["./document-link-form.component.scss"]
 })
-export class DocumentLinkFormComponent {
+export class DocumentLinkFormComponent implements OnDestroy {
   edit = false;
 
   step = 0;
@@ -126,7 +129,13 @@ export class DocumentLinkFormComponent {
           console.log(error);
           if (error.error.code != null && error.error.code == 422) {
             if (typeof(error.error.error) === 'object') {
-              await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
+              let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
             }else{
               await MessageHelper.errorMessage(error.error.error);
             }
@@ -155,5 +164,9 @@ export class DocumentLinkFormComponent {
       filter((evento: ActivationEnd) => evento.snapshot.firstChild === null),
       map((evento: ActivationEnd) => evento.snapshot.data),
     );
+  }
+
+  ngOnDestroy(): void {
+    
   }
 }

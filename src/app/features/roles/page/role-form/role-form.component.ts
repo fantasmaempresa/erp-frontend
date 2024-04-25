@@ -1,17 +1,19 @@
-import { Component } from "@angular/core";
+import { Component, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { UntypedFormControl, UntypedFormGroup, Validators } from "@angular/forms";
 import { Observable } from "rxjs";
 import { RoleServiceOld, UserServiceOld } from "../../../../data/services";
 import { MessageHelper } from "o2c_core";
 import { RoleDto } from "../../../../data/dto";
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: "app-role-form",
   templateUrl: "./role-form.component.html",
   styleUrls: ["./role-form.component.scss"]
 })
-export class RoleFormComponent {
+export class RoleFormComponent implements OnDestroy{
   roleForm = new UntypedFormGroup({
     name: new UntypedFormControl("", [
       Validators.required,
@@ -50,6 +52,9 @@ export class RoleFormComponent {
       });
     }
   }
+  ngOnDestroy(): void {
+    throw new Error("Method not implemented.");
+  }
 
   moduleName = ({ name }: { name: string }) => name;
 
@@ -73,7 +78,13 @@ export class RoleFormComponent {
         console.log(error);
         if (error.error.code != null && error.error.code == 422) {
           if (typeof(error.error.error) === 'object') {
-            await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
           }else{
             await MessageHelper.errorMessage(error.error.error);
           }

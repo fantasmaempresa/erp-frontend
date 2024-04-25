@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import {
   UntypedFormControl,
   UntypedFormGroup,
@@ -13,13 +13,15 @@ import { PlaceView } from 'src/app/data/presentation/Place.view';
 import { StaffView } from 'src/app/data/presentation/staff.view';
 import { ProcessingIncomeService } from 'src/app/data/services/processing-income.service';
 import Swal from 'sweetalert2';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-processing-income-form',
   templateUrl: './processing-income-form.component.html',
   styleUrls: ['./processing-income-form.component.scss'],
 })
-export class ProcessingIncomeFormComponent {
+export class ProcessingIncomeFormComponent implements OnDestroy {
   edit = false;
 
   form!: UntypedFormGroup;
@@ -77,6 +79,9 @@ export class ProcessingIncomeFormComponent {
       this.form.get('file')?.setValidators(Validators.required);
     });
   }
+  ngOnDestroy(): void {
+    throw new Error('Method not implemented.');
+  }
 
   async back() {
     await this.router.navigate(['../'], { relativeTo: this.route });
@@ -118,7 +123,13 @@ export class ProcessingIncomeFormComponent {
         console.log(error);
         if (error.error.code != null && error.error.code == 422) {
           if (typeof(error.error.error) === 'object') {
-            await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
           }else{
             await MessageHelper.errorMessage(error.error.error);
           }
