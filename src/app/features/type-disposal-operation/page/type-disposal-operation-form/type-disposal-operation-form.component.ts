@@ -73,7 +73,7 @@ export class TypeDisposalOperationFormComponent implements OnDestroy {
       next: async () => {
         const message = this.isEdit ? 'actualizado' : 'registrado';
         await MessageHelper.successMessage(
-          '¡Éxito',
+          '¡Éxito!',
           `La Operación de eliminación ha sido ${message} correctamente`,
         );
         await this.backToListTypeDisposalOperation();
