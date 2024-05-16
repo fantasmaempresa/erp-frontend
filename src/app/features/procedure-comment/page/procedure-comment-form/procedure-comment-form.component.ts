@@ -54,7 +54,6 @@ export class ProcedureCommentFormComponent implements OnDestroy {
     }
   }
   ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
   }
 
   async back() {

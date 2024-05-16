@@ -80,7 +80,6 @@ export class ProcessingIncomeFormComponent implements OnDestroy {
     });
   }
   ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
   }
 
   async back() {

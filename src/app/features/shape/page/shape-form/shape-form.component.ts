@@ -20,6 +20,7 @@ import { ProcedureView } from '../../../../data/presentation/Procedure.view';
 import { GrantorFormComponent } from '../../../grantor/page/grantor-form/grantor-form.component';
 import { OperationView } from 'src/app/data/presentation/Operation.view';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { ProcedureService } from 'src/app/data/services/procedure.service';
 
 @AutoUnsubscribe()
 @Component({
@@ -100,6 +101,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     private templateShapeService: TemplateShapeService,
     private fb: FormBuilder,
     public dialog: MatDialog,
+    private _procedureService: ProcedureService,
   ) {
     // this.builderForm = this.fb.group({});
 
@@ -121,8 +123,12 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
           this.shapeForm.patchValue(shape);
           this.shapeForm.get('alienating')?.setValue(shape?.alienator);
           this.shapeForm.get('alienating')?.setValue(shape?.alienator);
-          this.shapeForm.get('extra_alienating')?.setValue(shape?.grantors?.alienators);
-          this.shapeForm.get('extra_acquirers')?.setValue(shape?.grantors?.acquirers);
+          this.shapeForm
+            .get('extra_alienating')
+            ?.setValue(shape?.grantors?.alienators);
+          this.shapeForm
+            .get('extra_acquirers')
+            ?.setValue(shape?.grantors?.acquirers);
           this.templateShapes.forEach((template: TemplateShapeDto) => {
             if (template.id == shape.template_shape_id) {
               this.shapeForm.get('template_shape_id')?.setValue(template);
@@ -132,6 +138,16 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
           });
         },
       });
+    }
+
+    if (!this.isEdit) {
+      this.shapeForm.get("procedure_id")?.valueChanges.subscribe((value) => {
+        this._procedureService.fetch(value).subscribe((procedure) => {
+          this.shapeForm.get("signature_date")?.setValue(procedure.date);
+          this.shapeForm.get("operation_value")?.setValue(procedure.value_operation);
+          this.shapeForm.get("scriptures")?.setValue(procedure.instrument);
+        })
+      })
     }
   }
 
@@ -165,18 +181,11 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
 
     let dataForm = this.shapeForm.value;
     dataForm.data_form = this.builderForm.value;
-    // dataForm.data_form.reverse = this.shapeForm.get('reverse')?.value;
     dataForm.template_shape_id = this.builderFormStructure.id;
-    // dataForm.sheets = dataForm.sheets == null ? dataForm.sheets : dataForm.sheets.toString();
-    // dataForm.took = dataForm.took == null ? dataForm.took : dataForm.took.toString();
-    // dataForm.book = dataForm.book == null ? dataForm.book : dataForm.book.toString();
-    // dataForm.operation_value = dataForm.operation_value == null ? dataForm.operation_value : dataForm.operation_value.toString();
-    // dataForm.total = dataForm.total == null ? dataForm.total : dataForm.total.toString();
     dataForm.grantors = {
       alienating: this.shapeForm.get('extra_alienating')?.value,
       acquirer: this.shapeForm.get('extra_acquirers')?.value,
     };
-    // dataForm.reverse = this.;
     let request$: Observable<ShapeDto>;
     if (!this.isEdit) {
       request$ = this.shapeService.save(dataForm);
@@ -195,7 +204,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
       error: async (error) => {
         console.log(error);
         if (error.error.code != null && error.error.code == 422) {
-          if (typeof(error.error.error) === 'object') {
+          if (typeof error.error.error === 'object') {
             let message = '';
 
             for (let item in error.error.error) {
@@ -203,7 +212,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
             }
 
             await MessageHelper.errorMessage(message);
-          }else{
+          } else {
             await MessageHelper.errorMessage(error.error.error);
           }
         } else if (error.error.code != null && error.error.code == 409) {
@@ -252,8 +261,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
       this.placeholderDescription =
         'Descripción del inmueble y ubicación oficial actual';
     } else {
-      this.placeholderDescription =
-        'Descripción de la operación';
+      this.placeholderDescription = 'Descripción de la operación';
     }
     console.log('value----> ', value.form);
     this.builderFormStructure = value;

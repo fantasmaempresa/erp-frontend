@@ -6,6 +6,11 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { OperationService } from "../../../../data/services/operation.service";
 import { OperationsDto } from "../../../../data/dto/Operations.dto";
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { DocumentView } from "src/app/data/presentation/Document.view";
+import { DialogDynamicAddItemComponent } from "src/app/shared/components/dialog-dynamic-add-item/dialog-dynamic-add-item.component";
+import { MatDialog } from "@angular/material/dialog";
+import { DocumentFormComponent } from "src/app/features/documents/page/document-form/document-form.component";
+import { CategoryOperationView } from "src/app/data/presentation/CategoryOperation.view";
 
 @AutoUnsubscribe()
 @Component({
@@ -23,35 +28,47 @@ export class OperationFormComponent implements OnDestroy {
     description: new UntypedFormControl('', [
       Validators.maxLength(400),
     ]),
+    documents: new UntypedFormControl('', [Validators.required]),
+    category_operation_id: new UntypedFormControl('', [Validators.required]),
+
   });
 
   isEdit: boolean = false;
 
+  documentProvider = DocumentView;
+  categoryOperationProvider = CategoryOperationView;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private operationService: OperationService,
+    public dialog: MatDialog,
   ) {
     const id = Number(this.route.snapshot.params.id);
     if (!isNaN(id)) {
       this.isEdit = true;
       operationService.fetch(id).subscribe({
-        next: (operation) => {
+        next: (operation: OperationsDto) => {
           this.operationForm.addControl('id', new UntypedFormControl(''));
           this.operationForm.patchValue(operation);
+
+          if (typeof operation.config.documents_required != 'undefined') {
+            this.operationForm.get('documents')?.setValue(operation.config.documents_required);
+          }
         },
       });
     }
   }
-  ngOnDestroy(): void {
-    throw new Error("Method not implemented.");
-  }
+  ngOnDestroy() {}
 
   async backToListDocuments() {
     await this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   onSubmit() {
+    if(this.operationForm.invalid){
+      return;
+    }
+
     let request$: Observable<OperationsDto>;
     if (!this.isEdit) {
       request$ = this.operationService.save(this.operationForm.value);
@@ -95,6 +112,13 @@ export class OperationFormComponent implements OnDestroy {
           );
         }
       },
+    });
+  }
+
+  addItem() {
+    this.dialog.open(DialogDynamicAddItemComponent, {
+      data: { component: DocumentFormComponent, title: "Agregar nuevo documento" },
+      width: '800px',
     });
   }
 }

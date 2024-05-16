@@ -1,0 +1,90 @@
+<mat-card>
+    <mat-toolbar>
+      <div>
+        <button (click)="backToList()" aria-label="Regresar" mat-icon-button>
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+    <form
+      (ngSubmit)="onSubmit()"
+      [formGroup]="form"
+      class="row justify-content-center"
+    >
+      <div class="col-6 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre</mat-label>
+          <input formControlName="name" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+        
+        <mat-form-field appearance="outline">
+          <mat-label>Descripción</mat-label>
+          <textarea formControlName="description" matInput></textarea>
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+
+        <div class="row">
+          <div class="col-9">
+            <mat-form-field appearance="outline" class="w-100">
+              <mat-label>Documentos para completar expedientes</mat-label>
+              <input
+                [viewClassBuilder]="documentProvider"
+                title="Selecciona un Otorgante"
+                o2cMultiPopup
+                formControlName="documents"
+                matInput
+                type="text"
+              />
+              <mat-icon matSuffix>search</mat-icon>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-3">
+            <button
+              style="width: 100%"
+              type="button"
+              color="primary"
+              (click)="addItem()"
+              mat-raised-button
+            >
+              <mat-icon>add</mat-icon>
+              Nuevo Documento
+            </button>
+          </div>
+        </div>
+
+        <ng-container formGroupName="config">
+          <section class="mb-12">
+            <mat-checkbox formControlName="RegistrationProcedureData"> Necesita Datos de Registro </mat-checkbox>
+          </section>
+          <section class="mb-12">
+            <mat-checkbox formControlName="ProcessingIncomeData"> Necesita Datos de Ingresos </mat-checkbox>
+          </section>
+          <section class="mb-12">
+            <mat-checkbox formControlName="Shape01"> Necesita Forma 1</mat-checkbox>
+          </section>
+          <section class="mb-12">
+            <mat-checkbox formControlName="Shape02"> Necesita Forma 2</mat-checkbox>
+          </section>
+        </ng-container>
+
+        <mat-form-field appearance="outline" class="mt-3">
+          <mat-label>Formulario de operaicones vulnerables</mat-label>
+          <input
+            [viewClassBuilder]="generalTemplateProvider"
+            title="Selecciona un tipo de operación"
+            o2cSinglePopup
+            formControlName="general_template_id"
+            matInput
+            type="text"
+          />
+          <mat-icon matSuffix>search</mat-icon>
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+  
+        <button color="primary" mat-flat-button>Guardar</button>
+      </div>
+    </form>
+  </mat-card>
+  

@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  AbstractControl,
   UntypedFormControl,
   UntypedFormGroup,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { RoleServiceOld, UserServiceOld } from '../../../../data/services';
@@ -19,19 +21,31 @@ import { StaffView } from '../../../../data/presentation/staff.view';
   styleUrls: ['./user-form.component.scss'],
 })
 export class UserFormComponent {
-  userForm = new UntypedFormGroup({
-    name: new UntypedFormControl('', [
-      Validators.required,
-      Validators.maxLength(100),
-    ]),
-    email: new UntypedFormControl('', [Validators.required, Validators.email]),
-    password: new UntypedFormControl('', [
-      Validators.required,
-      Validators.minLength(6),
-    ]),
-    role_id: new UntypedFormControl(null, [Validators.required]),
-    config: new UntypedFormControl({ test: 'test' }),
-  });
+  userForm = new UntypedFormGroup(
+    {
+      name: new UntypedFormControl('', [
+        Validators.required,
+        Validators.maxLength(100),
+      ]),
+      email: new UntypedFormControl('', [
+        Validators.required,
+        Validators.email,
+      ]),
+      password: new UntypedFormControl('', []),
+      confirm_password: new UntypedFormControl('', []),
+      role_id: new UntypedFormControl(null, [Validators.required]),
+      config: new UntypedFormControl({ test: 'test' }),
+      change_password: new UntypedFormControl(null, Validators.minLength(6)),
+      confirm_change_password: new UntypedFormControl(null, Validators.minLength(6)),
+    },
+    {
+      validators:
+        this.compareValuesValidator(
+          'password',
+          'confirm_password',
+        ),
+    },
+  );
 
   isEdit = false;
 
@@ -62,6 +76,11 @@ export class UserFormComponent {
         },
       });
     }
+
+    if (!this.isEdit) {
+      this.userForm.get('password')?.setValidators([Validators.required, Validators.minLength(6)]);
+      this.userForm.get('confirm_password')?.setValidators([Validators.required, Validators.minLength(6)]);
+    }
   }
 
   async backToListUsers() {
@@ -69,6 +88,8 @@ export class UserFormComponent {
   }
 
   onSubmit() {
+    if (this.userForm.invalid) return;
+
     let request$: Observable<UserDto>;
     if (!this.isEdit) {
       request$ = this.userService.save(this.userForm.value);
@@ -105,5 +126,28 @@ export class UserFormComponent {
     });
   }
 
-  protected readonly DocumentView = DocumentView;
+  compareValuesValidator(
+    controlName: string,
+    compareControlName: string,
+  ): ValidatorFn {
+    return (formGroup: AbstractControl): { [key: string]: any } | null => {
+      const control = formGroup.get(controlName);
+      const compareControl = formGroup.get(compareControlName);
+
+      if (!control || !compareControl) {
+        return null;
+      }
+
+      const controlValue = control.value;
+      const compareControlValue = compareControl.value;
+
+      if (controlValue != compareControlValue) {
+        compareControl.setErrors({ notEquals: true });
+      } else {
+        compareControl.setErrors(null);
+      }
+
+      return null;
+    };
+  }
 }

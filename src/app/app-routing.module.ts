@@ -249,6 +249,18 @@ const routes: Routes = [
         data: { breadcrumb: 'Operaciones de eliminación' },
       },
       {
+        path: 'category-operation',
+        loadChildren: () =>
+          import('./features/category-operation/category-operation.module').then((m) => m.CategoryOperationModule),
+        data: { breadcrumb: 'Catégorias de operación' },
+      },
+      {
+        path: 'generalTemplates',
+        loadChildren: () =>
+          import('./features/general-template/general-template.module').then((m) => m.GeneralTemplateModule),
+        data: { breadcrumb: 'Plantillas generales' },
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',

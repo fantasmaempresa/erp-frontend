@@ -63,7 +63,6 @@ export class ProfileFormComponent implements OnDestroy {
     this.profileForm.patchValue(user);
   }
   ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
   }
 
   async back() {
