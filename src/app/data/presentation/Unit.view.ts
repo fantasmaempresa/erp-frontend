@@ -11,20 +11,12 @@ export class UnitView {
     @viewLabel("Nombre")
     name: string;
 
-    @viewLabel("Año de uso")
-    year: number;
-
     @viewLabel("valor")
     value: number;
 
-    @viewLabel("Descripción")
-    description: string;
     
-    
-    constructor(name: string, year: number, value: number, description: string) {
+    constructor(name: string, value: number) {
         this.name = name;
-        this.year = year;
         this.value = value;
-        this.description = description;
     }
 }

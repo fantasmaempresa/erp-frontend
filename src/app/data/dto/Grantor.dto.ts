@@ -23,4 +23,10 @@ export interface GrantorDto extends EntityDto {
   stake_id: number;
   stake?: StakeDto;
   beneficiary: string;
+  pivot?: {
+    amount: number;
+    grantor_id: number;
+    procedure_id: number;
+    percentage: number;
+  }
 }

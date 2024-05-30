@@ -55,7 +55,7 @@ export class ProceduresFormComponent implements OnDestroy {
       }),
       credit: new UntypedFormControl('', []),
       observation: new UntypedFormControl('', []),
-      documents: new UntypedFormControl('', []),
+      documents: new UntypedFormControl('', [Validators.required]),
       grantors: new UntypedFormControl('', [Validators.required]),
       operations: new UntypedFormControl('', [Validators.required]),
       place_id: new UntypedFormControl('', [Validators.required]),

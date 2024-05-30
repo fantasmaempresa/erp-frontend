@@ -1,5 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
@@ -15,9 +19,8 @@ import { DialogDynamicAddItemComponent } from 'src/app/shared/components/dialog-
 @Component({
   selector: 'app-category-operation-form',
   templateUrl: './category-operation-form.component.html',
-  styleUrls: ['./category-operation-form.component.scss']
+  styleUrls: ['./category-operation-form.component.scss'],
 })
-
 @AutoUnsubscribe()
 export class CategoryOperationFormComponent implements OnDestroy {
   form = new UntypedFormGroup({
@@ -26,24 +29,21 @@ export class CategoryOperationFormComponent implements OnDestroy {
       Validators.minLength(3),
       Validators.maxLength(50),
     ]),
-    description: new UntypedFormControl('', [
-      Validators.maxLength(400),
-    ]),
-    documents: new UntypedFormControl('', [Validators.required]),  
+    description: new UntypedFormControl('', [Validators.maxLength(400)]),
     general_template_id: new UntypedFormControl(null, []),
+    documents: new UntypedFormControl('', [Validators.required]),
     config: new UntypedFormGroup({
       RegistrationProcedureData: new UntypedFormControl(false),
       ProcessingIncomeData: new UntypedFormControl(false),
-      Shape01 : new UntypedFormControl(false),
-      Shape02 : new UntypedFormControl(false),
-    })
+      Shape01: new UntypedFormControl(false),
+      Shape02: new UntypedFormControl(false),
+    }),
   });
 
   isEdit = false;
 
   generalTemplateProvider = GeneralTemplanteView;
   documentProvider = DocumentView;
-
 
   constructor(
     private router: Router,
@@ -60,8 +60,10 @@ export class CategoryOperationFormComponent implements OnDestroy {
           this.form.patchValue(category);
           //@ts-ignore
           if (typeof category.config?.documents_required !== 'undefined') {
-          //@ts-ignore
-          this.form.get('documents')?.setValue(category.config.documents_required);
+            this.form
+              .get('documents')
+            //@ts-ignore
+              ?.setValue(category.config.documents_required);
           }
         },
       });
@@ -75,13 +77,16 @@ export class CategoryOperationFormComponent implements OnDestroy {
 
   addItem() {
     this.dialog.open(DialogDynamicAddItemComponent, {
-      data: { component: DocumentFormComponent, title: "Agregar nuevo documento" },
+      data: {
+        component: DocumentFormComponent,
+        title: 'Agregar nuevo documento',
+      },
       width: '800px',
     });
   }
 
   onSubmit() {
-    if(this.form.invalid){
+    if (this.form.invalid) {
       return;
     }
 
@@ -103,7 +108,7 @@ export class CategoryOperationFormComponent implements OnDestroy {
       error: async (error) => {
         console.log(error);
         if (error.error.code != null && error.error.code == 422) {
-          if (typeof(error.error.error) === 'object') {
+          if (typeof error.error.error === 'object') {
             let message = '';
 
             for (let item in error.error.error) {
@@ -111,7 +116,7 @@ export class CategoryOperationFormComponent implements OnDestroy {
             }
 
             await MessageHelper.errorMessage(message);
-          }else{
+          } else {
             await MessageHelper.errorMessage(error.error.error);
           }
         } else if (error.error.code != null && error.error.code == 409) {

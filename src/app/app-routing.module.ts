@@ -261,6 +261,12 @@ const routes: Routes = [
         data: { breadcrumb: 'Plantillas generales' },
       },
       {
+        path: 'proceduresVulnerableOperations',
+        loadChildren: () =>
+          import('./features/procedure-vo/procedure-vo.module').then((m) => m.ProcedureVOModule),
+        data: { breadcrumb: 'Operaciones Vulnerables' },
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',

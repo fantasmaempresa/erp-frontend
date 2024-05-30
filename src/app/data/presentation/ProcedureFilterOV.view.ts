@@ -1,31 +1,10 @@
-import { ViewActions, viewCrud, viewLabel } from 'o2c_core';
+import { ViewActions, viewActions, viewCrud, viewLabel } from 'o2c_core';
 import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
-import { ProcedureService } from '../services/procedure.service';
+import { ProcedureService, ProcedureVulnerableOperationService } from '../services/procedure.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProcedureDto } from '../dto';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogGrantorsComponent } from 'src/app/shared/components/dialog-grantors/dialog-grantors.component';
-import { GrantorPercentageDialogComponent } from 'src/app/features/procedures/pages/grantor-percentage-dialog/grantor-percentage-dialog.component';
-
-
-const goToAssingPercentageGrantor = new ViewActions<ProcedureDto>(
-  async ({ row, injector }) => {
-    const procedure = row as ProcedureDto;
-    const dialog = injector.get(MatDialog);
-    dialog.open(GrantorPercentageDialogComponent, {
-      data: {
-        id: procedure.id,
-        grantors: procedure.grantors,
-      },
-    });
-  },
-  'calculate',
-  {
-    tooltip: 'Asignar porcentaje de otorgante',
-    color: 'accent',
-    isVisible: (row: ProcedureDto) => row && row.grantors.length > 0,
-  },
-);
 
 const goToViewGrantors = new ViewActions<ProcedureDto>(
   async ({ row, injector }) => {
@@ -41,7 +20,7 @@ const goToViewGrantors = new ViewActions<ProcedureDto>(
   {
     tooltip: 'Ver otorgantes',
     color: 'accent',
-    isVisible: (row: ProcedureDto) => row && row.grantors.length > 0,
+    isVisible: (row: ProcedureDto) => row.grantors.length > 0,
   },
 );
 
@@ -130,21 +109,21 @@ const goToShapesLink = new ViewActions<ProcedureDto>(
     isVisible: (row) => row && row.id > 0,
   },
 );
-@viewCrud({
-  classProvider: ProcedureService,
-  registerName: 'Trámites',
+@viewActions({
+  classProvider: ProcedureVulnerableOperationService,
+  // registerName: 'Trámites con operación vulnerable',
   actions: [
+    ViewActions.ACTION_EDIT('../'),
     goToDocumentsLink,
     goToShapesLink,
     goToComments,
     goToRegistrationData,
     goToViewGrantors,
-    goToAssingPercentageGrantor,
     goToProcessingIncome,
   ],
-  route: DEFAULT_ROUTE_CONFIGURATION,
+  // route: DEFAULT_ROUTE_CONFIGURATION,
 })
-export class ProcedureView {
+export class ProcedureFilterOVView {
   @viewLabel('Expediente')
   name: string;
 
