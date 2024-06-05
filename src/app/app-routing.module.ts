@@ -209,19 +209,25 @@ const routes: Routes = [
       {
         path: 'isoDocumentation',
         loadChildren: () =>
-          import('./features/iso-documentation/iso-documentation.module').then((m) => m.IsoDocumentationModule),
+          import('./features/iso-documentation/iso-documentation.module').then(
+            (m) => m.IsoDocumentationModule,
+          ),
         data: { breadcrumb: 'Documentación interna norma ISO' },
       },
       {
         path: 'nationalConsumer',
         loadChildren: () =>
-          import('./features/national-consumer-price-index/national-consumer-price-index.module').then((m) => m.NationalConsumerPriceIndexModule),
+          import(
+            './features/national-consumer-price-index/national-consumer-price-index.module'
+          ).then((m) => m.NationalConsumerPriceIndexModule),
         data: { breadcrumb: 'Precio al Consumidor Nacional' },
       },
       {
         path: 'inversionUnit',
         loadChildren: () =>
-          import('./features/inversion-unit/inversion-unit.module').then((m) => m.InversionUnitModule),
+          import('./features/inversion-unit/inversion-unit.module').then(
+            (m) => m.InversionUnitModule,
+          ),
         data: { breadcrumb: 'Unidad de inversión' },
       },
       {
@@ -239,32 +245,50 @@ const routes: Routes = [
       {
         path: 'vulnerableOperations',
         loadChildren: () =>
-          import('./features/vulnerable-operations/vulnerable-operations.module').then((m) => m.VulnerableOperationsModule),
+          import(
+            './features/vulnerable-operations/vulnerable-operations.module'
+          ).then((m) => m.VulnerableOperationsModule),
         data: { breadcrumb: 'Operaciones vulnerables' },
       },
       {
         path: 'disposalOperation',
         loadChildren: () =>
-          import('./features/type-disposal-operation/type-disposal-operation.module').then((m) => m.TypeDisposalOperationModule),
+          import(
+            './features/type-disposal-operation/type-disposal-operation.module'
+          ).then((m) => m.TypeDisposalOperationModule),
         data: { breadcrumb: 'Operaciones de eliminación' },
       },
       {
         path: 'category-operation',
         loadChildren: () =>
-          import('./features/category-operation/category-operation.module').then((m) => m.CategoryOperationModule),
+          import(
+            './features/category-operation/category-operation.module'
+          ).then((m) => m.CategoryOperationModule),
         data: { breadcrumb: 'Catégorias de operación' },
       },
       {
         path: 'generalTemplates',
         loadChildren: () =>
-          import('./features/general-template/general-template.module').then((m) => m.GeneralTemplateModule),
+          import('./features/general-template/general-template.module').then(
+            (m) => m.GeneralTemplateModule,
+          ),
         data: { breadcrumb: 'Plantillas generales' },
       },
       {
         path: 'proceduresVulnerableOperations',
         loadChildren: () =>
-          import('./features/procedure-vo/procedure-vo.module').then((m) => m.ProcedureVOModule),
+          import('./features/procedure-vo/procedure-vo.module').then(
+            (m) => m.ProcedureVOModule,
+          ),
         data: { breadcrumb: 'Operaciones Vulnerables' },
+      },
+      {
+        path: 'disposalRealEstate',
+        loadChildren: () =>
+          import(
+            './features/disposal-real-estate/disposal-real-estate.module'
+          ).then((m) => m.DisposalRealEstateModule),
+        data: { breadcrumb: 'Enajenación de Bienes' },
       },
       {
         path: '**',

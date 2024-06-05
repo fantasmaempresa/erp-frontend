@@ -1,0 +1,324 @@
+<mat-card>
+    <mat-toolbar *ngIf="!isDialog">
+        <div>
+            <button (click)="backToListDisposalRealEstate()" aria-label="Regresar" mat-icon-button>
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <form
+        (ngSubmit)="onSubmit()"
+        [formGroup]="disposalRealEstateForm"
+        class="row justify-content-center"
+    >
+        <div class="col-6 d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>Valor de la enajenación</mat-label>
+                <input formControlName="disposal_value" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha de enajenación</mat-label>
+                <input
+                    (focus)="dateForm.open()"
+                    [matDatepicker]="dateForm"
+                    class="clickable"
+                    formControlName="disposal_date"
+                    matInput
+                />
+                <mat-datepicker-toggle
+                    [for]="dateForm"
+                    matSuffix
+                ></mat-datepicker-toggle>
+                <mat-datepicker #dateForm></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Valor de adquisición</mat-label>
+                <input formControlName="acquisition_value" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha de adquisición</mat-label>
+                <input
+                    (focus)="dateForm.open()"
+                    [matDatepicker]="dateForm"
+                    class="clickable"
+                    formControlName="acquisition_date"
+                    matInput
+                />
+                <mat-datepicker-toggle
+                    [for]="dateForm"
+                    matSuffix
+                ></mat-datepicker-toggle>
+                <mat-datepicker #dateForm></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Valoración de inmuebles</mat-label>
+                <input formControlName="real_estate_appraisal" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Tasación fiscal</mat-label>
+                <input formControlName="fiscal_appraisal" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Proporción de tierra</mat-label>
+                <input formControlName="land_proportion" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Proporción de construcción</mat-label>
+                <input formControlName="construction_proportion" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Cedente del valor de adquisición</mat-label>
+                <input formControlName="acquisition_value_transferor" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Valor de la proporción de la tierra</mat-label>
+                <input formControlName="value_land_proportion" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Proporción de construcción de valor</mat-label>
+                <input formControlName="value_construction_proportion" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Tasa de depreciación</mat-label>
+                <input formControlName="depreciation_rate" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Depreciación anual</mat-label>
+                <input formControlName="annual_depreciation" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Años pasados</mat-label>
+                <input formControlName="years_passed" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Valor de depreciación</mat-label>
+                <input formControlName="depreciation_value" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Valor de construcción</mat-label>
+                <input formControlName="construction_value" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Factor anexo</mat-label>
+                <input formControlName="annex_factor" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Costo de construcción actualizado</mat-label>
+                <input formControlName="updated_construction_cost" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Costo de la tierra actualizado</mat-label>
+                <input formControlName="updated_land_cost" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Cedente del valor de enajenación</mat-label>
+                <input formControlName="disposal_value_transferor" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Adquisición de costo total actualizado</mat-label>
+                <input formControlName="updated_total_cost_acquisition" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Mejoras</mat-label>
+                <input formControlName="improvements" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Valoración</mat-label>
+                <input formControlName="appraisal" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Comisiones</mat-label>
+                <input formControlName="commissions" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>ISABI</mat-label>
+                <input formControlName="isabi" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Avisos preventivos</mat-label>
+                <input formControlName="preventive_notices" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Impuesto base</mat-label>
+                <input formControlName="tax_base" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Beneficio acumulativo</mat-label>
+                <input formControlName="cumulative_profit" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Beneficio no acumulativo</mat-label>
+                <input formControlName="not_cumulative_profit" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Excedentes</mat-label>
+                <input formControlName="surplus" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Impuesto marginal</mat-label>
+                <input formControlName="marginal_tax" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Cargo ISR</mat-label>
+                <input formControlName="isr_charge" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Pago ISR</mat-label>
+                <input formControlName="isr_pay" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Pago de la entidad federal ISR</mat-label>
+                <input formControlName="isr_federal_entity_pay" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Tasa</mat-label>
+                <input formControlName="rate" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>ISR a entidad federativa</mat-label>
+                <input formControlName="isr_federal_entity" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>ISR Federación</mat-label>
+                <input formControlName="isr_federation" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Id de enajenación de beneficio no acumulativo</mat-label>
+                <input formControlName="ncpi_disposal_id" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Id de adquisición de beneficio no acumulativo</mat-label>
+                <input formControlName="ncpi_acquisition_id" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Id alienante</mat-label>
+                <input formControlName="alienating_id" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Id tipo de operación de eliminación</mat-label>
+                <input formControlName="type_disposal_operation_id" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Id tasa</mat-label>
+                <input formControlName="rate_id" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+                <mat-label>Enajenación del índice nacional de precios al consumidor</mat-label>
+                <input
+                    title="Selecciona una enajenación del índice nacional de precios al consumidor"
+                    o2cSinglePopup
+                    formControlName="nationalConsumerPriceIndexDisposal"
+                    matInput
+                    type="text"
+                />
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Adquisición del índice nacional de precios al consumidor</mat-label>
+                <input
+                    title="Selecciona una adquisición del índice nacional de precios al consumidor"
+                    o2cSinglePopup
+                    formControlName="nationalConsumerPriceIndexAcquisition"
+                    matInput
+                    type="text"
+                />
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Alienante</mat-label>
+                <input
+                    title="Selecciona una enajenación del índice nacional de precios al consumidor"
+                    o2cSinglePopup
+                    formControlName="alienating"
+                    matInput
+                    type="text"
+                />
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Tipos de operación de eliminación</mat-label>
+                <input
+                    title="Selecciona una enajenación del índice nacional de precios al consumidor"
+                    o2cSinglePopup
+                    formControlName="typeDisposalOperation"
+                    matInput
+                    type="text"
+                />
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Tasas</mat-label>
+                <input
+                    title="Selecciona una enajenación del índice nacional de precios al consumidor"
+                    o2cSinglePopup
+                    formControlName="rates"
+                    matInput
+                    type="text"
+                />
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Compradores</mat-label>
+                <input
+                    title="Selecciona una enajenación del índice nacional de precios al consumidor"
+                    o2cSinglePopup
+                    formControlName="acquirers"
+                    matInput
+                    type="text"
+                />
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <button color="primary" mat-flat-button>Guardar</button>
+        </div>
+    </form>
+
+</mat-card>
