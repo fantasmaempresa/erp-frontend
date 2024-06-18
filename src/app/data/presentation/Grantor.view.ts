@@ -1,12 +1,32 @@
-import { viewCrud, viewLabel, viewMapTo } from "o2c_core";
+import { ViewActions, viewCrud, viewLabel, viewMapTo } from "o2c_core";
 import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
-import { GrantorService } from '../services/grantor.service';
+import { GrantorDto } from "../dto/Grantor.dto";
 import { StakeDto } from "../dto/Stake.dto";
+import { GrantorService } from '../services/grantor.service';
+import { ActivatedRoute, Router } from "@angular/router";
+
+const goToGrantorLink = new ViewActions<GrantorDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['../', (row as GrantorDto).id, 'grantorsLink'], {
+      relativeTo: route,
+    });
+  },
+  'people',
+  {
+    tooltip: 'Ver Representantes',
+    //@ts-ignore
+    isVisible: (row) => row && row.type == 1,
+    color: 'accent',
+  },
+);
 
 @viewCrud({
   classProvider: GrantorService,
   registerName: 'Otorgantes',
   route: DEFAULT_ROUTE_CONFIGURATION,
+  actions: [goToGrantorLink],
 })
 export class GrantorView {
   @viewLabel('Nombre')
