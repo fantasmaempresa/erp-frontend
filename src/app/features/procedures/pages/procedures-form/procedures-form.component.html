@@ -203,8 +203,14 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Valor de operación o Avaluo</mat-label>
+        <mat-label>Valor de operación</mat-label>
         <input formControlName="value_operation" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Valor de avaluo</mat-label>
+        <input formControlName="appraisal" matInput type="text" />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 

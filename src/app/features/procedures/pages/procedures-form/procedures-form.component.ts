@@ -42,6 +42,7 @@ export class ProceduresFormComponent implements OnDestroy {
         updateOn: 'blur',
       }),
       value_operation: new UntypedFormControl('', []),
+      appraisal: new UntypedFormControl('', []),
       instrument: new UntypedFormControl('', [Validators.required]),
       date: new UntypedFormControl('', [Validators.required]),
       volume: new UntypedFormControl('', [Validators.required]),

@@ -1,5 +1,6 @@
 import { EntityDto } from 'o2c_core';
 import { GrantorDto } from './Grantor.dto';
+import { OperationsDto } from './Operations.dto';
 
 export interface ProcedureDto extends EntityDto {
   proceedings: string;
@@ -13,9 +14,11 @@ export interface ProcedureDto extends EntityDto {
   credit: string;
   observation: string;
   grantors: GrantorDto[];
+  operations: OperationsDto[];
   operation_id: number;
   user_id: number;
   place_id: number;
   client_id: number;
   staff_id: number;
+  appraisal: string;
 }

@@ -1,77 +1,211 @@
 <mat-card>
-    <mat-toolbar>
-      <div>
-        <button
-          (click)="backToList()"
-          aria-label="Regresar"
-          mat-icon-button
-        >
-          <mat-icon>arrow_back</mat-icon>
-        </button>
-      </div>
-    </mat-toolbar>
-    <form
-      (ngSubmit)="onSubmit()"
-      [formGroup]="form"
-      class="row justify-content-center"
-    >
-      <mat-accordion class="example-headers-align">
-        <mat-expansion-panel
-          (opened)="step = 0"
-          [expanded]="step === 0"
-          hideToggle
-        >
-          <mat-expansion-panel-header>
-            <mat-panel-title>Selección de forma</mat-panel-title>
-            <mat-panel-description
-              >Configuración de la forma</mat-panel-description
-            >
-          </mat-expansion-panel-header>
-          <div class="row justify-content-center">
-            <div class="col-6 d-flex flex-column pe-0">
-              <mat-form-field appearance="outline">
-                <mat-label>Trámite</mat-label>
-                <input
-                  [viewClassBuilder]="procedureProvider"
-                  title="Selecciona un trámite"
-                  o2cSinglePopup
-                  formControlName="procedure_id"
-                  matInput
-                  type="text"
-                />
-                <mat-icon matSuffix>search</mat-icon>
-                <mat-error appErrorMessage></mat-error>
-              </mat-form-field>
-            </div>
-          </div>
-  
-          <mat-action-row>
-            <button (click)="goToNext()" color="primary" mat-button>
-              Siguiente
-            </button>
-          </mat-action-row>
-        </mat-expansion-panel>
+  <mat-toolbar>
+    <div>
+      <button (click)="backToList()" aria-label="Regresar" mat-icon-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="form"
+    class="row justify-content-center"
+  >
+    <mat-accordion class="example-headers-align">
+      <mat-expansion-panel
+        (opened)="step = 0"
+        [expanded]="step === 0"
+        hideToggle
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>Selección de forma</mat-panel-title>
+          <mat-panel-description
+            >Configuración de la forma</mat-panel-description
+          >
+        </mat-expansion-panel-header>
+        <div class="row justify-content-center">
+          <div class="col-6 d-flex flex-column pe-0">
+            <mat-form-field appearance="outline">
+              <mat-label>Trámite</mat-label>
+              <input
+                [viewClassBuilder]="procedureProvider"
+                title="Selecciona un trámite"
+                o2cSinglePopup
+                formControlName="procedure_id"
+                matInput
+                type="text"
+              />
+              <mat-icon matSuffix>search</mat-icon>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
 
-  
-        <!-- Datos en caso de tener un formulario -->
-        <mat-expansion-panel
-          (opened)="step = 1"
-          [expanded]="step === 1"
-          hideToggle
-        >
-          <mat-expansion-panel-header>
-            <mat-panel-title> Completar datos </mat-panel-title>
-            <mat-panel-description>
-              Completar los datos de la forma seleccionada
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          
-          <mat-action-row>
-            <button (click)="goToPrev()" color="warn" mat-button>Atras</button>
-          </mat-action-row>
-        </mat-expansion-panel>
-  
-      </mat-accordion>
-    </form>
-  </mat-card>
-  
+            <ng-container *ngIf="dataProcedure != null">
+              <h3>Datos del trámite</h3>
+              <p>Número de expediente: {{ dataProcedure.name }}</p>
+              <p>Número de instrumento: {{ dataProcedure.instrument }}</p>
+              <p>Volumen: {{ dataProcedure.volume }}</p>
+
+              <h3>Operaciones del trámite</h3>
+              <ng-container *ngFor="let operation of dataProcedure.operations">
+                <p>Operación: {{ operation.name }}</p>
+              </ng-container>
+            </ng-container>
+          </div>
+        </div>
+
+        <mat-action-row>
+          <button (click)="goToNext()" color="primary" mat-button>
+            Siguiente
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <!-- Datos generales de la operación vulnerable  -->
+      <mat-expansion-panel
+        (opened)="step = 1"
+        [expanded]="step === 1"
+        hideToggle
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title> Completar datos </mat-panel-title>
+          <mat-panel-description>
+            Completar los datos de la operación vulnerable
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <div class="row justify-content-center">
+          <div class="col-6 d-flex flex-column pe-0">
+            <mat-form-field appearance="outline">
+              <mat-label>Categoria de operación vulnerable</mat-label>
+              <mat-select
+                formControlName="typeCatogory"
+                (valueChange)="loadVulnerableOperations($event)"
+              >
+                <mat-option>-- None --</mat-option>
+                <mat-option
+                  *ngFor="
+                    let category of vulnerableOperationsCategory;
+                    index as i
+                  "
+                  [value]="category.value"
+                >
+                  {{ category.label }}
+                </mat-option>
+              </mat-select>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            
+            <mat-form-field appearance="outline">
+              <mat-label>Tipo de operación</mat-label>
+              <mat-select
+                formControlName="typeVulnerableOperation"
+              >
+                <mat-option>-- None --</mat-option>
+                <mat-option
+                  *ngFor="
+                    let operation of useDataOperation;
+                    index as i
+                  "
+                  [value]="operation.value"
+                >
+                  {{ operation.label }}
+                </mat-option>
+              </mat-select>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>UMA para operación vulnerable</mat-label>
+              <input
+                [viewClassBuilder]="inversionUnitViewProvider"
+                title="Selecciona una UMA si es necesaria para esta operación vulnerable"
+                o2cSinglePopup
+                formControlName="inversion_unit_id"
+                matInput
+                type="text"
+              />
+              <mat-icon matSuffix>search</mat-icon>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Unidad para operación vulnerable</mat-label>
+              <input
+                [viewClassBuilder]="unitProvider"
+                title="Selecciona una Unidad si es necesaria para esta operación vulnerable"
+                o2cSinglePopup
+                formControlName="unit_id"
+                matInput
+                type="text"
+              />
+              <mat-icon matSuffix>search</mat-icon>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label
+                >Seleccione los primero participantes (enajenantes, poderante,
+                acredores, accionistas, etc)</mat-label
+              >
+              <input
+                [viewClassBuilder]="grantorProvider"
+                title="Selecciona a los otorgantes"
+                o2cMultiPopup
+                formControlName="grantor_first_id"
+                matInput
+                type="text"
+              />
+              <mat-icon matSuffix>search</mat-icon>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label
+                >Seleccione los segundos participantes (adquirientes,
+                apoderados, dedudores)</mat-label
+              >
+              <input
+                [viewClassBuilder]="grantorProvider"
+                title="Selecciona a los otorgantes"
+                o2cMultiPopup
+                formControlName="grantor_second_id"
+                matInput
+                type="text"
+              />
+              <mat-icon matSuffix>search</mat-icon>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <!--fin de steper-->
+          </div>
+        </div>
+
+        <mat-action-row>
+          <button (click)="goToPrev()" color="warn" mat-button>Atras</button>
+          <button (click)="goToNext()" color="primary" mat-button>Siguiente</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <!-- Datos de operacion vulnerable traslativa de dominio -->
+      <mat-expansion-panel
+        (opened)="step = 2"
+        [expanded]="step === 2"
+        hideToggle
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Datos operación vulnerable traslativa de dominio
+          </mat-panel-title>
+          <mat-panel-description>
+            Completar los datos de la operación vulnerable
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+
+        <o2c-form></o2c-form>
+
+        <mat-action-row>
+          <button (click)="goToPrev()" color="warn" mat-button>Atras</button>
+          <button (click)="onSubmit()" color="primary" mat-button>Guardar</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</mat-card>
