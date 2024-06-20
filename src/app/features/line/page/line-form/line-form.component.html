@@ -1,0 +1,30 @@
+<mat-card>
+    <mat-toolbar *ngIf="!isDialog">
+        <div>
+            <button (click)="backToListLine()" aria-label="Regresar" mat-icon-button>
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <form
+        (ngSubmit)="onSubmit()"
+        [formGroup]="lineForm"
+        class="row justify-content-center"
+    >
+        <div class="col-6 d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>ID</mat-label>
+                <input formControlName="id" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Línea</mat-label>
+                <input formControlName="line" matInput type="text" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <button color="primary" mat-flat-button>Guardar</button>
+        </div>
+    </form>
+</mat-card>

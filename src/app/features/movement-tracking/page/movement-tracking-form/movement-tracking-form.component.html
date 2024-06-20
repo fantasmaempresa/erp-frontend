@@ -1,0 +1,44 @@
+<mat-card>
+    <mat-toolbar *ngIf="!isDialog">
+        <div>
+            <button (click)="backToListMovementTracking()" aria-label="Regresar" mat-icon>
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <form
+        (ngSubmit)="onSubmit()"
+        [formGroup]="movementTrackingForm"
+        class="row justify-content-center"
+    >
+        <div class="col-6 d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>ID</mat-label>
+                <input formControlName="id" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Id de Artículo</mat-label>
+                <input formControlName="article_id" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Id de Almacén</mat-label>
+                <input formControlName="warehouse_id" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Cantidad</mat-label>
+                <input formControlName="amount" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field><mat-form-field appearance="outline">
+                <mat-label>Razón</mat-label>
+                <input formControlName="reason" matInput type="text" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <button color="primary" mat-flat-button>Guardar</button>
+        </div>
+    </form>
+</mat-card>
