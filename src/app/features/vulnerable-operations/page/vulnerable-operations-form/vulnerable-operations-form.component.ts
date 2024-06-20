@@ -6,14 +6,17 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { FORM_CLAZZ, FormComponent } from 'o2c_core';
+import { FORM_CLAZZ, FormComponent, MessageHelper } from 'o2c_core';
+import { Observable } from 'rxjs';
 import { ProcedureDto } from 'src/app/data/dto';
+import { VulnerableOperationDto } from 'src/app/data/dto/VulnerableOperation.dto';
 import { GrantorView } from 'src/app/data/presentation/Grantor.view';
 import { InversionUnitView } from 'src/app/data/presentation/InversionUnit.view';
 import { ProcedureView } from 'src/app/data/presentation/Procedure.view';
 import { UnitView } from 'src/app/data/presentation/Unit.view';
 import { VulnerableOperationForm } from 'src/app/data/presentation/VulnerableOperation.view';
 import { ProcedureService } from 'src/app/data/services/procedure.service';
+import { VulnerableOperationService } from 'src/app/data/services/vulnerable-operation.service';
 
 @AutoUnsubscribe()
 @Component({
@@ -28,9 +31,7 @@ import { ProcedureService } from 'src/app/data/services/procedure.service';
   ],
 })
 export class VulnerableOperationsFormComponent implements OnDestroy {
-
   private _listFormBuilder!: FormComponent;
-
 
   public get formComponent(): FormComponent {
     return this._listFormBuilder;
@@ -38,13 +39,19 @@ export class VulnerableOperationsFormComponent implements OnDestroy {
 
   @ViewChild(FormComponent)
   public set formComponent(value: FormComponent) {
-      console.log('seteando formbuilder ---> ',value);
-        this._listFormBuilder = value;
+    console.log('seteando formbuilder ---> ', value);
+    this._listFormBuilder = value;
   }
-  
+
   vulnerableOperationsCategory: any = [
-    { value: 1, label: 'Actividades vulnerables traslativas de dominio' },
-    { value: 2, label: 'Actividades vulnerables mercantiles' },
+    {
+      value: 'Actividades vulnerables traslativas de dominio',
+      label: 'Actividades vulnerables traslativas de dominio',
+    },
+    {
+      value: 'Actividades vulnerables mercantiles',
+      label: 'Actividades vulnerables mercantiles',
+    },
   ];
 
   useDataOperation: any = [];
@@ -124,10 +131,11 @@ export class VulnerableOperationsFormComponent implements OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private _procedureService: ProcedureService,
+    private _vulnerableOperationsService: VulnerableOperationService,
   ) {
     this.form = new UntypedFormGroup({
-      typeCatogory: new UntypedFormControl(null, [Validators.required]),
-      typeVulnerableOperation: new UntypedFormControl(null, [
+      type_category: new UntypedFormControl(null, [Validators.required]),
+      type_vulnerable_operation: new UntypedFormControl(null, [
         Validators.required,
       ]),
       procedure_id: new UntypedFormControl(null, [Validators.required]),
@@ -135,7 +143,9 @@ export class VulnerableOperationsFormComponent implements OnDestroy {
       unit_id: new UntypedFormControl(null, []),
       grantor_first_id: new UntypedFormControl(null, [Validators.required]),
       grantor_second_id: new UntypedFormControl(null, [Validators.required]),
-      vulnerable_operation_data: new UntypedFormControl(null, [Validators.required])
+      vulnerable_operation_data: new UntypedFormControl(null, [
+        Validators.required,
+      ]),
     });
 
     this.form.controls.procedure_id.valueChanges.subscribe((value) => {
@@ -146,11 +156,25 @@ export class VulnerableOperationsFormComponent implements OnDestroy {
         },
       });
     });
+
+    const id = Number(this.route.snapshot.params.id);
+    if (!isNaN(id)) {
+      this.isEdit = true;
+      this._vulnerableOperationsService.fetch(id).subscribe({
+        next: (operation: VulnerableOperationDto) => {
+          this.form.addControl('id', new UntypedFormControl(''));
+          this.form.patchValue(operation);
+          this.formComponent.formBuilderComponent.form.patchValue(
+            operation.vulnerable_operation_data,
+          );
+        },
+      });
+    }
   }
 
   loadVulnerableOperations($event: any) {
     this.useDataOperation =
-      $event == 1
+      $event == 'Actividades vulnerables traslativas de dominio'
         ? this.VulnerableOperationsTraslativeDomain
         : this.vulnerableOperationsCommercial;
   }
@@ -182,13 +206,63 @@ export class VulnerableOperationsFormComponent implements OnDestroy {
     });
   }
 
-  onSubmit( ) {
-    this.form.get('vulnerable_operation_data')?.setValue(this.formComponent.formBuilderComponent.form.value);
-    console.log("forrrrm ---> ", this.form.value);
-
-    if(this.form.invalid) return;
+  onSubmit(send = false) {
     
+    if(!send) return;
+    
+    this.form
+      .get('vulnerable_operation_data')
+      ?.setValue(this.formComponent.formBuilderComponent.form.value);
+    console.log('forrrrm ---> ', this.form.value);
 
+    if (this.form.invalid) return;
+
+    let request$: Observable<any>;
+    if (!this.isEdit) {
+      request$ = this._vulnerableOperationsService.save(
+        this.form.value,
+      );
+    } else {
+      request$ = this._vulnerableOperationsService.update(this.form.value);
+    }
+
+    request$.subscribe({
+      next: async () => {
+        const message = this.isEdit ? 'actualizada' : 'registrada';
+        await MessageHelper.successMessage(
+          '¡Éxito!',
+          `La operación ha sido ${message} correctamente.`,
+        );
+        await this.backToList();
+      },
+      error: async (error) => {
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof(error.error.error) === 'object') {
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);          }else{
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
+      },
+    });
   }
 
   ngOnDestroy(): void {}

@@ -6,8 +6,8 @@
       </button>
     </div>
   </mat-toolbar>
-  (ngSubmit)="onSubmit()"
   <form
+    (ngSubmit)="onSubmit()"
     [formGroup]="form"
     class="row justify-content-center"
   >
@@ -78,7 +78,7 @@
             <mat-form-field appearance="outline">
               <mat-label>Categoria de operación vulnerable</mat-label>
               <mat-select
-                formControlName="typeCatogory"
+                formControlName="type_category"
                 (valueChange)="loadVulnerableOperations($event)"
               >
                 <mat-option>-- None --</mat-option>
@@ -98,7 +98,7 @@
             <mat-form-field appearance="outline">
               <mat-label>Tipo de operación</mat-label>
               <mat-select
-                formControlName="typeVulnerableOperation"
+                formControlName="type_vulnerable_operation"
               >
                 <mat-option>-- None --</mat-option>
                 <mat-option
@@ -119,7 +119,7 @@
                 [viewClassBuilder]="inversionUnitViewProvider"
                 title="Selecciona una UMA si es necesaria para esta operación vulnerable"
                 o2cSinglePopup
-                formControlName="inversion_unit_id"
+                formControlName="inversion_unit_id" 
                 matInput
                 type="text"
               />
@@ -203,7 +203,7 @@
 
         <mat-action-row>
           <button (click)="goToPrev()" color="warn" mat-button>Atras</button>
-          <button (click)="onSubmit()" color="primary" mat-button>Guardar</button>
+          <button (click)="onSubmit(true)" color="primary" mat-button>Guardar</button>
         </mat-action-row>
       </mat-expansion-panel>
     </mat-accordion>
