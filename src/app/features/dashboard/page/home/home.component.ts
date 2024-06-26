@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import Chart from 'chart.js/auto';
 import { forkJoin } from 'rxjs';
 import { ProcedureService } from 'src/app/data/services/procedure.service';
