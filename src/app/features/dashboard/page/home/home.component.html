@@ -1,4 +1,4 @@
-<mat-card>
+<mat-card *ngIf="(role$ | async)?.name !== 'Administrador'; else graphs">
   <div class="row justify-content-center">
     <div class="col-10 d-flex flex-column">
       <div class="mb-5 text-center">
@@ -70,4 +70,14 @@
       </ul>
     </div>
   </div>
+
+  <ng-container *ngTemplateOutlet="graphs"></ng-container>
 </mat-card>
+
+<ng-template #graphs>
+  <h3>Gráficas</h3>
+  <canvas id="registered"></canvas>
+  <canvas id="withoutData"></canvas>
+  <canvas id="withoutShape"></canvas>
+  <canvas id="withoutDocuments"></canvas>
+</ng-template>

@@ -3,7 +3,7 @@ import { CrudService, Pagination } from 'o2c_core';
 import { ProcedureDto } from '../dto';
 import { environment } from '../../../environments/environment';
 import { HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +47,34 @@ export class ProcedureService extends CrudService<
   }
 
   assingAdditionalData(procedure_id: number, data: any) {
-    return this._http.put(`${environment.base_url}/procedure/grantors/additionalData/${procedure_id}`, data);
+    return this._http.put(
+      `${environment.base_url}/procedure/grantors/additionalData/${procedure_id}`,
+      data,
+    );
+  }
+
+  graphsRegistered() {
+    return this._http.get(
+      `${environment.base_url}/procedure/graphics/registered`,
+    );
+  }
+
+  graphsWithoutData() {
+    return this._http.get(
+      `${environment.base_url}/procedure/graphics/withoutData`,
+    );
+  }
+
+  graphsWithoutShape() {
+    return this._http.get(
+      `${environment.base_url}/procedure/graphics/withoutShape`,
+    );
+  }
+
+  graphsWithoutDocument() {
+    return this._http.get(
+      `${environment.base_url}/procedure/graphics/withoutDocument`,
+    );
   }
 }
 
@@ -66,6 +93,8 @@ export class ProcedureVulnerableOperationService extends CrudService<
     params?: HttpParams | undefined,
     headers?: HttpHeaders | undefined,
   ): any {
-    return this._http.get(`${environment.base_url}/procedure/filter/vulnerableOperations`);
+    return this._http.get(
+      `${environment.base_url}/procedure/filter/vulnerableOperations`,
+    );
   }
 }
