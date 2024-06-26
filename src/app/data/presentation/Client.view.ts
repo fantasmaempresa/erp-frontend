@@ -61,7 +61,7 @@ export class ClientView {
   @viewLabel('Apodo')
   nickname: string;
 
-  @viewLabel('Dirección')
+  // @viewLabel('Dirección')
   address: string;
 
   @viewLabel('RFC')

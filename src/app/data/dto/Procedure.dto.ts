@@ -1,6 +1,9 @@
 import { EntityDto } from 'o2c_core';
 import { GrantorDto } from './Grantor.dto';
 import { OperationsDto } from './Operations.dto';
+import { ProcedureCommentDto } from './ProcedureComment.dto';
+import { RegistrationProcedureDataDto } from './RegistrationProcedureData.dto';
+import { ProcessingIncomeDto } from './ProcessingIncome.dto';
 
 export interface ProcedureDto extends EntityDto {
   proceedings: string;
@@ -21,4 +24,7 @@ export interface ProcedureDto extends EntityDto {
   client_id: number;
   staff_id: number;
   appraisal: string;
+  comments?: ProcedureCommentDto[];
+  registration_procedure_data?: RegistrationProcedureDataDto[];
+  processing_income?: ProcessingIncomeDto[];
 }

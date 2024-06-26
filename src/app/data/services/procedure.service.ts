@@ -26,6 +26,16 @@ export class ProcedureService extends CrudService<
     );
   }
 
+  checkValueInstrumentUnique(name: string, id?: number) {
+    let idParam = '';
+    if (id) {
+      idParam = `&id=${id}`;
+    }
+    return this._http.get(
+      `${environment.base_url}/procedure/validator/uniqueInstrumentValue/${name}?${idParam}`,
+    );
+  }
+
   checkFolioMinValueUnique(folio: number, range: string, id?: number) {
     let idParam = '';
     if (id) {

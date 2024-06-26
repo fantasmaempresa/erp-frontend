@@ -22,6 +22,7 @@ export const validationMessages = {
 };
 
 export const genericErrorMessages: { [key: string]: any } = {
+  negativeNumber: () => 'Negative number not allowed',
   uniqueValue: () => 'this value was already used',
   greaterThan: () => 'this value must be greater',
   notEquals: () => 'this value not equals',

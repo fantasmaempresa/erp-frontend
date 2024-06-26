@@ -55,20 +55,14 @@ export class RegistratitonProcedureDataFormComponent implements OnDestroy {
 
     if (!isNaN(id)) {
       this.form.get('procedure_id')?.setValue(id);
-      this._registrationService.fetch(id).subscribe({
-        next: (value) => {
-            this.form.patchValue(value);
-        },
-      });
     }
 
     if (!isNaN(idRegistration)) {
       this.edit = true;
-      this.edit = true;
       _registrationService.fetch(idRegistration).subscribe({
-        next: (client) => {
+        next: (registration) => {
           this.form.addControl('id', new UntypedFormControl(''));
-          this.form.patchValue(client);
+          this.form.patchValue(registration);
         },
       });
     }

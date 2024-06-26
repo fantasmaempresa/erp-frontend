@@ -43,7 +43,12 @@ export class ProceduresFormComponent implements OnDestroy {
       }),
       value_operation: new UntypedFormControl('', []),
       appraisal: new UntypedFormControl('', []),
-      instrument: new UntypedFormControl('', [Validators.required]),
+      instrument: new UntypedFormControl('',{
+        validators: [Validators.required],
+        asyncValidators: [this.uniqueValueInstrumentValidator.bind(this)],
+        updateOn: 'blur',
+      }
+      ),
       date: new UntypedFormControl('', [Validators.required]),
       volume: new UntypedFormControl('', [Validators.required]),
       folio_min: new UntypedFormControl('', {
@@ -220,7 +225,10 @@ export class ProceduresFormComponent implements OnDestroy {
 
       if (controlValue >= compareControlValue) {
         compareControl.setErrors({ greaterThan: true });
-      } else {
+      }else if (controlValue < 0 || compareControlValue < 0) {
+        compareControl.setErrors({ negativeNumber : true });
+      }
+      else {
         compareControl.setErrors(null);
       }
 
@@ -237,7 +245,24 @@ export class ProceduresFormComponent implements OnDestroy {
       id = this.procedureForm.get('id')?.value;
     }
     const value: string = control.value;
+
     return this.procedureService.checkValueUnique(value, id).pipe(
+      debounceTime(200),
+      map((isUnique) => (isUnique ? null : { uniqueValue: true })),
+    );
+  }
+
+  uniqueValueInstrumentValidator(
+    control: AbstractControl,
+  ): Observable<ValidationErrors | null> {
+    console.log('se ejecuto el validador');
+    let id = null;
+    if(this.isEdit){
+      id = this.procedureForm.get('id')?.value;
+    }
+    const value: string = control.value;
+
+    return this.procedureService.checkValueInstrumentUnique(value, id).pipe(
       debounceTime(200),
       map((isUnique) => (isUnique ? null : { uniqueValue: true })),
     );
@@ -255,6 +280,14 @@ export class ProceduresFormComponent implements OnDestroy {
 
     if (value == 0 || value == null) return of(null);
 
+    if (value < 0 ){
+      control.setErrors({ negativeNumber : true });
+      return of(null);
+    }else {
+      control.setErrors(null);
+    }
+
+
     return this.procedureService.checkFolioMinValueUnique(value, 'folio_min', id).pipe(
       debounceTime(300),
       map((isUnique) => (isUnique ? null : { uniqueValue: true })),
@@ -270,6 +303,13 @@ export class ProceduresFormComponent implements OnDestroy {
     }
 
     const value: number = control.value;
+
+    if (value < 0 ){
+      control.setErrors({ negativeNumber : true });
+      return of(null);
+    }else {
+      control.setErrors(null);
+    }
 
     return this.procedureService.checkFolioMinValueUnique(value, 'folio_max', id).pipe(
       debounceTime(300),
