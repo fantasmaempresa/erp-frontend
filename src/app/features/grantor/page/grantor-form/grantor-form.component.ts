@@ -55,6 +55,7 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
   typePerson = [
     { id: 1, label: 'Fisica' },
     { id: 2, label: 'Moral' },
+    { id: 3, label: 'Cujus' },
   ];
 
   constructor(
@@ -182,7 +183,18 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
       this.grantorForm.get('phone')?.clearValidators();
       this.grantorForm.get('place_of_birth')?.clearValidators();
       this.grantorForm.get('occupation')?.clearValidators();
-    } else {
+      this.grantorForm.get('municipality')?.setValidators(Validators.required);
+      this.grantorForm.get('colony')?.setValidators(Validators.required);
+      this.grantorForm.get('no_int')?.setValidators(Validators.required);
+      this.grantorForm.get('no_ext')?.setValidators(Validators.required);
+      this.grantorForm.get('no_locality')?.setValidators(Validators.required);
+      this.grantorForm.get('locality')?.setValidators(Validators.required);
+      this.grantorForm.get('zipcode')?.setValidators(Validators.required);
+      this.grantorForm.get('type')?.setValidators(Validators.required);
+      this.grantorForm.get('stake_id')?.setValidators(Validators.required);
+    }
+
+    if (type === 2) {
       this.grantorForm
         .get('mother_last_name')
         ?.setValidators(Validators.required);
@@ -196,6 +208,40 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
         .get('place_of_birth')
         ?.setValidators(Validators.required);
       this.grantorForm.get('occupation')?.setValidators(Validators.required);
+
+      this.grantorForm.get('municipality')?.setValidators(Validators.required);
+      this.grantorForm.get('colony')?.setValidators(Validators.required);
+      this.grantorForm.get('no_int')?.setValidators(Validators.required);
+      this.grantorForm.get('no_ext')?.setValidators(Validators.required);
+      this.grantorForm.get('no_locality')?.setValidators(Validators.required);
+      this.grantorForm.get('locality')?.setValidators(Validators.required);
+      this.grantorForm.get('zipcode')?.setValidators(Validators.required);
+      this.grantorForm.get('type')?.setValidators(Validators.required);
+      this.grantorForm.get('stake_id')?.setValidators(Validators.required);
+    }
+
+    if (type === 3) {
+      this.grantorForm.get('name')?.setValidators(Validators.required);
+      this.grantorForm.get('father_last_name')?.setValidators(Validators.required);
+      this.grantorForm.get('mother_last_name')?.setValidators(Validators.required);
+      this.grantorForm.get('email')?.clearValidators();
+      this.grantorForm.get('phone')?.clearValidators();
+      this.grantorForm.get('birthdate')?.setValidators(Validators.required);
+      this.grantorForm.get('place_of_birth')?.clearValidators();
+      this.grantorForm.get('rfc')?.clearValidators();
+      this.grantorForm.get('curp')?.clearValidators();
+      this.grantorForm.get('civil_status')?.clearValidators();
+      this.grantorForm.get('municipality')?.clearValidators();
+      this.grantorForm.get('colony')?.clearValidators();
+      this.grantorForm.get('no_int')?.clearValidators();
+      this.grantorForm.get('no_ext')?.clearValidators();
+      this.grantorForm.get('no_locality')?.clearValidators();
+      this.grantorForm.get('locality')?.clearValidators();
+      this.grantorForm.get('zipcode')?.clearValidators();
+      this.grantorForm.get('occupation')?.clearValidators();
+      this.grantorForm.get('type')?.clearValidators();
+      this.grantorForm.get('stake_id')?.clearValidators();
+      this.grantorForm.get('beneficiary')?.clearValidators();
     }
 
     this.grantorForm.get('mother_last_name')?.updateValueAndValidity();

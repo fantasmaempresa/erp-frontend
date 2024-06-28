@@ -6,24 +6,18 @@ import {
   UntypedFormControl,
   UntypedFormGroup
 } from "@angular/forms";
+import { PopupService } from "o2c_core";
 import {
-  forkJoin,
-  lastValueFrom,
-  map,
   Observable,
-  shareReplay,
   Subject,
-  takeUntil,
-  tap
+  takeUntil
 } from "rxjs";
-import { ProcessDto, ProcessPhaseDto } from "../../../../data/dto";
+import { ProcessView, ProjectView } from "../../../../data/presentation";
 import {
   ProcessPhaseServiceOld,
   ProcessServiceOld,
   RoleServiceOld
 } from "../../../../data/services";
-import { ProcessView, ProjectView } from "../../../../data/presentation";
-import { PopupService } from "o2c_core";
 
 @Component({
   selector: "app-build-project",
@@ -211,12 +205,12 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
   }
 
   openDialog() {
-    this.popupService
-      .openTablePopup(ProcessView, "Selecciona un proceso", { isMulti: true })
-      .subscribe((processes: any[]) => {
-        this.buildInvolvedFormArray(processes);
-        this.processes = processes;
-      });
+    // this.popupService
+    //   .openTablePopup(ProcessView, "Selecciona un proceso", { isMulti: true })
+    //   .subscribe((processes: any[]) => {
+    //     this.buildInvolvedFormArray(processes);
+    //     this.processes = processes;
+    //   });
   }
 
   ngOnDestroy(): void {

@@ -1,14 +1,14 @@
-import { ViewActions, viewCrud, viewHTML, viewLabel } from 'o2c_core';
-import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
-import { ProcedureService } from '../services/procedure.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProcedureDto } from '../dto';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogGrantorsComponent } from 'src/app/shared/components/dialog-grantors/dialog-grantors.component';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ViewActions, dialogLabel, viewCrud, viewDialog, viewHTML, viewLabel, viewMapTo } from 'o2c_core';
 import { GrantorPercentageDialogComponent } from 'src/app/features/procedures/pages/grantor-percentage-dialog/grantor-percentage-dialog.component';
-import { RegistrationProcedureDataDto } from '../dto/RegistrationProcedureData.dto';
-import { ProcessingIncomeDto } from '../dto/ProcessingIncome.dto';
+import { DialogGrantorsComponent } from 'src/app/shared/components/dialog-grantors/dialog-grantors.component';
+import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
+import { ClientDto, ProcedureDto, UserDto } from '../dto';
 import { ProcedureCommentDto } from '../dto/ProcedureComment.dto';
+import { ProcessingIncomeDto } from '../dto/ProcessingIncome.dto';
+import { RegistrationProcedureDataDto } from '../dto/RegistrationProcedureData.dto';
+import { ProcedureService } from '../services/procedure.service';
 import { GrantorDto } from '../dto/Grantor.dto';
 
 const goToAssingPercentageGrantor = new ViewActions<ProcedureDto>(
@@ -130,6 +130,8 @@ const goToShapesLink = new ViewActions<ProcedureDto>(
     isVisible: (row) => row && row.id > 0,
   },
 );
+
+@viewDialog('Información del trámite')
 @viewCrud({
   classProvider: ProcedureService,
   registerName: 'Trámites',
@@ -167,6 +169,7 @@ export class ProcedureView {
   value_operation: number;
 
   // @viewLabel('Fecha')
+  @dialogLabel('Fecha')
   date: string;
 
   // @viewLabel('Credito')
@@ -219,8 +222,20 @@ export class ProcedureView {
   })
   comments: ProcedureCommentDto[];
 
-  
-  
+  @dialogLabel('Otorgantes de trámite')
+  @viewMapTo((grantors: any) => grantors.map((grantor: GrantorDto) => '[ '+ grantor.name + ' ' + grantor.father_last_name + ' ' + grantor.mother_last_name + '], '))
+  grantors: GrantorDto[];
+
+  @dialogLabel('Cliente')
+  @viewMapTo((client: any) => client.name)
+  client: ClientDto
+
+  @dialogLabel('Usuario quien registro')
+  @viewMapTo((user: any) => user.email)
+  user: UserDto
+
+  @dialogLabel('Fecha de creación de registro')
+  created_at: Date  
 
   constructor(
     name: string,
@@ -241,6 +256,10 @@ export class ProcedureView {
     registration_procedure_data: RegistrationProcedureDataDto[],
     processing_income: ProcessingIncomeDto[],
     comments: ProcedureCommentDto[],
+    grantors: GrantorDto[],
+    client: ClientDto,
+    user: UserDto,
+    created_at: Date,
   ) {
     this.name = name;
     this.instrument = instrument;
@@ -260,5 +279,9 @@ export class ProcedureView {
     this.registration_procedure_data = registration_procedure_data;
     this.processing_income = processing_income;
     this.comments = comments;
+    this.grantors = grantors;
+    this.client = client;
+    this.user = user;
+    this.created_at = created_at;
   }
 }
