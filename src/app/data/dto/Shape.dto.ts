@@ -19,5 +19,6 @@ export interface ShapeDto extends EntityDto {
   template_shape_id: number;
   procedure_id: number;
   alienator: GrantorDto;
+  acquirer: GrantorDto;
   grantors?: {acquirers: GrantorDto[], alienators: GrantorDto[]};
 }

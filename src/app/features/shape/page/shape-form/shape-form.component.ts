@@ -121,8 +121,9 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
         next: (shape: ShapeDto) => {
           this.shapeForm.addControl('id', new UntypedFormControl(''));
           this.shapeForm.patchValue(shape);
-          this.shapeForm.get('alienating')?.setValue(shape?.alienator);
-          this.shapeForm.get('alienating')?.setValue(shape?.alienator);
+
+          this.shapeForm.get('alienating')?.setValue(shape?.alienator.id);
+          this.shapeForm.get('acquirer')?.setValue(shape?.acquirer.id);
           this.shapeForm
             .get('extra_alienating')
             ?.setValue(shape?.grantors?.alienators);

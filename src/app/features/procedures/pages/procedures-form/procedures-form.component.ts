@@ -44,19 +44,19 @@ export class ProceduresFormComponent implements OnDestroy {
       value_operation: new UntypedFormControl('', []),
       appraisal: new UntypedFormControl('', []),
       instrument: new UntypedFormControl('',{
-        validators: [Validators.required],
+        validators: [],
         asyncValidators: [this.uniqueValueInstrumentValidator.bind(this)],
         updateOn: 'blur',
       }
       ),
       date: new UntypedFormControl('', [Validators.required]),
-      volume: new UntypedFormControl('', [Validators.required]),
+      volume: new UntypedFormControl('', []),
       folio_min: new UntypedFormControl('', {
         validators: [],
         asyncValidators: [this.uniqueFolioValueValidatorMin.bind(this)],
       }),
       folio_max: new UntypedFormControl('', {
-        validators: [Validators.required],
+        validators: [],
         asyncValidators: [this.uniqueFolioValueValidatorMax.bind(this)],
       }),
       credit: new UntypedFormControl('', []),

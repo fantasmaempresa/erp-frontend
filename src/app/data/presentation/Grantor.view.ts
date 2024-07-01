@@ -44,6 +44,7 @@ export class GrantorView {
       1: 'Moral',
       2: 'Física',
       bk: 'Respaldo',
+      3: 'Cujus',
     };
     return types[value as keyof typeof types];
   })

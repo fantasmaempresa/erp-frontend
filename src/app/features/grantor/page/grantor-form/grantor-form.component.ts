@@ -27,23 +27,23 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
     father_last_name: new UntypedFormControl('', []),
     mother_last_name: new UntypedFormControl('', []),
     email: new UntypedFormControl('', [Validators.email]),
-    phone: new UntypedFormControl('', [Validators.required]),
+    phone: new UntypedFormControl('', []),
     birthdate: new UntypedFormControl('', [Validators.required]),
-    place_of_birth: new UntypedFormControl('', [Validators.required]),
-    rfc: new UntypedFormControl('', [Validators.required]),
-    curp: new UntypedFormControl('', [Validators.required]),
-    civil_status: new UntypedFormControl('', [Validators.required]),
-    municipality: new UntypedFormControl('', [Validators.required]),
-    colony: new UntypedFormControl('', [Validators.required]),
+    place_of_birth: new UntypedFormControl('', []),
+    rfc: new UntypedFormControl('', []),
+    curp: new UntypedFormControl('', []),
+    civil_status: new UntypedFormControl('', []),
+    municipality: new UntypedFormControl('', []),
+    colony: new UntypedFormControl('', []),
     no_int: new UntypedFormControl('', []),
-    no_ext: new UntypedFormControl('', [Validators.required]),
-    no_locality: new UntypedFormControl('', [Validators.required]),
-    locality: new UntypedFormControl('', [Validators.required]),
-    zipcode: new UntypedFormControl('', [Validators.required]),
-    occupation: new UntypedFormControl('', [Validators.required]),
+    no_ext: new UntypedFormControl('', []),
+    no_locality: new UntypedFormControl('', []),
+    locality: new UntypedFormControl('', []),
+    zipcode: new UntypedFormControl('', []),
+    occupation: new UntypedFormControl('', []),
     type: new UntypedFormControl('', [Validators.required]),
     stake_id: new UntypedFormControl('', [Validators.required]),
-    beneficiary: new UntypedFormControl(false, [Validators.required]),
+    beneficiary: new UntypedFormControl(false, []),
   });
 
   isEdit: boolean = false;
@@ -51,12 +51,6 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
   isDialog: boolean = false;
 
   stakeProvider = StakeView;
-
-  typePerson = [
-    { id: 1, label: 'Fisica' },
-    { id: 2, label: 'Moral' },
-    { id: 3, label: 'Cujus' },
-  ];
 
   constructor(
     private router: Router,
@@ -79,16 +73,16 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
         },
       });
     }
-  }
-  ngOnDestroy() {}
 
-  ngOnInit(): void {
     this.grantorForm.get('type')?.valueChanges.subscribe((value) => {
       this.updateValidators(value);
       this.changeTypeGrantor(value);
     });
+  }
+  ngOnDestroy() {}
 
-    this.updateValidators(this.grantorForm.get('type')?.value);
+  ngOnInit(): void {
+   
   }
 
   async backToListGrantors() {
@@ -159,7 +153,7 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
       this.grantorForm.controls.place_of_birth.disable();
       this.grantorForm.controls.occupation.disable();
     }
-    if (event === 2) {
+    if (event === 2 || event === 3) {
       this.grantorForm.controls.father_last_name.enable();
       this.grantorForm.controls.mother_last_name.enable();
       this.grantorForm.controls.rfc.enable();
@@ -173,78 +167,107 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
   }
 
   updateValidators(type: number) {
-    if (type === 1) {
-      this.grantorForm.get('mother_last_name')?.clearValidators();
-      this.grantorForm.get('last_name')?.clearValidators();
-      // this.grantorForm.get('rfc')?.clearValidators();
-      this.grantorForm.get('curp')?.clearValidators();
-      this.grantorForm.get('civil_status')?.clearValidators();
-      this.grantorForm.get('no_int')?.clearValidators();
-      this.grantorForm.get('phone')?.clearValidators();
-      this.grantorForm.get('place_of_birth')?.clearValidators();
-      this.grantorForm.get('occupation')?.clearValidators();
-      this.grantorForm.get('municipality')?.setValidators(Validators.required);
-      this.grantorForm.get('colony')?.setValidators(Validators.required);
-      this.grantorForm.get('no_int')?.setValidators(Validators.required);
-      this.grantorForm.get('no_ext')?.setValidators(Validators.required);
-      this.grantorForm.get('no_locality')?.setValidators(Validators.required);
-      this.grantorForm.get('locality')?.setValidators(Validators.required);
-      this.grantorForm.get('zipcode')?.setValidators(Validators.required);
-      this.grantorForm.get('type')?.setValidators(Validators.required);
-      this.grantorForm.get('stake_id')?.setValidators(Validators.required);
-    }
-
-    if (type === 2) {
-      this.grantorForm
-        .get('mother_last_name')
-        ?.setValidators(Validators.required);
-      this.grantorForm.get('last_name')?.setValidators(Validators.required);
-      this.grantorForm.get('rfc')?.setValidators(Validators.required);
-      this.grantorForm.get('curp')?.setValidators([Validators.required]);
-      this.grantorForm.get('civil_status')?.setValidators(Validators.required);
-      // this.grantorForm.get('no_int')?.setValidators(Validators.required);
-      this.grantorForm.get('phone')?.setValidators(Validators.required);
-      this.grantorForm
-        .get('place_of_birth')
-        ?.setValidators(Validators.required);
-      this.grantorForm.get('occupation')?.setValidators(Validators.required);
-
-      this.grantorForm.get('municipality')?.setValidators(Validators.required);
-      this.grantorForm.get('colony')?.setValidators(Validators.required);
-      this.grantorForm.get('no_int')?.setValidators(Validators.required);
-      this.grantorForm.get('no_ext')?.setValidators(Validators.required);
-      this.grantorForm.get('no_locality')?.setValidators(Validators.required);
-      this.grantorForm.get('locality')?.setValidators(Validators.required);
-      this.grantorForm.get('zipcode')?.setValidators(Validators.required);
-      this.grantorForm.get('type')?.setValidators(Validators.required);
-      this.grantorForm.get('stake_id')?.setValidators(Validators.required);
-    }
-
-    if (type === 3) {
-      this.grantorForm.get('name')?.setValidators(Validators.required);
-      this.grantorForm.get('father_last_name')?.setValidators(Validators.required);
-      this.grantorForm.get('mother_last_name')?.setValidators(Validators.required);
-      this.grantorForm.get('email')?.clearValidators();
-      this.grantorForm.get('phone')?.clearValidators();
-      this.grantorForm.get('birthdate')?.setValidators(Validators.required);
-      this.grantorForm.get('place_of_birth')?.clearValidators();
-      this.grantorForm.get('rfc')?.clearValidators();
-      this.grantorForm.get('curp')?.clearValidators();
-      this.grantorForm.get('civil_status')?.clearValidators();
-      this.grantorForm.get('municipality')?.clearValidators();
-      this.grantorForm.get('colony')?.clearValidators();
-      this.grantorForm.get('no_int')?.clearValidators();
-      this.grantorForm.get('no_ext')?.clearValidators();
-      this.grantorForm.get('no_locality')?.clearValidators();
-      this.grantorForm.get('locality')?.clearValidators();
-      this.grantorForm.get('zipcode')?.clearValidators();
-      this.grantorForm.get('occupation')?.clearValidators();
-      this.grantorForm.get('type')?.clearValidators();
-      this.grantorForm.get('stake_id')?.clearValidators();
-      this.grantorForm.get('beneficiary')?.clearValidators();
-    }
-
+    console.log('refresh validators', type);
+    this.grantorForm.get('father_last_name')?.clearValidators();
+    this.grantorForm.get('father_last_name')?.updateValueAndValidity();
+    this.grantorForm.get('mother_last_name')?.clearValidators();
     this.grantorForm.get('mother_last_name')?.updateValueAndValidity();
-    this.grantorForm.get('last_name')?.updateValueAndValidity();
+    this.grantorForm.get('phone')?.clearValidators();
+    this.grantorForm.get('phone')?.updateValueAndValidity();
+    this.grantorForm.get('place_of_birth')?.clearValidators();
+    this.grantorForm.get('place_of_birth')?.updateValueAndValidity();
+    this.grantorForm.get('rfc')?.clearValidators();
+    this.grantorForm.get('rfc')?.updateValueAndValidity();
+    this.grantorForm.get('curp')?.clearValidators();
+    this.grantorForm.get('curp')?.updateValueAndValidity();
+    this.grantorForm.get('civil_status')?.clearValidators();
+    this.grantorForm.get('civil_status')?.updateValueAndValidity();
+    this.grantorForm.get('municipality')?.clearValidators();
+    this.grantorForm.get('municipality')?.updateValueAndValidity();
+    this.grantorForm.get('colony')?.clearValidators();
+    this.grantorForm.get('colony')?.updateValueAndValidity();
+    this.grantorForm.get('no_int')?.clearValidators();
+    this.grantorForm.get('no_int')?.updateValueAndValidity();
+    this.grantorForm.get('no_ext')?.clearValidators();
+    this.grantorForm.get('no_ext')?.updateValueAndValidity();
+    this.grantorForm.get('no_locality')?.clearValidators();
+    this.grantorForm.get('no_locality')?.updateValueAndValidity();
+    this.grantorForm.get('locality')?.clearValidators();
+    this.grantorForm.get('locality')?.updateValueAndValidity();
+    this.grantorForm.get('zipcode')?.clearValidators();
+    this.grantorForm.get('zipcode')?.updateValueAndValidity();
+    this.grantorForm.get('occupation')?.clearValidators();
+    this.grantorForm.get('occupation')?.updateValueAndValidity();
+
+    if (type == 1) {
+      this.grantorForm.get('municipality')?.setValidators([Validators.required]);
+      this.grantorForm.get('municipality')?.updateValueAndValidity();
+      this.grantorForm.get('rfc')?.setValidators([Validators.required]);
+      this.grantorForm.get('rfc')?.updateValueAndValidity();
+      this.grantorForm.get('colony')?.setValidators([Validators.required]);
+      this.grantorForm.get('colony')?.updateValueAndValidity();
+      this.grantorForm.get('no_int')?.setValidators([Validators.required]);
+      this.grantorForm.get('no_int')?.updateValueAndValidity();
+      this.grantorForm.get('no_ext')?.setValidators([Validators.required]);
+      this.grantorForm.get('no_ext')?.updateValueAndValidity();
+      this.grantorForm.get('no_locality')?.setValidators([Validators.required]);
+      this.grantorForm.get('no_locality')?.updateValueAndValidity();
+      this.grantorForm.get('locality')?.setValidators([Validators.required]);
+      this.grantorForm.get('locality')?.updateValueAndValidity();
+      this.grantorForm.get('zipcode')?.setValidators([Validators.required]);
+      this.grantorForm.get('zipcode')?.updateValueAndValidity();
+      this.grantorForm.get('stake_id')?.setValidators([Validators.required]);
+      this.grantorForm.get('stake_id')?.updateValueAndValidity();
+    }
+
+    if (type == 2) {
+      this.grantorForm.get('mother_last_name')?.setValidators([Validators.required]);
+      this.grantorForm.get('mother_last_name')?.updateValueAndValidity();
+      this.grantorForm.get('father_last_name')?.setValidators([Validators.required]);
+      this.grantorForm.get('father_last_name')?.updateValueAndValidity();
+      this.grantorForm.get('rfc')?.setValidators([Validators.required]);
+      this.grantorForm.get('rfc')?.updateValueAndValidity();
+      this.grantorForm.get('curp')?.setValidators([Validators.required]);
+      this.grantorForm.get('curp')?.updateValueAndValidity();
+      this.grantorForm.get('civil_status')?.setValidators([Validators.required]);
+      this.grantorForm.get('civil_status')?.updateValueAndValidity();
+      this.grantorForm.get('phone')?.setValidators([Validators.required]);
+      this.grantorForm.get('phone')?.updateValueAndValidity();
+      this.grantorForm.get('place_of_birth')?.setValidators([Validators.required]);
+      this.grantorForm.get('place_of_birth')?.updateValueAndValidity();
+      this.grantorForm.get('occupation')?.setValidators([Validators.required]);
+      this.grantorForm.get('occupation')?.updateValueAndValidity();
+      this.grantorForm.get('municipality')?.setValidators([Validators.required]);
+      this.grantorForm.get('municipality')?.updateValueAndValidity();
+      this.grantorForm.get('colony')?.setValidators([Validators.required]);
+      this.grantorForm.get('colony')?.updateValueAndValidity();
+      this.grantorForm.get('no_int')?.setValidators([Validators.required]);
+      this.grantorForm.get('no_int')?.updateValueAndValidity();
+      this.grantorForm.get('no_ext')?.setValidators([Validators.required]);
+      this.grantorForm.get('no_ext')?.updateValueAndValidity();
+      this.grantorForm.get('no_locality')?.setValidators([Validators.required]);
+      this.grantorForm.get('no_locality')?.updateValueAndValidity();
+      this.grantorForm.get('locality')?.setValidators([Validators.required]);
+      this.grantorForm.get('locality')?.updateValueAndValidity();
+      this.grantorForm.get('zipcode')?.setValidators([Validators.required]);
+      this.grantorForm.get('zipcode')?.updateValueAndValidity();
+      this.grantorForm.get('stake_id')?.setValidators([Validators.required]);
+      this.grantorForm.get('stake_id')?.updateValueAndValidity();
+    }
+
+    if (type == 3) {
+      this.grantorForm.get('name')?.setValidators([Validators.required]);
+      this.grantorForm.get('name')?.updateValueAndValidity();
+      this.grantorForm.get('father_last_name')?.setValidators([Validators.required]);
+      this.grantorForm.get('father_last_name')?.updateValueAndValidity();
+      this.grantorForm.get('mother_last_name')?.setValidators([Validators.required]);
+      this.grantorForm.get('mother_last_name')?.updateValueAndValidity();
+      this.grantorForm.get('birthdate')?.setValidators([Validators.required]);
+      this.grantorForm.get('birthdate')?.updateValueAndValidity();
+    }
+
+    // this.grantorForm.updateValueAndValidity();
+    // this.grantorForm.get('mother_last_name')?.updateValueAndValidity();
+    // this.grantorForm.get('last_name')?.updateValueAndValidity();
   }
 }

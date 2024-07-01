@@ -10,6 +10,8 @@
       </button>
     </div>
   </mat-toolbar>
+
+  
   <form (ngSubmit)="onSubmit()" [formGroup]="grantorForm">
     
     <div class="row justify-content-center">
@@ -19,6 +21,7 @@
           <mat-select formControlName="type">
             <mat-option [value]="2">Física</mat-option>
             <mat-option [value]="1">Moral</mat-option>
+            <mat-option [value]="3">Cujus</mat-option>
           </mat-select>
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
@@ -219,6 +222,5 @@
       </div>
       <button color="primary" mat-flat-button>Guardar</button>
     </div>
-
   </form>
 </mat-card>

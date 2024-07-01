@@ -24,8 +24,8 @@ export class GrantorLinkFormComponent {
 
   grantorForm = new UntypedFormGroup({
     name: new UntypedFormControl('', [Validators.required]),
-    father_last_name: new UntypedFormControl('', []),
-    mother_last_name: new UntypedFormControl('', []),
+    father_last_name: new UntypedFormControl('', [Validators.required]),
+    mother_last_name: new UntypedFormControl('', [Validators.required]),
     email: new UntypedFormControl('', [Validators.email]),
     phone: new UntypedFormControl('', [Validators.required]),
     birthdate: new UntypedFormControl('', [Validators.required]),
@@ -42,6 +42,7 @@ export class GrantorLinkFormComponent {
     zipcode: new UntypedFormControl('', [Validators.required]),
     occupation: new UntypedFormControl('', [Validators.required]),
     stake_id: new UntypedFormControl('', [Validators.required]),
+    grantor_id: new UntypedFormControl('', [Validators.required]),
   });
 
   isEdit: boolean = false;
@@ -62,6 +63,7 @@ export class GrantorLinkFormComponent {
     }
 
     const id = Number(this.route.snapshot.params.id);
+    const grantor_id = Number(this.route.snapshot.params.idGrantor);
     if (!isNaN(id)) {
       this.isEdit = true;
       grantorService.fetch(id).subscribe({
@@ -70,6 +72,10 @@ export class GrantorLinkFormComponent {
           this.grantorForm.patchValue(grantor);
         },
       });
+    }
+
+    if(!isNaN(grantor_id)){
+      this.grantorForm.patchValue({grantor_id: grantor_id});
     }
   }
   ngOnDestroy() {}
