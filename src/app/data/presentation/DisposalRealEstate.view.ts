@@ -3,6 +3,7 @@ import {
   ViewsModule,
   formField,
   formTable,
+  popUpSelector,
   viewCrud,
   viewLabel,
   viewMapTo,
@@ -13,6 +14,7 @@ import { NationalConsumerPriceIndexDto } from '../dto';
 import { GrantorDto } from '../dto/Grantor.dto';
 import { TypeDisposalOperationDto } from '../dto/TypeDisposalOperation.dto';
 import { RateDto } from '../dto/Rate.dto';
+import { GrantorView } from './Grantor.view';
 
 @viewCrud({
   classProvider: DisposalRealEstateService,
@@ -225,12 +227,19 @@ export class DisposalRealEstateView {
 }
 
 export class landProportionAcquiriersTable {
-  @formField({
+  @popUpSelector({
     label: 'Comprador',
-    formFieldType: FormFieldType.NUMBER,
+    config: {
+      title: 'Comprador',
+      viewClass: GrantorView,
+      options: {
+        isMulti: false,
+      },
+    },
   })
   @viewLabel('Comprador')
   grantor_id: number;
+
   @formField({
     label: 'Porcentaje de copropiedad',
     formFieldType: FormFieldType.NUMBER,

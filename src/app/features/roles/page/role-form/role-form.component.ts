@@ -53,7 +53,6 @@ export class RoleFormComponent implements OnDestroy{
     }
   }
   ngOnDestroy(): void {
-    throw new Error("Method not implemented.");
   }
 
   moduleName = ({ name }: { name: string }) => name;
