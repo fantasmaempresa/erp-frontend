@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import { MessageHelper } from 'o2c_core';
 import { ArticleDto } from 'src/app/data/dto/Article.dto';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-
+import { LineView } from 'src/app/data/presentation/Line.view';
 
 @AutoUnsubscribe()
 @Component({
@@ -76,6 +76,8 @@ export class ArticleFormComponent implements OnDestroy{
   isEdit: boolean = false;
 
   isDialog: boolean = false;
+
+  lineProvider = LineView;
 
   constructor(
     private router: Router,

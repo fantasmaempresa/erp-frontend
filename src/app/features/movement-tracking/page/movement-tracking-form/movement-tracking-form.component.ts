@@ -10,6 +10,8 @@ import { Observable } from 'rxjs';
 import { MessageHelper } from 'o2c_core';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { MovementTrackingDto } from 'src/app/data/dto/MovementTracking.dto';
+import { ArticleView } from 'src/app/data/presentation/Article.view';
+import { WarehouseView } from 'src/app/data/presentation/Warehouse.view';
 
 @AutoUnsubscribe()
 @Component({
@@ -44,6 +46,10 @@ export class MovementTrackingFormComponent implements OnDestroy{
   isEdit: boolean = false;
 
   isDialog: boolean = false;
+
+  articleProvider = ArticleView;
+
+  warehouseProvider = WarehouseView;
 
   constructor(
     private router: Router,

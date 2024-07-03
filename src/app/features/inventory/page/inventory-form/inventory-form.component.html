@@ -20,12 +20,28 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>ID de Artículo</mat-label>
-                <input formControlName="article_id" matInput type="number" />
+                <input
+                    [viewClassBuilder]="articleProvider"
+                    title="Selecciona un Artículo"
+                    o2cSinglePopup
+                    formControlName="article_id"
+                    matInput
+                    type="text"
+                />
+                <mat-icon matSuffix>search</mat-icon>
                 <mat-error appErrorMessage></mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>ID de Almacén</mat-label>
-                <input formControlName="warehouse_id" matInput type="number" />
+                <input
+                    [viewClassBuilder]="warehouseProvider"
+                    title="Selecciona un Almacén"
+                    o2cSinglePopup
+                    formControlName="warehouse_id"
+                    matInput
+                    type="text"
+                />
+                <mat-icon matSuffix>search</mat-icon>
                 <mat-error appErrorMessage></mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">

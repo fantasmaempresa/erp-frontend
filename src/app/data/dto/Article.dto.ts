@@ -1,4 +1,5 @@
 import { EntityDto } from "o2c_core";
+import { LineDto } from "./Line.dto";
 
 export interface ArticleDto extends EntityDto {
     id : number;
@@ -7,7 +8,7 @@ export interface ArticleDto extends EntityDto {
     description : string;
     name : string;
     image : string;
-    line_id : number;
+    line_id? : LineDto;
     purchase_cost : number;
     sale_cost : number;
     type : string;

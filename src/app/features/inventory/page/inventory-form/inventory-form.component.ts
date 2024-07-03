@@ -10,6 +10,8 @@ import { Observable } from 'rxjs';
 import { MessageHelper } from 'o2c_core';
 import { InventoryDto } from 'src/app/data/dto/Inventory.dto';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { ArticleView } from 'src/app/data/presentation/Article.view';
+import { WarehouseView } from 'src/app/data/presentation/Warehouse.view';
 
 @AutoUnsubscribe()
 @Component({
@@ -40,6 +42,9 @@ export class InventoryFormComponent implements OnDestroy{
   isEdit: boolean = false;
 
   isDialog: boolean = false;
+
+  warehouseProvider = WarehouseView;
+  articleProvider = ArticleView;
 
   constructor(
     private router: Router,

@@ -1,6 +1,7 @@
-import { ViewsModule, viewCrud, viewLabel } from "o2c_core";
+import { ViewsModule, viewCrud, viewLabel, viewMapTo } from "o2c_core";
 import { ArticleService } from "../services/article.service";
 import { DEFAULT_ROUTE_CONFIGURATION } from "src/app/core/constants/routes.constants";
+import { LineDto } from "../dto/Line.dto";
 
 @viewCrud({
     classProvider: ArticleService,
@@ -21,7 +22,8 @@ export class ArticleView {
     @viewLabel('Imagen')
     image : string;
     @viewLabel('Id de Linea')
-    line_id : number;
+    @viewMapTo((value:any) => value?.name)
+    line_id : LineDto;
     @viewLabel('Costo de la Compra')
     purchase_cost : number;
     @viewLabel('Costo de Venta')
@@ -44,7 +46,7 @@ export class ArticleView {
         description : string,
         name : string,
         image : string,
-        line_id : number,
+        line_id : LineDto,
         purchase_cost : number,
         sale_cost : number,
         type : string,

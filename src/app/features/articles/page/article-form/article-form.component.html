@@ -45,7 +45,15 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Id de Linea</mat-label>
-                <input formControlName="line_id" matInput type="number" />
+                <input
+                    [viewClassBuilder]="lineProvider"
+                    title="Selecciona una línea"
+                    o2cSinglePopup
+                    formControlName="line_id"
+                    matInput
+                    type="text"
+                />
+                <mat-icon matSuffix>search</mat-icon>
                 <mat-error appErrorMessage></mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
