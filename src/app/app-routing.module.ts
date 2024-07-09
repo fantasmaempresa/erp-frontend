@@ -259,6 +259,52 @@ const routes: Routes = [
         data: { breadcrumb: 'Operaciones de eliminación' },
       },
       {
+        path: 'disposalRealEstate',
+        loadChildren: () =>
+          import(
+            './features/disposal-real-estate/disposal-real-estate.module'
+          ).then((m) => m.DisposalRealEstateModule),
+        data: { breadcrumb: 'Enajenación de Bienes' },
+      },
+      {
+        path: 'article',
+        loadChildren: () =>
+          import('./features/articles/articles.module').then(
+            (m) => m.ArticlesModule,
+          ),
+        data: { breadcrumb: 'Artículos' },
+      },
+      {
+        path: 'line',
+        loadChildren: () =>
+          import('./features/line/line.module').then((m) => m.LineModule),
+        data: { breadcrumb: 'Línea' },
+      },
+      {
+        path: 'warehouse',
+        loadChildren: () =>
+          import('./features/warehouse/warehouse.module').then(
+            (m) => m.WarehouseModule,
+          ),
+        data: { breadcrumb: 'Almacén' },
+      },
+      {
+        path: 'inventory',
+        loadChildren: () =>
+          import('./features/inventory/inventory.module').then(
+            (m) => m.InventoryModule,
+          ),
+        data: { breadcrumb: 'Inventario' },
+      },
+      {
+        path: 'movementTracking',
+        loadChildren: () =>
+          import('./features/movement-tracking/movement-tracking.module').then(
+            (m) => m.MovementTrackingModule,
+          ),
+        data: { breadcrumb: 'Seguimiento de Movimientos' },
+      },
+      {
         path: 'category-operation',
         loadChildren: () =>
           import(

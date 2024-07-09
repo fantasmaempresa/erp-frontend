@@ -1,0 +1,99 @@
+<mat-card>
+    <mat-toolbar *ngIf="!isDialog">
+        <div>
+            <button (click)="backToListArticle()" aria-label="Regresar" mat-icon-button>
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <form
+        (ngSubmit)="onSubmit()"
+        [formGroup]="articleForm"
+        class="row justify-content-center"
+    >
+        <div class="col-6 d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>ID</mat-label>
+                <input formControlName="id" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Facturable</mat-label>
+                <input formControlName="billable" matInput type="text" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Código de Barras</mat-label>
+                <input formControlName="bar_code" matInput type="text" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Descripción</mat-label>
+                <input formControlName="description" matInput type="text" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input formControlName="name" matInput type="text" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Imagen</mat-label>
+                <input formControlName="image" matInput type="text" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Id de Linea</mat-label>
+                <input
+                    [viewClassBuilder]="lineProvider"
+                    title="Selecciona una línea"
+                    o2cSinglePopup
+                    formControlName="line_id"
+                    matInput
+                    type="text"
+                />
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Costo de la Compra</mat-label>
+                <input formControlName="purchase_cost" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Costo de la Venta</mat-label>
+                <input formControlName="sale_cost" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Tipo</mat-label>
+                <input formControlName="type" matInput type="text" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Marca</mat-label>
+                <input formControlName="brand" matInput type="text" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Almacenable</mat-label>
+                <input formControlName="storable" matInput type="text" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Unidad de Medida de Compra</mat-label>
+                <input formControlName="purchase_measure_unit" matInput type="text" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Unidad de Medida de Venta</mat-label>
+                <input formControlName="sale_measure_unit" matInput type="text" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <button color="primary" mat-flat-button>Guardar</button>
+
+        </div>
+    </form>
+</mat-card>
