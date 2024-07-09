@@ -1,0 +1,92 @@
+<mat-card>
+    <mat-toolbar *ngIf="!isDialog">
+        <div>
+            <button (click)="backToListOfficeSecurityMeasures()" aria-label="Regresar" mat-icon-button>
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+
+    <form
+        (ngSubmit)="onSubmit()"
+        [formGroup]="officeSecurityMeasuresForm"
+        class="row justify-content-center"
+    >
+        <div class="col-6 d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>ID</mat-label>
+                <input formControlName="id" matInput type="number" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>ID de Staff</mat-label>
+                <input
+                    [viewClassBuilder]="staffProvider"
+                    title="Selecciona un Staff"
+                    o2cSinglePopup
+                    formControlName="staff_id"
+                    matInput
+                    type="text"
+                />
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>ID de Artículo</mat-label>
+                <input
+                    [viewClassBuilder]="articleProvider"
+                    title="Selecciona un Artículo"
+                    o2cSinglePopup
+                    formControlName="article_id"
+                    matInput
+                    type="text"
+                />
+                <mat-icon matSuffix>search</mat-icon>
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha de adquisición</mat-label>
+                <input
+                    (focus)="dateForm.open()"
+                    [matDatepicker]="dateForm"
+                    class="clickable"
+                    formControlName="adquisition_date"
+                    matInput
+                />
+                <mat-datepicker-toggle
+                    [for]="dateForm"
+                    matSuffix
+                ></mat-datepicker-toggle>
+                <mat-datepicker #dateForm></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Fecha de devolucion</mat-label>
+                <input
+                    (focus)="dateForm.open()"
+                    [matDatepicker]="dateForm"
+                    class="clickable"
+                    formControlName="return_date"
+                    matInput
+                />
+                <mat-datepicker-toggle
+                    [for]="dateForm"
+                    matSuffix
+                ></mat-datepicker-toggle>
+                <mat-datepicker #dateForm></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Comentarios de adquisición</mat-label>
+                <input formControlName="adquisition_comments" matInput type="text" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Comentarios de devolucion</mat-label>
+                <input formControlName="adquisition_comments" matInput type="text" />
+                <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+            
+            <button color="primary" mat-flat-button>Guardar</button>
+
+        </div>
+    </form>
+</mat-card>
