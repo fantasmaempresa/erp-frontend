@@ -29,6 +29,11 @@ const routes: Routes = [
         component: VulnerableOperationsFormComponent,
         data: { breadcrumb: 'Editar Operaciones vulnerables' },
       },
+      {
+        path: 'procedure/:idProcedure',
+        component: VulnerableOperationsFormComponent,
+        data: { breadcrumb: 'Nueva operación vulnerable' },
+      },
     ],
   },
 ];

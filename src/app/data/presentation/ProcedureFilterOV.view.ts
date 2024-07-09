@@ -1,10 +1,48 @@
-import { ViewActions, viewActions, viewCrud, viewLabel } from 'o2c_core';
-import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
-import { ProcedureService, ProcedureVulnerableOperationService } from '../services/procedure.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { ProcedureDto } from '../dto';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  ViewActions,
+  dialogLabel,
+  viewActions,
+  viewDialog,
+  viewHTML,
+  viewLabel,
+  viewMapTo,
+} from 'o2c_core';
 import { DialogGrantorsComponent } from 'src/app/shared/components/dialog-grantors/dialog-grantors.component';
+import { ClientDto, ProcedureDto, UserDto } from '../dto';
+import { GrantorDto } from '../dto/Grantor.dto';
+import { OperationsDto } from '../dto/Operations.dto';
+import { ProcedureCommentDto } from '../dto/ProcedureComment.dto';
+import { ProcessingIncomeDto } from '../dto/ProcessingIncome.dto';
+import { RegistrationProcedureDataDto } from '../dto/RegistrationProcedureData.dto';
+import { ProcedureVulnerableOperationService } from '../services/procedure.service';
+
+const goToVulnerableOperationsComplete = new ViewActions<ProcedureDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router
+      .navigate(
+        [
+          '../',
+          '../',
+          'vulnerableOperations',
+          'procedure',
+          (row as ProcedureDto).id,
+        ],
+        {
+          relativeTo: route,
+        },
+      );
+  },
+  'arrow_right_alt',
+  {
+    tooltip: 'Completar registro de operaciones vulnerables',
+    color: 'accent',
+    isVisible: (row) => row && row.id > 0,
+  },
+);
 
 const goToViewGrantors = new ViewActions<ProcedureDto>(
   async ({ row, injector }) => {
@@ -20,7 +58,7 @@ const goToViewGrantors = new ViewActions<ProcedureDto>(
   {
     tooltip: 'Ver otorgantes',
     color: 'accent',
-    isVisible: (row: ProcedureDto) => row.grantors.length > 0,
+    isVisible: (row: ProcedureDto) => row && row.grantors.length > 0,
   },
 );
 
@@ -28,12 +66,9 @@ const goToProcessingIncome = new ViewActions<ProcedureDto>(
   async ({ row, injector }) => {
     const router = injector.get(Router);
     const route = injector.get(ActivatedRoute);
-    await router.navigate(
-      ['../', (row as ProcedureDto).id, 'incoming'],
-      {
-        relativeTo: route,
-      },
-    );
+    await router.navigate(['../', (row as ProcedureDto).id, 'incoming'], {
+      relativeTo: route,
+    });
   },
   'input',
   {
@@ -109,11 +144,13 @@ const goToShapesLink = new ViewActions<ProcedureDto>(
     isVisible: (row) => row && row.id > 0,
   },
 );
+@viewDialog('Información del trámite')
 @viewActions({
   classProvider: ProcedureVulnerableOperationService,
   // registerName: 'Trámites con operación vulnerable',
   actions: [
-    ViewActions.ACTION_EDIT('../'),
+    // ViewActions.ACTION_EDIT('../'),
+    goToVulnerableOperationsComplete,
     goToDocumentsLink,
     goToShapesLink,
     goToComments,
@@ -127,17 +164,8 @@ export class ProcedureFilterOVView {
   @viewLabel('Expediente')
   name: string;
 
-  @viewLabel('Valor de operación')
-  value_operation: number;
-
-  @viewLabel('Fecha')
-  date_proceedings: string;
-
   @viewLabel('Instrumento')
   instrument: string;
-
-  @viewLabel('Fecha')
-  date: string;
 
   @viewLabel('Volumen')
   volume: string;
@@ -148,7 +176,17 @@ export class ProcedureFilterOVView {
   @viewLabel('Folio de final')
   folio_max: number;
 
-  @viewLabel('Credito')
+  @viewLabel('Fecha de Firma')
+  date_proceedings: string;
+
+  @dialogLabel('Valor de operación')
+  value_operation: number;
+
+  // @viewLabel('Fecha')
+  @dialogLabel('Fecha')
+  date: string;
+
+  // @viewLabel('Credito')
   credit: string;
 
   observation: string;
@@ -163,11 +201,80 @@ export class ProcedureFilterOVView {
 
   staff_id: number;
 
+  @viewLabel('Datos de registro')
+  @viewHTML((registration_procedure_data) => {
+    // @ts-ignore
+    const count = registration_procedure_data.length ?? 0;
+    // @ts-ignore
+    if (registration_procedure_data.length == 0)
+      return `<div style=" display: inline-block ;padding: 1.25rem; background: #f91a1a;margin-top: 1rem; border-radius: 50%"></div>`;
+    else
+      return `<div style="display: inline-block; padding: 1.5rem; background-color: #3be30e; margin-top: 1rem; border-radius: 50%; line-height: 1; text-align: center; font-size: 1rem;">${count}</div>`;
+  })
+  registration_procedure_data: RegistrationProcedureDataDto[];
+
+  @viewLabel('Datos de ingresos')
+  @viewHTML((processing_income) => {
+    // @ts-ignore
+    const count = processing_income.length ?? 0;
+    // @ts-ignore
+    if (processing_income.length == 0)
+      return `<div style="display: inline-block ;padding: 1.25rem; background: #f91a1a;margin-top: 1rem; border-radius: 50%"></div>`;
+    // return `<div style="display: inline-block ;padding: 1.50rem; background: #3be30e;margin-top: 1rem; border-radius: 50%"><span style="font-size: xx-small">${count}</span></div>`;
+    else
+      return `<div style="display: inline-block; padding: 1.5rem; background-color: #3be30e; margin-top: 1rem; border-radius: 50%; line-height: 1; text-align: center; font-size: 1rem;">${count}</div>`;
+  })
+  processing_income: ProcessingIncomeDto[];
+
+  @viewLabel('Comentarios')
+  @viewHTML((comments) => {
+    // @ts-ignore
+    const count = comments.length ?? 0;
+    // @ts-ignore
+    if (comments.length == 0)
+      return `<div style=" display: inline-block ;padding: 1.25rem; background: #f91a1a;margin-top: 1rem; border-radius: 50%"></div>`;
+    else
+      return `<div style="display: inline-block; padding: 1.5rem; background-color: #3be30e; margin-top: 1rem; border-radius: 50%; line-height: 1; text-align: center; font-size: 1rem;">${count}</div>`;
+  })
+  comments: ProcedureCommentDto[];
+
+  @dialogLabel('Operaciones')
+  @viewHTML((operations: any) => {
+    let html: string = '';
+    for (let operation of operations) {
+      html += `<span style="padding: 1rem; background: #0d2b3e; color: #eee ; border-radius: 10px; font-size: 1rem;">${operation.name}</span>`;
+    }
+    return html;
+  })
+  operations: OperationsDto[];
+
+  @dialogLabel('Otorgantes de trámite')
+  @viewHTML((grantors: any) => {
+    let html: string = '';
+    // @ts-ignore
+    for (let grantor of grantors) {
+      html += `<span style="padding: 1rem; background: #0d2b3e; color: #eee ; border-radius: 10px; font-size: 1rem;">${grantor.name} ${grantor.father_last_name} ${grantor.mother_last_name}</span>`;
+    }
+    return html;
+  })
+  grantors: GrantorDto[];
+
+  @dialogLabel('Cliente')
+  @viewMapTo((client: any) => client.name)
+  client: ClientDto;
+
+  @dialogLabel('Usuario quien registro')
+  @viewMapTo((user: any) => user.email)
+  user: UserDto;
+
+  @dialogLabel('Fecha de creación de registro')
+  created_at: Date;
+
   constructor(
     name: string,
+    instrument: string,
     value_operation: number,
     date_proceedings: string,
-    instrument: string,
     date: string,
     volume: string,
     folio_min: number,
@@ -179,15 +286,24 @@ export class ProcedureFilterOVView {
     place_id: number,
     client_id: number,
     staff_id: number,
+    registration_procedure_data: RegistrationProcedureDataDto[],
+    processing_income: ProcessingIncomeDto[],
+    comments: ProcedureCommentDto[],
+    grantors: GrantorDto[],
+    client: ClientDto,
+    user: UserDto,
+    created_at: Date,
+    operations: OperationsDto[],
   ) {
     this.name = name;
-    this.value_operation = value_operation;
-    this.date_proceedings = date_proceedings;
     this.instrument = instrument;
-    this.date = date;
     this.volume = volume;
     this.folio_min = folio_min;
     this.folio_max = folio_max;
+    this.date_proceedings = date_proceedings;
+    this.operations = operations;
+    this.value_operation = value_operation;
+    this.date = date;
     this.credit = credit;
     this.observation = observation;
     this.operation_id = operation_id;
@@ -195,5 +311,12 @@ export class ProcedureFilterOVView {
     this.place_id = place_id;
     this.client_id = client_id;
     this.staff_id = staff_id;
+    this.registration_procedure_data = registration_procedure_data;
+    this.processing_income = processing_income;
+    this.comments = comments;
+    this.grantors = grantors;
+    this.client = client;
+    this.user = user;
+    this.created_at = created_at;
   }
 }

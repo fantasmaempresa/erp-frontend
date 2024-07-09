@@ -170,6 +170,11 @@ export class VulnerableOperationsFormComponent implements OnDestroy {
         },
       });
     }
+
+    const idProcedure = Number(this.route.snapshot.params.idProcedure);
+    if (!isNaN(idProcedure)) {
+      this.form.get('procedure_id')?.setValue(idProcedure);
+    }
   }
 
   loadVulnerableOperations($event: any) {
@@ -207,9 +212,8 @@ export class VulnerableOperationsFormComponent implements OnDestroy {
   }
 
   onSubmit(send = false) {
-    
-    if(!send) return;
-    
+    if (!send) return;
+
     this.form
       .get('vulnerable_operation_data')
       ?.setValue(this.formComponent.formBuilderComponent.form.value);
@@ -219,9 +223,7 @@ export class VulnerableOperationsFormComponent implements OnDestroy {
 
     let request$: Observable<any>;
     if (!this.isEdit) {
-      request$ = this._vulnerableOperationsService.save(
-        this.form.value,
-      );
+      request$ = this._vulnerableOperationsService.save(this.form.value);
     } else {
       request$ = this._vulnerableOperationsService.update(this.form.value);
     }
@@ -238,14 +240,15 @@ export class VulnerableOperationsFormComponent implements OnDestroy {
       error: async (error) => {
         console.log(error);
         if (error.error.code != null && error.error.code == 422) {
-          if (typeof(error.error.error) === 'object') {
+          if (typeof error.error.error === 'object') {
             let message = '';
 
             for (let item in error.error.error) {
               message = message + '\n' + error.error.error[item];
             }
 
-            await MessageHelper.errorMessage(message);          }else{
+            await MessageHelper.errorMessage(message);
+          } else {
             await MessageHelper.errorMessage(error.error.error);
           }
         } else if (error.error.code != null && error.error.code == 409) {

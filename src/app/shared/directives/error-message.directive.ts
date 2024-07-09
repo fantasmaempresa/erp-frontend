@@ -28,6 +28,7 @@ export class ErrorMessageDirective implements AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void {
     const inputRef = this._inj.get(MatFormField);
+    if (typeof inputRef._control?.ngControl === 'undefined') return;
     this.control = inputRef._control.ngControl?.control;
     const target = inputRef._elementRef.nativeElement;
 
@@ -48,6 +49,8 @@ export class ErrorMessageDirective implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (typeof this.classWatcher === 'undefined') return;
+
     this.classWatcher.disconnect();
   }
 }

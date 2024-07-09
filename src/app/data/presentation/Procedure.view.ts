@@ -1,6 +1,14 @@
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ViewActions, dialogLabel, viewCrud, viewDialog, viewHTML, viewLabel, viewMapTo } from 'o2c_core';
+import {
+  ViewActions,
+  dialogLabel,
+  viewCrud,
+  viewDialog,
+  viewHTML,
+  viewLabel,
+  viewMapTo,
+} from 'o2c_core';
 import { GrantorPercentageDialogComponent } from 'src/app/features/procedures/pages/grantor-percentage-dialog/grantor-percentage-dialog.component';
 import { DialogGrantorsComponent } from 'src/app/shared/components/dialog-grantors/dialog-grantors.component';
 import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
@@ -10,6 +18,7 @@ import { ProcessingIncomeDto } from '../dto/ProcessingIncome.dto';
 import { RegistrationProcedureDataDto } from '../dto/RegistrationProcedureData.dto';
 import { ProcedureService } from '../services/procedure.service';
 import { GrantorDto } from '../dto/Grantor.dto';
+import { OperationsDto } from '../dto/Operations.dto';
 
 const goToAssingPercentageGrantor = new ViewActions<ProcedureDto>(
   async ({ row, injector }) => {
@@ -165,7 +174,7 @@ export class ProcedureView {
   @viewLabel('Fecha de Firma')
   date_proceedings: string;
 
-  @viewLabel('Valor de operación')
+  @dialogLabel('Valor de operación')
   value_operation: number;
 
   // @viewLabel('Fecha')
@@ -190,52 +199,71 @@ export class ProcedureView {
   @viewLabel('Datos de registro')
   @viewHTML((registration_procedure_data) => {
     // @ts-ignore
-    if (registration_procedure_data.length == 0) 
+    const count = registration_procedure_data.length ?? 0;
+    // @ts-ignore
+    if (registration_procedure_data.length == 0)
       return `<div style=" display: inline-block ;padding: 1.25rem; background: #f91a1a;margin-top: 1rem; border-radius: 50%"></div>`;
-     else 
-      return `<div style=" display: inline-block ;padding: 1.25rem; background: #3be30e;margin-top: 1rem; border-radius: 50%"></div>`;
-    
+    else
+      return `<div style="display: inline-block; padding: 1.5rem; background-color: #3be30e; margin-top: 1rem; border-radius: 50%; line-height: 1; text-align: center; font-size: 1rem;">${count}</div>`;
   })
   registration_procedure_data: RegistrationProcedureDataDto[];
-
 
   @viewLabel('Datos de ingresos')
   @viewHTML((processing_income) => {
     // @ts-ignore
-    if (processing_income.length == 0) 
-      return `<div style=" display: inline-block ;padding: 1.25rem; background: #f91a1a;margin-top: 1rem; border-radius: 50%"></div>`;
-     else 
-      return `<div style=" display: inline-block ;padding: 1.25rem; background: #3be30e;margin-top: 1rem; border-radius: 50%"></div>`;
-    
+    const count = processing_income.length ?? 0;
+    // @ts-ignore
+    if (processing_income.length == 0)
+      return `<div style="display: inline-block ;padding: 1.25rem; background: #f91a1a;margin-top: 1rem; border-radius: 50%"></div>`;
+    // return `<div style="display: inline-block ;padding: 1.50rem; background: #3be30e;margin-top: 1rem; border-radius: 50%"><span style="font-size: xx-small">${count}</span></div>`;
+    else
+      return `<div style="display: inline-block; padding: 1.5rem; background-color: #3be30e; margin-top: 1rem; border-radius: 50%; line-height: 1; text-align: center; font-size: 1rem;">${count}</div>`;
   })
   processing_income: ProcessingIncomeDto[];
-
 
   @viewLabel('Comentarios')
   @viewHTML((comments) => {
     // @ts-ignore
-    if (comments.length == 0) 
+    const count = comments.length ?? 0;
+    // @ts-ignore
+    if (comments.length == 0)
       return `<div style=" display: inline-block ;padding: 1.25rem; background: #f91a1a;margin-top: 1rem; border-radius: 50%"></div>`;
-     else 
-      return `<div style=" display: inline-block ;padding: 1.25rem; background: #3be30e;margin-top: 1rem; border-radius: 50%"></div>`;
-    
+    else
+      return `<div style="display: inline-block; padding: 1.5rem; background-color: #3be30e; margin-top: 1rem; border-radius: 50%; line-height: 1; text-align: center; font-size: 1rem;">${count}</div>`;
   })
   comments: ProcedureCommentDto[];
 
+  @dialogLabel('Operaciones')
+  @viewHTML((operations: any) => {
+    let html: string = '';
+    for(let operation of operations){
+      html += `<span style="padding: 1rem; background: #0d2b3e; color: #eee ; border-radius: 10px; font-size: 1rem;">${operation.name}</span>`;
+    }
+    return html;
+  })
+  operations: OperationsDto[];
+
   @dialogLabel('Otorgantes de trámite')
-  @viewMapTo((grantors: any) => grantors.map((grantor: GrantorDto) => '[ '+ grantor.name + ' ' + grantor.father_last_name + ' ' + grantor.mother_last_name + '], '))
+  @viewHTML((grantors: any) => {
+    let html: string = '';
+    // @ts-ignore
+    for(let grantor of grantors){
+      html += `<span style="padding: 1rem; background: #0d2b3e; color: #eee ; border-radius: 10px; font-size: 1rem;">${grantor.name} ${grantor.father_last_name} ${grantor.mother_last_name}</span>`;
+    }
+    return html;
+  })
   grantors: GrantorDto[];
 
   @dialogLabel('Cliente')
   @viewMapTo((client: any) => client.name)
-  client: ClientDto
+  client: ClientDto;
 
   @dialogLabel('Usuario quien registro')
   @viewMapTo((user: any) => user.email)
-  user: UserDto
+  user: UserDto;
 
   @dialogLabel('Fecha de creación de registro')
-  created_at: Date  
+  created_at: Date;
 
   constructor(
     name: string,
@@ -260,6 +288,7 @@ export class ProcedureView {
     client: ClientDto,
     user: UserDto,
     created_at: Date,
+    operations: OperationsDto[],
   ) {
     this.name = name;
     this.instrument = instrument;
@@ -267,6 +296,7 @@ export class ProcedureView {
     this.folio_min = folio_min;
     this.folio_max = folio_max;
     this.date_proceedings = date_proceedings;
+    this.operations = operations;
     this.value_operation = value_operation;
     this.date = date;
     this.credit = credit;

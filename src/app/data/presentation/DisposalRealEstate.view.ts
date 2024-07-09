@@ -1,25 +1,73 @@
 import {
   FormFieldType,
-  ViewsModule,
+  MessageHelper,
+  ViewActions,
   formField,
   formTable,
   popUpSelector,
   viewCrud,
   viewLabel,
-  viewMapTo,
+  viewMapTo
 } from 'o2c_core';
-import { DisposalRealEstateService } from '../services/disposal-real-estate.service';
 import { DEFAULT_ROUTE_CONFIGURATION } from 'src/app/core/constants/routes.constants';
 import { NationalConsumerPriceIndexDto } from '../dto';
 import { GrantorDto } from '../dto/Grantor.dto';
-import { TypeDisposalOperationDto } from '../dto/TypeDisposalOperation.dto';
 import { RateDto } from '../dto/Rate.dto';
+import { TypeDisposalOperationDto } from '../dto/TypeDisposalOperation.dto';
+import { DisposalRealEstateService } from '../services/disposal-real-estate.service';
 import { GrantorView } from './Grantor.view';
+import { DisposalRealEstateDto } from '../dto/DisposalRealEstate.dto';
+import Swal from 'sweetalert2';
+
+
+const generetePdf = new ViewActions<DisposalRealEstateDto>(
+  async ({ row, injector }) => {
+    const disposal = row as DisposalRealEstateDto;
+    const disposalRealService = injector.get(DisposalRealEstateService);
+    Swal.showLoading();
+    disposalRealService.generateReport(disposal.id).subscribe({
+      next: async (response) => {
+        // @ts-ignore
+        const blob = new Blob([response.body], {
+          type: response.headers.get('content-type'),
+        });
+        // @ts-ignore
+        const filename = 'Calculo de enajenación-';
+        
+
+        // Crea un enlace temporal y simula un clic para descargar el archivo
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+        URL.revokeObjectURL(link.href);
+        await MessageHelper.successMessage(
+          'Reporte Generado',
+          'El reporte se genero con éxito',
+        );
+      },
+      error: async () => {
+        await MessageHelper.errorMessage(
+          'No se puede generar el reporte en este momento intente más tarde',
+        );
+      },
+    });
+    
+
+  },
+  'download',
+  {
+    tooltip: 'Generar PDF',
+    color: 'accent',
+    isVisible: (row: DisposalRealEstateDto) => row.id !== null,
+  },
+);
 
 @viewCrud({
   classProvider: DisposalRealEstateService,
   registerName: 'Enajenación de Bienes',
   route: DEFAULT_ROUTE_CONFIGURATION,
+  actions: [generetePdf],
 })
 export class DisposalRealEstateView {
   @viewLabel('Valor de enajenación')
