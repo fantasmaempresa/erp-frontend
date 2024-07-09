@@ -79,9 +79,7 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
       });
     }
   }
-  ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
-  }
+  ngOnDestroy() {}
 
   ngOnInit(): void {
     this.grantorForm.get('type')?.valueChanges.subscribe((value) => {
@@ -122,7 +120,7 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
       error: async (error) => {
         console.log(error);
         if (error.error.code != null && error.error.code == 422) {
-          if (typeof(error.error.error) === 'object') {
+          if (typeof error.error.error === 'object') {
             let message = '';
 
             for (let item in error.error.error) {
@@ -130,7 +128,7 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
             }
 
             await MessageHelper.errorMessage(message);
-          }else{
+          } else {
             await MessageHelper.errorMessage(error.error.error);
           }
         } else if (error.error.code != null && error.error.code == 409) {

@@ -37,7 +37,6 @@ export class IsoDocumentationFormComponent implements OnDestroy {
     }
   }
   ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
   }
 
   async back() {

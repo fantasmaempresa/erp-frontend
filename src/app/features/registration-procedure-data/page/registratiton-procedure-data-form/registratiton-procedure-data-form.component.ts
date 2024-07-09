@@ -78,7 +78,6 @@ export class RegistratitonProcedureDataFormComponent implements OnDestroy {
     });
   }
   ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
   }
 
   async back() {

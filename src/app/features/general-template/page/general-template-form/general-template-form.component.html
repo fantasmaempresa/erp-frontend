@@ -1,0 +1,94 @@
+<mat-card>
+    <mat-toolbar>
+      <div>
+        <button (click)="back()" aria-label="Regresar" mat-icon-button>
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+    <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
+      <mat-accordion>
+        <mat-expansion-panel
+          (opened)="setStep(0)"
+          [disabled]="step !== 0"
+          [expanded]="step === 0"
+          hideToggle
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>Datos Generales</mat-panel-title>
+            <mat-panel-description
+              >Nombre de la plantilla
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+  
+          <div class="d-flex flex-column form-container">
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre de la plantillas</mat-label>
+              <input formControlName="name" matInput type="text" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+          </div>
+  
+          <mat-action-row>
+            <button (click)="nextStep()" color="primary" mat-button type="button">
+              Formulario de la plantilla
+            </button>
+          </mat-action-row>
+        </mat-expansion-panel>
+        <mat-expansion-panel
+          (opened)="setStep(1)"
+          [disabled]="step !== 1"
+          [expanded]="step === 1"
+          hideToggle
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>Formulario de plantilla</mat-panel-title>
+            <mat-panel-description
+              >Construya el formulario de la plantilla
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+  
+          <app-dynamic-form-builder
+            formControlName="form"
+          ></app-dynamic-form-builder>
+  
+          <mat-action-row>
+            <button (click)="prevStep()" color="primary" mat-button type="button">
+              Datos Generales
+            </button>
+            <button (click)="nextStep()" color="primary" mat-button type="button">
+              Vista Previa
+            </button>
+          </mat-action-row>
+        </mat-expansion-panel>
+  
+        <mat-expansion-panel
+          (opened)="setStep(2)"
+          [disabled]="step !== 2"
+          [expanded]="step === 2"
+          hideToggle
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>Vista Previa</mat-panel-title>
+            <mat-panel-description
+              >Visualice el formulario de la plantilla
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+  
+          <app-preview-form-builder
+            [formFields]="form$ | async"
+          ></app-preview-form-builder>
+  
+          <mat-action-row>
+            <button (click)="prevStep()" color="primary" mat-button type="button">
+              Formulario de plantilla
+            </button>
+            <button color="primary" mat-flat-button>
+              {{ edit ? 'Actualizar' : 'Crear' }} plantilla
+            </button>
+          </mat-action-row>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </form>
+  </mat-card>
+  

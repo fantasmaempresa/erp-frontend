@@ -26,6 +26,52 @@
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>Categoria de operación</mat-label>
+        <input
+          [viewClassBuilder]="categoryOperationProvider"
+          title="Selecciona una Categoria"
+          o2cSinglePopup
+          formControlName="category_operation_id"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <div class="row">
+        <div class="col-9">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Documentos</mat-label>
+            <input
+              [viewClassBuilder]="documentProvider"
+              title="Selecciona un Otorgante"
+              o2cMultiPopup
+              formControlName="documents"
+              matInput
+              type="text"
+            />
+            <mat-icon matSuffix>search</mat-icon>
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-3">
+          <button
+            style="width: 100%"
+            type="button"
+            color="primary"
+            (click)="addItem()"
+            mat-raised-button
+          >
+            <mat-icon>add</mat-icon>
+            Nuevo Documento
+          </button>
+        </div>
+      </div>
+
+
+
       <button color="primary" mat-flat-button>Guardar</button>
     </div>
   </form>

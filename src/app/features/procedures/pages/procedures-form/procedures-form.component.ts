@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import {
   AbstractControl,
   UntypedFormControl,
@@ -25,6 +25,7 @@ import { DocumentFormComponent } from '../../../documents/page/document-form/doc
 import { PlaceFormComponent } from '../../../place/page/place-form/place-form.component';
 import { StaffMemberFormComponent } from '../../../staff/page/staff-member-form/staff-member-form.component';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { OperationService } from 'src/app/data/services/operation.service';
 
 @AutoUnsubscribe()
 @Component({
@@ -32,7 +33,7 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   templateUrl: './procedures-form.component.html',
   styleUrls: ['./procedures-form.component.scss'],
 })
-export class ProceduresFormComponent {
+export class ProceduresFormComponent implements OnDestroy {
   procedureForm = new UntypedFormGroup(
     {
       name: new UntypedFormControl('', {
@@ -56,7 +57,7 @@ export class ProceduresFormComponent {
       observation: new UntypedFormControl('', []),
       documents: new UntypedFormControl('', []),
       grantors: new UntypedFormControl('', [Validators.required]),
-      operation_id: new UntypedFormControl('', [Validators.required]),
+      operations: new UntypedFormControl('', [Validators.required]),
       place_id: new UntypedFormControl('', [Validators.required]),
       client_id: new UntypedFormControl('', [Validators.required]),
       staff_id: new UntypedFormControl('', [Validators.required]),
@@ -108,6 +109,7 @@ export class ProceduresFormComponent {
     private route: ActivatedRoute,
     private procedureService: ProcedureService,
     public dialog: MatDialog,
+    private _operationService: OperationService,
   ) {
     const id = Number(this.route.snapshot.params.id);
     if (!isNaN(id)) {
@@ -119,6 +121,18 @@ export class ProceduresFormComponent {
         },
       });
     }
+    
+    this.procedureForm.get('operation_id')?.valueChanges.subscribe((value) => {
+      this._operationService.fetch(value).subscribe({
+        next: (operation) => {
+          if(typeof operation.config.documents_required !== 'undefined'){
+            this.procedureForm.get('documents')?.setValue(operation.config.documents_required);
+          }
+        },
+      })
+    })
+  }
+  ngOnDestroy(): void {
   }
 
   async backToListDocuments() {

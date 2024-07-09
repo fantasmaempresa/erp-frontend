@@ -67,7 +67,6 @@ export class ClientLinkFormComponent implements OnDestroy {
     }
   }
   ngOnDestroy(): void {
-    throw new Error('Method not implemented.');
   }
 
   async back() {

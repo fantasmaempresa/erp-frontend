@@ -209,19 +209,25 @@ const routes: Routes = [
       {
         path: 'isoDocumentation',
         loadChildren: () =>
-          import('./features/iso-documentation/iso-documentation.module').then((m) => m.IsoDocumentationModule),
+          import('./features/iso-documentation/iso-documentation.module').then(
+            (m) => m.IsoDocumentationModule,
+          ),
         data: { breadcrumb: 'Documentación interna norma ISO' },
       },
       {
         path: 'nationalConsumer',
         loadChildren: () =>
-          import('./features/national-consumer-price-index/national-consumer-price-index.module').then((m) => m.NationalConsumerPriceIndexModule),
+          import(
+            './features/national-consumer-price-index/national-consumer-price-index.module'
+          ).then((m) => m.NationalConsumerPriceIndexModule),
         data: { breadcrumb: 'Precio al Consumidor Nacional' },
       },
       {
         path: 'inversionUnit',
         loadChildren: () =>
-          import('./features/inversion-unit/inversion-unit.module').then((m) => m.InversionUnitModule),
+          import('./features/inversion-unit/inversion-unit.module').then(
+            (m) => m.InversionUnitModule,
+          ),
         data: { breadcrumb: 'Unidad de inversión' },
       },
       {
@@ -239,50 +245,80 @@ const routes: Routes = [
       {
         path: 'vulnerableOperation',
         loadChildren: () =>
-          import('./features/vulnerable-operations/vulnerable-operations.module').then((m) => m.VulnerableOperationsModule),
+          import(
+            './features/vulnerable-operations/vulnerable-operations.module'
+          ).then((m) => m.VulnerableOperationsModule),
         data: { breadcrumb: 'Operaciones vulnerables' },
       },
       {
         path: 'disposalOperation',
         loadChildren: () =>
-          import('./features/type-disposal-operation/type-disposal-operation.module').then((m) => m.TypeDisposalOperationModule),
+          import(
+            './features/type-disposal-operation/type-disposal-operation.module'
+          ).then((m) => m.TypeDisposalOperationModule),
         data: { breadcrumb: 'Operaciones de eliminación' },
       },
       {
         path: 'disposalRealEstate',
         loadChildren: () =>
-          import('./features/disposal-real-estate/disposal-real-estate.module').then((m) => m.DisposalRealEstateModule),
-        data: { breadcrumb: 'Enajenación de Bienes'},
+          import(
+            './features/disposal-real-estate/disposal-real-estate.module'
+          ).then((m) => m.DisposalRealEstateModule),
+        data: { breadcrumb: 'Enajenación de Bienes' },
       },
       {
         path: 'article',
         loadChildren: () =>
-          import('./features/articles/articles.module').then((m) => m.ArticlesModule),
-        data: { breadcrumb: 'Artículos'},
+          import('./features/articles/articles.module').then(
+            (m) => m.ArticlesModule,
+          ),
+        data: { breadcrumb: 'Artículos' },
       },
       {
         path: 'line',
         loadChildren: () =>
           import('./features/line/line.module').then((m) => m.LineModule),
-        data: { breadcrumb: 'Línea'},
+        data: { breadcrumb: 'Línea' },
       },
       {
         path: 'warehouse',
         loadChildren: () =>
-          import('./features/warehouse/warehouse.module').then((m) => m.WarehouseModule),
-        data: { breadcrumb: 'Almacén'},
+          import('./features/warehouse/warehouse.module').then(
+            (m) => m.WarehouseModule,
+          ),
+        data: { breadcrumb: 'Almacén' },
       },
       {
         path: 'inventory',
         loadChildren: () =>
-          import('./features/inventory/inventory.module').then((m) => m.InventoryModule),
-        data: { breadcrumb: 'Inventario'},
+          import('./features/inventory/inventory.module').then(
+            (m) => m.InventoryModule,
+          ),
+        data: { breadcrumb: 'Inventario' },
       },
       {
         path: 'movementTracking',
         loadChildren: () =>
-          import('./features/movement-tracking/movement-tracking.module').then((m) => m.MovementTrackingModule),
-        data: { breadcrumb: 'Seguimiento de Movimientos'},
+          import('./features/movement-tracking/movement-tracking.module').then(
+            (m) => m.MovementTrackingModule,
+          ),
+        data: { breadcrumb: 'Seguimiento de Movimientos' },
+      },
+      {
+        path: 'category-operation',
+        loadChildren: () =>
+          import(
+            './features/category-operation/category-operation.module'
+          ).then((m) => m.CategoryOperationModule),
+        data: { breadcrumb: 'Catégorias de operación' },
+      },
+      {
+        path: 'generalTemplates',
+        loadChildren: () =>
+          import('./features/general-template/general-template.module').then(
+            (m) => m.GeneralTemplateModule,
+          ),
+        data: { breadcrumb: 'Plantillas generales' },
       },
       {
         path: '**',
