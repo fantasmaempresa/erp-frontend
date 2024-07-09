@@ -1,21 +1,18 @@
 import { Component, OnDestroy, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import {
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { DisposalRealEstateService } from 'src/app/data/services/disposal-real-estate.service';
-import { Observable } from 'rxjs';
-import { FORM_CLAZZ, FormComponent, MessageHelper } from 'o2c_core';
-import { DisposalRealEstateDto } from 'src/app/data/dto/DisposalRealEstate.dto';
-import { NationalConsumerPriceIndexView } from 'src/app/data/presentation/NationalConsumerPriceIndex.view';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { StakeView } from 'src/app/data/presentation/Stake.view';
-import { GrantorView } from 'src/app/data/presentation/Grantor.view';
-import { RateView } from 'src/app/data/presentation/Rate.view';
-import { TypeDisposalOperationView } from 'src/app/data/presentation/TypeDisposalOperation.view';
+import { FORM_CLAZZ, FormComponent, MessageHelper } from 'o2c_core';
+import { Observable } from 'rxjs';
+import { DisposalRealEstateDto } from 'src/app/data/dto/DisposalRealEstate.dto';
 import { landProportionAcquiriersForm } from 'src/app/data/presentation/DisposalRealEstate.view';
+import { GrantorView } from 'src/app/data/presentation/Grantor.view';
+import { TypeDisposalOperationView } from 'src/app/data/presentation/TypeDisposalOperation.view';
+import { DisposalRealEstateService } from 'src/app/data/services/disposal-real-estate.service';
 
 @AutoUnsubscribe()
 @Component({

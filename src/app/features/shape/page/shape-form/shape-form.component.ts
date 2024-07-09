@@ -21,6 +21,7 @@ import { GrantorFormComponent } from '../../../grantor/page/grantor-form/grantor
 import { OperationView } from 'src/app/data/presentation/Operation.view';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { ProcedureService } from 'src/app/data/services/procedure.service';
+import { ProcedureDto } from 'src/app/data/dto';
 
 @AutoUnsubscribe()
 @Component({
@@ -143,8 +144,8 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
 
     if (!this.isEdit) {
       this.shapeForm.get("procedure_id")?.valueChanges.subscribe((value) => {
-        this._procedureService.fetch(value).subscribe((procedure) => {
-          this.shapeForm.get("signature_date")?.setValue(procedure.date);
+        this._procedureService.fetch(value).subscribe((procedure : ProcedureDto) => {
+          this.shapeForm.get("signature_date")?.setValue(procedure.date_proceedings);
           this.shapeForm.get("operation_value")?.setValue(procedure.value_operation);
           this.shapeForm.get("scriptures")?.setValue(procedure.instrument);
         })

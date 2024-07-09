@@ -35,6 +35,7 @@ export class GrantorLinkFormComponent {
     civil_status: new UntypedFormControl('', [Validators.required]),
     municipality: new UntypedFormControl('', [Validators.required]),
     colony: new UntypedFormControl('', [Validators.required]),
+    street: new UntypedFormControl('', [Validators.required]),
     no_int: new UntypedFormControl('', []),
     no_ext: new UntypedFormControl('', [Validators.required]),
     no_locality: new UntypedFormControl('', [Validators.required]),

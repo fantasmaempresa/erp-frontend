@@ -1,8 +1,11 @@
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
+  FormFieldType,
   ViewActions,
+  advancedFilters,
   dialogLabel,
+  formField,
   viewCrud,
   viewDialog,
   viewHTML,
@@ -140,6 +143,33 @@ const goToShapesLink = new ViewActions<ProcedureDto>(
   },
 );
 
+export class AdvanceFilterProcedure{
+  @formField({
+    label: 'Libro(s) separar por coma',
+    formFieldType: FormFieldType.TEXT,
+  })
+  book: string;
+
+  @formField({
+    label: 'Fecha',
+    formFieldType: FormFieldType.DATE,
+  })
+  date_min: Date;
+
+  @formField({
+    label: 'Fecha',
+    formFieldType: FormFieldType.DATE,
+  })
+  date_max: Date;
+
+  constructor(book: string, date_min: Date, date_max: Date) {
+    this.book = book;
+    this.date_min = date_min;
+    this.date_max = date_max;
+  }
+}
+
+@advancedFilters(AdvanceFilterProcedure)
 @viewDialog('Información del trámite')
 @viewCrud({
   classProvider: ProcedureService,
@@ -184,6 +214,7 @@ export class ProcedureView {
   // @viewLabel('Credito')
   credit: string;
 
+  @dialogLabel('Observaciones')
   observation: string;
 
   operation_id: number;
@@ -300,7 +331,6 @@ export class ProcedureView {
     this.value_operation = value_operation;
     this.date = date;
     this.credit = credit;
-    this.observation = observation;
     this.operation_id = operation_id;
     this.user_id = user_id;
     this.place_id = place_id;
@@ -313,5 +343,8 @@ export class ProcedureView {
     this.client = client;
     this.user = user;
     this.created_at = created_at;
+    this.observation = observation;
   }
 }
+
+

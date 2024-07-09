@@ -11,7 +11,6 @@
     </div>
   </mat-toolbar>
   <form (ngSubmit)="onSubmit()" [formGroup]="grantorForm">
-    
     <div class="row justify-content-center">
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
@@ -20,7 +19,7 @@
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
       </div>
-
+      
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
           <mat-label>Apellido Paterno</mat-label>
@@ -36,9 +35,7 @@
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
       </div>
-    </div>
 
-    <div class="row justify-content-center">
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
           <mat-label>Número de télefono</mat-label>
@@ -62,9 +59,7 @@
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
       </div>
-    </div>
 
-    <div class="row justify-content-center">
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
           <mat-label>Fecha de Nacimiento</mat-label>
@@ -98,9 +93,7 @@
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
       </div>
-    </div>
 
-    <div class="row justify-content-center">
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
           <mat-label>CURP</mat-label>
@@ -119,14 +112,20 @@
 
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
-          <mat-label>Calle y Colonia</mat-label>
+          <mat-label>Calle</mat-label>
+          <input formControlName="street" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Colonia</mat-label>
           <input formControlName="colony" matInput type="text" />
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
       </div>
-    </div>
 
-    <div class="row justify-content-center">
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
           <mat-label>Número exterior</mat-label>
@@ -150,9 +149,7 @@
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
       </div>
-    </div>
 
-    <div class="row justify-content-center">
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
           <mat-label>Localidad</mat-label>
@@ -176,9 +173,7 @@
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
       </div>
-    </div>
-    
-    <div class="row justify-content-center">
+
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
           <mat-label>Participación</mat-label>
@@ -196,6 +191,5 @@
       </div>
       <button color="primary" mat-flat-button>Guardar</button>
     </div>
-
   </form>
 </mat-card>

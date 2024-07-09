@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { VulnerableOperationsRoutingModule } from './vulnerable-operations-routing.module';
 import { VulnerableOperationsFormComponent } from './page/vulnerable-operations-form/vulnerable-operations-form.component';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { ViewsModule, FormsModule } from 'o2c_core';
+import { ViewsModule, FormsModule, FormComponent } from 'o2c_core';
 
 @NgModule({
   declarations: [VulnerableOperationsFormComponent],
@@ -14,6 +14,7 @@ import { ViewsModule, FormsModule } from 'o2c_core';
     SharedModule,
     ViewsModule,
     FormsModule,
+    FormComponent,
   ],
 })
 export class VulnerableOperationsModule {}

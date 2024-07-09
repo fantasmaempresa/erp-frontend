@@ -34,6 +34,7 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
     curp: new UntypedFormControl('', []),
     civil_status: new UntypedFormControl('', []),
     municipality: new UntypedFormControl('', []),
+    street: new UntypedFormControl('', []),
     colony: new UntypedFormControl('', []),
     no_int: new UntypedFormControl('', []),
     no_ext: new UntypedFormControl('', []),
@@ -186,6 +187,8 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
     this.grantorForm.get('municipality')?.updateValueAndValidity();
     this.grantorForm.get('colony')?.clearValidators();
     this.grantorForm.get('colony')?.updateValueAndValidity();
+    this.grantorForm.get('street')?.clearValidators();
+    this.grantorForm.get('street')?.updateValueAndValidity();
     this.grantorForm.get('no_int')?.clearValidators();
     this.grantorForm.get('no_int')?.updateValueAndValidity();
     this.grantorForm.get('no_ext')?.clearValidators();
@@ -206,8 +209,8 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
       this.grantorForm.get('rfc')?.updateValueAndValidity();
       this.grantorForm.get('colony')?.setValidators([Validators.required]);
       this.grantorForm.get('colony')?.updateValueAndValidity();
-      this.grantorForm.get('no_int')?.setValidators([Validators.required]);
-      this.grantorForm.get('no_int')?.updateValueAndValidity();
+      this.grantorForm.get('street')?.setValidators([Validators.required]);
+      this.grantorForm.get('street')?.updateValueAndValidity();
       this.grantorForm.get('no_ext')?.setValidators([Validators.required]);
       this.grantorForm.get('no_ext')?.updateValueAndValidity();
       this.grantorForm.get('no_locality')?.setValidators([Validators.required]);
@@ -241,8 +244,8 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
       this.grantorForm.get('municipality')?.updateValueAndValidity();
       this.grantorForm.get('colony')?.setValidators([Validators.required]);
       this.grantorForm.get('colony')?.updateValueAndValidity();
-      this.grantorForm.get('no_int')?.setValidators([Validators.required]);
-      this.grantorForm.get('no_int')?.updateValueAndValidity();
+      this.grantorForm.get('street')?.setValidators([Validators.required]);
+      this.grantorForm.get('street')?.updateValueAndValidity();
       this.grantorForm.get('no_ext')?.setValidators([Validators.required]);
       this.grantorForm.get('no_ext')?.updateValueAndValidity();
       this.grantorForm.get('no_locality')?.setValidators([Validators.required]);
