@@ -105,6 +105,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     private _procedureService: ProcedureService,
   ) {
     // this.builderForm = this.fb.group({});
+    const id = Number(this.route.snapshot.params.id);
 
     this.templateShapeService
       .fetchAll()
@@ -113,25 +114,33 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
           return templates.data;
         }),
       )
-      .subscribe((data) => (this.templateShapes = data));
+      .subscribe((data) => {
+        this.templateShapes = data;
+        if (!isNaN(id)) {
+          
+        }
+      });
 
-    const id = Number(this.route.snapshot.params.id);
     if (!isNaN(id)) {
       this.isEdit = true;
       shapeService.fetch(id).subscribe({
         next: (shape: ShapeDto) => {
+          console.log('shape ---->', shape);
           this.shapeForm.addControl('id', new UntypedFormControl(''));
           this.shapeForm.patchValue(shape);
 
-          this.shapeForm.get('alienating')?.setValue(shape?.alienator.id);
-          this.shapeForm.get('acquirer')?.setValue(shape?.acquirer.id);
+          this.shapeForm.get('alienating')?.setValue(shape?.alienator.id == null ? null : shape?.alienator.id);
+
+          this.shapeForm.get('acquirer')?.setValue(shape?.acquirer == null ? null : shape?.acquirer.id );
           this.shapeForm
             .get('extra_alienating')
             ?.setValue(shape?.grantors?.alienators);
           this.shapeForm
             .get('extra_acquirers')
             ?.setValue(shape?.grantors?.acquirers);
+            console.log('this.templateShapes --> ', this.templateShapes);
           this.templateShapes.forEach((template: TemplateShapeDto) => {
+            console.log('template.id == shape.template_shape_id', template.id, shape.template_shape_id);
             if (template.id == shape.template_shape_id) {
               this.shapeForm.get('template_shape_id')?.setValue(template);
               this.changeShape(template);

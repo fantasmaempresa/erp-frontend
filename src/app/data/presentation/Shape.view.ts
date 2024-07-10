@@ -53,7 +53,7 @@ const generetePdf = new ViewActions<ShapeDto>(
   {
     tooltip: 'Generar PDF',
     color: 'accent',
-    isVisible: (row: ShapeDto) => row.id !== null,
+    isVisible: (row: ShapeDto) => row && row.id !== null,
   },
 );
 
