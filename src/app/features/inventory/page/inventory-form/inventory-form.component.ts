@@ -69,7 +69,6 @@ export class InventoryFormComponent implements OnDestroy{
   }
 
   ngOnDestroy(): void {
-    throw new Error('Method not implemented');
   }
 
   async backToListInventory(){

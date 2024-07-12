@@ -56,7 +56,6 @@ export class LineFormComponent implements OnDestroy{
   }
 
   ngOnDestroy(): void {
-    throw new Error('Method not implemented');
   }
 
   async backToListLine(){

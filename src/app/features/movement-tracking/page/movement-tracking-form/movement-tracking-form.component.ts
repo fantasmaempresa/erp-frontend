@@ -74,7 +74,6 @@ export class MovementTrackingFormComponent implements OnDestroy{
   }
 
   ngOnDestroy(): void {
-    throw new Error('Method not implemented');
   }
 
   async backToListMovementTracking(){
