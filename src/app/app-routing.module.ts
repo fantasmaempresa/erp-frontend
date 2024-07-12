@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { ContentLayoutComponent } from './layout/content-layout/content-layout.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
@@ -350,7 +350,12 @@ const routes: Routes = [
   },
 ];
 
+const settings: ExtraOptions = {
+  enableTracing: true,
+};
+
 @NgModule({
+  // imports: [RouterModule.forRoot(routes, settings)], //Descomentar para hacer tracing de rutas
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })

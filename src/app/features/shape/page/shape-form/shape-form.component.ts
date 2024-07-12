@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { forkJoin, map, Observable } from 'rxjs';
 import { MessageHelper } from 'o2c_core';
 import { ShapeService } from '../../../../data/services/shape.service';
 import { ShapeDto } from '../../../../data/dto/Shape.dto';
@@ -110,44 +110,41 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     this.templateShapeService
       .fetchAll()
       .pipe(
-        map((templates) => {
-          return templates.data;
-        }),
+        map((templates) => templates.data),
       )
       .subscribe((data) => {
         this.templateShapes = data;
-        if (!isNaN(id)) {
-          
-        }
       });
 
     if (!isNaN(id)) {
       this.isEdit = true;
-      shapeService.fetch(id).subscribe({
-        next: (shape: ShapeDto) => {
-          console.log('shape ---->', shape);
-          this.shapeForm.addControl('id', new UntypedFormControl(''));
-          this.shapeForm.patchValue(shape);
+      
+      forkJoin([
+        this.shapeService.fetch(id), // Fetch shape data
+        this.templateShapeService.fetchAll(), // Ensure template shapes are available
+      ]).subscribe(([shape, templateShapes]) => {
+        this.templateShapes = templateShapes.data;
+        this.shapeForm.addControl('id', new UntypedFormControl(''));
+        this.shapeForm.patchValue(shape);
 
-          this.shapeForm.get('alienating')?.setValue(shape?.alienator.id == null ? null : shape?.alienator.id);
+        this.shapeForm.get('alienating')?.setValue(shape?.alienator.id == null ? null : shape?.alienator.id);
 
-          this.shapeForm.get('acquirer')?.setValue(shape?.acquirer == null ? null : shape?.acquirer.id );
-          this.shapeForm
-            .get('extra_alienating')
-            ?.setValue(shape?.grantors?.alienators);
-          this.shapeForm
-            .get('extra_acquirers')
-            ?.setValue(shape?.grantors?.acquirers);
-            console.log('this.templateShapes --> ', this.templateShapes);
-          this.templateShapes.forEach((template: TemplateShapeDto) => {
-            console.log('template.id == shape.template_shape_id', template.id, shape.template_shape_id);
-            if (template.id == shape.template_shape_id) {
-              this.shapeForm.get('template_shape_id')?.setValue(template);
-              this.changeShape(template);
-              this.builderForm.patchValue(shape.data_form);
-            }
-          });
-        },
+        this.shapeForm.get('acquirer')?.setValue(shape?.acquirer == null ? null : shape?.acquirer.id );
+        this.shapeForm
+          .get('extra_alienating')
+          ?.setValue(shape?.grantors?.alienators);
+        this.shapeForm
+          .get('extra_acquirers')
+          ?.setValue(shape?.grantors?.acquirers);
+          console.log('this.templateShapes --> ', this.templateShapes);
+        this.templateShapes.forEach((template: TemplateShapeDto) => {
+          console.log('template.id == shape.template_shape_id', template.id, shape.template_shape_id);
+          if (template.id == shape.template_shape_id) {
+            this.shapeForm.get('template_shape_id')?.setValue(template);
+            this.changeShape(template);
+            this.builderForm.patchValue(shape.data_form);
+          }
+        });
       });
     }
 

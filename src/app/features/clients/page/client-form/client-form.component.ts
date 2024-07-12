@@ -32,17 +32,17 @@ export class ClientFormComponent implements OnInit, OnDestroy {
       name: new UntypedFormControl('', [
         Validators.required,
         Validators.minLength(3),
-        Validators.maxLength(50),
+        Validators.maxLength(255),
       ]),
       last_name: new UntypedFormControl('', [
         Validators.required,
         Validators.minLength(3),
-        Validators.maxLength(50),
+        Validators.maxLength(255),
       ]),
       mother_last_name: new UntypedFormControl('', [
         Validators.required,
         Validators.minLength(3),
-        Validators.maxLength(50),
+        Validators.maxLength(255),
       ]),
       email: new UntypedFormControl('', [
         Validators.required,

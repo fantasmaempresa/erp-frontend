@@ -22,14 +22,14 @@ const goToVulnerableOperationsComplete = new ViewActions<ProcedureDto>(
   async ({ row, injector }) => {
     const router = injector.get(Router);
     const route = injector.get(ActivatedRoute);
+    const id = (row as ProcedureDto).id;
     await router
       .navigate(
         [
-          '../',
-          '../',
+          '../../',
           'vulnerableOperations',
           'procedure',
-          (row as ProcedureDto).id,
+          id
         ],
         {
           relativeTo: route,

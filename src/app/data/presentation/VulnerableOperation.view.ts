@@ -1,5 +1,6 @@
 import {
   FormFieldType,
+  ViewActions,
   formField,
   formTable,
   viewCrud,
@@ -14,11 +15,30 @@ import { EstatesForm } from './VulnerableOperationTraslativeDomain.view';
 import { constitutionLegalEntitiesForm } from './VulnerableOperationCommercial.view';
 import { VulnerableOperationsCapitalModification } from './VulnerableOperationsCapitalModification.view';
 import { VulnerableOperationsMutualContractsView } from './VulnerableOperationsMutualContracts.view';
+import { ActivatedRoute, Router } from '@angular/router';
+import { VulnerableOperationDto } from '../dto/VulnerableOperation.dto';
+
+const goToDocumentsLink = new ViewActions<VulnerableOperationDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['../', (row as VulnerableOperationDto).id, 'documentsLink'], {
+      relativeTo: route,
+    });
+  },
+  'contact_page',
+  {
+    tooltip: 'Expediente de trámite',
+    color: 'accent',
+    isVisible: (row) => row && row.id > 0,
+  },
+);
 
 @viewCrud({
   classProvider: VulnerableOperationService,
   route: DEFAULT_ROUTE_CONFIGURATION,
   registerName: 'Operación Vulnerable',
+  actions: [goToDocumentsLink],
 })
 export class VulnerableOperationView {
   @viewLabel('Categoría')

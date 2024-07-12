@@ -34,6 +34,14 @@ const routes: Routes = [
         component: VulnerableOperationsFormComponent,
         data: { breadcrumb: 'Nueva operación vulnerable' },
       },
+      {
+        path: ':id/documentsLink',
+        loadChildren: () =>
+          import('../document-link/document-link.module').then(
+            (m) => m.DocumentLinkModule,
+          ),
+        data: { breadcrumb: 'Documentos', view: 'vulnerable_operation' },
+      },
     ],
   },
 ];
