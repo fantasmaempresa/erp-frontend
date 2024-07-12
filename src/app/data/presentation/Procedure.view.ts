@@ -15,7 +15,7 @@ import {
 import { GrantorPercentageDialogComponent } from 'src/app/features/procedures/pages/grantor-percentage-dialog/grantor-percentage-dialog.component';
 import { DialogGrantorsComponent } from 'src/app/shared/components/dialog-grantors/dialog-grantors.component';
 import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
-import { ClientDto, ProcedureDto, UserDto } from '../dto';
+import { ClientDto, ProcedureDto, StaffDto, UserDto } from '../dto';
 import { ProcedureCommentDto } from '../dto/ProcedureComment.dto';
 import { ProcessingIncomeDto } from '../dto/ProcessingIncome.dto';
 import { RegistrationProcedureDataDto } from '../dto/RegistrationProcedureData.dto';
@@ -293,6 +293,10 @@ export class ProcedureView {
   @viewMapTo((user: any) => user.email)
   user: UserDto;
 
+  @dialogLabel('Resonsable')
+  @viewMapTo((staff: any) => staff.name + ' ' +  staff.last_name + ' ' +  staff.mother_last_name )
+  staff: StaffDto;
+
   @dialogLabel('Fecha de creación de registro')
   created_at: Date;
 
@@ -318,6 +322,7 @@ export class ProcedureView {
     grantors: GrantorDto[],
     client: ClientDto,
     user: UserDto,
+    staff: StaffDto,
     created_at: Date,
     operations: OperationsDto[],
   ) {
@@ -341,6 +346,7 @@ export class ProcedureView {
     this.comments = comments;
     this.grantors = grantors;
     this.client = client;
+    this.staff = staff;
     this.user = user;
     this.created_at = created_at;
     this.observation = observation;

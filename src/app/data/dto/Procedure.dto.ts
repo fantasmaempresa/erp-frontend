@@ -4,6 +4,7 @@ import { OperationsDto } from './Operations.dto';
 import { ProcedureCommentDto } from './ProcedureComment.dto';
 import { RegistrationProcedureDataDto } from './RegistrationProcedureData.dto';
 import { ProcessingIncomeDto } from './ProcessingIncome.dto';
+import { StaffDto } from './Staff.dto';
 
 export interface ProcedureDto extends EntityDto {
   proceedings: string;
@@ -25,6 +26,7 @@ export interface ProcedureDto extends EntityDto {
   staff_id: number;
   appraisal: string;
   comments?: ProcedureCommentDto[];
+  staff?: StaffDto[];
   registration_procedure_data?: RegistrationProcedureDataDto[];
   processing_income?: ProcessingIncomeDto[];
 }
