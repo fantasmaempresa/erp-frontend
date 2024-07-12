@@ -305,6 +305,14 @@ const routes: Routes = [
         data: { breadcrumb: 'Seguimiento de Movimientos' },
       },
       {
+        path: 'officeSecurityMeasures',
+        loadChildren: () =>
+          import('./features/office-security-measures/office-security-measures.module').then(
+            (m) => m.OfficeSecurityMeasuresModule,
+          ),
+        data: { breadcrumb: 'Medidas de Seguridad de la Oficina' },
+      },
+      {
         path: 'category-operation',
         loadChildren: () =>
           import(
