@@ -70,6 +70,7 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
       grantorService.fetch(id).subscribe({
         next: (grantor) => {
           this.grantorForm.addControl('id', new UntypedFormControl(''));
+          grantor.type = Number(grantor.type);
           this.grantorForm.patchValue(grantor);
         },
       });
