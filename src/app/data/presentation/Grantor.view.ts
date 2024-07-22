@@ -38,6 +38,11 @@ export class GrantorView {
   @viewLabel('Apellido materno')
   mother_last_name: string;
 
+  @viewLabel('Apellido materno')
+  rfc: string;
+  @viewLabel('Apellido materno')
+  curp: string;
+
   @viewLabel('Tipo de persona')
   @viewMapTo((value: any) => {
     const types = {
@@ -50,33 +55,20 @@ export class GrantorView {
   })
   type: string;
 
-  @viewLabel('Participación')
-  @viewMapTo((value: any) => value?.name)
-  stake: StakeDto;
-
-  @viewLabel('Beneficiario')
-  @viewMapTo((value: any) => {
-    const types = {
-      0: 'NO BENEFICIARIO',
-      1: 'BENEFICIARIO',
-    };
-    return types[value as keyof typeof types];
-  })
-  beneficiary: boolean;
 
   constructor(
     name: string,
     father_last_name: string,
     mother_last_name: string,
     type: string,
-    stake: StakeDto,
-    beneficiary: boolean,
+    rfc: string,
+    curp: string,
   ) {
     this.name = name;
     this.father_last_name = father_last_name;
     this.mother_last_name = mother_last_name;
     this.type = type;
-    this.stake = stake;
-    this.beneficiary = beneficiary;
+    this.rfc = rfc;
+    this.curp = curp;
   }
 }

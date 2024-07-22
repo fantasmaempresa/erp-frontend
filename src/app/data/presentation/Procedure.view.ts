@@ -22,6 +22,7 @@ import { RegistrationProcedureDataDto } from '../dto/RegistrationProcedureData.d
 import { ProcedureService } from '../services/procedure.service';
 import { GrantorDto } from '../dto/Grantor.dto';
 import { OperationsDto } from '../dto/Operations.dto';
+import { FolioDto } from '../dto/Folio.dto';
 
 const goToAssingPercentageGrantor = new ViewActions<ProcedureDto>(
   async ({ row, injector }) => {
@@ -143,7 +144,7 @@ const goToShapesLink = new ViewActions<ProcedureDto>(
   },
 );
 
-export class AdvanceFilterProcedure{
+export class AdvanceFilterProcedure {
   @formField({
     label: 'Libro(s) separar por coma',
     formFieldType: FormFieldType.TEXT,
@@ -190,16 +191,18 @@ export class ProcedureView {
   name: string;
 
   @viewLabel('Instrumento')
-  instrument: string;
-
-  @viewLabel('Volumen')
-  volume: string;
-
+  @viewMapTo((folio: any) => folio.name)
   @viewLabel('Folio de inicio')
-  folio_min: number;
+  @viewMapTo((folio: any) => folio.folio_min)  
+  folio: FolioDto;
 
-  @viewLabel('Folio de final')
-  folio_max: number;
+
+
+  // folio_fin: FolioDto;
+
+  // @viewLabel('Folio de final')
+  // @viewMapTo((folio: any) => folio.folio_max)
+  // folio_ffi: FolioDto;
 
   @viewLabel('Fecha de Firma')
   date_proceedings: string;
@@ -267,7 +270,7 @@ export class ProcedureView {
   @dialogLabel('Operaciones')
   @viewHTML((operations: any) => {
     let html: string = '';
-    for(let operation of operations){
+    for (let operation of operations) {
       html += `<span style="padding: 1rem; background: #0d2b3e; color: #eee ; border-radius: 10px; font-size: 1rem;">${operation.name}</span>`;
     }
     return html;
@@ -278,7 +281,7 @@ export class ProcedureView {
   @viewHTML((grantors: any) => {
     let html: string = '';
     // @ts-ignore
-    for(let grantor of grantors){
+    for (let grantor of grantors) {
       html += `<span style="padding: 1rem; background: #0d2b3e; color: #eee ; border-radius: 10px; font-size: 1rem;">${grantor.name} ${grantor.father_last_name} ${grantor.mother_last_name}</span>`;
     }
     return html;
@@ -294,7 +297,10 @@ export class ProcedureView {
   user: UserDto;
 
   @dialogLabel('Resonsable')
-  @viewMapTo((staff: any) => staff.name + ' ' +  staff.last_name + ' ' +  staff.mother_last_name )
+  @viewMapTo(
+    (staff: any) =>
+      staff.name + ' ' + staff.last_name + ' ' + staff.mother_last_name,
+  )
   staff: StaffDto;
 
   @dialogLabel('Fecha de creación de registro')
@@ -302,13 +308,13 @@ export class ProcedureView {
 
   constructor(
     name: string,
-    instrument: string,
+    // instrument: string,
     value_operation: number,
     date_proceedings: string,
     date: string,
-    volume: string,
-    folio_min: number,
-    folio_max: number,
+    // volume: string,
+    // folio_min: number,
+    // folio_max: number,
     credit: string,
     observation: string,
     operation_id: number,
@@ -325,12 +331,10 @@ export class ProcedureView {
     staff: StaffDto,
     created_at: Date,
     operations: OperationsDto[],
+    folio: FolioDto,
   ) {
     this.name = name;
-    this.instrument = instrument;
-    this.volume = volume;
-    this.folio_min = folio_min;
-    this.folio_max = folio_max;
+    this.folio = folio;
     this.date_proceedings = date_proceedings;
     this.operations = operations;
     this.value_operation = value_operation;
@@ -350,7 +354,6 @@ export class ProcedureView {
     this.user = user;
     this.created_at = created_at;
     this.observation = observation;
+    
   }
 }
-
-

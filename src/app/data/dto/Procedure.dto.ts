@@ -5,6 +5,7 @@ import { ProcedureCommentDto } from './ProcedureComment.dto';
 import { RegistrationProcedureDataDto } from './RegistrationProcedureData.dto';
 import { ProcessingIncomeDto } from './ProcessingIncome.dto';
 import { StaffDto } from './Staff.dto';
+import { FolioDto } from './Folio.dto';
 
 export interface ProcedureDto extends EntityDto {
   proceedings: string;
@@ -29,4 +30,6 @@ export interface ProcedureDto extends EntityDto {
   staff?: StaffDto[];
   registration_procedure_data?: RegistrationProcedureDataDto[];
   processing_income?: ProcessingIncomeDto[];
+  folio_id: number;
+  folio?: FolioDto;
 }
