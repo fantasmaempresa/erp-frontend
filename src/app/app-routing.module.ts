@@ -345,6 +345,22 @@ const routes: Routes = [
         data: { breadcrumb: 'Enajenación de Bienes' },
       },
       {
+        path: 'books',
+        loadChildren: () =>
+          import(
+            './features/book/book.module'
+          ).then((m) => m.BookModule),
+        data: { breadcrumb: 'Libros de Folios' },
+      },
+      {
+        path: 'folios',
+        loadChildren: () =>
+          import(
+            './features/folio/folio.module'
+          ).then((m) => m.FolioModule),
+        data: { breadcrumb: 'Instrumentos y folios' },
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',

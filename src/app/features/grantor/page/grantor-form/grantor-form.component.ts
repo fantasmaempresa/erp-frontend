@@ -43,7 +43,6 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
     zipcode: new UntypedFormControl('', []),
     occupation: new UntypedFormControl('', []),
     type: new UntypedFormControl('', [Validators.required]),
-    stake_id: new UntypedFormControl('', [Validators.required]),
     beneficiary: new UntypedFormControl(false, []),
   });
 
@@ -78,7 +77,7 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
 
     this.grantorForm.get('type')?.valueChanges.subscribe((value) => {
       this.updateValidators(value);
-      this.changeTypeGrantor(value);
+      // this.changeTypeGrantor(value);
     });
   }
   ngOnDestroy() {}
@@ -146,26 +145,26 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
   }
 
   changeTypeGrantor(event: any) {
-    if (event === 1) {
-      this.grantorForm.controls.father_last_name.disable();
-      this.grantorForm.controls.mother_last_name.disable();
-      this.grantorForm.controls.curp.disable();
-      this.grantorForm.controls.civil_status.disable();
-      this.grantorForm.controls.phone.disable();
-      this.grantorForm.controls.place_of_birth.disable();
-      this.grantorForm.controls.occupation.disable();
-    }
-    if (event === 2 || event === 3) {
-      this.grantorForm.controls.father_last_name.enable();
-      this.grantorForm.controls.mother_last_name.enable();
-      this.grantorForm.controls.rfc.enable();
-      this.grantorForm.controls.curp.enable();
-      this.grantorForm.controls.civil_status.enable();
-      this.grantorForm.controls.no_int.enable();
-      this.grantorForm.controls.phone.enable();
-      this.grantorForm.controls.place_of_birth.enable();
-      this.grantorForm.controls.occupation.enable();
-    }
+    // if (event === 1) {
+    //   this.grantorForm.controls.father_last_name.disable();
+    //   this.grantorForm.controls.mother_last_name.disable();
+    //   this.grantorForm.controls.curp.disable();
+    //   this.grantorForm.controls.civil_status.disable();
+    //   this.grantorForm.controls.phone.disable();
+    //   this.grantorForm.controls.place_of_birth.disable();
+    //   this.grantorForm.controls.occupation.disable();
+    // }
+    // if (event === 2 || event === 3) {
+    //   this.grantorForm.controls.father_last_name.enable();
+    //   this.grantorForm.controls.mother_last_name.enable();
+    //   this.grantorForm.controls.rfc.enable();
+    //   this.grantorForm.controls.curp.enable();
+    //   this.grantorForm.controls.civil_status.enable();
+    //   this.grantorForm.controls.no_int.enable();
+    //   this.grantorForm.controls.phone.enable();
+    //   this.grantorForm.controls.place_of_birth.enable();
+    //   this.grantorForm.controls.occupation.enable();
+    // }
   }
 
   updateValidators(type: number) {
@@ -269,9 +268,5 @@ export class GrantorFormComponent implements OnInit, OnDestroy {
       this.grantorForm.get('birthdate')?.setValidators([Validators.required]);
       this.grantorForm.get('birthdate')?.updateValueAndValidity();
     }
-
-    // this.grantorForm.updateValueAndValidity();
-    // this.grantorForm.get('mother_last_name')?.updateValueAndValidity();
-    // this.grantorForm.get('last_name')?.updateValueAndValidity();
   }
 }

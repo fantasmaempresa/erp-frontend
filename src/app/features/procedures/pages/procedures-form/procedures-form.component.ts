@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   UntypedFormControl,
@@ -7,33 +7,53 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { debounceTime, map, Observable, of } from 'rxjs';
-import { ProcedureService } from '../../../../data/services/procedure.service';
-import { OperationView } from '../../../../data/presentation/Operation.view';
-import { MessageHelper } from 'o2c_core';
-import { PlaceView } from '../../../../data/presentation/Place.view';
-import { ClientView } from '../../../../data/presentation';
-import { StaffView } from '../../../../data/presentation/staff.view';
-import { GrantorView } from '../../../../data/presentation/Grantor.view';
-import { DocumentView } from '../../../../data/presentation/Document.view';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { FORM_CLAZZ, FormComponent, MessageHelper } from 'o2c_core';
+import { Observable, debounceTime, map, of } from 'rxjs';
+import { StakeAssignGrantorTable } from 'src/app/data/presentation/Procedure.view';
+import { OperationService } from 'src/app/data/services/operation.service';
+import { ClientView } from '../../../../data/presentation';
+import { DocumentView } from '../../../../data/presentation/Document.view';
+import { OperationView } from '../../../../data/presentation/Operation.view';
+import { PlaceView } from '../../../../data/presentation/Place.view';
+import { StaffView } from '../../../../data/presentation/staff.view';
+import { ProcedureService } from '../../../../data/services/procedure.service';
 import { DialogDynamicAddItemComponent } from '../../../../shared/components/dialog-dynamic-add-item/dialog-dynamic-add-item.component';
 import { ClientFormComponent } from '../../../clients/page/client-form/client-form.component';
-import { GrantorFormComponent } from '../../../grantor/page/grantor-form/grantor-form.component';
 import { DocumentFormComponent } from '../../../documents/page/document-form/document-form.component';
+import { GrantorFormComponent } from '../../../grantor/page/grantor-form/grantor-form.component';
 import { PlaceFormComponent } from '../../../place/page/place-form/place-form.component';
 import { StaffMemberFormComponent } from '../../../staff/page/staff-member-form/staff-member-form.component';
-import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { OperationService } from 'src/app/data/services/operation.service';
+import { FolioView } from 'src/app/data/presentation/Folio.view';
+import { FolioFormComponent } from 'src/app/features/folio/pages/folio-form/folio-form.component';
 
 @AutoUnsubscribe()
 @Component({
   selector: 'app-procedures-form',
   templateUrl: './procedures-form.component.html',
   styleUrls: ['./procedures-form.component.scss'],
+  providers: [
+    {
+      provide: FORM_CLAZZ,
+      useValue: StakeAssignGrantorTable,
+    },
+  ],
 })
 export class ProceduresFormComponent implements OnDestroy {
+  private _listFormBuilder!: FormComponent;
+
+  public get formComponent(): FormComponent {
+    return this._listFormBuilder;
+  }
+
+  @ViewChild(FormComponent)
+  public set formComponent(value: FormComponent) {
+    console.log('seteando formbuilder ---> ', value);
+    this._listFormBuilder = value;
+  }
+
   procedureForm = new UntypedFormGroup(
     {
       name: new UntypedFormControl('', {
@@ -43,22 +63,7 @@ export class ProceduresFormComponent implements OnDestroy {
       }),
       value_operation: new UntypedFormControl('', []),
       appraisal: new UntypedFormControl('', []),
-      instrument: new UntypedFormControl('',{
-        validators: [],
-        asyncValidators: [this.uniqueValueInstrumentValidator.bind(this)],
-        updateOn: 'blur',
-      }
-      ),
       date: new UntypedFormControl('', [Validators.required]),
-      volume: new UntypedFormControl('', []),
-      folio_min: new UntypedFormControl('', {
-        validators: [],
-        asyncValidators: [this.uniqueFolioValueValidatorMin.bind(this)],
-      }),
-      folio_max: new UntypedFormControl('', {
-        validators: [],
-        asyncValidators: [this.uniqueFolioValueValidatorMax.bind(this)],
-      }),
       credit: new UntypedFormControl('', []),
       observation: new UntypedFormControl('', []),
       documents: new UntypedFormControl('', [Validators.required]),
@@ -67,9 +72,7 @@ export class ProceduresFormComponent implements OnDestroy {
       place_id: new UntypedFormControl('', [Validators.required]),
       client_id: new UntypedFormControl('', [Validators.required]),
       staff_id: new UntypedFormControl('', [Validators.required]),
-    },
-    {
-      validators: this.compareValuesValidator('folio_min', 'folio_max'),
+      folio_id: new UntypedFormControl('', []),
     },
   );
 
@@ -83,9 +86,9 @@ export class ProceduresFormComponent implements OnDestroy {
 
   staffProvider = StaffView;
 
-  grantorProvider = GrantorView;
-
   documentProvider = DocumentView;
+
+  folioProvider = FolioView;
 
   addItems = [
     {
@@ -108,6 +111,10 @@ export class ProceduresFormComponent implements OnDestroy {
       component: StaffMemberFormComponent,
       title: 'Agregar nuevo responsalbe',
     },
+    {
+      component: FolioFormComponent,
+      title: 'Agregar nuevo instrumento',
+    },
   ];
 
   constructor(
@@ -127,19 +134,20 @@ export class ProceduresFormComponent implements OnDestroy {
         },
       });
     }
-    
+
     this.procedureForm.get('operation_id')?.valueChanges.subscribe((value) => {
       this._operationService.fetch(value).subscribe({
         next: (operation) => {
-          if(typeof operation.config.documents_required !== 'undefined'){
-            this.procedureForm.get('documents')?.setValue(operation.config.documents_required);
+          if (typeof operation.config.documents_required !== 'undefined') {
+            this.procedureForm
+              .get('documents')
+              ?.setValue(operation.config.documents_required);
           }
         },
-      })
-    })
+      });
+    });
   }
-  ngOnDestroy(): void {
-  }
+  ngOnDestroy(): void {}
 
   async backToListDocuments() {
     await this.router.navigate(['../'], { relativeTo: this.route });
@@ -147,6 +155,11 @@ export class ProceduresFormComponent implements OnDestroy {
 
   onSubmit() {
     console.log('formulaio', this.procedureForm.value);
+
+    this.procedureForm
+      .get('grantors')
+      ?.setValue(this.formComponent.formBuilderComponent.form.value);
+    console.log('forrrrm ---> ', this.procedureForm.value);
 
     if (this.procedureForm.invalid) {
       return;
@@ -166,7 +179,6 @@ export class ProceduresFormComponent implements OnDestroy {
     if (datosFormulario.credit)
       datosFormulario.credit = datosFormulario.credit.toString();
 
-
     datosFormulario.folio_max = datosFormulario.folio_max.toString();
 
     request$.subscribe({
@@ -181,14 +193,15 @@ export class ProceduresFormComponent implements OnDestroy {
       error: async (error) => {
         console.log(error);
         if (error.error.code != null && error.error.code == 422) {
-          if (typeof(error.error.error) === 'object') {
+          if (typeof error.error.error === 'object') {
             let message = '';
 
             for (let item in error.error.error) {
               message = message + '\n' + error.error.error[item];
             }
 
-            await MessageHelper.errorMessage(message);          }else{
+            await MessageHelper.errorMessage(message);
+          } else {
             await MessageHelper.errorMessage(error.error.error);
           }
         } else if (error.error.code != null && error.error.code == 409) {
@@ -220,15 +233,14 @@ export class ProceduresFormComponent implements OnDestroy {
         return null;
       }
 
-      const controlValue = control.value;
+      const controlValue = control.value; 
       const compareControlValue = compareControl.value;
 
       if (controlValue >= compareControlValue) {
         compareControl.setErrors({ greaterThan: true });
-      }else if (controlValue < 0 || compareControlValue < 0) {
-        compareControl.setErrors({ negativeNumber : true });
-      }
-      else {
+      } else if (controlValue < 0 || compareControlValue < 0) {
+        compareControl.setErrors({ negativeNumber: true });
+      } else {
         compareControl.setErrors(null);
       }
 
@@ -241,7 +253,7 @@ export class ProceduresFormComponent implements OnDestroy {
   ): Observable<ValidationErrors | null> {
     console.log('se ejecuto el validador');
     let id = null;
-    if(this.isEdit){
+    if (this.isEdit) {
       id = this.procedureForm.get('id')?.value;
     }
     const value: string = control.value;
@@ -257,7 +269,7 @@ export class ProceduresFormComponent implements OnDestroy {
   ): Observable<ValidationErrors | null> {
     console.log('se ejecuto el validador');
     let id = null;
-    if(this.isEdit){
+    if (this.isEdit) {
       id = this.procedureForm.get('id')?.value;
     }
     const value: string = control.value;
@@ -272,7 +284,7 @@ export class ProceduresFormComponent implements OnDestroy {
     control: AbstractControl,
   ): Observable<ValidationErrors | null> {
     let id = null;
-    if(this.isEdit){
+    if (this.isEdit) {
       id = this.procedureForm.get('id')?.value;
     }
 
@@ -280,41 +292,44 @@ export class ProceduresFormComponent implements OnDestroy {
 
     if (value == 0 || value == null) return of(null);
 
-    if (value < 0 ){
-      control.setErrors({ negativeNumber : true });
+    if (value < 0) {
+      control.setErrors({ negativeNumber: true });
       return of(null);
-    }else {
+    } else {
       control.setErrors(null);
     }
 
-
-    return this.procedureService.checkFolioMinValueUnique(value, 'folio_min', id).pipe(
-      debounceTime(300),
-      map((isUnique) => (isUnique ? null : { uniqueValue: true })),
-    );
+    return this.procedureService
+      .checkFolioMinValueUnique(value, 'folio_min', id)
+      .pipe(
+        debounceTime(300),
+        map((isUnique) => (isUnique ? null : { uniqueValue: true })),
+      );
   }
 
   uniqueFolioValueValidatorMax(
     control: AbstractControl,
   ): Observable<ValidationErrors | null> {
     let id = null;
-    if(this.isEdit){
+    if (this.isEdit) {
       id = this.procedureForm.get('id')?.value;
     }
 
     const value: number = control.value;
 
-    if (value < 0 ){
-      control.setErrors({ negativeNumber : true });
+    if (value < 0) {
+      control.setErrors({ negativeNumber: true });
       return of(null);
-    }else {
+    } else {
       control.setErrors(null);
     }
 
-    return this.procedureService.checkFolioMinValueUnique(value, 'folio_max', id).pipe(
-      debounceTime(300),
-      map((isUnique) => (isUnique ? null : { uniqueValue: true })),
-    );
+    return this.procedureService
+      .checkFolioMinValueUnique(value, 'folio_max', id)
+      .pipe(
+        debounceTime(300),
+        map((isUnique) => (isUnique ? null : { uniqueValue: true })),
+      );
   }
 
   addItem(item: { component: any; title: string }) {
@@ -323,4 +338,6 @@ export class ProceduresFormComponent implements OnDestroy {
       width: '800px',
     });
   }
+
+  generateInstrument() {}
 }

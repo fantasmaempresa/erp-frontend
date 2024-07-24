@@ -6,6 +6,8 @@ import {
   advancedFilters,
   dialogLabel,
   formField,
+  formTable,
+  popUpSelector,
   viewCrud,
   viewDialog,
   viewHTML,
@@ -23,6 +25,9 @@ import { ProcedureService } from '../services/procedure.service';
 import { GrantorDto } from '../dto/Grantor.dto';
 import { OperationsDto } from '../dto/Operations.dto';
 import { FolioDto } from '../dto/Folio.dto';
+import { GrantorView } from './Grantor.view';
+import { StakeView } from './Stake.view';
+import { StakeDto } from '../dto/Stake.dto';
 
 const goToAssingPercentageGrantor = new ViewActions<ProcedureDto>(
   async ({ row, injector }) => {
@@ -50,6 +55,7 @@ const goToViewGrantors = new ViewActions<ProcedureDto>(
     dialog.open(DialogGrantorsComponent, {
       data: {
         grantors: procedure.grantors,
+        procedure_id: procedure.id,
       },
     });
   },
@@ -143,6 +149,54 @@ const goToShapesLink = new ViewActions<ProcedureDto>(
     isVisible: (row) => row && row.id > 0,
   },
 );
+
+export class StakeAssignGrantor {
+  @popUpSelector({
+    label: 'Otorgante',
+    config: {
+      title: 'Otorgante',
+      viewClass: GrantorView,
+      options: {
+        isMulti: false,
+      },
+    },
+  })
+  @viewLabel('Otorgante')
+  grantors: GrantorDto;
+
+  @popUpSelector({
+    label: 'Participación',
+    config: {
+      title: 'Participación',
+      viewClass: StakeView,
+      options: {
+        isMulti: false,
+      },
+    },
+  })
+  @viewLabel('Participación')
+  stakes: StakeDto;
+
+  constructor(grantors: GrantorDto, stakes: StakeDto) {
+    this.grantors = grantors;
+    this.stakes = stakes;
+  }
+}
+
+export class StakeAssignGrantorTable {
+  @formTable({
+    tableProvider: StakeAssignGrantor,
+  })
+  @formField({
+    label: 'Otorgantes de escritura',
+    formFieldType: FormFieldType.TABLE,
+  })
+  stakes: string;
+
+  constructor(stakes: string) { 
+    this.stakes = stakes;
+  }
+}
 
 export class AdvanceFilterProcedure {
   @formField({

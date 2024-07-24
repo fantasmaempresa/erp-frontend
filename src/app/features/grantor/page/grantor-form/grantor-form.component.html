@@ -187,22 +187,6 @@
         </mat-form-field>
       </div>
 
-      <div class="col-3 d-flex flex-column">
-        <mat-form-field appearance="outline">
-          <mat-label>Participación</mat-label>
-          <input
-            [viewClassBuilder]="stakeProvider"
-            title="Selecciona una participación"
-            o2cSinglePopup
-            formControlName="stake_id"
-            matInput
-            type="text"
-          />
-          <mat-icon matSuffix>search</mat-icon>
-          <mat-error appErrorMessage></mat-error>
-        </mat-form-field>
-      </div>
-
       <div class="col-6 d-flex flex-column">
         <mat-checkbox
           class="me-5"

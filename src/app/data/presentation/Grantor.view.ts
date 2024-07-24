@@ -1,9 +1,8 @@
+import { ActivatedRoute, Router } from "@angular/router";
 import { ViewActions, viewCrud, viewLabel, viewMapTo } from "o2c_core";
 import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
 import { GrantorDto } from "../dto/Grantor.dto";
-import { StakeDto } from "../dto/Stake.dto";
 import { GrantorService } from '../services/grantor.service';
-import { ActivatedRoute, Router } from "@angular/router";
 
 const goToGrantorLink = new ViewActions<GrantorDto>(
   async ({ row, injector }) => {

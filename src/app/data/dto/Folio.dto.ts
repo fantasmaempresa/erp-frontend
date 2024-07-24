@@ -10,7 +10,7 @@ export interface FolioDto extends EntityDto{
     book_id: number;
     procedure_id: number;
     user_id: number;   
-    user?: UserDto;
+    user: UserDto;
     book: BookDto;
     procedure?: ProcedureDto;
 }

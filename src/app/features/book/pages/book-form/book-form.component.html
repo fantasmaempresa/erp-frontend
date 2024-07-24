@@ -1,0 +1,54 @@
+<mat-card>
+    <mat-toolbar *ngIf="!isDialog">
+      <div>
+        <button (click)="backToList()" aria-label="Regresar" mat-icon-button>
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+    <form
+      (ngSubmit)="submit()"
+      [formGroup]="form"
+      class="row justify-content-center"
+    >
+      <div class="col-6 d-flex flex-column">
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Libro</mat-label>
+          <input formControlName="name" matInput type="tel" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Del Folio</mat-label>
+          <input formControlName="folio_min" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+          <mat-label>Al Folio</mat-label>
+          <input formControlName="folio_max" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+  
+        <mat-form-field appearance="outline">
+            <mat-label>Fecha de solicitud</mat-label>
+            <input
+              (focus)="dateForm1.open()"
+              [matDatepicker]="dateForm1"
+              class="clickable"
+              formControlName="date"
+              matInput
+            />
+            <mat-datepicker-toggle
+              [for]="dateForm1"
+              matSuffix
+            ></mat-datepicker-toggle>
+            <mat-datepicker #dateForm1></mat-datepicker>
+          </mat-form-field>
+  
+        <button color="primary" mat-flat-button>Guardar</button>
+      </div>
+    </form>
+  </mat-card>
+  
