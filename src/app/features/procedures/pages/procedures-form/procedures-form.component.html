@@ -70,6 +70,20 @@
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
+      <mat-form-field appearance="outline"  class="w-100">
+        <mat-label>Seleccionar Instrumento</mat-label>
+        <input
+          [viewClassBuilder]="folioProvider"
+          title="Selecciona un instrumento"
+          o2cSinglePopup
+          formControlName="folio_id"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
       <div class="row">
         <div class="col-9">
           <mat-form-field appearance="outline" class="w-100">
@@ -186,36 +200,6 @@
           >
             <mat-icon>add</mat-icon>
             Nuevo Responsable
-          </button>
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-9">
-          <mat-form-field appearance="outline"  class="w-100">
-            <mat-label>Seleccionar Instrumento</mat-label>
-            <input
-              [viewClassBuilder]="folioProvider"
-              title="Selecciona un instrumento"
-              o2cSinglePopup
-              formControlName="folio_id"
-              matInput
-              type="text"
-            />
-            <mat-icon matSuffix>search</mat-icon>
-            <mat-error appErrorMessage></mat-error>
-          </mat-form-field>
-        </div>
-        <div class="col-3">
-          <button
-            style="width: 100%"
-            type="button"
-            color="primary"
-            (click)="addItem(addItems[5])"
-            mat-raised-button
-          >
-            <mat-icon>add</mat-icon>
-            Nuevo instrumento
           </button>
         </div>
       </div>

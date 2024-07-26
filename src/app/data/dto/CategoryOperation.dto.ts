@@ -4,6 +4,8 @@ export interface CategoryOperationDto extends EntityDto {
   id: number;
   name: string;
   description: string;
-  config: Array<any>;
+  config: {
+    documents_required: [{ id: number }];
+  };
   form: Array<any>;
 }

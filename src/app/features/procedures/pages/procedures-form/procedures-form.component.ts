@@ -54,27 +54,25 @@ export class ProceduresFormComponent implements OnDestroy {
     this._listFormBuilder = value;
   }
 
-  procedureForm = new UntypedFormGroup(
-    {
-      name: new UntypedFormControl('', {
-        validators: [Validators.required],
-        asyncValidators: [this.uniqueValueValidator.bind(this)],
-        updateOn: 'blur',
-      }),
-      value_operation: new UntypedFormControl('', []),
-      appraisal: new UntypedFormControl('', []),
-      date: new UntypedFormControl('', [Validators.required]),
-      credit: new UntypedFormControl('', []),
-      observation: new UntypedFormControl('', []),
-      documents: new UntypedFormControl('', [Validators.required]),
-      grantors: new UntypedFormControl('', [Validators.required]),
-      operations: new UntypedFormControl('', [Validators.required]),
-      place_id: new UntypedFormControl('', [Validators.required]),
-      client_id: new UntypedFormControl('', [Validators.required]),
-      staff_id: new UntypedFormControl('', [Validators.required]),
-      folio_id: new UntypedFormControl('', []),
-    },
-  );
+  procedureForm = new UntypedFormGroup({
+    name: new UntypedFormControl('', {
+      validators: [Validators.required],
+      asyncValidators: [this.uniqueValueValidator.bind(this)],
+      updateOn: 'blur',
+    }),
+    value_operation: new UntypedFormControl('', []),
+    appraisal: new UntypedFormControl('', []),
+    date: new UntypedFormControl('', [Validators.required]),
+    credit: new UntypedFormControl('', []),
+    observation: new UntypedFormControl('', []),
+    documents: new UntypedFormControl('', [Validators.required]),
+    grantors: new UntypedFormControl('', [Validators.required]),
+    operations: new UntypedFormControl('', [Validators.required]),
+    place_id: new UntypedFormControl('', [Validators.required]),
+    client_id: new UntypedFormControl('', [Validators.required]),
+    staff_id: new UntypedFormControl('', [Validators.required]),
+    folio_id: new UntypedFormControl('', []),
+  });
 
   isEdit: boolean = false;
 
@@ -111,10 +109,6 @@ export class ProceduresFormComponent implements OnDestroy {
       component: StaffMemberFormComponent,
       title: 'Agregar nuevo responsalbe',
     },
-    {
-      component: FolioFormComponent,
-      title: 'Agregar nuevo instrumento',
-    },
   ];
 
   constructor(
@@ -135,17 +129,23 @@ export class ProceduresFormComponent implements OnDestroy {
       });
     }
 
-    this.procedureForm.get('operation_id')?.valueChanges.subscribe((value) => {
-      this._operationService.fetch(value).subscribe({
-        next: (operation) => {
-          if (typeof operation.config.documents_required !== 'undefined') {
-            this.procedureForm
-              .get('documents')
-              ?.setValue(operation.config.documents_required);
+    this.procedureForm.get('operations')?.valueChanges.subscribe((value) => {
+      this._operationService.getDocuments({ operations: value }).subscribe({
+        next: (documents) => {
+          this.procedureForm.get('documents')?.setValue(documents);
+          if (documents.length > 0) {
+            this.procedureForm.controls.documents.disable();
           }
         },
       });
     });
+
+    this.procedureService.recommendationExpedient().subscribe({
+      next: (data: any) => {
+        this.procedureForm.get('name')?.setValue(data.name);
+        this.procedureForm.controls.name.disable();
+      }
+    })
   }
   ngOnDestroy(): void {}
 
@@ -155,6 +155,8 @@ export class ProceduresFormComponent implements OnDestroy {
 
   onSubmit() {
     console.log('formulaio', this.procedureForm.value);
+    this.procedureForm.controls.name.enable();
+    this.procedureForm.controls.documents.enable();
 
     this.procedureForm
       .get('grantors')
@@ -192,6 +194,8 @@ export class ProceduresFormComponent implements OnDestroy {
       },
       error: async (error) => {
         console.log(error);
+        this.procedureForm.controls.name.disable();
+        this.procedureForm.controls.documents.disable();
         if (error.error.code != null && error.error.code == 422) {
           if (typeof error.error.error === 'object') {
             let message = '';
@@ -219,33 +223,6 @@ export class ProceduresFormComponent implements OnDestroy {
         }
       },
     });
-  }
-
-  compareValuesValidator(
-    controlName: string,
-    compareControlName: string,
-  ): ValidatorFn {
-    return (formGroup: AbstractControl): { [key: string]: any } | null => {
-      const control = formGroup.get(controlName);
-      const compareControl = formGroup.get(compareControlName);
-
-      if (!control || !compareControl) {
-        return null;
-      }
-
-      const controlValue = control.value; 
-      const compareControlValue = compareControl.value;
-
-      if (controlValue >= compareControlValue) {
-        compareControl.setErrors({ greaterThan: true });
-      } else if (controlValue < 0 || compareControlValue < 0) {
-        compareControl.setErrors({ negativeNumber: true });
-      } else {
-        compareControl.setErrors(null);
-      }
-
-      return null;
-    };
   }
 
   uniqueValueValidator(

@@ -29,6 +29,11 @@ const routes: Routes = [
         component: FolioFormComponent,
         data: { breadcrumb: 'Editar instrumento' },
       },
+      {
+        path: ':idError/errors',
+        component: FolioFormComponent,
+        data: { breadcrumb: 'Editar instrumento' },
+      },
     ]
   }
 ];

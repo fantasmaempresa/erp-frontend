@@ -1,5 +1,11 @@
 import { Component, OnDestroy } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  UntypedFormControl,
+  UntypedFormGroup,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { MessageHelper } from 'o2c_core';
@@ -10,7 +16,8 @@ import { BookServiceService } from 'src/app/data/services/book-service.service';
 @Component({
   selector: 'app-book-form',
   templateUrl: './book-form.component.html',
-  styleUrls: ['./book-form.component.scss']
+  styleUrls: ['./book-form.component.scss'],
+
 })
 export class BookFormComponent implements OnDestroy {
   isEdit: boolean = false;
@@ -24,21 +31,17 @@ export class BookFormComponent implements OnDestroy {
     private route: ActivatedRoute,
     private _bookService: BookServiceService,
   ) {
-
-    this.form =  new UntypedFormGroup({
-      name: new UntypedFormControl(null, [
-        Validators.required,
-      ]),
-      folio_min: new UntypedFormControl(null, [
-        Validators.required,
-      ]),
-      folio_max: new UntypedFormControl(null, [
-        Validators.required,
-      ]),
-      date_proceeding: new UntypedFormControl(null, [
-        Validators.required,
-      ]),
-    });
+    this.form = new UntypedFormGroup(
+      {
+        name: new UntypedFormControl(null, [Validators.required]),
+        folio_min: new UntypedFormControl(null, [Validators.required]),
+        folio_max: new UntypedFormControl(null, [Validators.required]),
+        date_proceedings: new UntypedFormControl(null, [Validators.required]),
+      },
+      {
+        validators: this.compareValuesValidator('folio_min', 'folio_max'),
+      },
+    );
 
     const currentRoute = this.route.snapshot.routeConfig?.path;
     if (typeof currentRoute === 'undefined') {
@@ -66,9 +69,9 @@ export class BookFormComponent implements OnDestroy {
     await this.router.navigate(['../'], { relativeTo: this.route });
   }
 
-  submit(){
+  submit() {
     if (this.form.invalid) return;
-    
+
     let request$: Observable<BookDto>;
     if (!this.isEdit) {
       request$ = this._bookService.save(this.form.value);
@@ -113,5 +116,32 @@ export class BookFormComponent implements OnDestroy {
         }
       },
     });
+  }
+
+  compareValuesValidator(
+    controlName: string,
+    compareControlName: string,
+  ): ValidatorFn {
+    return (formGroup: AbstractControl): { [key: string]: any } | null => {
+      const control = formGroup.get(controlName);
+      const compareControl = formGroup.get(compareControlName);
+
+      if (!control || !compareControl) {
+        return null;
+      }
+
+      const controlValue = control.value;
+      const compareControlValue = compareControl.value;
+
+      if (controlValue >= compareControlValue) {
+        compareControl.setErrors({ greaterThan: true });
+      } else if (controlValue < 0 || compareControlValue < 0) {
+        compareControl.setErrors({ negativeNumber: true });
+      } else {
+        compareControl.setErrors(null);
+      }
+
+      return null;
+    };
   }
 }

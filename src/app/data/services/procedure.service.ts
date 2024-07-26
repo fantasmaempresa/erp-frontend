@@ -3,7 +3,6 @@ import { CrudService, Pagination } from 'o2c_core';
 import { ProcedureDto } from '../dto';
 import { environment } from '../../../environments/environment';
 import { HttpParams, HttpHeaders } from '@angular/common/http';
-import { Observable, forkJoin } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -74,6 +73,12 @@ export class ProcedureService extends CrudService<
   graphsWithoutDocument() {
     return this._http.get(
       `${environment.base_url}/procedure/graphics/withoutDocument`,
+    );
+  }
+  
+  recommendationExpedient() {
+    return this._http.get(
+      `${this._base}/recommendation/expedient`,
     );
   }
 }

@@ -158,10 +158,12 @@ export class StakeAssignGrantor {
       viewClass: GrantorView,
       options: {
         isMulti: false,
+        keyAttribute: 'name'
       },
     },
   })
   @viewLabel('Otorgante')
+  // @viewMapTo((value: any) => value.name)
   grantors: GrantorDto;
 
   @popUpSelector({
@@ -171,10 +173,12 @@ export class StakeAssignGrantor {
       viewClass: StakeView,
       options: {
         isMulti: false,
+        keyAttribute: 'name'
       },
     },
   })
   @viewLabel('Participación')
+  // @viewMapTo((value: any) => value.name)
   stakes: StakeDto;
 
   constructor(grantors: GrantorDto, stakes: StakeDto) {
@@ -193,7 +197,7 @@ export class StakeAssignGrantorTable {
   })
   stakes: string;
 
-  constructor(stakes: string) { 
+  constructor(stakes: string) {
     this.stakes = stakes;
   }
 }
@@ -247,10 +251,8 @@ export class ProcedureView {
   @viewLabel('Instrumento')
   @viewMapTo((folio: any) => folio.name)
   @viewLabel('Folio de inicio')
-  @viewMapTo((folio: any) => folio.folio_min)  
+  @viewMapTo((folio: any) => folio.folio_min)
   folio: FolioDto;
-
-
 
   // folio_fin: FolioDto;
 
@@ -408,6 +410,5 @@ export class ProcedureView {
     this.user = user;
     this.created_at = created_at;
     this.observation = observation;
-    
   }
 }
