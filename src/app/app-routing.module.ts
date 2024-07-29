@@ -358,7 +358,7 @@ const routes: Routes = [
           import(
             './features/folio/folio.module'
           ).then((m) => m.FolioModule),
-        data: { breadcrumb: 'Instrumentos y folios', view: 'folios' },
+        data: { breadcrumb: 'Instrumentos y folios' },
       },
       {
         path: '**',

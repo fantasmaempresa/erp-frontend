@@ -1,10 +1,11 @@
-import { viewCrud, viewLabel, viewMapTo, FormFieldType, formField, formTable, ViewActions, viewDialog } from 'o2c_core';
+import { viewCrud, viewLabel, viewMapTo, FormFieldType, formField, formTable, ViewActions, viewDialog, popUpSelector } from 'o2c_core';
 import { DEFAULT_ROUTE_CONFIGURATION } from 'src/app/core/constants/routes.constants';
 import { FolioService } from '../services/folio-service.service';
 import { ProcedureDto, UserDto } from '../dto';
 import { BookDto } from '../dto/Book.dto';
 import { FolioDto } from '../dto/Folio.dto';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserView } from './User.view';
 
 const goToErrorFolios = new ViewActions<FolioDto>(
   async ({ row, injector }) => {
@@ -28,18 +29,32 @@ export class FolioErrors {
     formFieldType: FormFieldType.NUMBER,
   })
   @viewLabel('Folio')
-  folio_num: number;
+  folio: number;
 
   @formField({
     label: 'Descripción de error',
-    formFieldType: FormFieldType.TEXT,
+    formFieldType: FormFieldType.TEXTAREA,
   })
   @viewLabel('Descripción de error')
-  description: string;
+  comment: string;
 
-  constructor(folio_num: number, description: string) {
-    this.folio_num = folio_num;
-    this.description = description;
+  @popUpSelector({
+    label: 'Usuario',
+    config: {
+      title: 'Usuario',
+      viewClass: UserView,
+      options: {
+        isMulti: false,
+      },
+    },
+  })
+  @viewLabel('Usuario')
+  user_id: number;
+
+  constructor(folio: number, comment: string, user_id: number) {
+    this.folio = folio;
+    this.comment = comment ;
+    this.user_id = user_id;
   }
 }
 
@@ -51,10 +66,10 @@ export class FolioErrorsTable {
     label: 'Errores en folios',
     formFieldType: FormFieldType.TABLE,
   })
-  folio_errors: string;
+  canceled_folios: string;
 
-  constructor(folio_errors: string) {
-    this.folio_errors = folio_errors;
+  constructor(canceled_folios: string) {
+    this.canceled_folios = canceled_folios;
   }
 }
 
@@ -84,18 +99,6 @@ export class FolioView {
   @viewMapTo((value: any) => value.name)
   procedure: ProcedureDto;
 
-  // @viewLabel('Acceso a la plataforma')
-  // @viewHTML((online) => {
-  //   const status = {
-  //     1: '#f91a1a', //Desconectado
-  //     0: '#3be30e', //Conectado
-  //   };
-  //   // @ts-ignore
-  //   return `<div style=" display: inline-block ;padding: 1.25rem; background: ${status[online]};margin-top: 1rem; border-radius: 50%"></div>`;
-  // })
-  // unused_folios: number;
-
-  //mostras información de los errres
 
   constructor(
     name: string,

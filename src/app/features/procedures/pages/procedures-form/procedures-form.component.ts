@@ -4,14 +4,14 @@ import {
   UntypedFormControl,
   UntypedFormGroup,
   ValidationErrors,
-  ValidatorFn,
-  Validators,
+  Validators
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { FORM_CLAZZ, FormComponent, MessageHelper } from 'o2c_core';
+import { FORM_CLAZZ, FormComponent, MessageHelper, LoaderService } from 'o2c_core';
 import { Observable, debounceTime, map, of } from 'rxjs';
+import { FolioDialogView } from 'src/app/data/presentation/FolioDialog.view';
 import { StakeAssignGrantorTable } from 'src/app/data/presentation/Procedure.view';
 import { OperationService } from 'src/app/data/services/operation.service';
 import { ClientView } from '../../../../data/presentation';
@@ -26,8 +26,6 @@ import { DocumentFormComponent } from '../../../documents/page/document-form/doc
 import { GrantorFormComponent } from '../../../grantor/page/grantor-form/grantor-form.component';
 import { PlaceFormComponent } from '../../../place/page/place-form/place-form.component';
 import { StaffMemberFormComponent } from '../../../staff/page/staff-member-form/staff-member-form.component';
-import { FolioView } from 'src/app/data/presentation/Folio.view';
-import { FolioFormComponent } from 'src/app/features/folio/pages/folio-form/folio-form.component';
 
 @AutoUnsubscribe()
 @Component({
@@ -86,7 +84,7 @@ export class ProceduresFormComponent implements OnDestroy {
 
   documentProvider = DocumentView;
 
-  folioProvider = FolioView;
+  folioProvider = FolioDialogView;
 
   addItems = [
     {
@@ -117,15 +115,25 @@ export class ProceduresFormComponent implements OnDestroy {
     private procedureService: ProcedureService,
     public dialog: MatDialog,
     private _operationService: OperationService,
+    private loaderService: LoaderService,
   ) {
     const id = Number(this.route.snapshot.params.id);
     if (!isNaN(id)) {
       this.isEdit = true;
       procedureService.fetch(id).subscribe({
-        next: (operation) => {
+        next: (procedure) => {
           this.procedureForm.addControl('id', new UntypedFormControl(''));
-          this.procedureForm.patchValue(operation);
+          this.procedureForm.patchValue(procedure);
+            procedure?.grantors,
+          this.formComponent.formBuilderComponent.form.controls.stakes.setValue(procedure.grantors);
         },
+      });
+    }else {
+      this.procedureService.recommendationExpedient().subscribe({
+        next: (data: any) => {
+          this.procedureForm.get('name')?.setValue(data.name);
+          this.procedureForm.controls.name.disable();
+        }
       });
     }
 
@@ -138,14 +146,8 @@ export class ProceduresFormComponent implements OnDestroy {
           }
         },
       });
+      
     });
-
-    this.procedureService.recommendationExpedient().subscribe({
-      next: (data: any) => {
-        this.procedureForm.get('name')?.setValue(data.name);
-        this.procedureForm.controls.name.disable();
-      }
-    })
   }
   ngOnDestroy(): void {}
 
@@ -160,13 +162,11 @@ export class ProceduresFormComponent implements OnDestroy {
 
     this.procedureForm
       .get('grantors')
-      ?.setValue(this.formComponent.formBuilderComponent.form.value);
-    console.log('forrrrm ---> ', this.procedureForm.value);
+      ?.setValue(this.formComponent.formBuilderComponent.form.value.stakes);
 
-    if (this.procedureForm.invalid) {
-      return;
-    }
+    if (this.procedureForm.invalid) return;
 
+    this.loaderService.showFullScreenLoader();
     let request$: Observable<any>;
     if (!this.isEdit) {
       request$ = this.procedureService.save(this.procedureForm.value);
@@ -175,13 +175,9 @@ export class ProceduresFormComponent implements OnDestroy {
     }
 
     const datosFormulario = this.procedureForm.value;
-    if (datosFormulario.folio_min)
-      datosFormulario.folio_min = datosFormulario.folio_min.toString();
 
     if (datosFormulario.credit)
       datosFormulario.credit = datosFormulario.credit.toString();
-
-    datosFormulario.folio_max = datosFormulario.folio_max.toString();
 
     request$.subscribe({
       next: async () => {
@@ -190,10 +186,12 @@ export class ProceduresFormComponent implements OnDestroy {
           '¡Éxito!',
           `La operación ha sido ${message} correctamente.`,
         );
+        this.loaderService.hideLoader();
         await this.backToListDocuments();
       },
       error: async (error) => {
         console.log(error);
+        this.loaderService.hideLoader();
         this.procedureForm.controls.name.disable();
         this.procedureForm.controls.documents.disable();
         if (error.error.code != null && error.error.code == 422) {

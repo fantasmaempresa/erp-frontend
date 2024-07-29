@@ -36,7 +36,7 @@
           </mat-form-field>
         </div>
         <div class="col-4">
-          <button
+          <button *ngIf="!errors"
             style="width: 100%"
             type="button"
             color="primary"
@@ -45,6 +45,17 @@
           >
             <mat-icon>add</mat-icon>
             Generar folios
+          </button>
+
+          <button *ngIf="errors"
+            style="width: 100%"
+            type="button"
+            color="primary"
+            (click)="verifyErrors()"
+            mat-raised-button
+          >
+            <mat-icon>add</mat-icon>
+            Verificar errores
           </button>
         </div>
       </div>

@@ -14,7 +14,6 @@ export class FolioService extends CrudService<FolioDto, Pagination<FolioDto>> {
     super('folio');
   }
 
-  // folio/recommendation/folio
 
   recommendationInstrument() {
     return this._http.get(
@@ -28,21 +27,25 @@ export class FolioService extends CrudService<FolioDto, Pagination<FolioDto>> {
     );
   }
 
-  fetchAll(): Observable<Pagination<FolioDto>> {
-
-    return this.contextService.injector$.pipe(
-      map((injector) => injector.get(ActivatedRoute)),
-      map((route: ActivatedRoute) => ({
-        view: route.snapshot.data.view,
-      })),
-      map(
-        ({view }) =>
-          new HttpParams({
-            fromObject: {view: `${view}`}
-          })
-      ),
-      switchMap((p) => super.fetchAll(p))
+  registerErrors(folio_id: number, params: any) {
+    return this._http.put(
+      `${this._base}/cancel/${folio_id}`, params
     );
   }
+}
 
+
+@Injectable({
+  providedIn: 'root',
+})
+export class FolioDialogService extends CrudService<FolioDto, Pagination<FolioDto>> {
+  constructor(private contextService: ViewContextService) {
+    super('folio');
+  }
+
+  fetchAll(): Observable<Pagination<FolioDto>> {
+    return super.fetchAll(new HttpParams({
+      fromObject: {view: 'dialog'},
+    }));
+  }
 }

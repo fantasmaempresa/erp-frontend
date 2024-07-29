@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   UntypedFormControl,
@@ -7,8 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FORM_CLAZZ, MessageHelper } from 'o2c_core';
-import { Observable } from 'rxjs';
+import { FORM_CLAZZ, MessageHelper, LoaderService, FormComponent } from 'o2c_core';
+import { concatMap, Observable } from 'rxjs';
 import { FolioDto } from 'src/app/data/dto/Folio.dto';
 import { BookView } from 'src/app/data/presentation/Book.view';
 import { FolioErrorsTable } from 'src/app/data/presentation/Folio.view';
@@ -26,6 +26,19 @@ import { FolioService } from 'src/app/data/services/folio-service.service';
   ],
 })
 export class FolioFormComponent {
+
+  private _listFormBuilder!: FormComponent;
+
+  public get formComponent(): FormComponent {
+    return this._listFormBuilder;
+  }
+  
+  @ViewChild(FormComponent)
+  public set formComponent(value: FormComponent) {
+    console.log('seteando formbuilder ---> ', value);
+    this._listFormBuilder = value;
+  }
+  
   isEdit: boolean = false;
 
   isDialog: boolean = false;
@@ -36,10 +49,13 @@ export class FolioFormComponent {
 
   errors: boolean = false;
 
+  saveErrors: boolean = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private _folioService: FolioService,
+    private loaderService: LoaderService,
   ) {
     this.form = new UntypedFormGroup(
       {
@@ -78,9 +94,16 @@ export class FolioFormComponent {
         next: (folio) => {
           this.form.addControl('id', new UntypedFormControl(''));
           this.form.patchValue(folio);
+          this._listFormBuilder.formBuilderComponent.form.controls.canceled_folios.setValue(folio.unused_folios);
         },
       });
+  
+      this.form.controls.number_of_folios.disable();
     }
+
+    this.form.controls.name.disable();
+    this.form.controls.folio_min.disable();
+    this.form.controls.folio_max.disable();
   }
 
   ngOnDestroy() {}
@@ -93,6 +116,10 @@ export class FolioFormComponent {
   }
 
   submit() {
+    this.form.controls.name.enable();
+    this.form.controls.folio_min.enable();
+    this.form.controls.folio_max.enable();
+
     if (this.form.invalid) return;
 
     let request$: Observable<FolioDto>;
@@ -112,6 +139,9 @@ export class FolioFormComponent {
       },
       error: async (error) => {
         console.log(error);
+        this.form.controls.name.disable();
+        this.form.controls.folio_min.disable();
+        this.form.controls.folio_max.disable();
         if (error.error.code != null && error.error.code == 422) {
           if (typeof error.error.error === 'object') {
             let message = '';
@@ -173,34 +203,70 @@ export class FolioFormComponent {
       this.form.get('book_id')?.value &&
       this.form.get('number_of_folios')?.value
     ) {
-      this._folioService.recommendationInstrument().subscribe({
-        next: (response: any) => {
-          this.form.get('name')?.setValue(response.name);
-        },
-      });
-
+      this.loaderService.showFullScreenLoader();
       this._folioService
-        .recommendationFolio(
-          this.form.get('book_id')?.value,
-          this.form.get('number_of_folios')?.value,
+        .recommendationInstrument()
+        .pipe(
+          concatMap((instrumentResponse) => {
+            //@ts-ignore
+            this.form.get('name')?.setValue(instrumentResponse.name);
+            return this._folioService.recommendationFolio(
+              this.form.get('book_id')?.value,
+              this.form.get('number_of_folios')?.value,
+            );
+          }),
         )
         .subscribe({
-          next: (response: any) => {
-            this.form.get('folio_min')?.setValue(response.folio_min);
-            this.form.get('folio_max')?.setValue(response.folio_max);
+          next: (folioResponse) => {
+            //@ts-ignore
+            this.form.get('folio_min')?.setValue(folioResponse.folio_min);
+            //@ts-ignore
+            this.form.get('folio_max')?.setValue(folioResponse.folio_max);
+            this.loaderService.hideLoader();
+          },
+          error: (error) => {
+            console.error('Error al realizar las peticiones:', error);
+            this.loaderService.hideLoader();
+            MessageHelper.errorMessage('Ocurrio un error al generar el folio');
+          },
+          complete: () => {
+            this.loaderService.hideLoader();
           },
         });
     }
   }
 
-  setValidator() {
-    const enable = [
-      'name',
-      'folio_min',
-      'folio_max',
-      'book_id',
-      'number_of_folios',
-    ];
-    // this.form.get
+  verifyErrors(){
+    this.loaderService.showFullScreenLoader();
+    
+    this._folioService.registerErrors(this.form.controls.id.value,
+      {...this._listFormBuilder.formBuilderComponent.form.value, "save": this.saveErrors}
+    ).subscribe({
+      next: () => {
+        this.loaderService.hideLoader();
+        this.saveErrors = true;
+      },
+      error: (error) => {
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof error.error.error === 'object') {
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            MessageHelper.errorMessage(message);
+          } else {
+            MessageHelper.errorMessage(error.error.error);
+          }
+        }
+        this.loaderService.hideLoader();
+      },
+      complete: () => {
+        this.loaderService.hideLoader();
+      },
+      
+    });
+    
   }
 }

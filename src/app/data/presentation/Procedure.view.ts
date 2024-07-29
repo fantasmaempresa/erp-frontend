@@ -164,7 +164,7 @@ export class StakeAssignGrantor {
   })
   @viewLabel('Otorgante')
   // @viewMapTo((value: any) => value.name)
-  grantors: GrantorDto;
+  grantor_id: GrantorDto;
 
   @popUpSelector({
     label: 'Participación',
@@ -179,11 +179,11 @@ export class StakeAssignGrantor {
   })
   @viewLabel('Participación')
   // @viewMapTo((value: any) => value.name)
-  stakes: StakeDto;
+  stake_id: StakeDto;
 
-  constructor(grantors: GrantorDto, stakes: StakeDto) {
-    this.grantors = grantors;
-    this.stakes = stakes;
+  constructor(grantor_id: GrantorDto, stake_id: StakeDto) {
+    this.grantor_id = grantor_id;
+    this.stake_id = stake_id;
   }
 }
 
@@ -250,9 +250,13 @@ export class ProcedureView {
 
   @viewLabel('Instrumento')
   @viewMapTo((folio: any) => folio.name)
-  @viewLabel('Folio de inicio')
-  @viewMapTo((folio: any) => folio.folio_min)
   folio: FolioDto;
+
+  @viewLabel('Del folio')
+  folio__folio_min: number;
+  
+  @viewLabel('Al Folio')
+  folio__folio_max: number;
 
   // folio_fin: FolioDto;
 
@@ -388,9 +392,13 @@ export class ProcedureView {
     created_at: Date,
     operations: OperationsDto[],
     folio: FolioDto,
+    folio__folio_min: number,
+    folio__folio_max: number,
   ) {
     this.name = name;
     this.folio = folio;
+    this.folio__folio_min = folio__folio_min;
+    this.folio__folio_max = folio__folio_max;
     this.date_proceedings = date_proceedings;
     this.operations = operations;
     this.value_operation = value_operation;
