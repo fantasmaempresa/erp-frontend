@@ -4,12 +4,17 @@ import {
   UntypedFormControl,
   UntypedFormGroup,
   ValidationErrors,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { FORM_CLAZZ, FormComponent, MessageHelper, LoaderService } from 'o2c_core';
+import {
+  FORM_CLAZZ,
+  FormComponent,
+  MessageHelper,
+  LoaderService,
+} from 'o2c_core';
 import { Observable, debounceTime, map, of } from 'rxjs';
 import { FolioDialogView } from 'src/app/data/presentation/FolioDialog.view';
 import { StakeAssignGrantorTable } from 'src/app/data/presentation/Procedure.view';
@@ -124,16 +129,17 @@ export class ProceduresFormComponent implements OnDestroy {
         next: (procedure) => {
           this.procedureForm.addControl('id', new UntypedFormControl(''));
           this.procedureForm.patchValue(procedure);
-            procedure?.grantors,
-          this.formComponent.formBuilderComponent.form.controls.stakes.setValue(procedure.grantors);
+          procedure?.grantors,
+            this.formComponent.formBuilderComponent.form.controls.stakes.setValue(
+              procedure.grantors,
+            );
         },
       });
-    }else {
+    } else {
       this.procedureService.recommendationExpedient().subscribe({
         next: (data: any) => {
           this.procedureForm.get('name')?.setValue(data.name);
-          this.procedureForm.controls.name.disable();
-        }
+        },
       });
     }
 
@@ -146,8 +152,8 @@ export class ProceduresFormComponent implements OnDestroy {
           }
         },
       });
-      
     });
+    this.procedureForm.controls.name.disable();
   }
   ngOnDestroy(): void {}
 

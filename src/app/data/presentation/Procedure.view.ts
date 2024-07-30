@@ -236,11 +236,11 @@ export class AdvanceFilterProcedure {
   actions: [
     goToDocumentsLink,
     goToShapesLink,
-    goToComments,
-    goToRegistrationData,
     goToViewGrantors,
     goToAssingPercentageGrantor,
+    goToComments,
     goToProcessingIncome,
+    goToRegistrationData,
   ],
   route: DEFAULT_ROUTE_CONFIGURATION,
 })
@@ -368,13 +368,9 @@ export class ProcedureView {
 
   constructor(
     name: string,
-    // instrument: string,
     value_operation: number,
     date_proceedings: string,
     date: string,
-    // volume: string,
-    // folio_min: number,
-    // folio_max: number,
     credit: string,
     observation: string,
     operation_id: number,

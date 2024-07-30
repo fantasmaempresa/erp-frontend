@@ -8,12 +8,12 @@ export interface FolioDto extends EntityDto {
   folio_min: number;
   folio_max: number;
   book_id: number;
-  procedure_id: number;
+  procedure_id?: number;
   user_id: number;
-  user: UserDto;
-  book: BookDto;
+  user?: UserDto;
+  book?: BookDto;
   procedure?: ProcedureDto;
-  unused_folios: [{
+  unused_folios?: [{
     folio: number;
     date: Date;
     comment: string;

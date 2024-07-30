@@ -11,11 +11,7 @@ export interface ProcedureDto extends EntityDto {
   proceedings: string;
   value_operation: number;
   date_proceedings: string;
-  instrument: string;
   date: string;
-  volume: string;
-  folio_min: number;
-  folio_max: number;
   credit: string;
   observation: string;
   grantors: GrantorDto[];

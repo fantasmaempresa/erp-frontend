@@ -3,6 +3,8 @@ import { CrudService, Pagination } from 'o2c_core';
 import { ProcedureDto } from '../dto';
 import { environment } from '../../../environments/environment';
 import { HttpParams, HttpHeaders } from '@angular/common/http';
+import { map, Observable } from 'rxjs';
+import { FolioDto } from '../dto/Folio.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +15,33 @@ export class ProcedureService extends CrudService<
 > {
   constructor() {
     super('procedures');
+  }
+
+  override fetchAll(
+    params?: HttpParams,
+    headers?: HttpHeaders,
+  ): Observable<Pagination<ProcedureDto>> {
+    return super.fetchAll(params, headers).pipe(
+      map((pagination) => ({
+        ...pagination,
+        data: pagination.data.map((procedure) => {
+          const folio: FolioDto = {
+              ...(procedure?.folio || {}),
+              id: procedure.folio?.id || 0,
+              name: procedure.folio?.name || '',
+              folio_min: procedure.folio?.folio_min || 0,
+              folio_max: procedure.folio?.folio_max || 0,
+              book_id: procedure.folio?.book_id || 0,
+              user_id: procedure.folio?.user_id || 0,
+            };
+
+          return ({
+            ...procedure,
+            folio,
+          });
+        }),
+      })),
+    );
   }
 
   checkValueUnique(name: string, id?: number) {
@@ -75,11 +104,9 @@ export class ProcedureService extends CrudService<
       `${environment.base_url}/procedure/graphics/withoutDocument`,
     );
   }
-  
+
   recommendationExpedient() {
-    return this._http.get(
-      `${this._base}/recommendation/expedient`,
-    );
+    return this._http.get(`${this._base}/recommendation/expedient`);
   }
 }
 

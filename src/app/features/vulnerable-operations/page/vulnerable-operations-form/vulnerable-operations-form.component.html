@@ -42,8 +42,8 @@
             <ng-container *ngIf="dataProcedure != null">
               <h3>Datos del trámite</h3>
               <p>Número de expediente: {{ dataProcedure.name }}</p>
-              <p>Número de instrumento: {{ dataProcedure.instrument }}</p>
-              <p>Volumen: {{ dataProcedure.volume }}</p>
+              <p>Número de instrumento: {{ dataProcedure.folio?.name }}</p>
+              <p>Volumen: {{ dataProcedure.folio?.book?.name }}</p>
 
               <h3>Operaciones del trámite</h3>
               <ng-container *ngFor="let operation of dataProcedure.operations">

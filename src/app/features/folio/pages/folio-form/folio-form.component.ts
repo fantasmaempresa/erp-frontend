@@ -65,9 +65,9 @@ export class FolioFormComponent {
         book_id: new UntypedFormControl(null, [Validators.required]),
         number_of_folios: new UntypedFormControl(null, [Validators.required]),
       },
-      {
-        validators: this.compareValuesValidator('folio_min', 'folio_max'),
-      },
+      // {
+      //   // validators: this.compareValuesValidator('folio_min', 'folio_max'),
+      // },
     );
 
     const currentRoute = this.route.snapshot.routeConfig?.path;
