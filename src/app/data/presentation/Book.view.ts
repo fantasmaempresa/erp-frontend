@@ -37,17 +37,17 @@ export class BookView {
   folio_max: number;
 
   @viewLabel('Fecha de solicitud')
-  date_proceeding: Date;
+  date_proceedings: Date;
 
   constructor(
     name: string,
     folio_min: number,
     folio_max: number,
-    date_proceeding: Date,
+    date_proceedings: Date,
   ) {
     this.name = name;
     this.folio_min = folio_min;
     this.folio_max = folio_max;
-    this.date_proceeding = date_proceeding;
+    this.date_proceedings = date_proceedings;
   }
 }

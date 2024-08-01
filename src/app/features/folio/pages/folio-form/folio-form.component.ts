@@ -65,9 +65,7 @@ export class FolioFormComponent {
         book_id: new UntypedFormControl(null, [Validators.required]),
         number_of_folios: new UntypedFormControl(null, [Validators.required]),
       },
-      // {
-      //   // validators: this.compareValuesValidator('folio_min', 'folio_max'),
-      // },
+      
     );
 
     const currentRoute = this.route.snapshot.routeConfig?.path;
@@ -101,9 +99,9 @@ export class FolioFormComponent {
       this.form.controls.number_of_folios.disable();
     }
 
-    this.form.controls.name.disable();
-    this.form.controls.folio_min.disable();
-    this.form.controls.folio_max.disable();
+    // this.form.controls.name.disable();
+    // this.form.controls.folio_min.disable();
+    // this.form.controls.folio_max.disable();
   }
 
   ngOnDestroy() {}
@@ -139,9 +137,9 @@ export class FolioFormComponent {
       },
       error: async (error) => {
         console.log(error);
-        this.form.controls.name.disable();
-        this.form.controls.folio_min.disable();
-        this.form.controls.folio_max.disable();
+        // this.form.controls.name.disable();
+        // this.form.controls.folio_min.disable();
+        // this.form.controls.folio_max.disable();
         if (error.error.code != null && error.error.code == 422) {
           if (typeof error.error.error === 'object') {
             let message = '';
