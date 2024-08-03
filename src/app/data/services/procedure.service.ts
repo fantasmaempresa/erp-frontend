@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { HttpParams, HttpHeaders } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { FolioDto } from '../dto/Folio.dto';
+import { BookDto } from '../dto/Book.dto';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,12 @@ export class ProcedureService extends CrudService<
       map((pagination) => ({
         ...pagination,
         data: pagination.data.map((procedure) => {
+          const book: BookDto = {
+            id: 0,
+            name: '0',
+            folio_min: 0,
+            folio_max: 0, 
+          }
           const folio: FolioDto = {
               ...(procedure?.folio || {}),
               id: procedure.folio?.id || 0,
@@ -33,6 +40,7 @@ export class ProcedureService extends CrudService<
               folio_max: procedure.folio?.folio_max || 0,
               book_id: procedure.folio?.book_id || 0,
               user_id: procedure.folio?.user_id || 0,
+              book: procedure.folio?.book || book
             };
 
           return ({

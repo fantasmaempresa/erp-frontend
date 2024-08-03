@@ -1,5 +1,16 @@
 import { MatDialog } from '@angular/material/dialog';
-import { MessageHelper, ViewActions, ViewContextService, viewActions, viewCrud, viewLabel, viewMapTo } from 'o2c_core';
+import {
+  FormFieldType,
+  MessageHelper,
+  ViewActions,
+  ViewContextService,
+  formField,
+  formTable,
+  viewActions,
+  viewCrud,
+  viewLabel,
+  viewMapTo,
+} from 'o2c_core';
 import { DEFAULT_ROUTE_CONFIGURATION } from 'src/app/core/constants/routes.constants';
 import { DialogPreviewPdfComponent } from 'src/app/shared/components/dialog-preview-pdf/dialog-preview-pdf.component';
 import { DocumentDto, UserDto } from '../dto';
@@ -11,15 +22,18 @@ const goToViewDocument = new ViewActions<RegistrationProcedureDataDto>(
   async ({ row, injector }) => {
     const document = row as RegistrationProcedureDataDto;
     const dialog = injector.get(MatDialog);
-    if(document.url_file == null || document.url_file == '') {
-      MessageHelper.errorMessage('Este registro no tiene documento para mostrar', 'Documento de registro');
-    }else {
+    if (document.url_file == null || document.url_file == '') {
+      MessageHelper.errorMessage(
+        'Este registro no tiene documento para mostrar',
+        'Documento de registro',
+      );
+    } else {
       dialog.open(DialogPreviewPdfComponent, {
         data: {
           name: document.inscription,
           file: document.url_file,
         },
-      }); 
+      });
     }
   },
   'visibility',
@@ -40,7 +54,7 @@ const goToDelete = new ViewActions<RegistrationProcedureDataDto>(
         viewContextService.reloadView();
         await MessageHelper.successMessage(
           'Éxito',
-          `${(row as RegistrationProcedureDataDto).date} ha sido eliminado`
+          `${(row as RegistrationProcedureDataDto).date} ha sido eliminado`,
         );
       },
     });
@@ -49,8 +63,92 @@ const goToDelete = new ViewActions<RegistrationProcedureDataDto>(
   {
     isVisible: (row) => !!row,
     messageBeforeAction: `¿Deseas eliminar este Registro?`,
-  }
+  },
 );
+
+export class RegisterData {
+  @formField({
+    label: 'Fojas',
+    formFieldType: FormFieldType.TEXT,
+  })
+  @viewLabel('Fojas')
+  sheets: string;
+
+  @formField({
+    label: 'Tomo',
+    formFieldType: FormFieldType.TEXT,
+  })
+  @viewLabel('Tomo')
+  took: string;
+
+  @formField({
+    label: 'Libro',
+    formFieldType: FormFieldType.TEXT,
+  })
+  @viewLabel('Libro')
+  book: string;
+
+  @formField({
+    label: 'Partida',
+    formFieldType: FormFieldType.TEXT,
+  })
+  @viewLabel('Partida')
+  departure: string;
+
+  @formField({
+    label: 'Folio Real Inmobiliario',
+    formFieldType: FormFieldType.TEXT,
+  })
+  @viewLabel('Folio Real Inmobiliario')
+  folio_real_estate: string;
+
+  @formField({
+    label: 'Partida',
+    formFieldType: FormFieldType.TEXT,
+  })
+  @viewLabel('Partida')
+  folio_electronic_merchant: string;
+
+  @formField({
+    label: 'NCI',
+    formFieldType: FormFieldType.TEXT,
+  })
+  @viewLabel('NCI')
+  nci: string;
+
+  constructor(
+    sheets: string,
+    took: string,
+    book: string,
+    departure: string,
+    folio_real_estate: string,
+    folio_electronic_merchant: string,
+    nci: string,
+  ){
+    this.sheets = sheets;
+    this.took = took;
+    this.book = book;
+    this.departure = departure;
+    this.folio_real_estate = folio_real_estate;
+    this.folio_electronic_merchant = folio_electronic_merchant;
+    this.nci = nci;
+  }
+}
+
+export class RegisterDataTable {
+  @formTable({
+    tableProvider: RegisterData,
+  })
+  @formField({
+    label: 'Datos de Registro',
+    formFieldType: FormFieldType.TABLE,
+  })
+  registers: string;
+
+  constructor(registers: string) {
+    this.registers = registers;
+  }
+}
 
 @viewActions({
   classProvider: RegistrationProcedureDataService,
@@ -85,23 +183,23 @@ export class RegistrationProcedureDataView {
   nci: string;
 
   url_file: string;
-//   procedure_id: number;
-//   document_id: number;
-//   user_id: number;
+  //   procedure_id: number;
+  //   document_id: number;
+  //   user_id: number;
 
   @viewLabel('Usuario')
   @viewMapTo((value: any) => value?.name)
   user: UserDto;
 
-//   @viewLabel('Documento')
-//   @viewMapTo((value: any) => value?.name)
+  //   @viewLabel('Documento')
+  //   @viewMapTo((value: any) => value?.name)
   document: DocumentDto;
-  
+
   @viewLabel('Lugar')
   @viewMapTo((value: any) => value?.name)
   place: PlaceDto;
 
-//   @viewLabel('Comentario')
+  //   @viewLabel('Comentario')
   description: string;
 
   constructor(

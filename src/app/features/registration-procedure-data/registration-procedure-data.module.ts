@@ -8,7 +8,7 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "../../shared/shared.module";
-import { ViewsModule } from "o2c_core";
+import { ViewsModule, FormsModule } from "o2c_core";
 
 @NgModule({
   declarations: [
@@ -23,6 +23,7 @@ import { ViewsModule } from "o2c_core";
     ReactiveFormsModule,
     SharedModule,
     ViewsModule,
+    FormsModule,
   ]
 })
 export class RegistrationProcedureDataModule { }
