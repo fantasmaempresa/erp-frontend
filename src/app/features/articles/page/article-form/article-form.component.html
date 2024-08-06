@@ -14,13 +14,11 @@
     >
         <div class="col-6 d-flex flex-column">
             <mat-form-field appearance="outline">
-                <mat-label>ID</mat-label>
-                <input formControlName="id" matInput type="number" />
-                <mat-error appErrorMessage></mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
                 <mat-label>Facturable</mat-label>
-                <input formControlName="billable" matInput type="text" />
+                <mat-select formControlName="billable">
+                    <mat-option [value]="1">Si</mat-option>
+                    <mat-option [value]="0">No</mat-option>
+                </mat-select>
                 <mat-error appErrorMessage></mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
@@ -68,7 +66,10 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Tipo</mat-label>
-                <input formControlName="type" matInput type="text" />
+                <mat-select formControlName="type">
+                    <mat-option [value]="1">Activo</mat-option>
+                    <mat-option [value]="2">Consumible</mat-option>
+                </mat-select>
                 <mat-error appErrorMessage></mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
@@ -78,7 +79,10 @@
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Almacenable</mat-label>
-                <input formControlName="storable" matInput type="text" />
+                <mat-select formControlName="storable">
+                    <mat-option [value]="1">Si</mat-option>
+                    <mat-option [value]="0">No</mat-option>
+                </mat-select>
                 <mat-error appErrorMessage></mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">

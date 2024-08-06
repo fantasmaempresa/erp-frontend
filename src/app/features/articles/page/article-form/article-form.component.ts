@@ -20,10 +20,6 @@ import { LineView } from 'src/app/data/presentation/Line.view';
 })
 export class ArticleFormComponent implements OnDestroy{
   articleForm = new UntypedFormGroup({
-    id: new UntypedFormControl('',[
-      Validators.required,
-      Validators.maxLength(20),
-    ]),
     billable: new UntypedFormControl('',[Validators.required]),
     bar_code: new UntypedFormControl('',[
       Validators.required,
@@ -54,7 +50,6 @@ export class ArticleFormComponent implements OnDestroy{
     ]),
     type: new UntypedFormControl('',[
       Validators.required,
-      Validators.maxLength(100),
     ]),
     brand: new UntypedFormControl('',[
       Validators.required,

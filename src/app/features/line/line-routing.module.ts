@@ -25,7 +25,7 @@ const routes: Routes = [
         data: { breadcrumb: 'Agregar Línea'},
       },
       {
-        path: 'id',
+        path: ':id',
         component: LineFormComponent,
         data: { breadcrumb: 'Editar Línea'},
       },
