@@ -4,19 +4,21 @@ import {
   MessageHelper,
   ViewActions,
   ViewContextService,
+  dialogLabel,
   formField,
   formTable,
   viewActions,
-  viewCrud,
+  viewDialog,
+  viewHTML,
   viewLabel,
   viewMapTo,
 } from 'o2c_core';
-import { DEFAULT_ROUTE_CONFIGURATION } from 'src/app/core/constants/routes.constants';
 import { DialogPreviewPdfComponent } from 'src/app/shared/components/dialog-preview-pdf/dialog-preview-pdf.component';
 import { DocumentDto, UserDto } from '../dto';
 import { PlaceDto } from '../dto/Place.dto';
 import { RegistrationProcedureDataDto } from '../dto/RegistrationProcedureData.dto';
 import { RegistrationProcedureDataService } from '../services/registration-procedure-data.service';
+import { da } from 'date-fns/locale';
 
 const goToViewDocument = new ViewActions<RegistrationProcedureDataDto>(
   async ({ row, injector }) => {
@@ -68,6 +70,13 @@ const goToDelete = new ViewActions<RegistrationProcedureDataDto>(
 
 export class RegisterData {
   @formField({
+    label: 'Inscripción',
+    formFieldType: FormFieldType.TEXT,
+  })
+  @viewLabel('Inscripción')
+  inscription: string;
+
+  @formField({
     label: 'Fojas',
     formFieldType: FormFieldType.TEXT,
   })
@@ -117,6 +126,7 @@ export class RegisterData {
   nci: string;
 
   constructor(
+    inscription: string,
     sheets: string,
     took: string,
     book: string,
@@ -124,7 +134,8 @@ export class RegisterData {
     folio_real_estate: string,
     folio_electronic_merchant: string,
     nci: string,
-  ){
+  ) {
+    this.inscription = inscription;
     this.sheets = sheets;
     this.took = took;
     this.book = book;
@@ -143,13 +154,14 @@ export class RegisterDataTable {
     label: 'Datos de Registro',
     formFieldType: FormFieldType.TABLE,
   })
-  registers: string;
+  data: string;
 
-  constructor(registers: string) {
-    this.registers = registers;
+  constructor(data: string) {
+    this.data = data;
   }
 }
 
+@viewDialog('Información del los datos de registro')
 @viewActions({
   classProvider: RegistrationProcedureDataService,
   // registerName: 'Información de registro',
@@ -162,25 +174,25 @@ export class RegisterDataTable {
   // route: DEFAULT_ROUTE_CONFIGURATION,
 })
 export class RegistrationProcedureDataView {
-  @viewLabel('Incripción')
-  inscription: string;
-  @viewLabel('Fojas')
-  sheets: string;
-  @viewLabel('Tomo')
-  took: string;
-  @viewLabel('libro')
-  book: string;
+  // @viewLabel('Incripción')
+  // inscription: string;
+  // @viewLabel('Fojas')
+  // sheets: string;
+  // @viewLabel('Tomo')
+  // took: string;
+  // @viewLabel('libro')
+  // book: string;
   @viewLabel('Fecha')
   date: string;
 
-  @viewLabel('Partida')
-  departure: string;
-  @viewLabel('Folio real inmobiliario')
-  folio_real_estate: string;
-  @viewLabel('Folio Electronico Mercantil')
-  folio_electronic_merchant: string;
-  @viewLabel('NCI')
-  nci: string;
+  // @viewLabel('Partida')
+  // departure: string;
+  // @viewLabel('Folio real inmobiliario')
+  // folio_real_estate: string;
+  // @viewLabel('Folio Electronico Mercantil')
+  // folio_electronic_merchant: string;
+  // @viewLabel('NCI')
+  // nci: string;
 
   url_file: string;
   //   procedure_id: number;
@@ -191,8 +203,8 @@ export class RegistrationProcedureDataView {
   @viewMapTo((value: any) => value?.name)
   user: UserDto;
 
-  //   @viewLabel('Documento')
-  //   @viewMapTo((value: any) => value?.name)
+  @viewLabel('Documento')
+  @viewMapTo((value: any) => value?.name)
   document: DocumentDto;
 
   @viewLabel('Lugar')
@@ -201,32 +213,61 @@ export class RegistrationProcedureDataView {
 
   //   @viewLabel('Comentario')
   description: string;
+  
+  @dialogLabel('')
+  @viewHTML((registers: any) => {
+    let html: string = '<br>';
+    // @ts-ignore
+    for (let register of registers) {
+      
+        html += `<p><b>Inscripción:</b> ${register.inscription}</p>`;
+        html += `<p><b>Fojas:</b> ${register.sheets}</ p>`;
+        html += `<p><b>Tomo:</b> ${register.took}</p>`;
+        html += `<p><b>Libro:</b> ${register.book}</ p>`;
+        html += `<p><b>Partida:</b> ${register.departure}</p>`;
+        html += `<p><b>Folio Real inmobiliario:</b> ${register.folio_real_estate}</p>`;
+        html += `<p><b>Folio Electronico Mercantil:</b> ${register.folio_electronic_merchant}</p>`;
+        html += `<p><b>NCI:</b> ${register.nci}</p>`;
+        html += `<hr><br>`;
+    }
+    return html;
+    
+        
+        
+        
+        
+        
+        
+        
+  })
+  data: [];
 
   constructor(
     date: string,
-    inscription: string,
-    sheets: string,
-    took: string,
-    book: string,
-    departure: string,
-    folio_real_estate: string,
-    folio_electronic_merchant: string,
-    nci: string,
+    // inscription: string,
+    // sheets: string,
+    // took: string,
+    // book: string,
+    // departure: string,
+    // folio_real_estate: string,
+    // folio_electronic_merchant: string,
+    // nci: string,
     description: string,
     url_file: string,
     user: UserDto,
     document: DocumentDto,
     place: PlaceDto,
+    data: [],
   ) {
     this.date = date;
-    this.inscription = inscription;
-    this.sheets = sheets;
-    this.took = took;
-    this.book = book;
-    this.departure = departure;
-    this.folio_real_estate = folio_real_estate;
-    this.folio_electronic_merchant = folio_electronic_merchant;
-    this.nci = nci;
+    // this.inscription = inscription;
+    // this.sheets = sheets;
+    // this.took = took;
+    // this.book = book;
+    // this.departure = departure;
+    // this.folio_real_estate = folio_real_estate;
+    // this.folio_electronic_merchant = folio_electronic_merchant;
+    // this.nci = nci;
     this.description = description;
     this.url_file = url_file;
     // this.document_id = document_id;
@@ -236,5 +277,6 @@ export class RegistrationProcedureDataView {
     this.user = user;
     this.document = document;
     this.place = place;
+    this.data = data;
   }
 }

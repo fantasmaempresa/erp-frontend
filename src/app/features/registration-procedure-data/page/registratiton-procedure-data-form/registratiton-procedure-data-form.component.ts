@@ -69,6 +69,7 @@ export class RegistratitonProcedureDataFormComponent implements OnDestroy {
       procedure_id: new UntypedFormControl(null, [Validators.required]),
       document_id: new UntypedFormControl(null, []),
       file: new UntypedFormControl(null, []),
+      register: new UntypedFormControl(null, [Validators.required]),
     });
 
     const id = Number(this.route.snapshot.params.id);
@@ -84,6 +85,7 @@ export class RegistratitonProcedureDataFormComponent implements OnDestroy {
         next: (registration) => {
           this.form.addControl('id', new UntypedFormControl(''));
           this.form.patchValue(registration);
+          this.formComponent.formBuilderComponent.form.controls.data.setValue(registration.data);
         },
       });
     }
@@ -99,11 +101,13 @@ export class RegistratitonProcedureDataFormComponent implements OnDestroy {
   }
 
   onSubmit() {
+    this.form.controls.register.setValue(this.formComponent.formBuilderComponent.form.value.data);
     if (this.form.invalid) {
       console.log('Alguno de los formularios no es valido', this.form.valid);
       return;
     }
 
+    console.log('this.formComponent.formBuilderComponent.form.value.data',this.formComponent.formBuilderComponent.form.value.data);
     const formData = new FormData();
     const formattedDate = new Date(this.form.value.date).toISOString();
     formData.append('file', this.form.value.file);
@@ -123,6 +127,7 @@ export class RegistratitonProcedureDataFormComponent implements OnDestroy {
     formData.append('procedure_id', this.form.value.procedure_id);
     formData.append('document_id', this.form.value.document_id);
     formData.append('place_id', this.form.value.place_id);
+    formData.append('data', JSON.stringify(this.formComponent.formBuilderComponent.form.value.data));
     Swal.showLoading();
 
     let request$: Observable<RegistrationProcedureDataDto>;
