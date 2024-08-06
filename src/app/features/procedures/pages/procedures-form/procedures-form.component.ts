@@ -129,10 +129,10 @@ export class ProceduresFormComponent implements OnDestroy {
         next: (procedure) => {
           this.procedureForm.addControl('id', new UntypedFormControl(''));
           this.procedureForm.patchValue(procedure);
-          procedure?.grantors,
-            this.formComponent.formBuilderComponent.form.controls.stakes.setValue(
-              procedure.grantors,
-            );
+          this.procedureForm.controls.folio_id.setValue(procedure.folio?.id);
+          this.formComponent.formBuilderComponent.form.controls.stakes.setValue(
+            procedure.grantors,
+          );
         },
       });
     } else {
@@ -153,7 +153,7 @@ export class ProceduresFormComponent implements OnDestroy {
         },
       });
     });
-    this.procedureForm.controls.name.disable();
+    // this.procedureForm.controls.name.disable();
   }
   ngOnDestroy(): void {}
 
@@ -198,19 +198,35 @@ export class ProceduresFormComponent implements OnDestroy {
       error: async (error) => {
         console.log(error);
         this.loaderService.hideLoader();
-        this.procedureForm.controls.name.disable();
-        this.procedureForm.controls.documents.disable();
+        // this.procedureForm.controls.name.disable();
+        // this.procedureForm.controls.documents.disable();
         if (error.error.code != null && error.error.code == 422) {
           if (typeof error.error.error === 'object') {
             let message = '';
 
             for (let item in error.error.error) {
               message = message + '\n' + error.error.error[item];
+              if (
+                error.error.error[item] == 'The name has already been taken.'
+              ) {
+                this.procedureService.recommendationExpedient().subscribe({
+                  next: (data: any) => {
+                    this.procedureForm.get('name')?.setValue(data.name);
+                  },
+                });
+              }
             }
 
             await MessageHelper.errorMessage(message);
           } else {
             await MessageHelper.errorMessage(error.error.error);
+            if (error.error.error == 'The name has already been taken.') {
+              this.procedureService.recommendationExpedient().subscribe({
+                next: (data: any) => {
+                  this.procedureForm.get('name')?.setValue(data.name);
+                },
+              });
+            }
           }
         } else if (error.error.code != null && error.error.code == 409) {
           await MessageHelper.errorMessage(

@@ -221,10 +221,24 @@ export class AdvanceFilterProcedure {
   })
   date_max: Date;
 
+  // @popUpSelector({
+  //   label: 'Otorgante',
+  //   config: {
+  //     title: 'Otorgante',
+  //     viewClass: GrantorView,
+  //     options: {
+  //       isMulti: false,
+  //     },
+  //   },
+  // })
+  // @viewLabel('Otorgante')
+  // grantor_id: number;
+
   constructor(book: string, date_min: Date, date_max: Date) {
     this.book = book;
     this.date_min = date_min;
     this.date_max = date_max;
+    // this.grantor_id = grantor_id;
   }
 }
 
@@ -248,31 +262,28 @@ export class ProcedureView {
   @viewLabel('Expediente')
   name: string;
 
-  @viewLabel('Instrumento')
-  @viewMapTo((folio: any) => folio.name)
+  @viewLabel('Volumen')
+  @viewMapTo((folio: any) => folio.book.name)
   folio: FolioDto;
+  
+  @viewLabel('Instrumento')
+  folio__name: number;
 
   @viewLabel('Del folio')
   folio__folio_min: number;
   
   @viewLabel('Al Folio')
   folio__folio_max: number;
-
-  // folio_fin: FolioDto;
-
-  // @viewLabel('Folio de final')
-  // @viewMapTo((folio: any) => folio.folio_max)
-  // folio_ffi: FolioDto;
-
+  
   @viewLabel('Fecha de Firma')
-  date_proceedings: string;
+  date: string;
 
   @dialogLabel('Valor de operación')
   value_operation: number;
 
   // @viewLabel('Fecha')
   @dialogLabel('Fecha')
-  date: string;
+  date_proceedings: string;
 
   // @viewLabel('Credito')
   credit: string;
@@ -309,7 +320,6 @@ export class ProcedureView {
     // @ts-ignore
     if (processing_income.length == 0)
       return `<div style="display: inline-block ;padding: 1.25rem; background: #f91a1a;margin-top: 1rem; border-radius: 50%"></div>`;
-    // return `<div style="display: inline-block ;padding: 1.50rem; background: #3be30e;margin-top: 1rem; border-radius: 50%"><span style="font-size: xx-small">${count}</span></div>`;
     else
       return `<div style="display: inline-block; padding: 1.5rem; background-color: #3be30e; margin-top: 1rem; border-radius: 50%; line-height: 1; text-align: center; font-size: 1rem;">${count}</div>`;
   })
@@ -388,11 +398,13 @@ export class ProcedureView {
     created_at: Date,
     operations: OperationsDto[],
     folio: FolioDto,
+    folio__name: number,
     folio__folio_min: number,
     folio__folio_max: number,
   ) {
     this.name = name;
     this.folio = folio;
+    this.folio__name = folio__name;
     this.folio__folio_min = folio__folio_min;
     this.folio__folio_max = folio__folio_max;
     this.date_proceedings = date_proceedings;
