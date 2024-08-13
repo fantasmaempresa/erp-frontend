@@ -1,11 +1,41 @@
-import { viewCrud, viewLabel, viewMapTo, FormFieldType, formField, formTable, ViewActions, viewDialog, popUpSelector } from 'o2c_core';
+import { ActivatedRoute, Router } from '@angular/router';
+import {
+  formField,
+  FormFieldType,
+  formTable,
+  popUpSelector,
+  viewActions,
+  ViewActions,
+  viewCrud,
+  viewHTML,
+  viewLabel,
+  viewMapTo,
+} from 'o2c_core';
 import { DEFAULT_ROUTE_CONFIGURATION } from 'src/app/core/constants/routes.constants';
-import { FolioService } from '../services/folio-service.service';
 import { ProcedureDto, UserDto } from '../dto';
 import { BookDto } from '../dto/Book.dto';
 import { FolioDto } from '../dto/Folio.dto';
-import { ActivatedRoute, Router } from '@angular/router';
+import {
+  FolioService,
+  OrderFolioService,
+} from '../services/folio-service.service';
 import { UserView } from './User.view';
+
+const goToOrderInstruments = new ViewActions<FolioDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['../', 'list-order'], {
+      relativeTo: route,
+    });
+  },
+  'info',
+  {
+    tooltip: 'Ver folios libres',
+    color: 'accent',
+    isVisible: (row) => true,
+  },
+);
 
 const goToErrorFolios = new ViewActions<FolioDto>(
   async ({ row, injector }) => {
@@ -53,7 +83,7 @@ export class FolioErrors {
 
   constructor(folio: number, comment: string, user_id: number) {
     this.folio = folio;
-    this.comment = comment ;
+    this.comment = comment;
     this.user_id = user_id;
   }
 }
@@ -73,12 +103,11 @@ export class FolioErrorsTable {
   }
 }
 
-@viewDialog('Información del trámite')
 @viewCrud({
   classProvider: FolioService,
   registerName: 'Folios',
   route: DEFAULT_ROUTE_CONFIGURATION,
-  actions: [goToErrorFolios],
+  actions: [goToErrorFolios, goToOrderInstruments],
 })
 export class FolioView {
   @viewLabel('Instrumento')
@@ -98,7 +127,6 @@ export class FolioView {
   @viewLabel('Expediente')
   @viewMapTo((value: any) => value.name)
   procedure: ProcedureDto;
-
 
   constructor(
     name: string,
@@ -120,5 +148,43 @@ export class FolioView {
     this.user = user;
     this.book = book;
     this.procedure = procedure;
+  }
+}
+
+@viewActions({
+  classProvider: OrderFolioService,
+  actions: [],
+})
+export class FolioOrderView {
+  @viewLabel('Instrumento')
+  name: string;
+  @viewLabel('Del Folio')
+  folio_min: number;
+  @viewLabel('Al Folio')
+  folio_max: number;
+
+  @viewLabel('Status')
+  @viewHTML((procedure: any) => {
+    const status = {
+      1: '#3be30e', //Procedure
+      2: '#f91a1a', //sin darse de alta
+    };
+
+    if(procedure){
+      return `<div style=" display: inline-block ;padding: 1.25rem; background: ${status[1]};margin-top: 1rem; border-radius: 50%"></div>`
+    }
+    return `<div style=" display: inline-block ;padding: 1.25rem; background: ${status[2]};margin-top: 1rem; border-radius: 50%"></div>`
+    })
+  procedure_id:  number | null;
+  constructor(
+    name: string,
+    folio_min: number,
+    folio_max: number,
+    procedure_id: number | null,
+  ) {
+    this.name = name;
+    this.folio_min = folio_min;
+    this.folio_max = folio_max;
+    this.procedure_id = procedure_id;
   }
 }

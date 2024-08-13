@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BasicViewComponent, VIEW_CLAZZ } from 'o2c_core';
-import { FolioView } from 'src/app/data/presentation/Folio.view';
+import { FolioOrderView, FolioView } from 'src/app/data/presentation/Folio.view';
 import { FolioFormComponent } from './pages/folio-form/folio-form.component';
 
 const routes: Routes = [
@@ -18,6 +18,12 @@ const routes: Routes = [
         component: BasicViewComponent,
         data: { breadcrumb: 'Lista de instrumento y Folios' },
         providers: [{ provide: VIEW_CLAZZ, useValue: FolioView }],
+      },
+      {
+        path: 'list-order',
+        component: BasicViewComponent,
+        data: { breadcrumb: 'Lista de instrumento y Folios ordenados' },
+        providers: [{ provide: VIEW_CLAZZ, useValue: FolioOrderView }],
       },
       {
         path: 'new',

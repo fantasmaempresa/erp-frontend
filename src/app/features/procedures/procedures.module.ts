@@ -13,12 +13,14 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 import { SharedModule } from "../../shared/shared.module";
 import { ViewsModule, FormsModule, FormComponent } from "o2c_core";
 import { GrantorPercentageDialogComponent } from './pages/grantor-percentage-dialog/grantor-percentage-dialog.component';
+import { NotPassedProcedureDialogComponent } from './pages/not-passed-procedure-dialog/not-passed-procedure-dialog.component';
 
 
 @NgModule({
   declarations: [
     ProceduresFormComponent,
-    GrantorPercentageDialogComponent
+    GrantorPercentageDialogComponent,
+    NotPassedProcedureDialogComponent
   ],
   imports: [
     CommonModule,

@@ -8,7 +8,7 @@ import { ViewsModule, FormsModule, FormComponent } from "o2c_core";
 
 @NgModule({
   declarations: [
-    BookFormComponent
+    BookFormComponent,
   ],
   imports: [
     CommonModule,

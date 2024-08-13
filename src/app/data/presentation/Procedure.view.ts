@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormFieldType,
   ViewActions,
+  ViewContextService,
   advancedFilters,
   dialogLabel,
   formField,
@@ -28,6 +29,10 @@ import { FolioDto } from '../dto/Folio.dto';
 import { GrantorView } from './Grantor.view';
 import { StakeView } from './Stake.view';
 import { StakeDto } from '../dto/Stake.dto';
+import { NotPassedProcedureDialogComponent } from 'src/app/features/procedures/pages/not-passed-procedure-dialog/not-passed-procedure-dialog.component';
+import { ClientView } from './Client.view';
+import { UserView } from './User.view';
+import { BookView } from './Book.view';
 
 const goToAssingPercentageGrantor = new ViewActions<ProcedureDto>(
   async ({ row, injector }) => {
@@ -44,7 +49,7 @@ const goToAssingPercentageGrantor = new ViewActions<ProcedureDto>(
   {
     tooltip: 'Asignar porcentaje de otorgante',
     color: 'accent',
-    isVisible: (row: ProcedureDto) => row && row.grantors.length > 0,
+    isVisible: (row: ProcedureDto) => row && row?.grantors != null,
   },
 );
 
@@ -63,7 +68,7 @@ const goToViewGrantors = new ViewActions<ProcedureDto>(
   {
     tooltip: 'Ver otorgantes',
     color: 'accent',
-    isVisible: (row: ProcedureDto) => row && row.grantors.length > 0,
+    isVisible: (row: ProcedureDto) => row && row?.grantors != null,
   },
 );
 
@@ -150,6 +155,31 @@ const goToShapesLink = new ViewActions<ProcedureDto>(
   },
 );
 
+const cancelProcedure = new ViewActions<ProcedureDto>(
+  async ({ row, injector }) => {
+    const procedure = row as ProcedureDto;
+    const dialog = injector.get(MatDialog);
+    const viewContextService = injector.get(ViewContextService);
+
+    dialog
+      .open(NotPassedProcedureDialogComponent, {
+        data: {
+          id: procedure.id,
+        },
+      })
+      .beforeClosed()
+      .subscribe((result) => {
+        if (result) viewContextService.reloadView();
+      });
+  },
+  'cancel',
+  {
+    tooltip: 'Cancelar',
+    color: 'warn',
+    isVisible: (row) => row && row.status != 2,
+  },
+);
+
 export class StakeAssignGrantor {
   @popUpSelector({
     label: 'Otorgante',
@@ -158,7 +188,7 @@ export class StakeAssignGrantor {
       viewClass: GrantorView,
       options: {
         isMulti: false,
-        keyAttribute: 'name'
+        keyAttribute: 'name',
       },
     },
   })
@@ -173,7 +203,7 @@ export class StakeAssignGrantor {
       viewClass: StakeView,
       options: {
         isMulti: false,
-        keyAttribute: 'name'
+        keyAttribute: 'name',
       },
     },
   })
@@ -203,42 +233,68 @@ export class StakeAssignGrantorTable {
 }
 
 export class AdvanceFilterProcedure {
-  @formField({
-    label: 'Libro(s) separar por coma',
-    formFieldType: FormFieldType.TEXT,
+  @popUpSelector({
+    label: 'Libros',
+    config: {
+      title: 'Libros',
+      viewClass: BookView,
+      options: {
+        isMulti: true,
+      },
+    },
   })
-  book: string;
+  @viewLabel('Otorgante')
+  book: number;
 
-  @formField({
-    label: 'Fecha',
-    formFieldType: FormFieldType.DATE,
+  @popUpSelector({
+    label: 'Otorgante',
+    config: {
+      title: 'Otorgante',
+      viewClass: GrantorView,
+      options: {
+        isMulti: true,
+      },
+    },
   })
-  date_min: Date;
+  @viewLabel('Otorgante')
+  grantor_id: number;
 
-  @formField({
-    label: 'Fecha',
-    formFieldType: FormFieldType.DATE,
+  @popUpSelector({
+    label: 'Cliente',
+    config: {
+      title: 'Cliente',
+      viewClass: ClientView,
+      options: {
+        isMulti: true,
+      },
+    },
   })
-  date_max: Date;
+  @viewLabel('Cliente')
+  client_id: number;
 
-  // @popUpSelector({
-  //   label: 'Otorgante',
-  //   config: {
-  //     title: 'Otorgante',
-  //     viewClass: GrantorView,
-  //     options: {
-  //       isMulti: false,
-  //     },
-  //   },
-  // })
-  // @viewLabel('Otorgante')
-  // grantor_id: number;
+  @popUpSelector({
+    label: 'Usuario',
+    config: {
+      title: 'Usuario',
+      viewClass: UserView,
+      options: {
+        isMulti: true,
+      },
+    },
+  })
+  @viewLabel('Usuario')
+  user_id: number;
 
-  constructor(book: string, date_min: Date, date_max: Date) {
+  constructor(
+    book: number,
+    grantor_id: number,
+    client_id: number,
+    user_id: number,
+  ) {
     this.book = book;
-    this.date_min = date_min;
-    this.date_max = date_max;
-    // this.grantor_id = grantor_id;
+    this.grantor_id = grantor_id;
+    this.client_id = client_id;
+    this.user_id = user_id;
   }
 }
 
@@ -248,6 +304,7 @@ export class AdvanceFilterProcedure {
   classProvider: ProcedureService,
   registerName: 'Trámites',
   actions: [
+    cancelProcedure,
     goToDocumentsLink,
     goToShapesLink,
     goToViewGrantors,
@@ -262,19 +319,41 @@ export class ProcedureView {
   @viewLabel('Expediente')
   name: string;
 
+  @viewLabel('Estado')
+  @viewHTML((status: any) => {
+    let html = '';
+    switch (status) {
+      case 1:
+        html =
+          '<span style="padding: 1rem; background: #0d2b3e; color: #eee ; border-radius: 10px; font-size: 1rem;">En progreso</span>';
+        break;
+      case 2:
+        html =
+          '<span style="padding: 1rem; background: #a30808; color: #eee ; border-radius: 10px; font-size: 1rem;">No paso</span>';
+        break;
+      case 3:
+        html =
+          '<span style="padding: 1rem; background: #0f7d0d; color: #eee ; border-radius: 10px; font-size: 1rem;">Aceptado</span>';
+        break;
+    }
+
+    return html;
+  })
+  status: number;
+
   @viewLabel('Volumen')
   @viewMapTo((folio: any) => folio.book.name)
   folio: FolioDto;
-  
+
   @viewLabel('Instrumento')
   folio__name: number;
 
   @viewLabel('Del folio')
   folio__folio_min: number;
-  
+
   @viewLabel('Al Folio')
   folio__folio_max: number;
-  
+
   @viewLabel('Fecha de Firma')
   date: string;
 
@@ -401,8 +480,10 @@ export class ProcedureView {
     folio__name: number,
     folio__folio_min: number,
     folio__folio_max: number,
+    status: number,
   ) {
     this.name = name;
+    this.status = status;
     this.folio = folio;
     this.folio__name = folio__name;
     this.folio__folio_min = folio__folio_min;

@@ -136,7 +136,6 @@ export class ProceduresFormComponent implements OnDestroy {
         },
       });
       this.procedureForm.controls.documents.disable();
-      
     } else {
       this.procedureService.recommendationExpedient().subscribe({
         next: (data: any) => {

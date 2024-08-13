@@ -83,4 +83,8 @@ export class AuthService {
       .post(`${this._base}user/closeSystem/${id}`, { locked })
       .pipe(take(1));
   }
+
+  verifyOpenSession(){
+    return localStorage.getItem(this.ACCESS_TOKEN) ?? false;
+  }
 }

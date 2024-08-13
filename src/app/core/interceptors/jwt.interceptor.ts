@@ -52,6 +52,7 @@ export class JwtInterceptor {
           !req.url.includes('oauth') &&
           error.status === 401
         ) {
+          this.authService.removeTokens();
           return this.handle401Error(req, next);
         } else {
           return throwError(error);

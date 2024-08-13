@@ -14,18 +14,19 @@ export interface ProcedureDto extends EntityDto {
   date: string;
   credit: string;
   observation: string;
-  grantors: GrantorDto[];
-  operations: OperationsDto[];
+  appraisal: string;
   operation_id: number;
   user_id: number;
   place_id: number;
   client_id: number;
   staff_id: number;
-  appraisal: string;
+  folio_id: number;
+  status: number;
+  grantors?: GrantorDto[];
+  operations?: OperationsDto[];
   comments?: ProcedureCommentDto[];
   staff?: StaffDto[];
   registration_procedure_data?: RegistrationProcedureDataDto[];
   processing_income?: ProcessingIncomeDto[];
-  folio_id: number;
   folio?: FolioDto;
 }
