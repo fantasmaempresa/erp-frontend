@@ -4,6 +4,22 @@ import { DEFAULT_ROUTE_CONFIGURATION } from 'src/app/core/constants/routes.const
 import { BookDto } from '../dto/Book.dto';
 import { ActivatedRoute, Router } from '@angular/router';
 
+const goToBookDetail = new ViewActions<BookDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['../','bookDetail',(row as BookDto).id], {
+      relativeTo: route,
+    });
+  },
+  'info',
+  {
+    tooltip: 'Detalle de folios',
+    color: 'accent',
+    isVisible: (row) => row && row.id > 0,
+  },
+);
+
 const goToDocumentsLink = new ViewActions<BookDto>(
   async ({ row, injector }) => {
     const router = injector.get(Router);
@@ -24,7 +40,7 @@ const goToDocumentsLink = new ViewActions<BookDto>(
   classProvider: BookServiceService,
   registerName: 'Trámites',
   route: DEFAULT_ROUTE_CONFIGURATION,
-  actions: [goToDocumentsLink],
+  actions: [goToBookDetail, goToDocumentsLink],
 })
 export class BookView {
   @viewLabel('Libro')

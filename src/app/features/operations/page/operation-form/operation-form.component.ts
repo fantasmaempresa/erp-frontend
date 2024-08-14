@@ -23,7 +23,6 @@ export class OperationFormComponent implements OnDestroy {
     name: new UntypedFormControl('', [
       Validators.required,
       Validators.minLength(3),
-      Validators.maxLength(50),
     ]),
     description: new UntypedFormControl('', [
       Validators.maxLength(400),

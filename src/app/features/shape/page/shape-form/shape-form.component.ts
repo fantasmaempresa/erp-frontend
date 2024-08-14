@@ -153,7 +153,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
         this._procedureService.fetch(value).subscribe((procedure : ProcedureDto) => {
           this.shapeForm.get("signature_date")?.setValue(procedure.date_proceedings);
           this.shapeForm.get("operation_value")?.setValue(procedure.value_operation);
-          this.shapeForm.get("scriptures")?.setValue(procedure.folio?.name);
+          this.shapeForm.get("scriptures")?.setValue(procedure.folio?.name.toString());
         })
       })
     }

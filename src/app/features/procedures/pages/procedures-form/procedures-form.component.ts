@@ -135,24 +135,26 @@ export class ProceduresFormComponent implements OnDestroy {
           );
         },
       });
+      this.procedureForm.controls.documents.disable();
     } else {
       this.procedureService.recommendationExpedient().subscribe({
         next: (data: any) => {
           this.procedureForm.get('name')?.setValue(data.name);
         },
       });
+
+      this.procedureForm.get('operations')?.valueChanges.subscribe((value) => {
+        this._operationService.getDocuments({ operations: value }).subscribe({
+          next: (documents) => {
+            this.procedureForm.get('documents')?.setValue(documents);
+            if (documents.length > 0) {
+              this.procedureForm.controls.documents.disable();
+            }
+          },
+        });
+      });
     }
 
-    this.procedureForm.get('operations')?.valueChanges.subscribe((value) => {
-      this._operationService.getDocuments({ operations: value }).subscribe({
-        next: (documents) => {
-          this.procedureForm.get('documents')?.setValue(documents);
-          if (documents.length > 0) {
-            this.procedureForm.controls.documents.disable();
-          }
-        },
-      });
-    });
     // this.procedureForm.controls.name.disable();
   }
   ngOnDestroy(): void {}

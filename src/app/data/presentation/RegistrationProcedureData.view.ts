@@ -110,12 +110,13 @@ export class RegisterData {
   })
   @viewLabel('Folio Real Inmobiliario')
   folio_real_estate: string;
+  
 
   @formField({
-    label: 'Partida',
+    label: 'Folio Real Mercantil',
     formFieldType: FormFieldType.TEXT,
   })
-  @viewLabel('Partida')
+  @viewLabel('Folio Real Mercantil')
   folio_electronic_merchant: string;
 
   @formField({
@@ -174,30 +175,10 @@ export class RegisterDataTable {
   // route: DEFAULT_ROUTE_CONFIGURATION,
 })
 export class RegistrationProcedureDataView {
-  // @viewLabel('Incripción')
-  // inscription: string;
-  // @viewLabel('Fojas')
-  // sheets: string;
-  // @viewLabel('Tomo')
-  // took: string;
-  // @viewLabel('libro')
-  // book: string;
   @viewLabel('Fecha')
   date: string;
 
-  // @viewLabel('Partida')
-  // departure: string;
-  // @viewLabel('Folio real inmobiliario')
-  // folio_real_estate: string;
-  // @viewLabel('Folio Electronico Mercantil')
-  // folio_electronic_merchant: string;
-  // @viewLabel('NCI')
-  // nci: string;
-
   url_file: string;
-  //   procedure_id: number;
-  //   document_id: number;
-  //   user_id: number;
 
   @viewLabel('Usuario')
   @viewMapTo((value: any) => value?.name)

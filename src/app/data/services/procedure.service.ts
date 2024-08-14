@@ -116,6 +116,10 @@ export class ProcedureService extends CrudService<
   recommendationExpedient() {
     return this._http.get(`${this._base}/recommendation/expedient`);
   }
+
+  notPassedProcedure(data: {id: number, description: string}) {
+    return this._http.post(`${this._base}/action/notPassedExpedient`, data);
+  }
 }
 
 @Injectable({

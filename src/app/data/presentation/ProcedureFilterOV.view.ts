@@ -58,7 +58,7 @@ const goToViewGrantors = new ViewActions<ProcedureDto>(
   {
     tooltip: 'Ver otorgantes',
     color: 'accent',
-    isVisible: (row: ProcedureDto) => row && row.grantors.length > 0,
+    isVisible: (row: ProcedureDto) => row && row?.grantors != null,
   },
 );
 

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BasicViewComponent, VIEW_CLAZZ } from 'o2c_core';
 import { BookView } from 'src/app/data/presentation/Book.view';
 import { BookFormComponent } from './pages/book-form/book-form.component';
+import { BookDetailView } from 'src/app/data/presentation/BookDetail.view';
 
 const routes: Routes = [
   {
@@ -29,6 +30,12 @@ const routes: Routes = [
         path: ':id',
         component: BookFormComponent,
         data: { breadcrumb: 'Editar Libro' },
+      },
+      {
+        path: 'bookDetail/:id',
+        component: BasicViewComponent,
+        data: { breadcrumb: 'Detalle de libro' },
+        providers: [{ provide: VIEW_CLAZZ, useValue: BookDetailView }],
       },
       {
         path: ':id/documentsLink',
