@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
 import { ContentLayoutComponent } from './layout/content-layout/content-layout.component';
 import { PageNotFoundComponent } from './shared/components/page-not-found/page-not-found.component';
@@ -209,32 +209,156 @@ const routes: Routes = [
       {
         path: 'isoDocumentation',
         loadChildren: () =>
-          import('./features/iso-documentation/iso-documentation.module').then((m) => m.IsoDocumentationModule),
+          import('./features/iso-documentation/iso-documentation.module').then(
+            (m) => m.IsoDocumentationModule,
+          ),
         data: { breadcrumb: 'Documentación interna norma ISO' },
       },
       {
         path: 'nationalConsumer',
         loadChildren: () =>
-          import('./features/national-consumer-price-index/national-consumer-price-index-routing.module').then((m) => m.NationalConsumerPriceIndexRoutingModule),
+          import(
+            './features/national-consumer-price-index/national-consumer-price-index.module'
+          ).then((m) => m.NationalConsumerPriceIndexModule),
         data: { breadcrumb: 'Precio al Consumidor Nacional' },
       },
       {
         path: 'inversionUnit',
         loadChildren: () =>
-          import('./features/inversion-unit/inversion-unit-routing.module').then((m) => m.InversionUnitRoutingModule),
+          import('./features/inversion-unit/inversion-unit.module').then(
+            (m) => m.InversionUnitModule,
+          ),
         data: { breadcrumb: 'Unidad de inversión' },
       },
       {
         path: 'rate',
         loadChildren: () =>
-          import('./features/rate/rate-routing.module').then((m) => m.RateRoutingModule),
+          import('./features/rate/rate.module').then((m) => m.RateModule),
         data: { breadcrumb: 'Tasa' },
       },
       {
-        path: 'disponsalOperation',
+        path: 'unit',
         loadChildren: () =>
-          import('./features/type-disposal-operation/type-disposal-operation-routing.module').then((m) => m.TypeDisposalOperationRoutingModule),
+          import('./features/unit/unit.module').then((m) => m.UnitModule),
+        data: { breadcrumb: 'Unidades' },
+      },
+      {
+        path: 'vulnerableOperations',
+        loadChildren: () =>
+          import(
+            './features/vulnerable-operations/vulnerable-operations.module'
+          ).then((m) => m.VulnerableOperationsModule),
+        data: { breadcrumb: 'Operaciones vulnerables' },
+      },
+      {
+        path: 'disposalOperation',
+        loadChildren: () =>
+          import(
+            './features/type-disposal-operation/type-disposal-operation.module'
+          ).then((m) => m.TypeDisposalOperationModule),
         data: { breadcrumb: 'Operaciones de eliminación' },
+      },
+      {
+        path: 'disposalRealEstate',
+        loadChildren: () =>
+          import(
+            './features/disposal-real-estate/disposal-real-estate.module'
+          ).then((m) => m.DisposalRealEstateModule),
+        data: { breadcrumb: 'Enajenación de Bienes' },
+      },
+      {
+        path: 'article',
+        loadChildren: () =>
+          import('./features/articles/articles.module').then(
+            (m) => m.ArticlesModule,
+          ),
+        data: { breadcrumb: 'Artículos' },
+      },
+      {
+        path: 'line',
+        loadChildren: () =>
+          import('./features/line/line.module').then((m) => m.LineModule),
+        data: { breadcrumb: 'Línea' },
+      },
+      {
+        path: 'warehouse',
+        loadChildren: () =>
+          import('./features/warehouse/warehouse.module').then(
+            (m) => m.WarehouseModule,
+          ),
+        data: { breadcrumb: 'Almacén' },
+      },
+      {
+        path: 'inventory',
+        loadChildren: () =>
+          import('./features/inventory/inventory.module').then(
+            (m) => m.InventoryModule,
+          ),
+        data: { breadcrumb: 'Inventario' },
+      },
+      {
+        path: 'movementTracking',
+        loadChildren: () =>
+          import('./features/movement-tracking/movement-tracking.module').then(
+            (m) => m.MovementTrackingModule,
+          ),
+        data: { breadcrumb: 'Seguimiento de Movimientos' },
+      },
+      {
+        path: 'officeSecurityMeasures',
+        loadChildren: () =>
+          import('./features/office-security-measures/office-security-measures.module').then(
+            (m) => m.OfficeSecurityMeasuresModule,
+          ),
+        data: { breadcrumb: 'Medidas de Seguridad de la Oficina' },
+      },
+      {
+        path: 'category-operation',
+        loadChildren: () =>
+          import(
+            './features/category-operation/category-operation.module'
+          ).then((m) => m.CategoryOperationModule),
+        data: { breadcrumb: 'Catégorias de operación' },
+      },
+      {
+        path: 'generalTemplates',
+        loadChildren: () =>
+          import('./features/general-template/general-template.module').then(
+            (m) => m.GeneralTemplateModule,
+          ),
+        data: { breadcrumb: 'Plantillas generales' },
+      },
+      {
+        path: 'proceduresVulnerableOperations',
+        loadChildren: () =>
+          import('./features/procedure-vo/procedure-vo.module').then(
+            (m) => m.ProcedureVOModule,
+          ),
+        data: { breadcrumb: 'Operaciones Vulnerables' },
+      },
+      {
+        path: 'disposalRealEstate',
+        loadChildren: () =>
+          import(
+            './features/disposal-real-estate/disposal-real-estate.module'
+          ).then((m) => m.DisposalRealEstateModule),
+        data: { breadcrumb: 'Enajenación de Bienes' },
+      },
+      {
+        path: 'books',
+        loadChildren: () =>
+          import(
+            './features/book/book.module'
+          ).then((m) => m.BookModule),
+        data: { breadcrumb: 'Libros de Folios' },
+      },
+      {
+        path: 'folios',
+        loadChildren: () =>
+          import(
+            './features/folio/folio.module'
+          ).then((m) => m.FolioModule),
+        data: { breadcrumb: 'Instrumentos y folios' },
       },
       {
         path: '**',
@@ -250,7 +374,12 @@ const routes: Routes = [
   },
 ];
 
+const settings: ExtraOptions = {
+  enableTracing: true,
+};
+
 @NgModule({
+  // imports: [RouterModule.forRoot(routes, settings)], //Descomentar para hacer tracing de rutas
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })

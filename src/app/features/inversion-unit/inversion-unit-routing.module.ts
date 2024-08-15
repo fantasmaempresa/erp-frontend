@@ -16,18 +16,18 @@ const routes: Routes = [
       {
         path: 'list',
         component: BasicViewComponent,
-        data: { breadcrumb: 'Lista de precios al consumidor' },
+        data: { breadcrumb: 'Lista de unidades de inversión' },
         providers: [{ provide: VIEW_CLAZZ, useValue: InversionUnitView }],
       },
       {
         path: 'new',
         component: InversionUnitFormComponent,
-        data: { breadcrumb: 'Agregar precio al consumidor' },
+        data: { breadcrumb: 'Agregar unidad de inversión' },
       },
       {
         path: ':id',
         component: InversionUnitFormComponent,
-        data: { breadcrumb: 'Editar precio al consumidor' },
+        data: { breadcrumb: 'Editar unidad de inversión' },
       },
     ],
   },

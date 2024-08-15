@@ -8,6 +8,7 @@ import {
   selectErrorMessage,
   selectIsLoading,
 } from '../../../../state/auth';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 interface LoginForm {
   username: FormControl<string>;
@@ -39,7 +40,12 @@ export class LoginComponent implements OnInit {
 
   errorMessage$!: Observable<string | null>;
 
-  constructor(private router: Router, private store: Store) {}
+  constructor(private router: Router, private store: Store, private _authService: AuthService) {
+
+    if(_authService.verifyOpenSession()) {
+      this.router.navigate(['/','app', 'dashboard']);
+    }
+  }
 
   ngOnInit(): void {
     this.isLoading$ = this.store.select(selectIsLoading);
@@ -56,4 +62,5 @@ export class LoginComponent implements OnInit {
       this.store.dispatch(loginStart({ username, password }));
     }
   }
+
 }

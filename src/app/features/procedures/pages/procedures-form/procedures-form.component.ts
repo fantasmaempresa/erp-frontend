@@ -1,68 +1,81 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   UntypedFormControl,
   UntypedFormGroup,
   ValidationErrors,
-  ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { debounceTime, map, Observable, of } from 'rxjs';
-import { ProcedureService } from '../../../../data/services/procedure.service';
-import { OperationView } from '../../../../data/presentation/Operation.view';
-import { MessageHelper } from 'o2c_core';
-import { PlaceView } from '../../../../data/presentation/Place.view';
-import { ClientView } from '../../../../data/presentation';
-import { StaffView } from '../../../../data/presentation/staff.view';
-import { GrantorView } from '../../../../data/presentation/Grantor.view';
-import { DocumentView } from '../../../../data/presentation/Document.view';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import {
+  FORM_CLAZZ,
+  FormComponent,
+  MessageHelper,
+  LoaderService,
+} from 'o2c_core';
+import { Observable, debounceTime, map, of } from 'rxjs';
+import { FolioDialogView } from 'src/app/data/presentation/FolioDialog.view';
+import { StakeAssignGrantorTable } from 'src/app/data/presentation/Procedure.view';
+import { OperationService } from 'src/app/data/services/operation.service';
+import { ClientView } from '../../../../data/presentation';
+import { DocumentView } from '../../../../data/presentation/Document.view';
+import { OperationView } from '../../../../data/presentation/Operation.view';
+import { PlaceView } from '../../../../data/presentation/Place.view';
+import { StaffView } from '../../../../data/presentation/staff.view';
+import { ProcedureService } from '../../../../data/services/procedure.service';
 import { DialogDynamicAddItemComponent } from '../../../../shared/components/dialog-dynamic-add-item/dialog-dynamic-add-item.component';
 import { ClientFormComponent } from '../../../clients/page/client-form/client-form.component';
-import { GrantorFormComponent } from '../../../grantor/page/grantor-form/grantor-form.component';
 import { DocumentFormComponent } from '../../../documents/page/document-form/document-form.component';
+import { GrantorFormComponent } from '../../../grantor/page/grantor-form/grantor-form.component';
 import { PlaceFormComponent } from '../../../place/page/place-form/place-form.component';
 import { StaffMemberFormComponent } from '../../../staff/page/staff-member-form/staff-member-form.component';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-procedures-form',
   templateUrl: './procedures-form.component.html',
   styleUrls: ['./procedures-form.component.scss'],
+  providers: [
+    {
+      provide: FORM_CLAZZ,
+      useValue: StakeAssignGrantorTable,
+    },
+  ],
 })
-export class ProceduresFormComponent {
-  procedureForm = new UntypedFormGroup(
-    {
-      name: new UntypedFormControl('', {
-        validators: [Validators.required],
-        asyncValidators: [this.uniqueValueValidator.bind(this)],
-        updateOn: 'blur',
-      }),
-      value_operation: new UntypedFormControl('', []),
-      instrument: new UntypedFormControl('', [Validators.required]),
-      date: new UntypedFormControl('', [Validators.required]),
-      volume: new UntypedFormControl('', [Validators.required]),
-      folio_min: new UntypedFormControl('', {
-        validators: [],
-        asyncValidators: [this.uniqueFolioValueValidatorMin.bind(this)],
-      }),
-      folio_max: new UntypedFormControl('', {
-        validators: [Validators.required],
-        asyncValidators: [this.uniqueFolioValueValidatorMax.bind(this)],
-      }),
-      credit: new UntypedFormControl('', []),
-      observation: new UntypedFormControl('', []),
-      documents: new UntypedFormControl('', []),
-      grantors: new UntypedFormControl('', [Validators.required]),
-      operation_id: new UntypedFormControl('', [Validators.required]),
-      place_id: new UntypedFormControl('', [Validators.required]),
-      client_id: new UntypedFormControl('', [Validators.required]),
-      staff_id: new UntypedFormControl('', [Validators.required]),
-    },
-    {
-      validators: this.compareValuesValidator('folio_min', 'folio_max'),
-    },
-  );
+export class ProceduresFormComponent implements OnDestroy {
+  private _listFormBuilder!: FormComponent;
+
+  public get formComponent(): FormComponent {
+    return this._listFormBuilder;
+  }
+
+  @ViewChild(FormComponent)
+  public set formComponent(value: FormComponent) {
+    console.log('seteando formbuilder ---> ', value);
+    this._listFormBuilder = value;
+  }
+
+  procedureForm = new UntypedFormGroup({
+    name: new UntypedFormControl('', {
+      validators: [Validators.required],
+      asyncValidators: [this.uniqueValueValidator.bind(this)],
+      updateOn: 'blur',
+    }),
+    value_operation: new UntypedFormControl('', []),
+    appraisal: new UntypedFormControl('', []),
+    date: new UntypedFormControl('', [Validators.required]),
+    credit: new UntypedFormControl('', []),
+    observation: new UntypedFormControl('', []),
+    documents: new UntypedFormControl('', [Validators.required]),
+    grantors: new UntypedFormControl('', [Validators.required]),
+    operations: new UntypedFormControl('', [Validators.required]),
+    place_id: new UntypedFormControl('', [Validators.required]),
+    client_id: new UntypedFormControl('', [Validators.required]),
+    staff_id: new UntypedFormControl('', [Validators.required]),
+    folio_id: new UntypedFormControl('', []),
+  });
 
   isEdit: boolean = false;
 
@@ -74,9 +87,9 @@ export class ProceduresFormComponent {
 
   staffProvider = StaffView;
 
-  grantorProvider = GrantorView;
-
   documentProvider = DocumentView;
+
+  folioProvider = FolioDialogView;
 
   addItems = [
     {
@@ -106,18 +119,45 @@ export class ProceduresFormComponent {
     private route: ActivatedRoute,
     private procedureService: ProcedureService,
     public dialog: MatDialog,
+    private _operationService: OperationService,
+    private loaderService: LoaderService,
   ) {
     const id = Number(this.route.snapshot.params.id);
     if (!isNaN(id)) {
       this.isEdit = true;
       procedureService.fetch(id).subscribe({
-        next: (operation) => {
+        next: (procedure) => {
           this.procedureForm.addControl('id', new UntypedFormControl(''));
-          this.procedureForm.patchValue(operation);
+          this.procedureForm.patchValue(procedure);
+          this.procedureForm.controls.folio_id.setValue(procedure.folio?.id);
+          this.formComponent.formBuilderComponent.form.controls.stakes.setValue(
+            procedure.grantors,
+          );
         },
       });
+      this.procedureForm.controls.documents.disable();
+    } else {
+      this.procedureService.recommendationExpedient().subscribe({
+        next: (data: any) => {
+          this.procedureForm.get('name')?.setValue(data.name);
+        },
+      });
+
+      this.procedureForm.get('operations')?.valueChanges.subscribe((value) => {
+        this._operationService.getDocuments({ operations: value }).subscribe({
+          next: (documents) => {
+            this.procedureForm.get('documents')?.setValue(documents);
+            if (documents.length > 0) {
+              this.procedureForm.controls.documents.disable();
+            }
+          },
+        });
+      });
     }
+
+    // this.procedureForm.controls.name.disable();
   }
+  ngOnDestroy(): void {}
 
   async backToListDocuments() {
     await this.router.navigate(['../'], { relativeTo: this.route });
@@ -125,11 +165,16 @@ export class ProceduresFormComponent {
 
   onSubmit() {
     console.log('formulaio', this.procedureForm.value);
+    this.procedureForm.controls.name.enable();
+    this.procedureForm.controls.documents.enable();
 
-    if (this.procedureForm.invalid) {
-      return;
-    }
+    this.procedureForm
+      .get('grantors')
+      ?.setValue(this.formComponent.formBuilderComponent.form.value.stakes);
 
+    if (this.procedureForm.invalid) return;
+
+    this.loaderService.showFullScreenLoader();
     let request$: Observable<any>;
     if (!this.isEdit) {
       request$ = this.procedureService.save(this.procedureForm.value);
@@ -138,14 +183,9 @@ export class ProceduresFormComponent {
     }
 
     const datosFormulario = this.procedureForm.value;
-    if (datosFormulario.folio_min)
-      datosFormulario.folio_min = datosFormulario.folio_min.toString();
 
     if (datosFormulario.credit)
       datosFormulario.credit = datosFormulario.credit.toString();
-
-
-    datosFormulario.folio_max = datosFormulario.folio_max.toString();
 
     request$.subscribe({
       next: async () => {
@@ -154,37 +194,57 @@ export class ProceduresFormComponent {
           '¡Éxito!',
           `La operación ha sido ${message} correctamente.`,
         );
+        this.loaderService.hideLoader();
         await this.backToListDocuments();
       },
-      error: async () => {
-        await MessageHelper.errorMessage('Ocurrio un error, intente más tarde');
+      error: async (error) => {
+        console.log(error);
+        this.loaderService.hideLoader();
+        // this.procedureForm.controls.name.disable();
+        // this.procedureForm.controls.documents.disable();
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof error.error.error === 'object') {
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+              if (
+                error.error.error[item] == 'The name has already been taken.'
+              ) {
+                this.procedureService.recommendationExpedient().subscribe({
+                  next: (data: any) => {
+                    this.procedureForm.get('name')?.setValue(data.name);
+                  },
+                });
+              }
+            }
+
+            await MessageHelper.errorMessage(message);
+          } else {
+            await MessageHelper.errorMessage(error.error.error);
+            if (error.error.error == 'The name has already been taken.') {
+              this.procedureService.recommendationExpedient().subscribe({
+                next: (data: any) => {
+                  this.procedureForm.get('name')?.setValue(data.name);
+                },
+              });
+            }
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
       },
     });
-  }
-
-  compareValuesValidator(
-    controlName: string,
-    compareControlName: string,
-  ): ValidatorFn {
-    return (formGroup: AbstractControl): { [key: string]: any } | null => {
-      const control = formGroup.get(controlName);
-      const compareControl = formGroup.get(compareControlName);
-
-      if (!control || !compareControl) {
-        return null;
-      }
-
-      const controlValue = control.value;
-      const compareControlValue = compareControl.value;
-
-      if (controlValue >= compareControlValue) {
-        compareControl.setErrors({ greaterThan: true });
-      } else {
-        compareControl.setErrors(null);
-      }
-
-      return null;
-    };
   }
 
   uniqueValueValidator(
@@ -192,11 +252,28 @@ export class ProceduresFormComponent {
   ): Observable<ValidationErrors | null> {
     console.log('se ejecuto el validador');
     let id = null;
-    if(this.isEdit){
+    if (this.isEdit) {
       id = this.procedureForm.get('id')?.value;
     }
     const value: string = control.value;
+
     return this.procedureService.checkValueUnique(value, id).pipe(
+      debounceTime(200),
+      map((isUnique) => (isUnique ? null : { uniqueValue: true })),
+    );
+  }
+
+  uniqueValueInstrumentValidator(
+    control: AbstractControl,
+  ): Observable<ValidationErrors | null> {
+    console.log('se ejecuto el validador');
+    let id = null;
+    if (this.isEdit) {
+      id = this.procedureForm.get('id')?.value;
+    }
+    const value: string = control.value;
+
+    return this.procedureService.checkValueInstrumentUnique(value, id).pipe(
       debounceTime(200),
       map((isUnique) => (isUnique ? null : { uniqueValue: true })),
     );
@@ -206,7 +283,7 @@ export class ProceduresFormComponent {
     control: AbstractControl,
   ): Observable<ValidationErrors | null> {
     let id = null;
-    if(this.isEdit){
+    if (this.isEdit) {
       id = this.procedureForm.get('id')?.value;
     }
 
@@ -214,26 +291,44 @@ export class ProceduresFormComponent {
 
     if (value == 0 || value == null) return of(null);
 
-    return this.procedureService.checkFolioMinValueUnique(value, 'folio_min', id).pipe(
-      debounceTime(300),
-      map((isUnique) => (isUnique ? null : { uniqueValue: true })),
-    );
+    if (value < 0) {
+      control.setErrors({ negativeNumber: true });
+      return of(null);
+    } else {
+      control.setErrors(null);
+    }
+
+    return this.procedureService
+      .checkFolioMinValueUnique(value, 'folio_min', id)
+      .pipe(
+        debounceTime(300),
+        map((isUnique) => (isUnique ? null : { uniqueValue: true })),
+      );
   }
 
   uniqueFolioValueValidatorMax(
     control: AbstractControl,
   ): Observable<ValidationErrors | null> {
     let id = null;
-    if(this.isEdit){
+    if (this.isEdit) {
       id = this.procedureForm.get('id')?.value;
     }
 
     const value: number = control.value;
 
-    return this.procedureService.checkFolioMinValueUnique(value, 'folio_max', id).pipe(
-      debounceTime(300),
-      map((isUnique) => (isUnique ? null : { uniqueValue: true })),
-    );
+    if (value < 0) {
+      control.setErrors({ negativeNumber: true });
+      return of(null);
+    } else {
+      control.setErrors(null);
+    }
+
+    return this.procedureService
+      .checkFolioMinValueUnique(value, 'folio_max', id)
+      .pipe(
+        debounceTime(300),
+        map((isUnique) => (isUnique ? null : { uniqueValue: true })),
+      );
   }
 
   addItem(item: { component: any; title: string }) {
@@ -242,4 +337,6 @@ export class ProceduresFormComponent {
       width: '800px',
     });
   }
+
+  generateInstrument() {}
 }

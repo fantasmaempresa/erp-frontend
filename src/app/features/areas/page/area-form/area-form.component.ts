@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   UntypedFormControl,
@@ -9,13 +9,16 @@ import { Observable } from 'rxjs';
 import { AreaServiceOld } from '../../../../data/services';
 import { WorkAreaDto } from '../../../../data/dto';
 import { MessageHelper } from 'o2c_core';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+
+@AutoUnsubscribe()
 
 @Component({
   selector: 'app-area-form',
   templateUrl: './area-form.component.html',
   styleUrls: ['./area-form.component.scss'],
 })
-export class AreaFormComponent {
+export class AreaFormComponent implements OnDestroy {
   areaForm = new UntypedFormGroup({
     name: new UntypedFormControl('', [Validators.required]),
     description: new UntypedFormControl('', [Validators.required]),
@@ -40,6 +43,8 @@ export class AreaFormComponent {
       });
     }
   }
+  ngOnDestroy(): void {
+  }
 
   async backToListAreas() {
     await this.router.navigate(['../'], { relativeTo: this.route });
@@ -60,6 +65,33 @@ export class AreaFormComponent {
           `El area ha sido ${message} correctamente.`,
         );
         await this.backToListAreas();
+      },
+      error: async (error) => {
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof(error.error.error) === 'object') {
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
+          }
+          await MessageHelper.errorMessage(error.error.error);
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
       },
     });
   }

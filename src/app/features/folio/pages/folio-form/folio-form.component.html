@@ -1,0 +1,86 @@
+<mat-card>
+  <mat-toolbar *ngIf="!isDialog">
+    <div>
+      <button (click)="backToList()" aria-label="Regresar" mat-icon-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <form
+    (ngSubmit)="submit()"
+    [formGroup]="form"
+    class="row justify-content-center"
+  >
+    <div class="col-8 d-flex flex-column">
+      <div class="row">
+        <div class="col-4">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Libro</mat-label>
+            <input
+              [viewClassBuilder]="bookProvider"
+              title="Selecciona un libro"
+              o2cSinglePopup
+              formControlName="book_id"
+              matInput
+              type="text"
+            />
+            <mat-icon matSuffix>search</mat-icon>
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-4">
+          <mat-form-field appearance="outline">
+            <mat-label>Número de folios usar</mat-label>
+            <input formControlName="number_of_folios" matInput type="text" />
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-4">
+          <button *ngIf="!errors"
+            style="width: 100%"
+            type="button"
+            color="primary"
+            (click)="recomments()"
+            mat-raised-button
+          >
+            <mat-icon>add</mat-icon>
+            Generar folios
+          </button>
+
+          <button *ngIf="errors"
+            style="width: 100%"
+            type="button"
+            color="primary"
+            (click)="verifyErrors()"
+            mat-raised-button
+          >
+            <mat-icon>add</mat-icon>
+            Verificar errores
+          </button>
+        </div>
+      </div>
+      <mat-form-field appearance="outline">
+        <mat-label>Instrumento</mat-label>
+        <input formControlName="name" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Del Folio</mat-label>
+        <input formControlName="folio_min" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Al Folio</mat-label>
+        <input formControlName="folio_max" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+     
+      <o2c-form *ngIf="errors"></o2c-form>
+      
+      <button color="primary" mat-flat-button>Guardar</button>
+    </div>
+  </form>
+</mat-card>

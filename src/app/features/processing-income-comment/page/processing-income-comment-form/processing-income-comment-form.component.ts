@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from 'o2c_core';
 import { Observable } from 'rxjs';
 import { ProcessingIncomeCommentService } from 'src/app/data/services/processing-income-comment.service';
 import Swal from 'sweetalert2';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-processing-income-comment-form',
   templateUrl: './processing-income-comment-form.component.html',
   styleUrls: ['./processing-income-comment-form.component.scss'],
 })
-export class ProcessingIncomeCommentFormComponent {
+export class ProcessingIncomeCommentFormComponent implements OnDestroy {
   edit = false;
 
   form!: UntypedFormGroup;
@@ -45,6 +47,8 @@ export class ProcessingIncomeCommentFormComponent {
       });
     }
   }
+  ngOnDestroy(): void {
+  }
 
   async back() {
     await this.router.navigate(['../'], { relativeTo: this.route });
@@ -72,8 +76,33 @@ export class ProcessingIncomeCommentFormComponent {
         );
         await this.back();
       },
-      error: async () => {
-        await MessageHelper.errorMessage('Ocurrio un error, intente más tarde');
+      error: async (error) => {
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof(error.error.error) === 'object') {
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
+          }else{
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
       },
     });
   }

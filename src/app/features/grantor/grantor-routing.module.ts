@@ -29,6 +29,14 @@ const routes: Routes = [
         component: GrantorFormComponent,
         data: { breadcrumb: 'Editar otorgante' },
       },
+      {
+        path: ':idGrantor/grantorsLink',
+        loadChildren: () =>
+          import('../grantor-link/grantor-link.module').then(
+            (m) => m.GrantorLinkModule,
+          ),
+        data: { breadcrumb: 'Representantes' },
+      },
     ],
   },
 ];

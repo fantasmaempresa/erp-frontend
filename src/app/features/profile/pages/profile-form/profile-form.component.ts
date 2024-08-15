@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy } from '@angular/core';
 import {
   AbstractControl,
   UntypedFormControl,
@@ -7,20 +6,25 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { UserService } from '../../../../data/services';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from 'o2c_core';
-import { error } from '@angular/compiler-cli/src/transformers/util';
+import { UserService } from '../../../../data/services';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-profile-form',
   templateUrl: './profile-form.component.html',
   styleUrls: ['./profile-form.component.scss'],
 })
-export class ProfileFormComponent {
+export class ProfileFormComponent implements OnDestroy {
   profileForm = new UntypedFormGroup(
     {
       id: new UntypedFormControl('', [Validators.required]),
-      name: new UntypedFormControl('', [Validators.required]),
+      name: new UntypedFormControl('', [
+        Validators.required,
+        Validators.maxLength(50),
+      ]),
       email: new UntypedFormControl('', [
         Validators.required,
         Validators.email,
@@ -58,6 +62,8 @@ export class ProfileFormComponent {
     // this.profileForm.addControl('id', new UntypedFormControl(''));
     this.profileForm.patchValue(user);
   }
+  ngOnDestroy(): void {
+  }
 
   async back() {
     await this.router.navigate(['../'], { relativeTo: this.route });
@@ -90,10 +96,29 @@ export class ProfileFormComponent {
       },
       error: async (error) => {
         console.log(error);
-        if(error.error.code == 422){
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof error.error.error === 'object') {
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
+          } else {
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
           await MessageHelper.errorMessage(
-            error.error.error,
-            'Error',
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
           );
         }
       },

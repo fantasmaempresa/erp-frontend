@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import {
   UntypedFormControl,
   UntypedFormGroup,
@@ -9,13 +9,15 @@ import { ProcedureCommentService } from '../../../../data/services/procedure-com
 import { MessageHelper } from 'o2c_core';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-procedure-comment-form',
   templateUrl: './procedure-comment-form.component.html',
   styleUrls: ['./procedure-comment-form.component.scss'],
 })
-export class ProcedureCommentFormComponent {
+export class ProcedureCommentFormComponent implements OnDestroy {
   edit = false;
 
   form!: UntypedFormGroup;
@@ -28,7 +30,10 @@ export class ProcedureCommentFormComponent {
     private _procedureCommentService: ProcedureCommentService,
   ) {
     this.form = new UntypedFormGroup({
-      comment: new UntypedFormControl(null, Validators.required),
+      comment: new UntypedFormControl(null,[
+        Validators.required,
+        Validators.maxLength(400)
+      ]),
       procedure_id: new UntypedFormControl(null, Validators.required),
     });
 
@@ -47,6 +52,8 @@ export class ProcedureCommentFormComponent {
         },
       });
     }
+  }
+  ngOnDestroy(): void {
   }
 
   async back() {
@@ -75,8 +82,33 @@ export class ProcedureCommentFormComponent {
         );
         await this.back();
       },
-      error: async () => {
-        await MessageHelper.errorMessage('Ocurrio un error, intente más tarde');
+      error: async (error) => {
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof(error.error.error) === 'object') {
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
+          }else{
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
       },
     });
   }

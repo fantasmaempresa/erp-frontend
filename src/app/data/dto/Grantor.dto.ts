@@ -7,7 +7,7 @@ export interface GrantorDto extends EntityDto {
   mother_last_name: string;
   phone: string;
   birthdate: string;
-  place_of_birth: string;
+  place_of_birth?: string;
   rfc: string;
   curp: string;
   civil_status: string;
@@ -19,8 +19,20 @@ export interface GrantorDto extends EntityDto {
   locality: string;
   zipcode: string;
   occupation: string;
-  type: string;
-  stake_id: number;
-  stake?: StakeDto;
-  beneficiary: string;
+  type?:  number;
+  beneficiary?: string;
+  pivot?: {
+    amount: number;
+    grantor_id: number;
+    procedure_id: number;
+    percentage: number;
+    stake_id: number;
+    stake?: StakeDto;
+  };
+  grantor_procedure: [{
+    grantor_id: number;
+    procedure_id: number;
+    stake_id: number;
+    stake?: StakeDto;
+  }]
 }

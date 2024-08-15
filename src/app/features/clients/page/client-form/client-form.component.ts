@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   UntypedFormControl,
@@ -9,42 +9,62 @@ import { ClientServiceOld } from '../../../../data/services';
 import { Observable } from 'rxjs';
 import { MessageHelper } from 'o2c_core';
 import { ClientDto } from '../../../../data/dto';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-client-form',
   templateUrl: './client-form.component.html',
   styleUrls: ['./client-form.component.scss'],
 })
-export class ClientFormComponent implements OnInit {
-  clientForm = new UntypedFormGroup({
-    name: new UntypedFormControl('', [Validators.required]),
-    last_name: new UntypedFormControl('', [Validators.required]),
-    mother_last_name: new UntypedFormControl('', [Validators.required]),
-    email: new UntypedFormControl('', [Validators.required, Validators.email]),
-    phone: new UntypedFormControl('', [
-      Validators.required,
-      Validators.minLength(10),
-      Validators.maxLength(10),
-    ]),
-    nickname: new UntypedFormControl(null),
-    address: new UntypedFormControl(null),
-    type: new UntypedFormControl(null, Validators.required),
-    rfc: new UntypedFormControl('', [
-      Validators.required,
-      Validators.minLength(10),
-      Validators.maxLength(13),
-    ]),
-  });
-
+export class ClientFormComponent implements OnInit, OnDestroy {
   isEdit: boolean = false;
 
   isDialog: boolean = false;
 
+  clientForm: UntypedFormGroup;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private clientService: ClientServiceOld,
   ) {
+    this.clientForm = new UntypedFormGroup({
+      name: new UntypedFormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(255),
+      ]),
+      last_name: new UntypedFormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(255),
+      ]),
+      mother_last_name: new UntypedFormControl('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(255),
+      ]),
+      email: new UntypedFormControl('', [
+        Validators.required,
+        Validators.email,
+      ]),
+      phone: new UntypedFormControl('', [
+        Validators.required,
+        Validators.minLength(10),
+        Validators.maxLength(10),
+        Validators.pattern(/^[0-9]+$/),
+      ]),
+      nickname: new UntypedFormControl('', Validators.maxLength(50)),
+      address: new UntypedFormControl(null, Validators.required),
+      type: new UntypedFormControl(null, Validators.required),
+      rfc: new UntypedFormControl('', [
+        Validators.required,
+        Validators.pattern(
+          /^[A-Za-z&Ññ]{3,4}(\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01]))[A-Za-z\d]{2}[A\d]$/,
+        ),
+      ]),
+    });
+
     const currentRoute = this.route.snapshot.routeConfig?.path;
     if (typeof currentRoute === 'undefined') {
       this.isDialog = true;
@@ -73,9 +93,8 @@ export class ClientFormComponent implements OnInit {
   async backToListUsers() {
     if (this.isDialog) {
       return;
-    } else {
-      await this.router.navigate(['../'], { relativeTo: this.route });
     }
+    await this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   updateValidators(type: number) {
@@ -83,7 +102,9 @@ export class ClientFormComponent implements OnInit {
       this.clientForm.get('mother_last_name')?.clearValidators();
       this.clientForm.get('last_name')?.clearValidators();
     } else {
-      this.clientForm.get('mother_last_name')?.setValidators(Validators.required);
+      this.clientForm
+        .get('mother_last_name')
+        ?.setValidators(Validators.required);
       this.clientForm.get('last_name')?.setValidators(Validators.required);
     }
 
@@ -92,6 +113,9 @@ export class ClientFormComponent implements OnInit {
   }
 
   onSubmit() {
+
+    if (this.clientForm.invalid) return;
+    
     let request$: Observable<ClientDto>;
     if (!this.isEdit) {
       request$ = this.clientService.save(this.clientForm.value);
@@ -107,12 +131,36 @@ export class ClientFormComponent implements OnInit {
         );
         await this.backToListUsers();
       },
-      error: async () => {
-        await MessageHelper.errorMessage(
-          'Hubo un error, intente más tarde por favor',
-          'Error',
-        );
+      error: async (error) => {
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof error.error.error === 'object') {
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
+          } else {
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
       },
     });
   }
+
+  ngOnDestroy() {}
 }

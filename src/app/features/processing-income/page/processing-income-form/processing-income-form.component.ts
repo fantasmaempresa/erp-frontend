@@ -1,5 +1,9 @@
-import { Component } from '@angular/core';
-import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, OnDestroy } from '@angular/core';
+import {
+  UntypedFormControl,
+  UntypedFormGroup,
+  Validators,
+} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from 'o2c_core';
 import { Observable } from 'rxjs';
@@ -9,13 +13,15 @@ import { PlaceView } from 'src/app/data/presentation/Place.view';
 import { StaffView } from 'src/app/data/presentation/staff.view';
 import { ProcessingIncomeService } from 'src/app/data/services/processing-income.service';
 import Swal from 'sweetalert2';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-processing-income-form',
   templateUrl: './processing-income-form.component.html',
-  styleUrls: ['./processing-income-form.component.scss']
+  styleUrls: ['./processing-income-form.component.scss'],
 })
-export class ProcessingIncomeFormComponent {
+export class ProcessingIncomeFormComponent implements OnDestroy {
   edit = false;
 
   form!: UntypedFormGroup;
@@ -49,14 +55,16 @@ export class ProcessingIncomeFormComponent {
       this.form.get('procedure_id')?.setValue(id);
       this._processingService.fetch(id).subscribe({
         next: (value) => {
-            this.form.patchValue(value);
+          this.form.patchValue(value);
         },
       });
-    }else{
+    } else {
       this.back();
     }
 
-    const idProcessingIncome = Number(this.route.snapshot.params.idProcessingIncome);
+    const idProcessingIncome = Number(
+      this.route.snapshot.params.idProcessingIncome,
+    );
     if (!isNaN(idProcessingIncome)) {
       this.edit = true;
       this._processingService.fetch(idProcessingIncome).subscribe({
@@ -71,6 +79,8 @@ export class ProcessingIncomeFormComponent {
       this.form.get('file')?.setValidators(Validators.required);
     });
   }
+  ngOnDestroy(): void {
+  }
 
   async back() {
     await this.router.navigate(['../'], { relativeTo: this.route });
@@ -82,12 +92,14 @@ export class ProcessingIncomeFormComponent {
     if (this.form.invalid) {
       return;
     }
-    
-    this.form.get('documents')?.setValue([
-      {id: this.form.get('document_id_incommign')?.value},
-      {id: this.form.get('document_id_out')?.value},
-      {id: this.form.get('document_id_in')?.value},
-    ]);
+
+    this.form
+      .get('documents')
+      ?.setValue({
+        register: { id: this.form.get('document_id_incommign')?.value },
+        output: { id: this.form.get('document_id_out')?.value },
+        return: { id: this.form.get('document_id_in')?.value },
+      });
     let request$: Observable<any>;
     if (!this.edit) {
       request$ = this._processingService.save(this.form.value);
@@ -106,10 +118,34 @@ export class ProcessingIncomeFormComponent {
         );
         await this.back();
       },
-      error: async () => {
-        await MessageHelper.errorMessage('Ocurrio un error, intente más tarde');
+      error: async (error) => {
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof(error.error.error) === 'object') {
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
+          }else{
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
       },
     });
-
   }
 }

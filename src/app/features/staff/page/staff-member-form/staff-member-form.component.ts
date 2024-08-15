@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   UntypedFormControl,
@@ -9,26 +9,37 @@ import { AreaServiceOld, StaffServiceOld } from '../../../../data/services';
 import { map, Observable } from 'rxjs';
 import { MessageHelper } from 'o2c_core';
 import { StaffDto, WorkAreaDto } from '../../../../data/dto';
-
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+@AutoUnsubscribe()
 @Component({
   selector: 'app-staff-member-form',
   templateUrl: './staff-member-form.component.html',
   styleUrls: ['./staff-member-form.component.scss'],
 })
-export class StaffMemberFormComponent {
+export class StaffMemberFormComponent implements OnDestroy {
   staffMemberForm = new UntypedFormGroup({
-    name: new UntypedFormControl('', [Validators.required]),
-    last_name: new UntypedFormControl('', [Validators.required]),
-    mother_last_name: new UntypedFormControl('', [Validators.required]),
+    name: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
+    last_name: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
+    mother_last_name: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
     email: new UntypedFormControl('', [Validators.required, Validators.email]),
     phone: new UntypedFormControl('', [
       Validators.required,
       Validators.minLength(10),
       Validators.maxLength(10),
+      Validators.pattern(/^[0-9]+$/),
     ]),
-    nickname: new UntypedFormControl(null),
+    nickname: new UntypedFormControl(null, [Validators.maxLength(50)]),
     extra_information: new UntypedFormControl(null),
-    work_area_id: new UntypedFormControl(null),
+    work_area_id: new UntypedFormControl(null, [Validators.required]),
     user_id: new UntypedFormControl(null),
   });
 
@@ -90,6 +101,36 @@ export class StaffMemberFormComponent {
         );
         await this.backToListStaff();
       },
+      error: async (error) => {
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof error.error.error === 'object') {
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
+          } else {
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
+      },
     });
   }
+
+  ngOnDestroy() {}
 }

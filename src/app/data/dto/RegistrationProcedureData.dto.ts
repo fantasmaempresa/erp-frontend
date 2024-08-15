@@ -22,4 +22,16 @@ export interface RegistrationProcedureDataDto extends EntityDto {
   user?: UserDto;
   document?: DocumentDto;
   place?: PlaceDto;
+  data: [
+    {
+      inscription: string;
+      sheets: string;
+      took: string;
+      book: string;
+      departure: string;
+      folio_real_estate: string;
+      folio_electronic_merchant: string;
+      nci: string;
+    },
+  ];
 }

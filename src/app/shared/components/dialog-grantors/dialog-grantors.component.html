@@ -4,14 +4,16 @@
 <h2 mat-dialog-title>Lista de participantes del trámite</h2>
 
 <div mat-dialog-content>
-  <div *ngFor="let grantor of data.grantors">
+  <div *ngFor="let grantor of grantors">
     <div mat-line>
       Nombre: {{ grantor.name }} {{ grantor.father_last_name }}
       {{ grantor.mother_last_name }}
     </div>
     <div mat-line>CURP: {{ grantor.curp }}</div>
     <div mat-line>RFC: {{ grantor.rfc }}</div>
-    <p mat-line>Participación: {{ grantor.stake?.name }}</p>
+    <p mat-line>Participación: {{ grantor.grantor_procedure[0].stake?.name }}</p>
+    <p mat-line>Porcentaje: {{ grantor.pivot?.percentage }}</p>
+    <p mat-line>Monto: {{ grantor.pivot?.amount }}</p>
     <hr>
   </div>
 

@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, Observable } from 'rxjs';
+import { forkJoin, map, Observable } from 'rxjs';
 import { MessageHelper } from 'o2c_core';
 import { ShapeService } from '../../../../data/services/shape.service';
 import { ShapeDto } from '../../../../data/dto/Shape.dto';
@@ -19,7 +19,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { ProcedureView } from '../../../../data/presentation/Procedure.view';
 import { GrantorFormComponent } from '../../../grantor/page/grantor-form/grantor-form.component';
 import { OperationView } from 'src/app/data/presentation/Operation.view';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { ProcedureService } from 'src/app/data/services/procedure.service';
+import { ProcedureDto } from 'src/app/data/dto';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-shape-form',
   templateUrl: './shape-form.component.html',
@@ -57,10 +61,19 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
   operationProvider = OperationView;
 
   shapeForm = new UntypedFormGroup({
-    folio: new UntypedFormControl('', [Validators.required]),
+    folio: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
     notary: new UntypedFormControl('', [Validators.required]),
-    scriptures: new UntypedFormControl('', [Validators.required]),
-    property_account: new UntypedFormControl('', [Validators.required]),
+    scriptures: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(100),
+    ]),
+    property_account: new UntypedFormControl('', [
+      Validators.required,
+      Validators.maxLength(50),
+    ]),
     signature_date: new UntypedFormControl('', [Validators.required]),
     departure: new UntypedFormControl('', []),
     inscription: new UntypedFormControl('', []),
@@ -89,34 +102,60 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     private templateShapeService: TemplateShapeService,
     private fb: FormBuilder,
     public dialog: MatDialog,
+    private _procedureService: ProcedureService,
   ) {
     // this.builderForm = this.fb.group({});
+    const id = Number(this.route.snapshot.params.id);
 
     this.templateShapeService
       .fetchAll()
       .pipe(
-        map((templates) => {
-          return templates.data;
-        }),
+        map((templates) => templates.data),
       )
-      .subscribe((data) => (this.templateShapes = data));
+      .subscribe((data) => {
+        this.templateShapes = data;
+      });
 
-    const id = Number(this.route.snapshot.params.id);
     if (!isNaN(id)) {
       this.isEdit = true;
-      shapeService.fetch(id).subscribe({
-        next: (shape: ShapeDto) => {
-          this.shapeForm.addControl('id', new UntypedFormControl(''));
-          this.shapeForm.patchValue(shape);
-          this.templateShapes.forEach((template: TemplateShapeDto) => {
-            if (template.id == shape.template_shape_id) {
-              this.shapeForm.get('template_shape_id')?.setValue(template);
-              this.changeShape(template);
-              this.builderForm.patchValue(shape.data_form);
-            }
-          });
-        },
+      
+      forkJoin([
+        this.shapeService.fetch(id), // Fetch shape data
+        this.templateShapeService.fetchAll(), // Ensure template shapes are available
+      ]).subscribe(([shape, templateShapes]) => {
+        this.templateShapes = templateShapes.data;
+        this.shapeForm.addControl('id', new UntypedFormControl(''));
+        this.shapeForm.patchValue(shape);
+
+        this.shapeForm.get('alienating')?.setValue(shape?.alienator.id == null ? null : shape?.alienator.id);
+
+        this.shapeForm.get('acquirer')?.setValue(shape?.acquirer == null ? null : shape?.acquirer.id );
+        this.shapeForm
+          .get('extra_alienating')
+          ?.setValue(shape?.grantors?.alienators);
+        this.shapeForm
+          .get('extra_acquirers')
+          ?.setValue(shape?.grantors?.acquirers);
+          console.log('this.templateShapes --> ', this.templateShapes);
+        this.templateShapes.forEach((template: TemplateShapeDto) => {
+          console.log('template.id == shape.template_shape_id', template.id, shape.template_shape_id);
+          if (template.id == shape.template_shape_id) {
+            this.shapeForm.get('template_shape_id')?.setValue(template);
+            this.changeShape(template);
+            this.builderForm.patchValue(shape.data_form);
+          }
+        });
       });
+    }
+
+    if (!this.isEdit) {
+      this.shapeForm.get("procedure_id")?.valueChanges.subscribe((value) => {
+        this._procedureService.fetch(value).subscribe((procedure : ProcedureDto) => {
+          this.shapeForm.get("signature_date")?.setValue(procedure.date_proceedings);
+          this.shapeForm.get("operation_value")?.setValue(procedure.value_operation);
+          this.shapeForm.get("scriptures")?.setValue(procedure.folio?.name.toString());
+        })
+      })
     }
   }
 
@@ -150,18 +189,11 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
 
     let dataForm = this.shapeForm.value;
     dataForm.data_form = this.builderForm.value;
-    // dataForm.data_form.reverse = this.shapeForm.get('reverse')?.value;
     dataForm.template_shape_id = this.builderFormStructure.id;
-    dataForm.sheets = dataForm.sheets.toString();
-    dataForm.took = dataForm.took.toString();
-    dataForm.book = dataForm.book.toString();
-    dataForm.operation_value = dataForm.operation_value.toString();
-    dataForm.total = dataForm.total.toString();
     dataForm.grantors = {
       alienating: this.shapeForm.get('extra_alienating')?.value,
       acquirer: this.shapeForm.get('extra_acquirers')?.value,
     };
-    // dataForm.reverse = this.;
     let request$: Observable<ShapeDto>;
     if (!this.isEdit) {
       request$ = this.shapeService.save(dataForm);
@@ -177,10 +209,33 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
         );
         await this.backToListDocuments();
       },
-      error: async () => {
-        await MessageHelper.errorMessage(
-          'Ocurrio un error inesperado, intente más tarde',
-        );
+      error: async (error) => {
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof error.error.error === 'object') {
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
+          } else {
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
         this.shapeForm.value.template_shape_id = this.builderFormStructure;
       },
     });
@@ -214,8 +269,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
       this.placeholderDescription =
         'Descripción del inmueble y ubicación oficial actual';
     } else {
-      this.placeholderDescription =
-        'Descripción de la operación';
+      this.placeholderDescription = 'Descripción de la operación';
     }
     console.log('value----> ', value.form);
     this.builderFormStructure = value;

@@ -40,8 +40,14 @@ export class ProcessPhaseFormComponent {
     this.roles$ = this.roleService.fetchAll().pipe(pluck('data'));
 
     this.form = new UntypedFormGroup({
-      name: new UntypedFormControl(null, [Validators.required]),
-      description: new UntypedFormControl(null, [Validators.required]),
+      name: new UntypedFormControl(null, [
+        Validators.required,
+        Validators.maxLength(100),
+      ]),
+      description: new UntypedFormControl(null, [
+        Validators.required,
+        Validators.maxLength(400),
+      ]),
       notification: new UntypedFormControl(false),
       payments: new UntypedFormControl(false),
       form: new UntypedFormControl([], Validators.required),

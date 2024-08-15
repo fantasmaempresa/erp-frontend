@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper } from 'o2c_core';
 import { IsoDocumentationService } from 'src/app/data/services/iso-documentation.service';
 import Swal from 'sweetalert2';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-iso-documentation-form',
   templateUrl: './iso-documentation-form.component.html',
   styleUrls: ['./iso-documentation-form.component.scss']
 })
-export class IsoDocumentationFormComponent {
+export class IsoDocumentationFormComponent implements OnDestroy {
   edit = false;
 
   form!: UntypedFormGroup;
@@ -33,6 +35,8 @@ export class IsoDocumentationFormComponent {
     if (!isNaN(id)) {
       this.form.get("id")?.setValue(id);
     }
+  }
+  ngOnDestroy(): void {
   }
 
   async back() {
@@ -65,11 +69,33 @@ export class IsoDocumentationFormComponent {
         await this.back();
       },
       error: async (error) => {
-        await MessageHelper.errorMessage(
-          '¡Error!',
-          `El registro no ha sido guardado correctamente.`,
-        );
-      }
+        console.log(error);
+        if (error.error.code != null && error.error.code == 422) {
+          if (typeof(error.error.error) === 'object') {
+            let message = '';
+
+            for (let item in error.error.error) {
+              message = message + '\n' + error.error.error[item];
+            }
+
+            await MessageHelper.errorMessage(message);
+          }else{
+            await MessageHelper.errorMessage(error.error.error);
+          }
+        } else if (error.error.code != null && error.error.code == 409) {
+          await MessageHelper.errorMessage(
+            'Error referente a la base de datos, consulte a su administrador',
+          );
+        } else if (error.error.code != null && error.error.code == 500) {
+          await MessageHelper.errorMessage(
+            'Existe un error dentro del servidor, consulte con el administrador',
+          );
+        } else {
+          await MessageHelper.errorMessage(
+            'Hubo un error, intente más tarde por favor',
+          );
+        }
+      },
     });
   }
 }

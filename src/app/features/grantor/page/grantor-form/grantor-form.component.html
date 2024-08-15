@@ -10,23 +10,21 @@
       </button>
     </div>
   </mat-toolbar>
+
   <form (ngSubmit)="onSubmit()" [formGroup]="grantorForm">
     <div class="row justify-content-center">
-      <div class="col-9 d-flex flex-column">
+      <div class="col-12 d-flex flex-column">
         <mat-form-field appearance="outline">
           <mat-label>Tipo de persona (fisica o moral)</mat-label>
-          <mat-select
-            formControlName="type"
-          >
+          <mat-select formControlName="type">
             <mat-option [value]="2">Física</mat-option>
             <mat-option [value]="1">Moral</mat-option>
+            <mat-option [value]="3">Cujus</mat-option>
           </mat-select>
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
       </div>
-    </div>
 
-    <div class="row justify-content-center">
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
           <mat-label>Nombre</mat-label>
@@ -50,13 +48,19 @@
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
       </div>
-    </div>
 
-    <div class="row justify-content-center">
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
           <mat-label>Número de télefono</mat-label>
           <input formControlName="phone" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Correo</mat-label>
+          <input formControlName="email" matInput type="email" />
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
       </div>
@@ -86,9 +90,7 @@
           <mat-datepicker #dateForm></mat-datepicker>
         </mat-form-field>
       </div>
-    </div>
 
-    <div class="row justify-content-center">
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
           <mat-label>Estado civil</mat-label>
@@ -112,13 +114,19 @@
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
       </div>
-    </div>
 
-    <div class="row justify-content-center">
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
           <mat-label>Municipio</mat-label>
           <input formControlName="municipality" matInput type="text" />
+          <mat-error appErrorMessage></mat-error>
+        </mat-form-field>
+      </div>
+
+      <div class="col-3 d-flex flex-column">
+        <mat-form-field appearance="outline">
+          <mat-label>Calle</mat-label>
+          <input formControlName="street" matInput type="text" />
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
       </div>
@@ -138,9 +146,7 @@
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
       </div>
-    </div>
 
-    <div class="row justify-content-center">
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
           <mat-label>Número interior</mat-label>
@@ -151,7 +157,7 @@
 
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
-          <mat-label>Número de localidad</mat-label>
+          <mat-label>Estado</mat-label>
           <input formControlName="no_locality" matInput type="text" />
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
@@ -164,9 +170,7 @@
           <mat-error appErrorMessage></mat-error>
         </mat-form-field>
       </div>
-    </div>
 
-    <div class="row justify-content-center">
       <div class="col-3 d-flex flex-column">
         <mat-form-field appearance="outline">
           <mat-label>Código postal</mat-label>
@@ -183,25 +187,7 @@
         </mat-form-field>
       </div>
 
-      <div class="col-3 d-flex flex-column">
-        <mat-form-field appearance="outline">
-          <mat-label>Participación</mat-label>
-          <input
-            [viewClassBuilder]="stakeProvider"
-            title="Selecciona una participación"
-            o2cSinglePopup
-            formControlName="stake_id"
-            matInput
-            type="text"
-          />
-          <mat-icon matSuffix>search</mat-icon>
-          <mat-error appErrorMessage></mat-error>
-        </mat-form-field>
-      </div>
-    </div>
-
-    <div class="row justify-content-center">
-      <div class="col-9 d-flex flex-column">
+      <div class="col-6 d-flex flex-column">
         <mat-checkbox
           class="me-5"
           color="primary"
@@ -209,9 +195,8 @@
         >
           Beneficiario
         </mat-checkbox>
-
-        <button color="primary" mat-flat-button>Guardar</button>
       </div>
+      <button color="primary" mat-flat-button>Guardar</button>
     </div>
   </form>
 </mat-card>

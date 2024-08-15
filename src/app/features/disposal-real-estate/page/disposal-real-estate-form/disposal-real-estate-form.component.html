@@ -1,0 +1,129 @@
+<mat-card>
+  <mat-toolbar>
+    <div>
+      <button
+        (click)="backToListDisposalRealEstate()"
+        aria-label="Regresar"
+        mat-icon-button
+      >
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="disposalRealEstateForm"
+    class="row justify-content-center"
+  >
+    <div class="col-6 d-flex flex-column">
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de operación</mat-label>
+        <input
+          [viewClassBuilder]="typeDisposalOperationProvider"
+          title="Selecciona la operación"
+          o2cSinglePopup
+          formControlName="type_disposal_operation_id"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field appearance="outline">
+        <mat-label>Comprador</mat-label>
+        <input
+          [viewClassBuilder]="grantorProvider"
+          title="Selecciona al comprador"
+          o2cSinglePopup
+          formControlName="alienating_id"
+          matInput
+          type="text"
+        />
+        <mat-icon matSuffix>search</mat-icon>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Valor de la enajenación</mat-label>
+        <input formControlName="disposal_value" matInput type="number" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de enajenación</mat-label>
+        <input
+          (focus)="dateForm.open()"
+          [matDatepicker]="dateForm"
+          class="clickable"
+          formControlName="disposal_date"
+          matInput
+        />
+        <mat-datepicker-toggle
+          [for]="dateForm"
+          matSuffix
+        ></mat-datepicker-toggle>
+        <mat-datepicker #dateForm></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Valor de adquisición</mat-label>
+        <input formControlName="acquisition_value" matInput type="number" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de adquisición</mat-label>
+        <input
+          (focus)="dateForm1.open()"
+          [matDatepicker]="dateForm1"
+          class="clickable"
+          formControlName="acquisition_date"
+          matInput
+        />
+        <mat-datepicker-toggle
+          [for]="dateForm1"
+          matSuffix
+        ></mat-datepicker-toggle>
+        <mat-datepicker #dateForm1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Valor del inmueble (Avaluo)</mat-label>
+        <input formControlName="real_estate_appraisal" matInput type="number" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tasa fiscal</mat-label>
+        <input formControlName="fiscal_appraisal" matInput type="number" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Porcentaje de terreno</mat-label>
+        <input formControlName="land_proportion" matInput type="number" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tasa de depreciación</mat-label>
+        <input formControlName="depreciation_rate" matInput type="number" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tasa</mat-label>
+        <input formControlName="rate" matInput type="number" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <o2c-form></o2c-form>
+
+      <button color="primary" mat-flat-button>Guardar</button>
+    </div>
+  </form>
+</mat-card>

@@ -40,18 +40,19 @@
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
-      <mat-form-field *ngIf="!isEdit" appearance="outline">
-        <mat-label>Contraseña</mat-label>
+      <mat-form-field appearance="outline">
+        <mat-label *ngIf="!isEdit">Contraseña</mat-label>
+        <mat-label *ngIf="isEdit">Nueva Contraseña</mat-label>
         <input formControlName="password" matInput type="password" />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
-      <mat-form-field *ngIf="!isEdit" appearance="outline">
-        <mat-label>Confirmar Contraseña</mat-label>
-        <input matInput type="password" />
+      <mat-form-field appearance="outline">
+        <mat-label *ngIf="!isEdit">Confirmar Contraseña</mat-label>
+        <mat-label *ngIf="isEdit">Confirmar Nueva Contraseña</mat-label>
+        <input matInput formControlName="confirm_password" type="password"/>
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
-
       <button color="primary" mat-flat-button>Guardar</button>
     </div>
   </form>
