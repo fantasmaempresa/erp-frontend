@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper, ViewActions, ViewContextService, viewActions, viewLabel } from 'o2c_core';
 import { DialogPreviewPdfComponent } from '../../shared/components/dialog-preview-pdf/dialog-preview-pdf.component';
 import { DocumentDto } from '../dto';
-import { DocumentLinkService } from '../services/document-link.service';
+import { DocumentApedixService, DocumentLinkService } from '../services/document-link.service';
 
 const goToViewDocument = new ViewActions<DocumentDto>(
   async ({ row, injector }) => {
@@ -89,4 +89,16 @@ export class DocumentLinkView {
     this.quote = quote;
     this.url = url;
   }
+}
+
+@viewActions({
+  classProvider: DocumentApedixService,
+  actions: [
+    // ViewActions.ACTION_ADD('../new'),
+    // goToDeleteDocumentLink,
+    goToViewDocument,
+    // goToEditDocumentLink,
+  ],
+})
+export class DocumentApendixView extends DocumentLinkView {
 }

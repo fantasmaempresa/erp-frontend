@@ -7,7 +7,12 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FORM_CLAZZ, MessageHelper, LoaderService, FormComponent } from 'o2c_core';
+import {
+  FORM_CLAZZ,
+  MessageHelper,
+  LoaderService,
+  FormComponent,
+} from 'o2c_core';
 import { concatMap, Observable } from 'rxjs';
 import { FolioDto } from 'src/app/data/dto/Folio.dto';
 import { BookView } from 'src/app/data/presentation/Book.view';
@@ -26,19 +31,18 @@ import { FolioService } from 'src/app/data/services/folio-service.service';
   ],
 })
 export class FolioFormComponent {
-
   private _listFormBuilder!: FormComponent;
 
   public get formComponent(): FormComponent {
     return this._listFormBuilder;
   }
-  
+
   @ViewChild(FormComponent)
   public set formComponent(value: FormComponent) {
     console.log('seteando formbuilder ---> ', value);
     this._listFormBuilder = value;
   }
-  
+
   isEdit: boolean = false;
 
   isDialog: boolean = false;
@@ -57,16 +61,13 @@ export class FolioFormComponent {
     private _folioService: FolioService,
     private loaderService: LoaderService,
   ) {
-    this.form = new UntypedFormGroup(
-      {
-        name: new UntypedFormControl(null, [Validators.required]),
-        folio_min: new UntypedFormControl(null, [Validators.required]),
-        folio_max: new UntypedFormControl(null, [Validators.required]),
-        book_id: new UntypedFormControl(null, [Validators.required]),
-        number_of_folios: new UntypedFormControl(null, [Validators.required]),
-      },
-      
-    );
+    this.form = new UntypedFormGroup({
+      name: new UntypedFormControl(null, [Validators.required]),
+      folio_min: new UntypedFormControl(null, [Validators.required]),
+      folio_max: new UntypedFormControl(null, [Validators.required]),
+      book_id: new UntypedFormControl(null, [Validators.required]),
+      number_of_folios: new UntypedFormControl(null, [Validators.required]),
+    });
 
     const currentRoute = this.route.snapshot.routeConfig?.path;
     const idError = this.route.snapshot.params.idError;
@@ -92,28 +93,34 @@ export class FolioFormComponent {
         next: (folio) => {
           this.form.addControl('id', new UntypedFormControl(''));
           this.form.patchValue(folio);
-          this._listFormBuilder.formBuilderComponent.form.controls.canceled_folios.setValue(folio.unused_folios);
+          this._listFormBuilder.formBuilderComponent.form.controls.canceled_folios.setValue(
+            folio.unused_folios,
+          );
+          this.form.controls.name.disable();
+          this.form.controls.folio_min.disable();
+          this.form.controls.folio_max.disable();
         },
       });
-  
+
       this.form.controls.number_of_folios.disable();
     }
-
-    // this.form.controls.name.disable();
-    // this.form.controls.folio_min.disable();
-    // this.form.controls.folio_max.disable();
   }
 
   ngOnDestroy() {}
 
   async backToList() {
-    if (this.isDialog) {
-      return;
+    if (this.isDialog) return;
+    if (this.errors){ await this.router.navigate(["../../"], { relativeTo: this.route });}
+    else{
+      await this.router.navigate(['../'], { relativeTo: this.route });
     }
-    await this.router.navigate(['../'], { relativeTo: this.route });
   }
 
   submit() {
+    if (this.errors) {
+      this.verifyErrors();
+      return;
+    }
     this.form.controls.name.enable();
     this.form.controls.folio_min.enable();
     this.form.controls.folio_max.enable();
@@ -234,37 +241,48 @@ export class FolioFormComponent {
     }
   }
 
-  verifyErrors(){
+  verifyErrors() {
     this.loaderService.showFullScreenLoader();
-    
-    this._folioService.registerErrors(this.form.controls.id.value,
-      {...this._listFormBuilder.formBuilderComponent.form.value, "save": this.saveErrors}
-    ).subscribe({
-      next: () => {
-        this.loaderService.hideLoader();
-        this.saveErrors = true;
-      },
-      error: (error) => {
-        if (error.error.code != null && error.error.code == 422) {
-          if (typeof error.error.error === 'object') {
-            let message = '';
 
-            for (let item in error.error.error) {
-              message = message + '\n' + error.error.error[item];
-            }
-
-            MessageHelper.errorMessage(message);
-          } else {
-            MessageHelper.errorMessage(error.error.error);
+    this._folioService
+      .registerErrors(this.form.controls.id.value, {
+        ...this._listFormBuilder.formBuilderComponent.form.value,
+        save: this.saveErrors,
+      })
+      .subscribe({
+        next: (folio: any) => {
+          this.loaderService.hideLoader();
+          if(this.saveErrors){
+            MessageHelper.successMessage('¡Correcto!', 'Errores registrados');
+            this.backToList();
           }
-        }
-        this.loaderService.hideLoader();
-      },
-      complete: () => {
-        this.loaderService.hideLoader();
-      },
-      
-    });
-    
+          else{MessageHelper.successMessage('¡Correcto!', 'Ya puedes registrar los errores');}
+          this.saveErrors = true;
+          this.form.controls.folio_min.setValue(folio.folio_min);
+          this.form.controls.folio_max.setValue(folio.folio_max);
+          this.form.controls.name.disable();
+          this.form.controls.folio_min.disable();
+          this.form.controls.folio_max.disable();
+        },
+        error: (error) => {
+          if (error.error.code != null && error.error.code == 422) {
+            if (typeof error.error.error === 'object') {
+              let message = '';
+
+              for (let item in error.error.error) {
+                message = message + '\n' + error.error.error[item];
+              }
+
+              MessageHelper.errorMessage(message);
+            } else {
+              MessageHelper.errorMessage(error.error.error);
+            }
+          }
+          this.loaderService.hideLoader();
+        },
+        complete: () => {
+          this.loaderService.hideLoader();
+        },
+      });
   }
 }

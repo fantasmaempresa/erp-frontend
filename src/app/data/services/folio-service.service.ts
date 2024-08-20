@@ -65,6 +65,10 @@ export class FolioService extends CrudService<FolioDto, Pagination<FolioDto>> {
   registerErrors(folio_id: number, params: any) {
     return this._http.put(`${this._base}/cancel/${folio_id}`, params);
   }
+
+  unsetProcedure(folio_id: number){
+    return this._http.get(`${environment.base_url}/folio/procedure/unused/${folio_id}`);
+  }
 }
 
 @Injectable({
@@ -98,7 +102,7 @@ export class OrderFolioService extends CrudService<
     super('folio');
   }
 
-  fetchAll(): Observable<Pagination<FolioDto>> {
-    return this._http.get<Pagination<FolioDto>>(`${environment.base_url}/folio/instrument/unused`);
+  fetchAll(params?: HttpParams, headers?: HttpHeaders): Observable<Pagination<FolioDto>> {
+    return this._http.get<Pagination<FolioDto>>(`${environment.base_url}/folio/instrument/unused`, { params, headers });
   }
 }

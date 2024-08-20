@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BasicViewComponent, VIEW_CLAZZ } from 'o2c_core';
 import { FolioOrderView, FolioView } from 'src/app/data/presentation/Folio.view';
 import { FolioFormComponent } from './pages/folio-form/folio-form.component';
+import { DocumentApendixView } from 'src/app/data/presentation/DocumentLink.view';
 
 const routes: Routes = [
   {
@@ -26,6 +27,12 @@ const routes: Routes = [
         providers: [{ provide: VIEW_CLAZZ, useValue: FolioOrderView }],
       },
       {
+        path: ':id/documentLink',
+        component: BasicViewComponent,
+        data: { breadcrumb: 'Apendice de instrumento' },
+        providers: [{ provide: VIEW_CLAZZ, useValue: DocumentApendixView }],
+      },
+      {
         path: 'new',
         component: FolioFormComponent,
         data: { breadcrumb: 'Agregar instrumento' },
@@ -40,6 +47,7 @@ const routes: Routes = [
         component: FolioFormComponent,
         data: { breadcrumb: 'Editar instrumento' },
       },
+
     ]
   }
 ];

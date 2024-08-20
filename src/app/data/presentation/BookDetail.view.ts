@@ -15,7 +15,7 @@ const viewResume = new ViewActions<any>(
     detail_service.getGeneralCount().subscribe({
       next: (response: any) => {
         console.log('response response', response);
-        MessageHelper.infoMessage(`Total de Folios: ${response.folios_count}, Folios sin usar: ${response.folios_unused_count}`);        
+        MessageHelper.infoMessage(`Folios usados: ${response.folios_used_count}, Folios sin usar: ${response.folios_unused_count}, Folios sin proceso: ${response.folios_without_procedure_count}`);        
       }
     });
   },
