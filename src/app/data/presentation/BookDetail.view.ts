@@ -2,10 +2,8 @@ import {
   MessageHelper,
   ViewActions,
   viewActions,
-  viewDialog,
   viewHTML,
   viewLabel,
-  viewMapTo,
 } from 'o2c_core';
 import { BookDetailService } from '../services/book-service.service';
 

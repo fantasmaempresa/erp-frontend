@@ -361,6 +361,14 @@ const routes: Routes = [
         data: { breadcrumb: 'Instrumentos y folios' },
       },
       {
+        path: 'reports',
+        loadChildren: () =>
+          import(
+            './features/reports/reports.module'
+          ).then((m) => m.ReportsModule),
+        data: { breadcrumb: 'Reportes' },
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',

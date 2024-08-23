@@ -1,0 +1,96 @@
+<mat-card>
+  <mat-toolbar> </mat-toolbar>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="form"
+    class="row justify-content-center"
+  >
+    <mat-accordion class="example-headers-align">
+      <mat-expansion-panel
+        (opened)="step = 0"
+        [expanded]="step === 0"
+        hideToggle
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>Información general del reporte</mat-panel-title>
+          <mat-panel-description
+            >Configuración el reporte</mat-panel-description
+          >
+        </mat-expansion-panel-header>
+        <div class="row justify-content-center">
+          <div class="col-6 d-flex flex-column pe-0">
+            <mat-form-field appearance="outline">
+              <mat-label>Seleccione un reporte</mat-label>
+              <mat-select
+                formControlName="report_id"
+                (valueChange)="changeReport($event)"
+              >
+                <mat-option
+                  *ngFor="let template of reports; index as i"
+                  [value]="template"
+                >
+                  {{ template.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Nombre para reporte</mat-label>
+              <input formControlName="name" matInput type="text" />
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Extensión para reporte</mat-label>
+              <mat-select formControlName="extension">
+                <mat-option
+                  *ngFor="let template of extension; index as i"
+                  [value]="template"
+                >
+                  {{ template.name }}
+                </mat-option>
+              </mat-select>
+              <mat-error appErrorMessage></mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <mat-action-row>
+          <button (click)="goToNext()" color="primary" mat-button>
+            Siguiente
+          </button>
+        </mat-action-row>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel
+        (opened)="step = 1"
+        [expanded]="step === 1"
+        hideToggle
+      >
+        <mat-expansion-panel-header>
+          <mat-panel-title>Reporte</mat-panel-title>
+          <mat-panel-description>
+            <mat-icon>edit</mat-icon>
+          </mat-panel-description>
+        </mat-expansion-panel-header>
+        <div class="row justify-content-center">
+          <div class="col-6 d-flex flex-column pe-0">
+            <h2 mat-dialog-title>{{ useReport.title }}</h2>
+  
+            <div mat-dialog-content>
+              <ng-container *ngIf="useReport.component">
+                <ng-container
+                  [ngComponentOutlet]="useReport.component"
+                ></ng-container>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+        <mat-action-row>
+          <button (click)="goToPrev()" color="warn" mat-button>Atras</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </form>
+</mat-card>

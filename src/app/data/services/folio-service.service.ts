@@ -69,6 +69,29 @@ export class FolioService extends CrudService<FolioDto, Pagination<FolioDto>> {
   unsetProcedure(folio_id: number){
     return this._http.get(`${environment.base_url}/folio/procedure/unused/${folio_id}`);
   }
+
+  
+  /**
+   * 
+   *
+   * @param forBook | 1 pdf | 2 word 
+   * @returns 
+   */
+  reportFolioControl(forBook?: number, params?: HttpParams) {
+    let queryParams = '';
+    if (forBook) {
+      queryParams = `?forBook=${forBook}`;
+    }
+    
+    return this._http.get(
+      `${environment.base_url}/procedure/report/controlFolio${queryParams}`,
+      {
+        responseType: 'blob',
+        observe: 'response',
+        params: params
+      },
+    );
+  }
 }
 
 @Injectable({

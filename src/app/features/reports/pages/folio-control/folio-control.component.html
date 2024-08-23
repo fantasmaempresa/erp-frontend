@@ -1,0 +1,23 @@
+<form [formGroup]="childForm" (ngSubmit)="onSubmit()" class="mt-3">
+  <mat-form-field appearance="outline" class="w-100">
+    <mat-label>Libro</mat-label>
+    <input
+      [viewClassBuilder]="bookProvider"
+      title="Selecciona un libro"
+      o2cSinglePopup
+      formControlName="book_id"
+      matInput
+      type="text"
+    />
+    <mat-icon matSuffix>search</mat-icon>
+    <mat-error appErrorMessage></mat-error>
+  </mat-form-field>
+
+  <button
+      class="btn btn-primary"
+      color="primary"
+      mat-button
+    >
+      <mat-icon>add</mat-icon>Generar
+    </button>
+</form>
