@@ -327,7 +327,7 @@ export class ConceptFormComponent implements OnInit {
           is_date: new UntypedFormControl(false),
           is_range: new UntypedFormControl(false),
           type: new UntypedFormControl('date'),
-          amount: new UntypedFormControl(''),
+          validity_year: new UntypedFormControl(''),
           between: new UntypedFormArray(
             this.isEdit ? [] : [this.createRange()],
           ),

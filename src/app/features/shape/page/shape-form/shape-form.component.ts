@@ -22,6 +22,7 @@ import { OperationView } from 'src/app/data/presentation/Operation.view';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { ProcedureService } from 'src/app/data/services/procedure.service';
 import { ProcedureDto } from 'src/app/data/dto';
+import { SharedDataService } from 'src/app/data/services/shared-data.service';
 
 @AutoUnsubscribe()
 @Component({
@@ -30,6 +31,8 @@ import { ProcedureDto } from 'src/app/data/dto';
   styleUrls: ['./shape-form.component.scss'],
 })
 export class ShapeFormComponent implements OnInit, OnDestroy {
+  formId = 'shapeForm'; 
+  formIdbuilder = 'shapeBuilderForm'; 
   // @ts-ignore
   editor: Editor;
 
@@ -103,6 +106,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     public dialog: MatDialog,
     private _procedureService: ProcedureService,
+    private dataService: SharedDataService
   ) {
     // this.builderForm = this.fb.group({});
     const id = Number(this.route.snapshot.params.id);
@@ -162,6 +166,21 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.editor = new Editor();
     this.editorDescription = new Editor();
+    
+    const savedData = this.dataService.getFormData(this.formId);
+    if (savedData && !this.isEdit) {
+      MessageHelper.decisionMessage(
+        'Borrador de formulario', 
+        'Se encontro un borrador de este formulario, ¿Quieres restablecerlo?',
+        () => this.shapeForm.patchValue(savedData),
+        () => this.dataService.deleteFormData(this.formId),
+      );
+      
+    }
+    // Guardar los cambios en el localStorage cada vez que se produce un cambio en el formulario
+    this.shapeForm.valueChanges.subscribe(() => {
+      this.dataService.saveFormData(this.formId, this.shapeForm.value);
+    });
   }
 
   ngOnDestroy(): void {

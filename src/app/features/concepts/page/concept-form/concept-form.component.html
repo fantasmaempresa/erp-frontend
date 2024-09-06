@@ -83,7 +83,7 @@
                   <mat-label>Cantidad</mat-label>
                   <input
                     autocomplete="off"
-                    formControlName="amount"
+                    formControlName="validity_year"
                     matInput
                     type="text"
                   />
@@ -96,7 +96,7 @@
                   class="col-6"
                 >
                   <mat-label>Año</mat-label>
-                  <mat-select formControlName="amount">
+                  <mat-select formControlName="validity_year">
                     <mat-option>-- None --</mat-option>
                     <mat-option *ngFor="let year of years" [value]="year">{{
                       year

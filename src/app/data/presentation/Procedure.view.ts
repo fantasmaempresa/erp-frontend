@@ -192,9 +192,12 @@ export class StakeAssignGrantor {
       },
     },
   })
-  @viewLabel('Otorgante')
+  // @viewLabel('Otorgante')
   // @viewMapTo((value: any) => value.name)
   grantor_id: GrantorDto;
+
+  @viewLabel('Nombre')
+  name: string;
 
   @popUpSelector({
     label: 'Participación',
@@ -207,13 +210,22 @@ export class StakeAssignGrantor {
       },
     },
   })
-  @viewLabel('Participación')
+  // @viewLabel('Participación')
   // @viewMapTo((value: any) => value.name)
   stake_id: StakeDto;
+  @viewLabel('Participación')
+  stake__name: string;
 
-  constructor(grantor_id: GrantorDto, stake_id: StakeDto) {
+  constructor(
+    grantor_id: GrantorDto, 
+    stake_id: StakeDto,
+    name: string,
+    stake__name: string
+  ) {
     this.grantor_id = grantor_id;
+    this.name = name;
     this.stake_id = stake_id;
+    this.stake__name = stake__name;
   }
 }
 

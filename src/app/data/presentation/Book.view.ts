@@ -1,14 +1,55 @@
-import { ViewActions, viewCrud, viewLabel } from 'o2c_core';
+import { MessageHelper, ViewActions, viewCrud, viewLabel } from 'o2c_core';
 import { BookServiceService } from '../services/book-service.service';
 import { DEFAULT_ROUTE_CONFIGURATION } from 'src/app/core/constants/routes.constants';
 import { BookDto } from '../dto/Book.dto';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FolioService } from '../services/folio-service.service';
+
+const genereteReport = new ViewActions<BookDto>(
+  async ({ row, injector }) => {
+    const book = row as BookDto;
+    const folioService = injector.get(FolioService);
+
+    folioService.reportFolioControl(book.id).subscribe({
+      next: async (response) => {
+        // @ts-ignore
+        const blob = new Blob([response.body], {
+          type: response.headers.get('content-type'),
+        });
+        const name = 'reporte-';
+        // @ts-ignore
+        const filename = name + '.xls';
+
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+        URL.revokeObjectURL(link.href);
+        await MessageHelper.successMessage(
+          'Reporte Generado',
+          'El reporte se genero con éxito',
+        );
+      },
+      error: async () => {
+        await MessageHelper.errorMessage(
+          'No se puede generar el reporte en este momento intente más tarde',
+        );
+      },
+    });
+  },
+  'download',
+  {
+    tooltip: 'Generar reporte',
+    color: 'accent',
+    isVisible: (row: BookDto) => row && row.id !== null,
+  },
+);
 
 const goToBookDetail = new ViewActions<BookDto>(
   async ({ row, injector }) => {
     const router = injector.get(Router);
     const route = injector.get(ActivatedRoute);
-    await router.navigate(['../','bookDetail',(row as BookDto).id], {
+    await router.navigate(['../', 'bookDetail', (row as BookDto).id], {
       relativeTo: route,
     });
   },
@@ -40,7 +81,7 @@ const goToDocumentsLink = new ViewActions<BookDto>(
   classProvider: BookServiceService,
   registerName: 'Trámites',
   route: DEFAULT_ROUTE_CONFIGURATION,
-  actions: [goToBookDetail, goToDocumentsLink],
+  actions: [goToBookDetail, goToDocumentsLink, genereteReport],
 })
 export class BookView {
   @viewLabel('Libro')

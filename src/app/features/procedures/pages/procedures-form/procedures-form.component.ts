@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   UntypedFormControl,
@@ -31,6 +31,7 @@ import { DocumentFormComponent } from '../../../documents/page/document-form/doc
 import { GrantorFormComponent } from '../../../grantor/page/grantor-form/grantor-form.component';
 import { PlaceFormComponent } from '../../../place/page/place-form/place-form.component';
 import { StaffMemberFormComponent } from '../../../staff/page/staff-member-form/staff-member-form.component';
+import { SharedDataService } from 'src/app/data/services/shared-data.service';
 
 @AutoUnsubscribe()
 @Component({
@@ -44,7 +45,9 @@ import { StaffMemberFormComponent } from '../../../staff/page/staff-member-form/
     },
   ],
 })
-export class ProceduresFormComponent implements OnDestroy {
+export class ProceduresFormComponent implements OnDestroy, OnInit {
+  formId = 'proceduresForm'; 
+
   private _listFormBuilder!: FormComponent;
 
   public get formComponent(): FormComponent {
@@ -121,6 +124,7 @@ export class ProceduresFormComponent implements OnDestroy {
     public dialog: MatDialog,
     private _operationService: OperationService,
     private loaderService: LoaderService,
+    private dataService: SharedDataService,
   ) {
     const id = Number(this.route.snapshot.params.id);
     if (!isNaN(id)) {
@@ -130,6 +134,7 @@ export class ProceduresFormComponent implements OnDestroy {
           this.procedureForm.addControl('id', new UntypedFormControl(''));
           this.procedureForm.patchValue(procedure);
           this.procedureForm.controls.folio_id.setValue(procedure.folio?.id);
+          console.log('procedure.grantorsprocedure.grantors -->',  procedure.grantors)
           this.formComponent.formBuilderComponent.form.controls.stakes.setValue(
             procedure.grantors,
           );
@@ -154,9 +159,26 @@ export class ProceduresFormComponent implements OnDestroy {
         });
       });
     }
-
-    // this.procedureForm.controls.name.disable();
   }
+  
+  ngOnInit() {
+    const savedData = this.dataService.getFormData(this.formId);
+    if (savedData && !this.isEdit) {
+      MessageHelper.decisionMessage(
+        'Borrador de formulario', 
+        'Se encontro un borrador de este formulario, ¿Quieres restablecerlo?',
+        () => this.procedureForm.patchValue(savedData),
+        () => this.dataService.deleteFormData(this.formId),
+      );
+      
+    }
+
+    // Guardar los cambios en el localStorage cada vez que se produce un cambio en el formulario
+    this.procedureForm.valueChanges.subscribe(() => {
+      this.dataService.saveFormData(this.formId, this.procedureForm.value);
+    });
+  }
+
   ngOnDestroy(): void {}
 
   async backToListDocuments() {
