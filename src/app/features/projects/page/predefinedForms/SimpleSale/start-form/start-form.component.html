@@ -1,0 +1,23 @@
+<mat-card>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="form"
+    class="row justify-content-center"
+  >
+    <mat-form-field appearance="outline">
+      <mat-label>Operación</mat-label>
+      <input
+        [viewClassBuilder]="operationProvider"
+        title="Selecciona un tipo de operación"
+        o2cMultiPopup
+        formControlName="operations"
+        matInput
+        type="text"
+      />
+      <mat-icon matSuffix>search</mat-icon>
+      <mat-error appErrorMessage></mat-error>
+    </mat-form-field>
+
+    <o2c-form></o2c-form>
+  </form>
+</mat-card>

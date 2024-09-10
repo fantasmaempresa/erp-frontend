@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   ProcessPhaseServiceOld,
@@ -12,28 +12,31 @@ import {
 import { map, Observable, pluck, startWith } from 'rxjs';
 import { RoleDto } from '../../../../data/dto';
 import { MessageHelper } from 'o2c_core';
+import { PredefinedFormsProjectsService } from 'src/app/data/services/predefined-forms-projects.service';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-process-phase-form',
   templateUrl: './process-phase-form.component.html',
   styleUrls: ['./process-phase-form.component.scss'],
 })
-export class ProcessPhaseFormComponent {
+export class ProcessPhaseFormComponent implements OnDestroy {
   step = 0;
-
   form!: UntypedFormGroup;
-
   roles$: Observable<RoleDto[]>;
-
   form$!: Observable<any> | undefined;
-
   edit = false;
+  menuPredefinedForms = this.menuForms.getMenuPredefinedForms();
+  renderComponent: any;
+  previewPredefinedForm = false;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private processPhaseService: ProcessPhaseServiceOld,
     private roleService: RoleServiceOld,
+    private menuForms: PredefinedFormsProjectsService,
   ) {
     const id = Number(this.route.snapshot.params.id);
 
@@ -44,13 +47,11 @@ export class ProcessPhaseFormComponent {
         Validators.required,
         Validators.maxLength(100),
       ]),
-      description: new UntypedFormControl(null, [
-        Validators.required,
-        Validators.maxLength(400),
-      ]),
+      description: new UntypedFormControl(null, [Validators.maxLength(400)]),
       notification: new UntypedFormControl(false),
       payments: new UntypedFormControl(false),
       form: new UntypedFormControl([], Validators.required),
+      type_form: new UntypedFormControl(null, Validators.required),
     });
 
     if (!isNaN(id)) {
@@ -67,8 +68,33 @@ export class ProcessPhaseFormComponent {
 
     this.form$ = this.form.get('form')?.valueChanges.pipe(
       startWith(this.form.get('form')?.value),
-      map((array: any[]) => [...array]),
+      map((array: any) => {
+        if (this.form.controls.type_form.value == 1) {
+          return [...array];
+        } else if (this.form.controls.type_form.value == 2) {
+          return array;
+        }
+      }),
     );
+
+    this.form$?.subscribe((value) => {
+      if(this.form.controls.type_form.value == 2 && value != null){
+        console.log('this.menuForms.getRenderMenu', value)
+        this.renderComponent = this.menuForms.getRenderMenu(value.value);
+      }else {
+        this.renderComponent = false;
+      }
+    });
+
+    this.form.get('type_form')?.valueChanges.subscribe({
+      next: (value) => {
+        if ((value = 1)) {
+          this.form.get('form')?.setValue([]);
+        } else if ((value = 2)) {
+          this.form.get('form')?.setValue(null);
+        }
+      },
+    });
   }
 
   mapRoles = (role: RoleDto) => role.name;
@@ -79,6 +105,10 @@ export class ProcessPhaseFormComponent {
 
   setStep(step: number) {
     this.step = step;
+    if(this.step === 2){
+      console.log('setStep --> ', this.renderComponent, this.previewPredefinedForm);
+      this.previewPredefinedForm = true;
+    }
   }
 
   nextStep() {
@@ -110,4 +140,6 @@ export class ProcessPhaseFormComponent {
       },
     });
   }
+
+  ngOnDestroy() {}
 }

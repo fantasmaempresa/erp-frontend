@@ -29,19 +29,21 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline">
+            <mat-label>Tipo de fase</mat-label>
+            <mat-select formControlName="type_form">
+              <mat-option value="1"
+                >Creare el formulario manualmente</mat-option
+              >
+              <mat-option value="2">Usare un formulario existente</mat-option>
+            </mat-select>
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
             <mat-label>Descripción</mat-label>
             <textarea formControlName="description" matInput></textarea>
             <mat-error appErrorMessage></mat-error>
           </mat-form-field>
-
-          <div class="checkbox-container">
-            <mat-checkbox color="primary" formControlName="notification"
-              >¿Debe notificar?
-            </mat-checkbox>
-            <mat-checkbox color="primary" formControlName="payments"
-              >¿Requiere Pago?
-            </mat-checkbox>
-          </div>
         </div>
 
         <mat-action-row>
@@ -65,7 +67,26 @@
 
         <app-dynamic-form-builder
           formControlName="form"
+          *ngIf="form.controls.type_form.value == 1"
         ></app-dynamic-form-builder>
+
+        <div
+          class="d-flex flex-column form-container"
+          *ngIf="form.controls.type_form.value == 2"
+        >
+          <mat-form-field appearance="outline">
+            <mat-label>Seleccione el formulario</mat-label>
+            <mat-select formControlName="form">
+              <mat-option
+                *ngFor="let item of menuPredefinedForms; index as i"
+                [value]="item"
+              >
+                {{ item.name }}
+              </mat-option>
+            </mat-select>
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+        </div>
 
         <mat-action-row>
           <button (click)="prevStep()" color="primary" mat-button type="button">
@@ -91,8 +112,15 @@
         </mat-expansion-panel-header>
 
         <app-preview-form-builder
+          *ngIf="form.controls.type_form.value == 1"
           [formFields]="form$ | async"
         ></app-preview-form-builder>
+
+        <ng-container *ngIf="previewPredefinedForm">
+          <ng-container
+            [ngComponentOutlet]="renderComponent.component"
+          ></ng-container>
+        </ng-container>
 
         <mat-action-row>
           <button (click)="prevStep()" color="primary" mat-button type="button">

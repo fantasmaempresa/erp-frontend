@@ -205,12 +205,12 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
   }
 
   openDialog() {
-    // this.popupService
-    //   .openTablePopup(ProcessView, "Selecciona un proceso", { isMulti: true })
-    //   .subscribe((processes: any[]) => {
-    //     this.buildInvolvedFormArray(processes);
-    //     this.processes = processes;
-    //   });
+    this.popupService
+      .openTablePopup({ viewClass: ProcessView, title: "Selecciona un proceso", options: { isMulti: true }})
+      .subscribe((processes: any[]) => {
+        this.buildInvolvedFormArray(processes);
+        this.processes = processes;
+      });
   }
 
   ngOnDestroy(): void {
