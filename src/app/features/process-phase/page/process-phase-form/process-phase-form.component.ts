@@ -90,6 +90,7 @@ export class ProcessPhaseFormComponent implements OnDestroy {
       next: (value) => {
         if ((value = 1)) {
           this.form.get('form')?.setValue([]);
+          this.renderComponent = false;
         } else if ((value = 2)) {
           this.form.get('form')?.setValue(null);
         }

@@ -4,6 +4,7 @@ import { ChildrenRouteLayoutComponent } from '../../layout/children-route-layout
 import { ProjectFormComponent } from './page/project-form/project-form.component';
 import { BasicViewComponent, VIEW_CLAZZ } from 'o2c_core';
 import { ProjectView } from '../../data/presentation';
+import { StartFormComponent } from './page/predefinedForms/SimpleSale/start-form/start-form.component';
 
 const routes: Routes = [
   {
@@ -25,6 +26,11 @@ const routes: Routes = [
         path: 'new',
         component: ProjectFormComponent,
         data: { breadcrumb: 'Agregar Proyecto' },
+      },
+      {
+        path: 'test-test',
+        component: StartFormComponent,
+        data: { breadcrumb: 'Test' },
       },
       {
         path: ':id',

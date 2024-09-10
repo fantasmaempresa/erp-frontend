@@ -7,6 +7,7 @@ import { SharedModule } from '../../shared/shared.module';
 import { ProjectQuotePageComponent } from './page/project-quote-page/project-quote-page.component';
 import { ProjectQuoteConceptsComponent } from './page/project-quote-concepts/project-quote-concepts.component';
 import { ProjectQuotePreviewComponent } from './dialog/project-quote-preview/project-quote-preview.component';
+import { ViewsModule, FormsModule, FormComponent } from 'o2c_core';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,12 @@ import { ProjectQuotePreviewComponent } from './dialog/project-quote-preview/pro
     ProjectQuoteConceptsComponent,
     ProjectQuotePreviewComponent,
   ],
-  imports: [SharedModule, ProjectQuoteRoutingModule],
+  imports: [
+    SharedModule,
+    ProjectQuoteRoutingModule,
+    ViewsModule,
+    FormsModule,
+    FormComponent,
+  ],
 })
 export class ProjectQuoteModule {}

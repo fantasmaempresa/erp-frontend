@@ -27,7 +27,7 @@ const routes: Routes = [
       {
         path: 'new',
         component: ProcessPhaseFormComponent,
-        data: { breadcrumb: 'Agregar Fase' },
+        data: { breadcrumb: 'Agregar Fase', view: 'phase' },
       },
       {
         path: ':id',

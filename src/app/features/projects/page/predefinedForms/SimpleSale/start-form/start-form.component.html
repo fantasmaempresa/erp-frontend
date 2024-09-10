@@ -4,20 +4,98 @@
     [formGroup]="form"
     class="row justify-content-center"
   >
-    <mat-form-field appearance="outline">
-      <mat-label>Operación</mat-label>
-      <input
-        [viewClassBuilder]="operationProvider"
-        title="Selecciona un tipo de operación"
-        o2cMultiPopup
-        formControlName="operations"
-        matInput
-        type="text"
-      />
-      <mat-icon matSuffix>search</mat-icon>
-      <mat-error appErrorMessage></mat-error>
-    </mat-form-field>
+    <div class="col-8 d-flex flex-column">
+      <mat-form-field appearance="outline">
+        <mat-label>Expediente</mat-label>
+        <input formControlName="name" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
 
-    <o2c-form></o2c-form>
+      <mat-form-field appearance="outline">
+        <mat-label>Operación</mat-label>
+        <input
+          [viewClassBuilder]="operationProvider"
+          title="Selecciona un tipo de operación"
+          o2cMultiPopup
+          formControlName="operations"
+          matInput
+          type="text"
+        />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+      
+      <div class="row">
+        <div class="col-9">
+          <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Lugar</mat-label>
+            <input
+              [viewClassBuilder]="placeProvider"
+              title="Selecciona un lugar"
+              o2cSinglePopup
+              formControlName="place_id"
+              matInput
+              type="text"
+            />
+            <mat-error appErrorMessage></mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-3">
+          <button
+            style="width: 100%"
+            type="button"
+            color="primary"
+            (click)="addItem(addItems[2])"
+            mat-raised-button
+          >
+            <mat-icon>add</mat-icon>
+            Nuevo Lugar
+          </button>
+        </div>
+      </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Valor de operación</mat-label>
+        <input formControlName="value_operation" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Valor de avaluo</mat-label>
+        <input formControlName="appraisal" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <div class="row">
+        <div class="col-9"></div>
+        <div class="col-3">
+          <button
+            style="width: 100%"
+            type="button"
+            color="primary"
+            (click)="addItem(addItems[1])"
+            mat-raised-button
+          >
+            <mat-icon>add</mat-icon>
+            Nuevo Otorgante
+          </button>
+
+          <button
+            style="width: 100%; margin-top: 10px"
+            type="button"
+            color="primary"
+            (click)="addItem(addItems[3])"
+            mat-raised-button
+          >
+            <mat-icon>add</mat-icon>
+            Nueva Participación
+          </button>
+        </div>
+
+        <div class="col-12">
+          <o2c-form></o2c-form>
+        </div>
+      </div>
+      <button *ngIf="!previewBuilderForm" color="primary" mat-flat-button>Guardar</button>
+    </div>
   </form>
 </mat-card>

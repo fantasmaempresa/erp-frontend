@@ -52,7 +52,7 @@ export class ProcedureService extends CrudService<
     );
   }
 
-  checkValueUnique(name: string, id?: number) {
+  checkValueUnique(name: string, id?: number | null) {
     let idParam = '';
     if (id) {
       idParam = `&id=${id}`;
