@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { BasicViewComponent, VIEW_CLAZZ } from 'o2c_core';
 import { WarehouseView } from 'src/app/data/presentation/Warehouse.view';
 import { WarehouseFormComponent } from './page/warehouse-form/warehouse-form.component';
+import { InventoryFormComponent } from '../inventory/page/inventory-form/inventory-form.component';
 
 const routes: Routes = [
   {
@@ -25,9 +26,14 @@ const routes: Routes = [
         data: { breadcrumb: 'Agregar Alamcén'},
       },
       {
-        path: 'id',
+        path: ':id',
         component: WarehouseFormComponent,
         data: { breadcrumb: 'Editar Almacén'},
+      },
+      {
+        path: 'addArticleToInventory/:id',
+        component: InventoryFormComponent,
+        data: { breadcrumb: 'Agregar Artículo'},
       },
     ],
   }
