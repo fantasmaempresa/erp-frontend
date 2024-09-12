@@ -1,0 +1,29 @@
+<div class="row" [formGroup]="form">
+  <div class="col-md-8 editors">
+    <div class="mb-5" *ngFor="let editorItem of editorArray; let i = index">
+      <h6>{{ editorItem.name }}</h6>
+      <ngx-editor-menu [editor]="editors[i]"></ngx-editor-menu>
+      <ngx-editor
+        [editor]="editors[i]"
+        formControlName="{{ editorItem.controlName }}"
+        (focusIn)="setCurrentEditor(editors[i])"
+        placeholder="Comienza a escribir..."
+      >
+      </ngx-editor>
+    </div>
+  </div>
+  <div class="col-md-4 categories">
+    <ng-container *ngFor="let category of categories">
+      <h6>{{ category.name }}</h6>
+      <div class="categories__sheets">
+        <span
+          class="categories__item"
+          *ngFor="let sheet of category.sheets"
+          (click)="addSheet(sheet)"
+        >
+          {{ sheet }}
+        </span>
+      </div>
+    </ng-container>
+  </div>
+</div>
