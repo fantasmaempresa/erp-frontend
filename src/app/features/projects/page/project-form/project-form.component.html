@@ -15,16 +15,8 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Expediete</mat-label>
-        <input
-          [viewClassBuilder]="procedureProvider"
-          title="Selecciona un expediente"
-          o2cSinglePopup
-          formControlName="procedure_id"
-          matInput
-          type="text"
-        />
-        <mat-icon matSuffix>search</mat-icon>
+        <mat-label>Descripción</mat-label>
+        <textarea formControlName="description" matInput></textarea>
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
@@ -38,36 +30,7 @@
           matInput
           type="text"
         />
-        <mat-icon matSuffix>search</mat-icon>
         <mat-error appErrorMessage></mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Folio</mat-label>
-        <input formControlName="folio" matInput type="text" />
-        <mat-error appErrorMessage></mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Descripción</mat-label>
-        <textarea formControlName="description" matInput></textarea>
-        <mat-error appErrorMessage></mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Fecha Esperada</mat-label>
-        <input
-          (focus)="dateForm.open()"
-          [matDatepicker]="dateForm"
-          class="clickable"
-          formControlName="estimate_end_date"
-          matInput
-        />
-        <mat-datepicker-toggle
-          [for]="dateForm"
-          matSuffix
-        ></mat-datepicker-toggle>
-        <mat-datepicker #dateForm></mat-datepicker>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -80,7 +43,6 @@
           matInput
           type="text"
         />
-        <mat-icon matSuffix>search</mat-icon>
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
