@@ -4,6 +4,7 @@ import {
   ChangeDetectorRef,
   Component,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
 } from '@angular/core';
@@ -43,7 +44,7 @@ export interface EditorOptions {
   ],
 })
 export class TextEditorWithCategoryAutocompleteComponent
-  implements OnInit, ControlValueAccessor, OnDestroy
+  implements OnChanges, ControlValueAccessor, OnDestroy
 {
   @Input() editorArray: EditorOptions[] = [];
 
@@ -105,13 +106,13 @@ export class TextEditorWithCategoryAutocompleteComponent
     });
   }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     this.editors = this.editorArray.map(() => this._createNewEditor());
-
     this._buildForm();
   }
 
   private _buildForm() {
+    this.form = new UntypedFormGroup({});
     this.editorArray.forEach(({ controlName: key }) => {
       this.form.addControl(key, new FormControl('', Validators.required()));
     });
