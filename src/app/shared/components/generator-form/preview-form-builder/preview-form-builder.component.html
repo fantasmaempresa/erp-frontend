@@ -1,5 +1,5 @@
 <form
-  *ngIf="$any(formFields)?.length > 0; else emptyState"
+  *ngIf="buildPreview else emptyState"
   [formGroup]="form"
   class="form-preview"
 >
@@ -134,8 +134,14 @@
   </ng-container>
 </form>
 
-<ng-template #emptyState>
-  <div class="form-preview-empty">
+<ng-container *ngIf="renderPreview">
+  <ng-container
+    [ngComponentOutlet]="renderPredefinedForm.component"
+  ></ng-container>
+</ng-container>
+
+<ng-template #emptyState >
+  <div class="form-preview-empty" *ngIf="!renderPreview">
     <span class="form-preview-empty__text">
       En la etapa de este proceso no tienes permisos para contribuir, deja que
       el proceso continue para que puedas aportar tu información

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   UntypedFormControl,
@@ -11,13 +11,14 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { FORM_CLAZZ, FormComponent } from 'o2c_core';
 import { debounceTime, map, Observable } from 'rxjs';
-import { ClientView } from 'src/app/data/presentation';
+import { PredefinedFormLifeCycle } from 'src/app/core/interfaces/PredefinedFormLifeCycle';
 import { GrantorView } from 'src/app/data/presentation/Grantor.view';
 import { OperationView } from 'src/app/data/presentation/Operation.view';
 import { PlaceView } from 'src/app/data/presentation/Place.view';
 import { StakeAssignGrantorTable } from 'src/app/data/presentation/Procedure.view';
 import { StakeView } from 'src/app/data/presentation/Stake.view';
 import { ProcedureService } from 'src/app/data/services/procedure.service';
+import { SharedDataService } from 'src/app/data/services/shared-data.service';
 import { ClientFormComponent } from 'src/app/features/clients/page/client-form/client-form.component';
 import { GrantorFormComponent } from 'src/app/features/grantor/page/grantor-form/grantor-form.component';
 import { PlaceFormComponent } from 'src/app/features/place/page/place-form/place-form.component';
@@ -36,7 +37,9 @@ import { DialogDynamicAddItemComponent } from 'src/app/shared/components/dialog-
     },
   ],
 })
-export class StartFormComponent implements OnDestroy {
+export class StartFormComponent
+  implements OnInit, OnDestroy, PredefinedFormLifeCycle
+{
   operationProvider = OperationView;
   grantorProvider = GrantorView;
   stakeProvider = StakeView;
@@ -82,17 +85,19 @@ export class StartFormComponent implements OnDestroy {
     private procedureService: ProcedureService,
     public dialog: MatDialog,
     private route: ActivatedRoute,
+    private synchronizer: SharedDataService,
   ) {
     this.form = new UntypedFormGroup({
       name: new UntypedFormControl('', {
         validators: [Validators.required],
-        asyncValidators: [this.uniqueValueValidator.bind(this)],
+        // asyncValidators: [this.uniqueValueValidator.bind(this)],
         updateOn: 'blur',
       }),
       value_operation: new UntypedFormControl('', []),
+      operations: new UntypedFormControl('', []),
       appraisal: new UntypedFormControl('', []),
       place_id: new UntypedFormControl('', [Validators.required]),
-      staff_id: new UntypedFormControl('', [Validators.required]),
+      grantors: new UntypedFormControl('', [Validators.required]),
     });
 
     const data = this.route.snapshot.routeConfig?.data;
@@ -103,8 +108,36 @@ export class StartFormComponent implements OnDestroy {
     }
   }
 
+  ngOnInit(): void {
+    this.procedureService.recommendationExpedient().subscribe({
+      next: (data: any) => {
+        this.form.get('name')?.setValue(data.name);
+      },
+    });
+
+    this.synchronizer.updateLastForm(this.form);
+
+    this.synchronizer.executionCommand$.subscribe((command) => {
+      console.log('this.synchronizer.executionCommand$ ---> ', command);
+      switch (command) {
+        case 'saveForm':
+          this.saveForm();
+          break;
+        case 'next':
+          this.next();
+          break;
+        case 'prev':
+          this.prev();
+          break;
+        default: console.log('Comando no reconocido');
+      }
+    });
+  }
   onSubmit() {
     console.log(this.form.value);
+    this.form
+      .get('grantors')
+      ?.setValue(this.formComponent.formBuilderComponent.form.value.stakes);
   }
 
   uniqueValueValidator(
@@ -128,4 +161,24 @@ export class StartFormComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {}
+
+  writeValue(value: any) {
+    this.form.patchValue(value);
+  }
+
+  next() {
+    this.onSubmit();
+  }
+
+  prev() {
+    this.form
+      .get('grantors')
+      ?.setValue(this.formComponent.formBuilderComponent.form.value.stakes);
+  }
+
+  saveForm() {
+    this.form
+      .get('grantors')
+      ?.setValue(this.formComponent.formBuilderComponent.form.value.stakes);
+  }
 }

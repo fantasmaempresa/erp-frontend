@@ -55,13 +55,14 @@ export class ProcessPhaseFormComponent implements OnDestroy {
     });
 
     if (!isNaN(id)) {
-      console.log('value edit ---> true');
       this.edit = true;
       this.processPhaseService.fetch(id).subscribe({
         next: (value: any) => {
           this.form.addControl('id', new UntypedFormControl());
           console.log('value edit ---> ', value);
           this.form.patchValue(value);
+          this.form.controls.type_form.setValue(value.type_form.toString());
+          this.form.controls.form.setValue(value.form);
         },
       });
     }
@@ -78,10 +79,10 @@ export class ProcessPhaseFormComponent implements OnDestroy {
     );
 
     this.form$?.subscribe((value) => {
-      if(this.form.controls.type_form.value == 2 && value != null){
-        console.log('this.menuForms.getRenderMenu', value)
+      if (this.form.controls.type_form.value == 2 && value != null) {
+        console.log('this.menuForms.getRenderMenu', value);
         this.renderComponent = this.menuForms.getRenderMenu(value.value);
-      }else {
+      } else {
         this.renderComponent = false;
       }
     });
@@ -106,8 +107,12 @@ export class ProcessPhaseFormComponent implements OnDestroy {
 
   setStep(step: number) {
     this.step = step;
-    if(this.step === 2){
-      console.log('setStep --> ', this.renderComponent, this.previewPredefinedForm);
+    if (this.step === 2) {
+      console.log(
+        'setStep --> ',
+        this.renderComponent,
+        this.previewPredefinedForm,
+      );
       this.previewPredefinedForm = true;
     }
   }

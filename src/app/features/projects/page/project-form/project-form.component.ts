@@ -36,12 +36,9 @@ export class ProjectFormComponent {
   ) {
     this.form = new UntypedFormGroup({
       name: new UntypedFormControl(null, Validators.required),
-      folio: new UntypedFormControl(null),
-      description: new UntypedFormControl(null, Validators.required),
-      estimate_end_date: new UntypedFormControl(null, Validators.required),
+      description: new UntypedFormControl(null, Validators.maxLength(400)),
       client_id: new UntypedFormControl(null, Validators.required),
-      procedure_id: new UntypedFormControl(null, Validators.required),
-      project_quote_id: new UntypedFormControl(null, Validators.required),
+      project_quote_id: new UntypedFormControl(null, []),
       config: new UntypedFormControl(null, Validators.required),
     });
 
@@ -82,11 +79,11 @@ export class ProjectFormComponent {
       console.log('fomulario no valido');
       return;
     }
-    this.form.value.estimate_end_date = format(
-      this.form.value.estimate_end_date,
-      'yyyy-MM-dd',
-    );
-    console.log(this.form.value.estimate_end_date);
+    // this.form.value.estimate_end_date = format(
+    //   this.form.value.estimate_end_date,
+    //   'yyyy-MM-dd',
+    // );
+    // console.log(this.form.value.estimate_end_date);
     const request$ = this.edit
       ? this.projectService.update(this.form.value)
       : this.projectService.save(this.form.value);

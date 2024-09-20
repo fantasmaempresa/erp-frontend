@@ -22,12 +22,12 @@ const routes: Routes = [
       {
         path: ':id/process/:idProcess',
         component: CurrentFormComponent,
-        data: { breadcrumb: 'Fase Actual' },
+        data: { breadcrumb: 'Fase Actual', view: 'phase' },
       },
       {
         path: ':id/process/:idProcess/resume',
         component: ResumeProcessComponent,
-        data: { breadcrumb: 'Resumen del avance del proceso' },
+        data: { breadcrumb: 'Resumen del avance del proceso', view: 'phase' },
       },
       {
         path: 'editor/test',
