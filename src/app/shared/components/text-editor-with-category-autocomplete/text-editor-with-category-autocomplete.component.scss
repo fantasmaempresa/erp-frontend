@@ -1,0 +1,44 @@
+.editors{
+  background: #fff;
+  border-radius: 8px;
+  padding: 20px;
+  border: 2px dashed #ccc;
+
+  h6{
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--accent-darker-color);
+  }
+}
+
+.categories{
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  h6{
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--accent-darker-color);
+  }
+
+  &__sheets{
+    display: flex;
+    gap: 1rem;
+  }
+
+  &__item{
+    padding: 0.75rem;
+    border-radius: 4px;
+    font-size: 1.6rem;
+    background: var(--accent-darker-color);
+    color: #fff;
+    cursor: pointer;
+    transition: 0.3s all ease-in-out;
+
+    &:hover{
+      transform: scale(1.05);
+    }
+  }
+}

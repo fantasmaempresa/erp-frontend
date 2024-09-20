@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ProjectStartListComponent } from './page/project-start-list/project-start-list.component';
+import { TextEditorWithCategoryAutocompleteComponent } from 'src/app/shared/components/text-editor-with-category-autocomplete/text-editor-with-category-autocomplete.component';
 import { CurrentFormComponent } from './page/current-form/current-form.component';
-import { ResumeProcessComponent } from "./page/resume-process/resume-process.component";
+import { ProjectStartListComponent } from './page/project-start-list/project-start-list.component';
+import { ResumeProcessComponent } from './page/resume-process/resume-process.component';
 
 const routes: Routes = [
   {
@@ -27,6 +28,11 @@ const routes: Routes = [
         path: ':id/process/:idProcess/resume',
         component: ResumeProcessComponent,
         data: { breadcrumb: 'Resumen del avance del proceso', view: 'phase' },
+      },
+      {
+        path: 'editor/test',
+        component: TextEditorWithCategoryAutocompleteComponent,
+        data: { breadcrumb: 'Prueba de editor' },
       },
     ],
   },
