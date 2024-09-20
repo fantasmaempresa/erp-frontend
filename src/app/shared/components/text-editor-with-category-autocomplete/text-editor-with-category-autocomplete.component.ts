@@ -22,6 +22,11 @@ export interface CategoryOptions {
   sheets: string[];
 }
 
+export interface EditorOptions {
+  name: string;
+  controlName: string;
+}
+
 @Component({
   selector: 'app-text-editor-with-category-autocomplete',
   standalone: true,
@@ -40,21 +45,9 @@ export interface CategoryOptions {
 export class TextEditorWithCategoryAutocompleteComponent
   implements OnInit, ControlValueAccessor, OnDestroy
 {
-  @Input() editorArray: { name: string; controlName: string }[] = [
-    { name: 'Editor 1', controlName: 'editor1' },
-    { name: 'Editor 2', controlName: 'editor2' },
-  ];
+  @Input() editorArray: EditorOptions[] = [];
 
-  @Input() categories: CategoryOptions[] = [
-    {
-      name: 'Category 1',
-      sheets: ['Sheet 1', 'Sheet 2'],
-    },
-    {
-      name: 'Category 2',
-      sheets: ['Sheet 3', 'Sheet 4'],
-    },
-  ];
+  @Input() categories: CategoryOptions[] = [];
 
   editors: Editor[] = [];
 
