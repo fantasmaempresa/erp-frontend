@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MyProjectsService } from '../../../../data/services';
-import { map, Observable, switchMap, tap } from 'rxjs';
+import { map, Observable, startWith, Subject, switchMap, tap } from 'rxjs';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { MessageHelper } from 'o2c_core';
 import { messageDecision } from '../../../../shared/helpers/message-wrapper';
@@ -15,6 +15,9 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
   styleUrls: ['./current-form.component.scss'],
 })
 export class CurrentFormComponent implements OnInit, OnDestroy {
+  refresh = new Subject<number>();
+  refresh$ = this.refresh.asObservable();
+
   projectId!: number;
 
   processId!: number;
@@ -24,6 +27,9 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
   formControl = new UntypedFormControl();
 
   type_form: number = 0;
+
+  PREDEFINED_FORM = 2;
+  CUSTOM_FORM = 1;
 
   form_predefined_render: UntypedFormGroup | null = null;
 
@@ -43,51 +49,68 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
 
   viewAction = true;
 
+  synchronizer$: any;
+
   constructor(
     private route: ActivatedRoute,
-    private myProjectService: MyProjectsService,
     private router: Router,
+    private myProjectService: MyProjectsService,
     private synchronizer: SharedDataService,
   ) {
     const { id, idProcess } = this.route.snapshot.params;
     this.projectId = Number(id);
     this.processId = Number(idProcess);
+
+    this.form$ = this.refresh$.pipe(
+      startWith(1),
+      tap((value) => {
+        console.log('refreshing form', value);
+      }),
+      switchMap(() =>
+        this.myProjectService
+          .getCurrentForm(this.projectId, this.processId)
+          .pipe(
+            tap(({ controls, type_form, values_form }: any) => {
+              this.controls = controls;
+              this.type_form = type_form;
+              if (this.synchronizer$) this.synchronizer$.unsubscribe();
+              if (type_form == this.PREDEFINED_FORM) {
+                this.synchronizer$ = this.synchronizer.form$.subscribe(
+                  (form) => {
+                    this.form_predefined_render = form;
+                    this.synchronizer.executionCommand({command: 'patchForm', args: values_form});
+                    console.log(
+                      'this.form_predefined_render ---> ',
+                      this.form_predefined_render,
+                    );
+                  },
+                );
+              }
+            }),
+            map(({ form, type_form }: any) => ({ form, type_form })),
+          ),
+      ),
+    );
   }
 
   ngOnInit(): void {
-    this.form$ = this.myProjectService
-      .getCurrentForm(this.projectId, this.processId)
-      .pipe(
-        tap(
-          ({ controls, type_form }: any) => (
-            (this.controls = controls), (this.type_form = type_form)
-          ),
-        ),
-        map(({ form, type_form }: any) => ({ form, type_form })),
-      );
-
-    this.form$.subscribe((value) => {
-      console.log('this.form$. ---> ', value);
-      if (value.type_form == 2) {
-        this.synchronizer.form$.subscribe((form) => {
-          this.form_predefined_render = form;
-          console.log(
-            'this.form_predefined_render ---> ',
-            this.form_predefined_render,
-          );
-        });
-      }
-    });
+    console.log('ngOnInit --> ');
+    this.refresh.next(1);
   }
 
   @messageDecision('¿Pasar Fase?', '¿Estas seguro?')
   nextPhase() {
     MessageHelper.showLoading();
+
+    if(this.type_form == this.PREDEFINED_FORM){
+      this.synchronizer.executionCommand({command: 'next'});
+    }
+
     this.myProjectService
       .nextPhase({
         projectId: this.projectId,
         processId: this.processId,
-        comment: 'Comentario random para pasar el proyecto',
+        comment: 'Continua la siguiente fase',
       })
       .subscribe({
         next: async (value) => {
@@ -96,6 +119,7 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
             `Continua la siguiete fase`,
           );
           this.ngOnInit();
+          // this.reloadComponent();
         },
         error: async (value) => {
           await MessageHelper.errorMessage(value.error.error);
@@ -133,11 +157,11 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
     let complete = true;
     let values = null;
 
-    if (this.type_form == 2) {
-      this.synchronizer.executionCommand('saveForm');
-      if(this.form_predefined_render?.invalid) complete = false;
+    if (this.type_form == this.PREDEFINED_FORM) {
+      this.synchronizer.executionCommand({command:'saveForm'});
+      if (this.form_predefined_render?.invalid) complete = false;
       values = this.form_predefined_render?.value;
-      
+
       values = this.form_predefined_render?.value;
     } else {
       values = this.formControl.value;
@@ -159,6 +183,13 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
 
     if (complete) {
       MessageHelper.showLoading();
+      console.log('save format ----> ', {
+        projectId: this.projectId,
+        processId: this.processId,
+        form: {
+          ...values,
+        },
+      });
       this.myProjectService
         .saveForm({
           projectId: this.projectId,
@@ -222,6 +253,5 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {}
-}
 
-// lmUQKnDrOll
+}

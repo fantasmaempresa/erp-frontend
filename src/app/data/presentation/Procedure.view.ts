@@ -188,16 +188,14 @@ export class StakeAssignGrantor {
       viewClass: GrantorView,
       options: {
         isMulti: false,
-        keyAttribute: 'name',
+        valueAttribute: ((value: any) => value)
       },
     },
   })
-  // @viewLabel('Otorgante')
-  // @viewMapTo((value: any) => value.name)
-  grantor_id: GrantorDto;
+  grantor: GrantorDto;
 
   @viewLabel('Nombre')
-  name: string;
+  grantor__name: string;
 
   @popUpSelector({
     label: 'Participación',
@@ -206,25 +204,25 @@ export class StakeAssignGrantor {
       viewClass: StakeView,
       options: {
         isMulti: false,
-        keyAttribute: 'name',
+        valueAttribute: ((value: any) => {console.log('function class --> value ', value); return value;})
       },
     },
   })
   // @viewLabel('Participación')
   // @viewMapTo((value: any) => value.name)
-  stake_id: StakeDto;
+  stake: StakeDto;
   @viewLabel('Participación')
   stake__name: string;
 
   constructor(
-    grantor_id: GrantorDto, 
-    stake_id: StakeDto,
-    name: string,
+    grantor: GrantorDto, 
+    stake: StakeDto,
+    grantor__name: string,
     stake__name: string
   ) {
-    this.grantor_id = grantor_id;
-    this.name = name;
-    this.stake_id = stake_id;
+    this.grantor = grantor;
+    this.grantor__name = grantor__name;
+    this.stake = stake;
     this.stake__name = stake__name;
   }
 }

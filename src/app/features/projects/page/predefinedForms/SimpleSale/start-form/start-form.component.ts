@@ -167,18 +167,27 @@ export class StartFormComponent
   }
 
   next() {
+    console.log('Ejecuto comando ... next');
     this.onSubmit();
   }
 
   prev() {
+    console.log('Ejecuto comando ... prev');
+
     this.form
       .get('grantors')
       ?.setValue(this.formComponent.formBuilderComponent.form.value.stakes);
   }
 
   saveForm() {
+    console.log('Ejecuto comando ... saveForm');
+
     this.form
       .get('grantors')
       ?.setValue(this.formComponent.formBuilderComponent.form.value.stakes);
+  }
+
+  restoreSaveForm(){
+
   }
 }

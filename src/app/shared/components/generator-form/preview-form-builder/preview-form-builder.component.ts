@@ -59,6 +59,7 @@ export class PreviewFormBuilderComponent
       typeof this.formFields?.type_form === 'undefined') || (typeof this.formFields?.type_form != "undefined" && this.formFields?.type_form == 1)
     ) {
       console.log('phase 1 entry --->');
+      this.renderPreview = false;
       const group: any = {};
       this.formFields =
         //@ts-ignore
@@ -77,7 +78,9 @@ export class PreviewFormBuilderComponent
       this.buildPreview = true;
       //@ts-ignore
     } else if (typeof this.formFields?.type_form != "undefined" && this.formFields?.type_form == 2) { 
-      console.log('phase 2 entry --->');
+      this.buildPreview = false;
+      
+      console.log('phase 2 entry --->', this.formFields);
 
       //@ts-ignore
       this.renderPredefinedForm = this.menuForms.getRenderMenu(
