@@ -40,6 +40,10 @@ import { DialogDynamicAddItemComponent } from 'src/app/shared/components/dialog-
 export class StartFormComponent
   implements OnInit, OnDestroy, PredefinedFormLifeCycle
 {
+  
+  nameProcess: string = 'DomainTransfer';
+  namePhase: string = 'start';
+
   operationProvider = OperationView;
   grantorProvider = GrantorView;
   stakeProvider = StakeView;
@@ -117,9 +121,9 @@ export class StartFormComponent
 
     this.synchronizer.updateLastForm(this.form);
 
-    this.synchronizer.executionCommand$.subscribe((command) => {
-      console.log('this.synchronizer.executionCommand$ ---> ', command);
-      switch (command) {
+    this.synchronizer.executionCommand$.subscribe((commands) => {
+      console.log('this.synchronizer.executionCommand$ ---> ', commands);
+      switch (commands.command) {
         case 'saveForm':
           this.saveForm();
           break;
@@ -129,7 +133,11 @@ export class StartFormComponent
         case 'prev':
           this.prev();
           break;
-        default: console.log('Comando no reconocido');
+        case 'patchForm':
+          this.patchForm(commands.args);
+          break;
+        default:
+          console.log('Comando no reconocido');
       }
     });
   }
@@ -185,9 +193,19 @@ export class StartFormComponent
     this.form
       .get('grantors')
       ?.setValue(this.formComponent.formBuilderComponent.form.value.stakes);
+
+      if(this.form.invalid){
+        console.log('Formulario invalido');
+      }
   }
 
-  restoreSaveForm(){
-
+  patchForm(values: any) {
+    
+    this.form.patchValue(values);
+    setTimeout(() => {
+      this.formComponent.formBuilderComponent.form.controls.stakes.setValue(
+        values.grantors
+      );  
+    }, 200);
   }
 }
