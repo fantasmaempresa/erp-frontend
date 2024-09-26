@@ -46,7 +46,7 @@ export class SharedDataService {
     this.formSubject.next(form);
   }
 
-  executionCommand(commands: {command: string, args?: any}) {
+  executionCommand(commands: {command: string, args?: any, callback?: Function}) {
     this.executionSubject.next(commands);
   }
 

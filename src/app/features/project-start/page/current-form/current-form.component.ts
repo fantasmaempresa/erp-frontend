@@ -7,6 +7,7 @@ import { MessageHelper } from 'o2c_core';
 import { messageDecision } from '../../../../shared/helpers/message-wrapper';
 import { SharedDataService } from 'src/app/data/services/shared-data.service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { callback } from 'chart.js/dist/helpers/helpers.core';
 
 @AutoUnsubscribe()
 @Component({
@@ -40,12 +41,12 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
     saveData: boolean;
     completeProcess: boolean;
   } = {
-    next: false,
-    prev: false,
-    supervision: false,
-    saveData: false,
-    completeProcess: false,
-  };
+      next: false,
+      prev: false,
+      supervision: false,
+      saveData: false,
+      completeProcess: false,
+    };
 
   viewAction = true;
 
@@ -78,7 +79,10 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
                 this.synchronizer$ = this.synchronizer.form$.subscribe(
                   (form) => {
                     this.form_predefined_render = form;
-                    this.synchronizer.executionCommand({command: 'patchForm', args: values_form});
+                    this.synchronizer.executionCommand({
+                      command: 'patchForm',
+                      args: values_form,
+                    });
                     console.log(
                       'this.form_predefined_render ---> ',
                       this.form_predefined_render,
@@ -101,30 +105,39 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
   @messageDecision('¿Pasar Fase?', '¿Estas seguro?')
   nextPhase() {
     MessageHelper.showLoading();
+    let callback = (value?: string) => {
+      this.myProjectService
+        .nextPhase({
+          projectId: this.projectId,
+          processId: this.processId,
+          comment: value ?? 'Fase completada con éxito',
+        })
+        .subscribe({
+          next: async (value) => {
+            await MessageHelper.successMessage(
+              'Éxito',
+              `Continua la siguiete fase`,
+            );
+            this.ngOnInit();
+          },
+          error: async (value) => {
+            await MessageHelper.errorMessage(value.error.error);
+          },
+        });
+    };
 
-    if(this.type_form == this.PREDEFINED_FORM){
-      this.synchronizer.executionCommand({command: 'next'});
-    }
-
-    this.myProjectService
-      .nextPhase({
-        projectId: this.projectId,
-        processId: this.processId,
-        comment: 'Continua la siguiente fase',
-      })
-      .subscribe({
-        next: async (value) => {
-          await MessageHelper.successMessage(
-            'Éxito',
-            `Continua la siguiete fase`,
-          );
-          this.ngOnInit();
-          // this.reloadComponent();
+    if (this.type_form == this.PREDEFINED_FORM) {
+      this.synchronizer.executionCommand({
+        command: 'next',
+        args: {
+          project_id: this.projectId,
+          process_id: this.processId,
         },
-        error: async (value) => {
-          await MessageHelper.errorMessage(value.error.error);
-        },
+        callback: callback,
       });
+    } else {
+      callback();
+    }
   }
 
   @messageDecision('¿Ir a una fase previa?', '¿Estas seguro?')
@@ -158,7 +171,7 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
     let values = null;
 
     if (this.type_form == this.PREDEFINED_FORM) {
-      this.synchronizer.executionCommand({command:'saveForm'});
+      this.synchronizer.executionCommand({ command: 'saveForm' });
       if (this.form_predefined_render?.invalid) complete = false;
       values = this.form_predefined_render?.value;
 
@@ -252,6 +265,6 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
 }

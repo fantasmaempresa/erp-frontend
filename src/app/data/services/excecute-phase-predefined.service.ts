@@ -6,10 +6,10 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class ExcecutePhasePredefinedService {
-  constructor( protected _http: HttpClient) {}
+  constructor(protected _http: HttpClient) { }
 
   executePhase(project_id: number, process_id: number, data: { nameProcess: string; namePhase: string; data: any }) {
-    return this._http.post(`${environment.base_url}/projects/predefined/phase/execute/project/${process_id}/process/${process_id}`, data);
+    return this._http.post(`${environment.base_url}/projects/predefined/phase/execute/project/${project_id}/process/${process_id}`, data);
   }
 
   getStructureFormat(project_id: number, process_id: number, data: { nameProcess: string; namePhase: string; data: any }) {

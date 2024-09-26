@@ -46,6 +46,19 @@
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
 
+      <mat-form-field appearance="outline">
+        <mat-label>Responsable</mat-label>
+        <input
+          [viewClassBuilder]="staffProvider"
+          title="Selecciona un responsable"
+          o2cSinglePopup
+          formControlName="staff_id"
+          matInput
+          type="text"
+        />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
       <app-build-project formControlName="config"></app-build-project>
       <!--      {{ form.get('config')?.value | json }}-->
     </div>

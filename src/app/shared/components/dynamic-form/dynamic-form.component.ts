@@ -48,8 +48,7 @@ import { AbstractSubformComponent } from './abstract-subform.component';
 })
 export class DynamicFormComponent
   extends AbstractSubformComponent
-  implements OnInit, OnDestroy, OnChanges, ControlValueAccessor, Validator
-{
+  implements OnInit, OnDestroy, OnChanges, ControlValueAccessor, Validator {
   // @Output() formGroupChanges = new EventEmitter();
 
   @Input() formFields: Formfield<any>[] = [];

@@ -1,6 +1,7 @@
-import { viewCrud, viewLabel } from 'o2c_core';
+import { viewCrud, viewLabel, viewMapTo } from 'o2c_core';
 import { ProjectService } from '../services';
 import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
+import { StaffDto } from '../dto';
 
 @viewCrud({
   classProvider: ProjectService,
@@ -19,21 +20,24 @@ export class ProjectView {
 
   quotes: string;
 
-  @viewLabel('Folio')
-  folio: string;
+  @viewLabel('Responsable')
+  @viewMapTo((staff: any) => `${staff.name} ${staff.last_name} ${staff.mother_last_name}`)
+  staff: StaffDto;
 
+  // @viewLabel('status')
+  
   constructor(
     name: string,
     description: string,
     estimate_end_date: Date,
     quotes: string,
-    folio: string,
+    staff: StaffDto,
   ) {
     this.name = name;
     this.description = description;
     this.estimate_end_date = estimate_end_date;
     this.quotes = quotes;
-    this.folio = folio;
+    this.staff = staff;
   }
 
   static mapToProcessOnChange(config: any[]) {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import {
   AbstractControl,
@@ -7,7 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { FORM_CLAZZ, FormComponent } from 'o2c_core';
 import { debounceTime, map, Observable } from 'rxjs';
@@ -17,6 +18,7 @@ import { OperationView } from 'src/app/data/presentation/Operation.view';
 import { PlaceView } from 'src/app/data/presentation/Place.view';
 import { StakeAssignGrantorTable } from 'src/app/data/presentation/Procedure.view';
 import { StakeView } from 'src/app/data/presentation/Stake.view';
+import { ExcecutePhasePredefinedService } from 'src/app/data/services/excecute-phase-predefined.service';
 import { ProcedureService } from 'src/app/data/services/procedure.service';
 import { SharedDataService } from 'src/app/data/services/shared-data.service';
 import { ClientFormComponent } from 'src/app/features/clients/page/client-form/client-form.component';
@@ -38,9 +40,8 @@ import { DialogDynamicAddItemComponent } from 'src/app/shared/components/dialog-
   ],
 })
 export class StartFormComponent
-  implements OnInit, OnDestroy, PredefinedFormLifeCycle
-{
-  
+  implements OnInit, OnDestroy, PredefinedFormLifeCycle {
+
   nameProcess: string = 'DomainTransfer';
   namePhase: string = 'start';
 
@@ -90,6 +91,7 @@ export class StartFormComponent
     public dialog: MatDialog,
     private route: ActivatedRoute,
     private synchronizer: SharedDataService,
+    private dispacher: ExcecutePhasePredefinedService,
   ) {
     this.form = new UntypedFormGroup({
       name: new UntypedFormControl('', {
@@ -128,7 +130,7 @@ export class StartFormComponent
           this.saveForm();
           break;
         case 'next':
-          this.next();
+          this.next(commands.args, commands.callback);
           break;
         case 'prev':
           this.prev();
@@ -141,11 +143,25 @@ export class StartFormComponent
       }
     });
   }
-  onSubmit() {
+  onSubmit(args?: any, callback?: Function): void {
     console.log(this.form.value);
     this.form
       .get('grantors')
       ?.setValue(this.formComponent.formBuilderComponent.form.value.stakes);
+
+    if (this.form.invalid) {
+      console.log("Formulario invalido");
+      return;
+    }
+    console.log("Se envia información a servidor desde fase predefinida");
+    this.dispacher.executePhase(args.project_id, args.process_id, { data: this.form.value, namePhase: 'start', nameProcess: 'DomainTransfer' })
+      .subscribe({
+        next: async (value) => {
+          console.log("Petición realizada --> ", value, typeof callback);
+          if(typeof callback === 'function')
+            callback(JSON.stringify(value));
+        }
+      });
   }
 
   uniqueValueValidator(
@@ -168,15 +184,15 @@ export class StartFormComponent
     });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void { }
 
   writeValue(value: any) {
     this.form.patchValue(value);
   }
 
-  next() {
+  next(args?: { process_id: number; project_id: number; data: any }, callback?: Function) {
     console.log('Ejecuto comando ... next');
-    this.onSubmit();
+    this.onSubmit(args, callback);
   }
 
   prev() {
@@ -194,18 +210,18 @@ export class StartFormComponent
       .get('grantors')
       ?.setValue(this.formComponent.formBuilderComponent.form.value.stakes);
 
-      if(this.form.invalid){
-        console.log('Formulario invalido');
-      }
+    if (this.form.invalid) {
+      console.log('Formulario invalido');
+    }
   }
 
   patchForm(values: any) {
-    
+
     this.form.patchValue(values);
     setTimeout(() => {
       this.formComponent.formBuilderComponent.form.controls.stakes.setValue(
-        values.grantors
-      );  
+        values.grantors,
+      );
     }, 200);
   }
 }

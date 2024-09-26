@@ -7,10 +7,9 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProjectServiceOld } from '../../../../data/services';
 import { MessageHelper } from 'o2c_core';
-import { format } from 'date-fns';
 import { ClientView } from '../../../../data/presentation';
-import { ProcedureView } from '../../../../data/presentation/Procedure.view';
 import { ProjectQuoteView } from "../../../../data/presentation/ProjectQuote.view";
+import { StaffView } from 'src/app/data/presentation/staff.view';
 
 @Component({
   selector: 'app-project-form',
@@ -26,7 +25,8 @@ export class ProjectFormComponent {
 
   clientProvider = ClientView;
 
-  procedureProvider = ProcedureView;
+  staffProvider = StaffView;
+
 
   projectQuoteProvider = ProjectQuoteView;
   constructor(
@@ -38,6 +38,7 @@ export class ProjectFormComponent {
       name: new UntypedFormControl(null, Validators.required),
       description: new UntypedFormControl(null, Validators.maxLength(400)),
       client_id: new UntypedFormControl(null, Validators.required),
+      staff_id: new UntypedFormControl(null, Validators.required),
       project_quote_id: new UntypedFormControl(null, []),
       config: new UntypedFormControl(null, Validators.required),
     });
