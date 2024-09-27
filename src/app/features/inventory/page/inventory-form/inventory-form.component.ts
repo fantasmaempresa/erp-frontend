@@ -57,7 +57,6 @@ export class InventoryFormComponent implements OnDestroy{
       inventoryService.fetch(id).subscribe({
         next: (inventory) => {
           this.inventoryForm.addControl('id', new UntypedFormControl(''));
-          this.inventoryForm.patchValue(inventory);
         }
       });
     }
@@ -76,13 +75,13 @@ export class InventoryFormComponent implements OnDestroy{
     if (this.isDialog) {
       return;
     } else {
-      await this.router.navigate(['../'], {relativeTo: this.route});
+      await this.router.navigate(['../../'], {relativeTo: this.route});
     }
   }
 
   onSubmit() {
     if (this.inventoryForm.invalid) return;
-    this.inventoryService.addArticleToInventory(this.inventoryForm.value).subscribe({
+    this.inventoryService.initialInventory(this.inventoryForm.value).subscribe({
       next: async () => {
         await MessageHelper.successMessage(
           '¡Éxito!',

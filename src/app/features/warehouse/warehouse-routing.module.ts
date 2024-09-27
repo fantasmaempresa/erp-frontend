@@ -31,9 +31,17 @@ const routes: Routes = [
         data: { breadcrumb: 'Editar Almacén'},
       },
       {
-        path: 'addArticleToInventory/:id',
+        path: 'initialInventory/:id',
         component: InventoryFormComponent,
         data: { breadcrumb: 'Agregar Artículo'},
+      },
+      {
+        path: ':id/stock',
+        loadChildren: () =>
+          import('../inventory/inventory.module').then(
+            (m) => m.InventoryModule,
+          ),
+        data: { breadcrumb: 'Abastos', view: 'inventory'},
       },
     ],
   }
