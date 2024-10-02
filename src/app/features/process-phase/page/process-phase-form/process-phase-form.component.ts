@@ -9,10 +9,10 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { map, Observable, pluck, startWith } from 'rxjs';
+import { debounceTime, map, Observable, pluck, startWith } from 'rxjs';
 import { RoleDto } from '../../../../data/dto';
 import { MessageHelper } from 'o2c_core';
-import { PredefinedFormsProjectsService } from 'src/app/data/services/predefined-forms-projects.service';
+import { ItemPredefinedForm, PredefinedFormsProjectsService } from 'src/app/data/services/predefined-forms-projects.service';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
 @AutoUnsubscribe()
@@ -30,6 +30,8 @@ export class ProcessPhaseFormComponent implements OnDestroy {
   menuPredefinedForms = this.menuForms.getMenuPredefinedForms();
   renderComponent: any;
   previewPredefinedForm = false;
+  withFormat: boolean = false;
+  formats: any[] = [];
 
   constructor(
     private router: Router,
@@ -51,6 +53,7 @@ export class ProcessPhaseFormComponent implements OnDestroy {
       notification: new UntypedFormControl(false),
       payments: new UntypedFormControl(false),
       form: new UntypedFormControl([], Validators.required),
+      withFormat: new UntypedFormControl([], []),
       type_form: new UntypedFormControl(null, Validators.required),
     });
 
@@ -62,18 +65,31 @@ export class ProcessPhaseFormComponent implements OnDestroy {
           console.log('value edit ---> ', value);
           this.form.patchValue(value);
           this.form.controls.type_form.setValue(value.type_form.toString());
-          this.form.controls.form.setValue(value.form);
+          setTimeout(() => {
+            this.form.controls.form.setValue(value.form);
+            this.form.controls.withFormat.setValue(value.withFormat);
+          }, 80);
         },
       });
     }
 
     this.form$ = this.form.get('form')?.valueChanges.pipe(
       startWith(this.form.get('form')?.value),
-      map((array: any) => {
+      map((array: any | ItemPredefinedForm) => {
         if (this.form.controls.type_form.value == 1) {
+          this.withFormat = false;
           return [...array];
         } else if (this.form.controls.type_form.value == 2) {
-          return array;
+          if (array.withFormat) {
+            this.withFormat = true;
+            this.formats = array.formats;
+          } else {
+            this.withFormat = false;
+            this.form.controls.withFormat.setValue([]);
+          }
+          let arrayReturn = { ...array };
+          delete arrayReturn.formats;
+          return arrayReturn;
         }
       }),
     );
@@ -147,5 +163,5 @@ export class ProcessPhaseFormComponent implements OnDestroy {
     });
   }
 
-  ngOnDestroy() {}
+  ngOnDestroy() { }
 }

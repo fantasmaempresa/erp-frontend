@@ -1,0 +1,17 @@
+<mat-card>
+  <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <div class="row justify-content-center">
+      <div class="col-6 d-flex flex-column mt-4 mb-4">
+        <h1 mat-dialog-title>{{ title }}</h1>
+      </div>
+    </div>
+    <div class="col-12 d-flex flex-column">
+      <app-text-editor-with-category-autocomplete
+        [categories]="categories"
+        [editorArray]="editorArray"
+        formControlName="format"
+      ></app-text-editor-with-category-autocomplete>
+      <button *ngIf="!previewBuilderForm" color="primary" mat-flat-button>Guardar</button>
+    </div>
+  </form>
+</mat-card>

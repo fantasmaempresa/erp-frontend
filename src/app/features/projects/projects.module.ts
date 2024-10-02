@@ -7,9 +7,11 @@ import { SharedModule } from '../../shared/shared.module';
 import { BuildProjectComponent } from './page/build-project/build-project.component';
 import { CoreModule, ViewsModule, FormComponent, FormsModule } from 'o2c_core';
 import { StartFormComponent } from './page/predefinedForms/SimpleSale/start-form/start-form.component';
+import { TextEditorWithCategoryAutocompleteComponent } from "../../shared/components/text-editor-with-category-autocomplete/text-editor-with-category-autocomplete.component";
+import { BuildPredefinedFormatComponent } from './page/predefinedForms/SimpleSale/first-prevent-notice/build-predefined-format.component';
 
 @NgModule({
-  declarations: [ProjectFormComponent, BuildProjectComponent, StartFormComponent],
+  declarations: [ProjectFormComponent, BuildProjectComponent, StartFormComponent, BuildPredefinedFormatComponent],
   imports: [
     CommonModule,
     ProjectsRoutingModule,
@@ -18,6 +20,7 @@ import { StartFormComponent } from './page/predefinedForms/SimpleSale/start-form
     CoreModule,
     FormComponent,
     FormsModule,
-  ],
+    TextEditorWithCategoryAutocompleteComponent
+],
 })
-export class ProjectsModule {}
+export class ProjectsModule { }

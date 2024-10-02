@@ -1,12 +1,10 @@
 import { CommonModule } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   Input,
   OnChanges,
-  OnDestroy,
-  OnInit,
+  OnDestroy
 } from '@angular/core';
 import {
   ControlValueAccessor,
@@ -26,6 +24,7 @@ export interface CategoryOptions {
 export interface EditorOptions {
   name: string;
   controlName: string;
+  value: string | null;
 }
 
 @Component({
@@ -34,7 +33,7 @@ export interface EditorOptions {
   imports: [CommonModule, NgxEditorModule, ReactiveFormsModule],
   templateUrl: './text-editor-with-category-autocomplete.component.html',
   styleUrls: ['./text-editor-with-category-autocomplete.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -113,8 +112,8 @@ export class TextEditorWithCategoryAutocompleteComponent
 
   private _buildForm() {
     this.form = new UntypedFormGroup({});
-    this.editorArray.forEach(({ controlName: key }) => {
-      this.form.addControl(key, new FormControl('', Validators.required()));
+    this.editorArray.forEach(({ controlName: key, value }) => {
+      this.form.addControl(key, new FormControl(value ?? '', Validators.required()));
     });
 
     this.subscription = this.form.valueChanges

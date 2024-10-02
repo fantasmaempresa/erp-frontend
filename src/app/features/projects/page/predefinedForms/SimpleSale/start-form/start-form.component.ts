@@ -42,8 +42,8 @@ import { DialogDynamicAddItemComponent } from 'src/app/shared/components/dialog-
 export class StartFormComponent
   implements OnInit, OnDestroy, PredefinedFormLifeCycle {
 
-  nameProcess: string = 'DomainTransfer';
-  namePhase: string = 'start';
+  nameProcess = 'DomainTransfer';
+  namePhase = 'start';
 
   operationProvider = OperationView;
   grantorProvider = GrantorView;
@@ -125,23 +125,28 @@ export class StartFormComponent
 
     this.synchronizer.executionCommand$.subscribe((commands) => {
       console.log('this.synchronizer.executionCommand$ ---> ', commands);
-      switch (commands.command) {
-        case 'saveForm':
-          this.saveForm();
-          break;
-        case 'next':
-          this.next(commands.args, commands.callback);
-          break;
-        case 'prev':
-          this.prev();
-          break;
-        case 'patchForm':
-          this.patchForm(commands.args);
-          break;
-        default:
-          console.log('Comando no reconocido');
-      }
+      this.executeCommands(commands);  
     });
+  }
+
+  executeCommands (commands: { command: string; args?: any; callback?: Function; }) {
+    console.log('command entry -->: ', commands);
+    switch (commands.command) {
+      case 'saveForm':
+        this.saveForm();
+        break;
+      case 'next':
+        this.next(commands.args, commands.callback);
+        break;
+      case 'prev':
+        this.prev();
+        break;
+      case 'patchForm':
+        this.patchForm(commands.args);
+        break;
+      default:
+        console.log('Comando no reconocido');
+    }
   }
   onSubmit(args?: any, callback?: Function): void {
     console.log(this.form.value);

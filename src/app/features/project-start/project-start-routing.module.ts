@@ -4,6 +4,7 @@ import { TextEditorWithCategoryAutocompleteComponent } from 'src/app/shared/comp
 import { CurrentFormComponent } from './page/current-form/current-form.component';
 import { ProjectStartListComponent } from './page/project-start-list/project-start-list.component';
 import { ResumeProcessComponent } from './page/resume-process/resume-process.component';
+import { BuildPredefinedFormatComponent } from '../projects/page/predefinedForms/SimpleSale/first-prevent-notice/build-predefined-format.component';
 
 const routes: Routes = [
   {
@@ -31,7 +32,7 @@ const routes: Routes = [
       },
       {
         path: 'editor/test',
-        component: TextEditorWithCategoryAutocompleteComponent,
+        component: BuildPredefinedFormatComponent,
         data: { breadcrumb: 'Prueba de editor' },
       },
     ],

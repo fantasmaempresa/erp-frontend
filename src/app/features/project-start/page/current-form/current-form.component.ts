@@ -1,13 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MyProjectsService } from '../../../../data/services';
-import { map, Observable, startWith, Subject, switchMap, tap } from 'rxjs';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
-import { MessageHelper } from 'o2c_core';
-import { messageDecision } from '../../../../shared/helpers/message-wrapper';
-import { SharedDataService } from 'src/app/data/services/shared-data.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { callback } from 'chart.js/dist/helpers/helpers.core';
+import { MessageHelper } from 'o2c_core';
+import { map, Observable, startWith, Subject, switchMap, tap } from 'rxjs';
+import { SharedDataService } from 'src/app/data/services/shared-data.service';
+import { MyProjectsService } from '../../../../data/services';
+import { messageDecision } from '../../../../shared/helpers/message-wrapper';
 
 @AutoUnsubscribe()
 @Component({
@@ -80,9 +79,17 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
                   (form) => {
                     this.form_predefined_render = form;
                     this.synchronizer.executionCommand({
-                      command: 'patchForm',
                       args: values_form,
+                      command: 'patchForm',
                     });
+                    
+                    setTimeout(() => {
+                      this.synchronizer.executionCommand({
+                        args: {project_id: this.projectId, process_id: this.processId},
+                        command: 'loadStructureFormat',
+                      });                      
+                    }, 100);
+                    
                     console.log(
                       'this.form_predefined_render ---> ',
                       this.form_predefined_render,
