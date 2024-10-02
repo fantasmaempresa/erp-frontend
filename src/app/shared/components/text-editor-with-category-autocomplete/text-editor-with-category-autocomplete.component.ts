@@ -14,7 +14,7 @@ import {
   UntypedFormGroup,
 } from '@angular/forms';
 import { Editor, NgxEditorModule, schema, Validators } from 'ngx-editor';
-import { debounceTime, Subscription } from 'rxjs';
+import { debounceTime, startWith, Subscription } from 'rxjs';
 
 export interface CategoryOptions {
   name: string;
@@ -117,7 +117,7 @@ export class TextEditorWithCategoryAutocompleteComponent
     });
 
     this.subscription = this.form.valueChanges
-      .pipe(debounceTime(600))
+      .pipe(debounceTime(600), startWith(this.form.value))
       .subscribe(() => {
         this._updateValue();
       });
