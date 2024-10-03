@@ -13,10 +13,16 @@ import { NotificationPopUpDto } from '../../../../data/dto';
   styleUrls: ['./notification-area.component.scss'],
 })
 export class NotificationAreaComponent {
-  notifications$: Observable<NotificationPopUpDto[]>;
+  notifications$: Observable<{
+    extra_info: [],
+    role_id: number,
+    user_id: number,
+    notification: NotificationPopUpDto,
+  }[]>;
 
   constructor(private store: Store) {
     this.notifications$ = this.store.select(selectIncomingNotifications);
+    // this.notifications$.subscribe(notifications => console.log('notifications --> ', notifications));
   }
 
   checkIsClose(notification: NotificationPopUpDto) {

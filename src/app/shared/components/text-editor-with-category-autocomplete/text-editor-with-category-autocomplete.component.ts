@@ -24,7 +24,6 @@ export interface CategoryOptions {
 export interface EditorOptions {
   name: string;
   controlName: string;
-  value: string | null;
 }
 
 @Component({
@@ -112,14 +111,15 @@ export class TextEditorWithCategoryAutocompleteComponent
 
   private _buildForm() {
     this.form = new UntypedFormGroup({});
-    this.editorArray.forEach(({ controlName: key, value }) => {
-      this.form.addControl(key, new FormControl(value ?? '', Validators.required()));
+    this.editorArray.forEach(({ controlName: key }) => {
+      this.form.addControl(key, new FormControl('', Validators.required()));
     });
 
     this.subscription = this.form.valueChanges
-      .pipe(debounceTime(600), startWith(this.form.value))
+      .pipe(debounceTime(300), startWith(this.form.value))
       .subscribe(() => {
         this._updateValue();
+        console.log('this.form.value -> ', this.form.value);
       });
   }
 

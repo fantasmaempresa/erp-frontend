@@ -33,7 +33,7 @@ export const emptyNotificationList = createAction(
 );
 export const incomingNotification = createAction(
   NotificationActions.INCOMING_NOTIFICATION,
-  props<{ notifications: NotificationDto[] }>(),
+  props<{ notifications: any[] }>(),
 );
 
 export const addIncomingNotification = createAction(

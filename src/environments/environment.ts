@@ -4,14 +4,14 @@
 
 export const environment = {
   production: false,
-  socket_url: 'localhost:8000',
-  socket_port: 6003,
   base_url: 'http://localhost:8000/api',
   client_id: '9c55588d-b42c-4daa-ba0f-60a77d203895',
   client_secret: 'bRVNwTLRVccFPdmdVka18PGVoIaxQoCghVZyzxoV',
   grant_type: 'password',
-  mix_pusher_app_key: '2221asdf',
+  mix_pusher_app_key: '1234567',
   mix_pusher_app_cluster: 'mt1',
+  socket_url: 'localhost',
+  socket_port: 6003,
 };
 /*
  * For easier debugging in development mode, you can import the following file

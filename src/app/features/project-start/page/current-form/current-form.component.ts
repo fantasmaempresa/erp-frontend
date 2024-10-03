@@ -7,6 +7,8 @@ import { map, Observable, startWith, Subject, switchMap, tap } from 'rxjs';
 import { SharedDataService } from 'src/app/data/services/shared-data.service';
 import { MyProjectsService } from '../../../../data/services';
 import { messageDecision } from '../../../../shared/helpers/message-wrapper';
+import { ProjectActionEventService } from 'src/app/data/services/project-action-event.service';
+import { CommandProjectDto } from 'src/app/data/dto';
 
 @AutoUnsubscribe()
 @Component({
@@ -56,10 +58,30 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
     private router: Router,
     private myProjectService: MyProjectsService,
     private synchronizer: SharedDataService,
+    private _socket: ProjectActionEventService,
   ) {
+
     const { id, idProcess } = this.route.snapshot.params;
     this.projectId = Number(id);
     this.processId = Number(idProcess);
+
+    this._socket.action$.subscribe((action: CommandProjectDto) => {
+      console.log('action ---> ', action);
+      if (action.action.command == 'reload_current_form' &&
+        action.process_id == this.processId &&
+        action.project_id == this.projectId) {
+        if (action.action.action == 'skipPhase' || action.action.action == 'saveFormData') {
+          this.ngOnInit();
+        }
+      } else if (action.action.command == 'reload_current_form' &&
+        action.project_id == this.projectId
+      ) {
+        if (action.action.action == 'finishProject') {
+          this.router.navigate(['../']);
+        }
+      }
+    },
+    );
 
     this.form$ = this.refresh$.pipe(
       startWith(1),
@@ -79,17 +101,17 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
                   (form) => {
                     this.form_predefined_render = form;
                     this.synchronizer.executionCommand({
-                      args: values_form,
-                      command: 'patchForm',
+                      args: { project_id: this.projectId, process_id: this.processId },
+                      command: 'loadStructureFormat',
                     });
-                    
+
                     setTimeout(() => {
                       this.synchronizer.executionCommand({
-                        args: {project_id: this.projectId, process_id: this.processId},
-                        command: 'loadStructureFormat',
-                      });                      
-                    }, 100);
-                    
+                        args: values_form,
+                        command: 'patchForm',
+                      });
+                    }, 200);
+
                     console.log(
                       'this.form_predefined_render ---> ',
                       this.form_predefined_render,

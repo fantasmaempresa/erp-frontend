@@ -27,3 +27,11 @@ export interface ProjectDto extends EntityDto {
 
   roles?: RoleDto[];
 }
+
+export interface CommandProjectDto extends EntityDto {
+
+    action: {action: string, command:string},
+    project_id: number;
+    process_id: number;
+
+}

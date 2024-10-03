@@ -35,6 +35,7 @@ const NotificationReducer = createReducer(
   on(
     NotificationActions.incomingNotification,
     (state: NotificationState, { notifications }) => {
+      console.log('notificationsnotifications -->', notifications);
       return {
         ...state,
         incomingNotifications: notifications.map((notification) => {
@@ -69,7 +70,7 @@ const NotificationReducer = createReducer(
       return {
         ...state,
         incomingNotifications: state.incomingNotifications.map((notification) =>
-          notification.id === id
+          notification.notification.id === id
             ? {
                 ...notification,
                 isClose: true,
@@ -85,7 +86,7 @@ const NotificationReducer = createReducer(
       return {
         ...state,
         incomingNotifications: state.incomingNotifications.filter(
-          (notification) => notification.id !== id,
+          (notification) => notification.notification.id !== id,
         ),
       };
     },

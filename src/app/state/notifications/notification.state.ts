@@ -3,7 +3,13 @@ import { NotificationDto, NotificationPopUpDto } from '../../data/dto';
 
 export interface NotificationState {
   notifications: Pagination<NotificationDto> | null;
-  incomingNotifications: NotificationPopUpDto[];
+  incomingNotifications: {
+    extra_info: [],
+    role_id: number,
+    user_id: number,
+    notification: NotificationPopUpDto,
+    isClose: boolean,
+  }[];
 }
 
 export const initialState: NotificationState = {

@@ -7,4 +7,6 @@ export interface NotificationDto extends EntityDto {
     message: string;
   };
   check: boolean;
+  user_id: number;
+  role_id: number;
 }

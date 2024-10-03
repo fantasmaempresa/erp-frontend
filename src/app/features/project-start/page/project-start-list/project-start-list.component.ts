@@ -1,20 +1,21 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { Pagination } from '../../../../core/interfaces';
-import { loadMyProjects, selectMyProjects } from '../../../../state/my-project';
-import { MyProjectDto, ProcessDto } from '../../../../data/dto';
-import { MyProjectsService } from '../../../../data/services';
 import { MessageHelper } from 'o2c_core';
-import Swal from 'sweetalert2';
-
+import { Observable } from 'rxjs';
+import { ProjectActionEventService } from 'src/app/data/services/project-action-event.service';
+import { Pagination } from '../../../../core/interfaces';
+import { CommandProjectDto, MyProjectDto, ProcessDto } from '../../../../data/dto';
+import { MyProjectsService } from '../../../../data/services';
+import { loadMyProjects, selectMyProjects } from '../../../../state/my-project';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+@AutoUnsubscribe()
 @Component({
   selector: 'app-project-start-list',
   templateUrl: './project-start-list.component.html',
   styleUrls: ['./project-start-list.component.scss'],
 })
-export class ProjectStartListComponent implements OnInit {
+export class ProjectStartListComponent implements OnInit, OnDestroy {
   myProjects$!: Observable<Pagination<MyProjectDto> | null>;
 
   isAdmin: boolean = false;
@@ -43,9 +44,22 @@ export class ProjectStartListComponent implements OnInit {
     private router: Router,
     private store: Store,
     private myProjectService: MyProjectsService,
+    private _socket: ProjectActionEventService,
   ) {
     this.myProjects$ = this.store.select(selectMyProjects);
+    const inRoute = this.route.snapshot.url.map(segment => segment.path).join('/');
+    console.log(inRoute);
+    this._socket.action$.subscribe((action: CommandProjectDto) => {
+      console.log('action ---> ', action);
+      if (action.action.command == 'reload_my_project' && inRoute == 'list') {
+        if (action.action.action == 'create_project' || action.action.action == 'startProject' || action.action.action == 'finishProject') {
+          this.ngOnInit();
+        }
+      }
+    },
+    );
   }
+  ngOnDestroy(): void { }
 
   startProcess = async (project: MyProjectDto, process: ProcessDto) => {
     MessageHelper.showLoading('Iniciando Proyecto...');
@@ -85,9 +99,13 @@ export class ProjectStartListComponent implements OnInit {
     this.store.dispatch(loadMyProjects());
     let user = JSON.parse(localStorage.getItem('auth') ?? '[]');
     console.log('useruseruseruser --> ', user);
-    if(user.user.role.id == 1) {
+    if (user.user.role.id == 1) {
       this.isAdmin = true;
     }
+
+    // this.socket$.action$.subscribe((action) => {
+    //   console.log('actionactionaction --> ', action);
+    // });
   }
 
   endProject(project: MyProjectDto) {

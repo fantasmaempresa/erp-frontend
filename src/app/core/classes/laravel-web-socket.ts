@@ -19,15 +19,20 @@ export abstract class LaravelWebSocket {
       wsHost: environment.socket_url,
       wsPort: environment.socket_port,
       // wssPort: environment.socket_port,
-      authEndpoint: 'broadcasting/auth',
+      // authEndpoint: 'broadcasting/auth',
     });
+
+    // ws://localhost:6003/app/1234567?protocol=7&client=js&version=4.3.1&flash=false
+
   }
 
   subscribeToChannel(channel: string, event: string) {
     if (!this.channel) {
+      console.log('escuchando en channel ---> ', channel);
       this.channel = this.echo.channel(channel);
       this._subject$ = new Subject<any>();
       this.channel.listen(event, (data: any) => {
+        console.log('llegada de comando en', channel, 'información --> ', data);
         this._subject$.next(data);
       });
     }

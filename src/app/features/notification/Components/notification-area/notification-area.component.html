@@ -1,29 +1,29 @@
 <div class="notifications-container">
   <ul class="notifications__list">
     <li
-      *ngFor="let notification of notifications$ | async; let i = index"
-      [class.notifications__item--close]="notification.isClose"
+      *ngFor="let item of notifications$ | async; let i = index"
+      [class.notifications__item--close]="item.notification.isClose"
       [style.animation-delay]="i * 1.5 + 's'"
       class="notifications__item"
     >
       <span
-        (click)="checkIsClose(notification)"
+        (click)="checkIsClose(item.notification)"
         class="material-icons notifications__item-close"
         >close</span
       >
       <span class="notifications__item-title">{{
-        notification?.notification?.title
+        item?.notification?.notification?.title
       }}</span>
       <div class="notifications__item-body">
         <span class="material-icons notifications__item-icon"
           >notifications</span
         >
         <span class="notifications__item-label">{{
-          notification?.notification?.message
+          item?.notification?.notification?.message
         }}</span>
       </div>
       <span class="notifications__item-date">{{
-        notification?.created_at | fromDate
+        item?.notification?.created_at | fromDate
       }}</span>
     </li>
     <!--    <li class="notifications__item">-->
