@@ -92,25 +92,28 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
         this.myProjectService
           .getCurrentForm(this.projectId, this.processId)
           .pipe(
-            tap(({ controls, type_form, values_form }: any) => {
+            tap(({ controls, type_form, values_form, form }: any) => {
               this.controls = controls;
               this.type_form = type_form;
               if (this.synchronizer$) this.synchronizer$.unsubscribe();
               if (type_form == this.PREDEFINED_FORM) {
                 this.synchronizer$ = this.synchronizer.form$.subscribe(
-                  (form) => {
-                    this.form_predefined_render = form;
+
+                  (childrenForm) => {
+                    this.form_predefined_render = childrenForm;
                     this.synchronizer.executionCommand({
-                      args: { project_id: this.projectId, process_id: this.processId },
-                      command: 'loadStructureFormat',
+                      args: values_form,
+                      command: 'patchForm',
                     });
+
+                    let useformat = form.withFormat ? form.formats : []; 
 
                     setTimeout(() => {
                       this.synchronizer.executionCommand({
-                        args: values_form,
-                        command: 'patchForm',
+                        args: { project_id: this.projectId, process_id: this.processId, format: useformat },
+                        command: 'loadStructureFormat',
                       });
-                    }, 200);
+                    }, 300);
 
                     console.log(
                       'this.form_predefined_render ---> ',
@@ -294,6 +297,8 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void { }
+  ngOnDestroy(): void { 
+    this.refresh.unsubscribe();
+  }
 
 }

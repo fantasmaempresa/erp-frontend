@@ -17,7 +17,7 @@ import { Editor, NgxEditorModule, schema, Validators } from 'ngx-editor';
 import { debounceTime, startWith, Subscription } from 'rxjs';
 
 export interface CategoryOptions {
-  name: string;
+  title: string;
   sheets: string[];
 }
 

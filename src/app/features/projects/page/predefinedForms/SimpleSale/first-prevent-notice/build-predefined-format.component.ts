@@ -15,13 +15,16 @@ import { CategoryOptions, EditorOptions } from 'src/app/shared/components/text-e
   styleUrls: ['./build-predefined-format.scss']
 })
 export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, PredefinedFormLifeCycle {
-  nameProcess = 'DomainTransfer';
-  namePhase = 'generateFirstPreventiveNotice';
+  nameProcess: string = '';
+  namePhase: string = '';
+  generateFormat: string = '';
   categories: CategoryOptions[] = [];
   editorArray: EditorOptions[] = [];
   form: UntypedFormGroup;
   title: string = 'Build Predefined Format';
   previewBuilderForm = true;
+  patchValues: any = null;
+  loadStructure: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,8 +32,6 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
     private dispacher: ExcecutePhasePredefinedService,
     private loaderService: LoaderService,
   ) {
-    // this.dispacher.getStructureFormat().subscribe();
-    //TODO: Aquí sel llena los arrays y se hace la petición
     this.form = new UntypedFormGroup({
       format: new FormControl('', []),
     });
@@ -48,7 +49,8 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
   ngOnDestroy(): void { }
 
   next(args?: { process_id: number; project_id: number; data: any; }, callback?: Function) {
-
+    console.log('Ejecuto comando ... next');
+    this.onSubmit(args, callback);
   }
 
   prev(args?: { process_id: number; project_id: number; data: any; }, callback?: Function) {
@@ -56,17 +58,28 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
   }
 
   writeValue(value: any) {
-    this.form.reset();
-    this.form.patchValue(value);
+    if (this.loadStructure) {
+      this.form.patchValue(value);
+      this.form.reset();
+    }
+    if ( typeof value.format != 'undefined' )
+      this.patchValues = value;
   }
 
-  onSubmit() {
-    console.log('Formart -->', this.form.value);
-
+  onSubmit(args?: any, callback?: Function): void {
+    // console.log("Se envia información a servidor desde fase predefinida");
+    // this.dispacher.executePhase(args.project_id, args.process_id, { data: this.form.value, namePhase: 'start', nameProcess: 'DomainTransfer' })
+    //   .subscribe({
+    //     next: async (value) => {
+    //       console.log("Petición realizada --> ", value, typeof callback);
+    //       if(typeof callback === 'function')
+    //         callback(JSON.stringify(value));
+    //     }
+    //   });
   }
 
   executeCommands(commands: { command: string; args?: any; callback?: Function; }) {
-    switch (commands.command) {
+    switch (commands?.command) {
       case 'loadStructureFormat':
         this.loadStructureFormat(commands.args);
         break;
@@ -85,7 +98,15 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
   }
 
   loadStructureFormat(args: any) {
-    console.log("se pide la estructura del formato");
+    console.log("se pide la estructura del formato --> ", args);
+    if (args.format[0].namePhase == '' ||
+      args.format[0].nameProcess == '' ||
+      args.format[0].generateFormat == '')
+      return;
+
+    this.generateFormat = args.format[0].generateFormat ?? '';
+    this.namePhase = args.format[0].namePhase ?? '';
+    this.nameProcess = args.format[0].nameProcess ?? ''
     this.loaderService.showFullScreenLoader();
     this.dispacher.getStructureFormat(
       args.project_id,
@@ -105,7 +126,7 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
           });
 
           this.title = value.title;
-          // this.categories = value.data;
+          this.categories = value.data;
 
           let patch = value.content.reduce((acc: any, item: any) => {
             //  @ts-ignore
@@ -113,7 +134,16 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
             return acc;
           }, {});
 
-          this.form.patchValue({ format: patch });
+          setTimeout(() => {
+            if (this.patchValues) {
+              this.form.patchValue(this.patchValues);
+  
+            } else {
+              this.form.patchValue({ format: patch });
+            }
+          }, 200);
+          
+          this.loadStructure = true;
           this.loaderService.hideLoader();
         },
         error: (error: any) => {
@@ -121,5 +151,54 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
           MessageHelper.errorMessage('No se puede generar la estructura en este momento');
         },
       });
+  }
+
+  submit() {
+
+    this.form.value;
+
+  }
+
+  generateReport() {
+    console.log('generating report');
+    if (this.namePhase == '' && this.nameProcess == '') return;
+    this.loaderService.showFullScreenLoader();
+    this.dispacher.generateFormat({
+      namePhase: this.generateFormat,
+      nameProcess: this.nameProcess,
+      data: { content: this.transformData([this.form.controls.format.value])},
+    }).subscribe({
+      next: async (response: any) => {
+        const blob = new Blob([response.body], {
+          type: response.headers.get('content-type'),
+        });
+        // @ts-ignore
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = this.title + '.rft';
+        // link.download = ;
+        link.click();
+        URL.revokeObjectURL(link.href);
+        await MessageHelper.successMessage(
+          'Reporte Generado',
+          'El reporte se genero con éxito',
+        );
+        this.loaderService.hideLoader();
+      },
+      error: (error: any) => {
+        console.error('Error generating report', error);
+      },
+    });
+  }
+
+  transformData(datos: any) {
+    return datos.reduce((resultado: any, documento: any, indiceDocumento: any) => {
+      const nuevosElementos = Object.entries(documento).map(([clave, valor], indice) => ({
+        id: indiceDocumento * Object.keys(documento).length + indice,
+        name: clave,
+        text: valor
+      }));
+      return resultado.concat(nuevosElementos);
+    }, []);
   }
 }

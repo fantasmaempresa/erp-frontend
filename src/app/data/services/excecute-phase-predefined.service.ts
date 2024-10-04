@@ -15,4 +15,11 @@ export class ExcecutePhasePredefinedService {
   getStructureFormat(project_id: number, process_id: number, data: { nameProcess: string; namePhase: string; data: any }) {
     return this._http.post(`${environment.base_url}/projects/predefined/phase/getStructureFormat/project/${project_id}/process/${process_id}`, data);
   }
+
+  generateFormat(data: {nameProcess: string, namePhase: string, data: any}) {
+    return this._http.post(`${environment.base_url}/projects/predefined/phase/getFormat`, data, {
+      responseType: 'blob',
+      observe: 'response',
+    });
+  }
 }

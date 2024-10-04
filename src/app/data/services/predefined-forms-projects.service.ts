@@ -7,6 +7,7 @@ export interface ReportPredefinedForms {
   name: string;
   nameProcess: string;
   namePhase: string;
+  generateFormat: string;
 }
 
 export interface ItemPredefinedForm {
@@ -44,7 +45,8 @@ export class PredefinedFormsProjectsService {
           title: 'Datos para generar primer aviso preventivo',
           name: 'Primer aviso preventivo',
           nameProcess: 'DomainTransfer',
-          namePhase: 'firstPreventNotice',
+          namePhase: 'generateFirstPreventiveNotice',
+          generateFormat: 'getFormatFirstPreventiveNotice',
         }
       ]
     },

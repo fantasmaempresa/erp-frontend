@@ -11,7 +11,15 @@
         [editorArray]="editorArray"
         formControlName="format"
       ></app-text-editor-with-category-autocomplete>
-      <button *ngIf="!previewBuilderForm" color="primary" mat-flat-button>Guardar</button>
+      <button *ngIf="!previewBuilderForm" color="primary" mat-flat-button>
+        Guardar
+      </button>
     </div>
   </form>
+
+  <div class="row justify-content-center">
+    <div class="col-6 d-flex flex-column mt-4 mb-4">
+      <button color="primary" mat-flat-button (click)="generateReport()">Generar {{ title }}</button>
+    </div>
+  </div>
 </mat-card>
