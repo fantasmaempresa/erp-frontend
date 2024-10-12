@@ -9,7 +9,6 @@ import { DocumentLinkService } from "../../../../data/services/document-link.ser
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 
 @AutoUnsubscribe()
-
 @Component({
   selector: "app-document-link-form",
   templateUrl: "./document-link-form.component.html",
@@ -26,9 +25,9 @@ export class DocumentLinkFormComponent implements OnDestroy {
 
   view: string = '';
 
-  constructor(private router: Router,
-              private route: ActivatedRoute,
-              private _documentLinkService: DocumentLinkService) {
+  constructor(public router: Router,
+    public route: ActivatedRoute,
+    public _documentLinkService: DocumentLinkService) {
 
     this.form = new UntypedFormGroup({
       client_id: new UntypedFormControl(null, Validators.required),
@@ -37,9 +36,23 @@ export class DocumentLinkFormComponent implements OnDestroy {
       document_pivot_id: new UntypedFormControl(null, []),
     });
 
-    const id = Number(this.route.snapshot.params.id);
     const idDoc = Number(this.route.snapshot.params.idDoc);
     const timestamp = this.route.snapshot.params.timestamp;
+    let id = NaN;
+
+    const data = this.route.snapshot.routeConfig?.data;
+    console.log('buscando el orignen --> ', data);
+
+    if (typeof data?.view != 'undefined' && data?.view == 'phase') {
+      id = Number(this.route.snapshot.params.procedure_id);
+    } else if(typeof this.route.snapshot.params.idIncoming != 'undefined') {
+      id = Number(this.route.snapshot.params.idIncoming);
+      this.view = 'incomming';
+    } else {
+      id = Number(this.route.snapshot.params.id);
+
+    }
+
     console.log('view idddd --> ', id, idDoc);
     if (!isNaN(id)) {
       this.getDataRoute().subscribe(({ view }) => {
@@ -54,10 +67,10 @@ export class DocumentLinkFormComponent implements OnDestroy {
       this.form.get("client_id")?.setValue(id);
     }
 
-    if(!isNaN(idDoc) && timestamp != null) {
+    if (!isNaN(idDoc) && timestamp != null) {
       this.form.get("document_id")?.setValue(idDoc);
       this.form.get("document_pivot_id")?.setValue(timestamp);
-      this.edit =  true;
+      this.edit = true;
     }
   }
 
@@ -77,15 +90,15 @@ export class DocumentLinkFormComponent implements OnDestroy {
     formData.append("document_pivot_id", this.form.value.document_pivot_id);
     formData.append("view", this.view);
     Swal.showLoading();
-    if(this.edit){
+    if (this.edit) {
       this._documentLinkService.updateAlternative(formData).subscribe({
         next: async (response) => {
           if (response.code == 201) {
             await MessageHelper.successMessage(
               "¡Éxito!",
               response.message
-            );  
-          }else {
+            );
+          } else {
             await MessageHelper.successMessage(
               "¡Éxito!",
               "El documento ha sido actualizado correctamente"
@@ -96,9 +109,9 @@ export class DocumentLinkFormComponent implements OnDestroy {
         error: async (error) => {
           console.log(error);
           if (error.error.code != null && error.error.code == 422) {
-            if (typeof(error.error.error) === 'object') {
+            if (typeof (error.error.error) === 'object') {
               await MessageHelper.errorMessage('Faltan algunos datos en este formulario');
-            }else{
+            } else {
               await MessageHelper.errorMessage(error.error.error);
             }
           } else if (error.error.code != null && error.error.code == 409) {
@@ -116,7 +129,7 @@ export class DocumentLinkFormComponent implements OnDestroy {
           }
         },
       })
-    }else {
+    } else {
       this._documentLinkService.save(formData).subscribe({
         next: async () => {
           await MessageHelper.successMessage(
@@ -128,15 +141,15 @@ export class DocumentLinkFormComponent implements OnDestroy {
         error: async (error) => {
           console.log(error);
           if (error.error.code != null && error.error.code == 422) {
-            if (typeof(error.error.error) === 'object') {
+            if (typeof (error.error.error) === 'object') {
               let message = '';
 
-            for (let item in error.error.error) {
-              message = message + '\n' + error.error.error[item];
-            }
+              for (let item in error.error.error) {
+                message = message + '\n' + error.error.error[item];
+              }
 
-            await MessageHelper.errorMessage(message);
-            }else{
+              await MessageHelper.errorMessage(message);
+            } else {
               await MessageHelper.errorMessage(error.error.error);
             }
           } else if (error.error.code != null && error.error.code == 409) {
@@ -167,6 +180,28 @@ export class DocumentLinkFormComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    
+
+  }
+}
+
+
+@AutoUnsubscribe()
+@Component({
+  selector: "app-document-phase-link-form",
+  templateUrl: "./document-link-form.component.html",
+  styleUrls: ["./document-link-form.component.scss"]
+})
+export class DocumentLinkPhaseFormComponent extends DocumentLinkFormComponent implements OnDestroy {
+
+  constructor(public router: Router,
+    public route: ActivatedRoute,
+    public _documentLinkService: DocumentLinkService
+  ) {
+    super(router, route, _documentLinkService);    
+    this.view = 'procedures';
+  }
+
+  async back() {
+    await this.router.navigate(['../../../'], { relativeTo: this.route });
   }
 }

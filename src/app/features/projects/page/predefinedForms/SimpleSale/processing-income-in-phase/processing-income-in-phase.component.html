@@ -1,0 +1,16 @@
+<mat-card>
+    <div class="row justify-content-center">
+      <div class="col-12 d-flex flex-column">
+        <div class="table-container">
+          <ng-container o2cHost></ng-container>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center" *ngIf="configStage">
+      <div class="col-6 d-flex flex-column">
+        <h1>Esta vista solo se puede ver dentro de un projecto activo</h1>
+      </div>
+    </div>
+  </mat-card>
+  

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { ShapeRoutingModule } from './shape-routing.module';
-import { ShapeFormComponent } from './page/shape-form/shape-form.component';
+import { ShapeFormComponent, ShapePhaseFormComponent } from './page/shape-form/shape-form.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -15,7 +15,7 @@ import { ViewsModule } from 'o2c_core';
 import { NgxEditorModule } from 'ngx-editor';
 
 @NgModule({
-  declarations: [ShapeFormComponent],
+  declarations: [ShapeFormComponent, ShapePhaseFormComponent],
   imports: [
     CommonModule,
     ShapeRoutingModule,

@@ -31,8 +31,8 @@ import { SharedDataService } from 'src/app/data/services/shared-data.service';
   styleUrls: ['./shape-form.component.scss'],
 })
 export class ShapeFormComponent implements OnInit, OnDestroy {
-  formId = 'shapeForm'; 
-  formIdbuilder = 'shapeBuilderForm'; 
+  formId = 'shapeForm';
+  formIdbuilder = 'shapeBuilderForm';
   // @ts-ignore
   editor: Editor;
 
@@ -99,17 +99,25 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
   });
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private shapeService: ShapeService,
-    private templateShapeService: TemplateShapeService,
-    private fb: FormBuilder,
+    public router: Router,
+    public route: ActivatedRoute,
+    public shapeService: ShapeService,
+    public templateShapeService: TemplateShapeService,
+    public fb: FormBuilder,
     public dialog: MatDialog,
-    private _procedureService: ProcedureService,
-    private dataService: SharedDataService
+    public _procedureService: ProcedureService,
+    public dataService: SharedDataService
   ) {
     // this.builderForm = this.fb.group({});
-    const id = Number(this.route.snapshot.params.id);
+    let id = NaN;
+
+    const data = this.route.snapshot.routeConfig?.data;
+    if (typeof data?.view != 'undefined' && data?.view == 'phase') {
+      console.log('Estoy en una fase');
+      id = Number(this.route.snapshot.params.idShape);
+    } else {
+      id = Number(this.route.snapshot.params.id);
+    }
 
     this.templateShapeService
       .fetchAll()
@@ -122,7 +130,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
 
     if (!isNaN(id)) {
       this.isEdit = true;
-      
+
       forkJoin([
         this.shapeService.fetch(id), // Fetch shape data
         this.templateShapeService.fetchAll(), // Ensure template shapes are available
@@ -133,14 +141,14 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
 
         this.shapeForm.get('alienating')?.setValue(shape?.alienator.id == null ? null : shape?.alienator.id);
 
-        this.shapeForm.get('acquirer')?.setValue(shape?.acquirer == null ? null : shape?.acquirer.id );
+        this.shapeForm.get('acquirer')?.setValue(shape?.acquirer == null ? null : shape?.acquirer.id);
         this.shapeForm
           .get('extra_alienating')
           ?.setValue(shape?.grantors?.alienators);
         this.shapeForm
           .get('extra_acquirers')
           ?.setValue(shape?.grantors?.acquirers);
-          console.log('this.templateShapes --> ', this.templateShapes);
+        console.log('this.templateShapes --> ', this.templateShapes);
         this.templateShapes.forEach((template: TemplateShapeDto) => {
           console.log('template.id == shape.template_shape_id', template.id, shape.template_shape_id);
           if (template.id == shape.template_shape_id) {
@@ -154,28 +162,32 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
 
     if (!this.isEdit) {
       this.shapeForm.get("procedure_id")?.valueChanges.subscribe((value) => {
-        this._procedureService.fetch(value).subscribe((procedure : ProcedureDto) => {
-          this.shapeForm.get("signature_date")?.setValue(procedure.date_proceedings);
-          this.shapeForm.get("operation_value")?.setValue(procedure.value_operation);
-          this.shapeForm.get("scriptures")?.setValue(procedure.folio?.name.toString());
-        })
+        if(typeof value != 'undefined' ){
+          console.log('value-->', value);
+          value = typeof value.id != 'undefined' ? value.id : value;
+          let http = this._procedureService.fetch(value).subscribe((procedure: ProcedureDto) => {
+            this.shapeForm.get("signature_date")?.setValue(procedure.date_proceedings);
+            this.shapeForm.get("operation_value")?.setValue(procedure.value_operation);
+            this.shapeForm.get("scriptures")?.setValue(procedure.folio?.name.toString());
+          })
+        }
       })
     }
+
+    this.editor = new Editor();
+    this.editorDescription = new Editor();
   }
 
   ngOnInit(): void {
-    this.editor = new Editor();
-    this.editorDescription = new Editor();
-    
     const savedData = this.dataService.getFormData(this.formId);
     if (savedData && !this.isEdit) {
       MessageHelper.decisionMessage(
-        'Borrador de formulario', 
+        'Borrador de formulario',
         'Se encontro un borrador de este formulario, ¿Quieres restablecerlo?',
         () => this.shapeForm.patchValue(savedData),
         () => this.dataService.deleteFormData(this.formId),
       );
-      
+
     }
     // Guardar los cambios en el localStorage cada vez que se produce un cambio en el formulario
     this.shapeForm.valueChanges.subscribe(() => {
@@ -209,6 +221,7 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
     let dataForm = this.shapeForm.value;
     dataForm.data_form = this.builderForm.value;
     dataForm.template_shape_id = this.builderFormStructure.id;
+    dataForm.procedure_id = typeof dataForm.procedure_id.id != 'undefined' ? dataForm.procedure_id.id: dataForm.procedure_id;  
     dataForm.grantors = {
       alienating: this.shapeForm.get('extra_alienating')?.value,
       acquirer: this.shapeForm.get('extra_acquirers')?.value,
@@ -308,4 +321,35 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
       width: '800px',
     });
   }
+}
+
+
+@AutoUnsubscribe()
+@Component({
+  selector: 'app-shape-phase-form',
+  templateUrl: './shape-form.component.html',
+  styleUrls: ['./shape-form.component.scss'],
+})
+export class ShapePhaseFormComponent extends ShapeFormComponent {
+  constructor(
+    public router: Router,
+    public route: ActivatedRoute,
+    public shapeService: ShapeService,
+    public templateShapeService: TemplateShapeService,
+    public fb: FormBuilder,
+    public dialog: MatDialog,
+    public _procedureService: ProcedureService,
+    public dataService: SharedDataService
+  ) {
+    super(router, route, shapeService, templateShapeService, fb, dialog, _procedureService, dataService);
+  }
+
+  async backToListDocuments() {
+    await this.router.navigate(['../../../'], { relativeTo: this.route });
+  }
+
+  ngOnInit(): void {
+      this.shapeForm.get('procedure_id')?.setValue({id: localStorage.getItem('phase_procedure_id') ?? 1});
+  }
+
 }

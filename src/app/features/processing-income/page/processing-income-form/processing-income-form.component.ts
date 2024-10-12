@@ -32,9 +32,9 @@ export class ProcessingIncomeFormComponent implements OnDestroy {
   staffProvider = StaffView;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private _processingService: ProcessingIncomeService,
+    public router: Router,
+    public route: ActivatedRoute,
+    public _processingService: ProcessingIncomeService,
   ) {
     this.form = new UntypedFormGroup({
       name: new UntypedFormControl(null, [Validators.required]),
@@ -49,28 +49,39 @@ export class ProcessingIncomeFormComponent implements OnDestroy {
       documents: new UntypedFormControl([]),
     });
 
-    const id = Number(this.route.snapshot.params.id);
+    let id = NaN;
+    let idProcessingIncome = NaN;
+
+    const data = this.route.snapshot.routeConfig?.data;
+    if (typeof data?.view != 'undefined' && data?.view == 'phase') {
+      console.log('Estoy en una fase');
+      id = Number(this.route.snapshot.params.procedure_id);
+      idProcessingIncome = Number(
+        this.route.snapshot.params.idIncoming,
+      );
+    } else {
+      id = Number(this.route.snapshot.params.id);
+      idProcessingIncome = Number(
+        this.route.snapshot.params.idProcessingIncome,
+      );
+    }
 
     if (!isNaN(id)) {
       this.form.get('procedure_id')?.setValue(id);
-      this._processingService.fetch(id).subscribe({
-        next: (value) => {
-          this.form.patchValue(value);
-        },
-      });
     } else {
       this.back();
     }
 
-    const idProcessingIncome = Number(
-      this.route.snapshot.params.idProcessingIncome,
-    );
+    
     if (!isNaN(idProcessingIncome)) {
       this.edit = true;
       this._processingService.fetch(idProcessingIncome).subscribe({
-        next: (row) => {
+        next: (row: any) => {
           this.form.addControl('id', new UntypedFormControl(''));
           this.form.patchValue(row);
+          this.form.get('document_id_incommign')?.setValue(row.documents[0]);
+          this.form.get('document_id_out')?.setValue(row.documents[1]);
+          this.form.get('document_id_in')?.setValue(row.documents[2]);
         },
       });
     }
@@ -147,5 +158,25 @@ export class ProcessingIncomeFormComponent implements OnDestroy {
         }
       },
     });
+  }
+}
+
+@Component({
+  selector: 'app-processing-income-form',
+  templateUrl: './processing-income-form.component.html',
+  styleUrls: ['./processing-income-form.component.scss'],
+})
+export class ProcessingIncomePhaseFormComponent extends ProcessingIncomeFormComponent implements OnDestroy {
+
+  constructor(
+    public router: Router,
+    public route: ActivatedRoute,
+    public _processingService: ProcessingIncomeService,
+  ) {
+    super(router, route, _processingService);
+  }
+
+  async back() {
+    await this.router.navigate(['../../../'], { relativeTo: this.route });
   }
 }

@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MessageHelper, ViewActions, ViewContextService, viewActions, viewLabel } from 'o2c_core';
 import { DialogPreviewPdfComponent } from '../../shared/components/dialog-preview-pdf/dialog-preview-pdf.component';
 import { DocumentDto } from '../dto';
-import { DocumentApedixService, DocumentLinkService } from '../services/document-link.service';
+import { DocumentApedixService, DocumentLinkPhaseService, DocumentLinkService } from '../services/document-link.service';
 
 const goToViewDocument = new ViewActions<DocumentDto>(
   async ({ row, injector }) => {
@@ -101,4 +101,71 @@ export class DocumentLinkView {
   ],
 })
 export class DocumentApendixView extends DocumentLinkView {
+}
+
+const newDocumet = new ViewActions<DocumentDto>(
+  async ({ row, injector }) => {
+    let procedure_id = localStorage.getItem('phase_procedure_id');
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['./documentlink', procedure_id, 'new'], {
+      relativeTo: route,
+    });
+  },
+  'add',
+  {
+    tooltip: 'Nuevo documento',
+    color: 'primary',
+    isVisible: (row: DocumentDto) => true,
+  },
+);
+
+const goToEditDocumentLinkPhase = new ViewActions<DocumentDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['./', 'documentlink', (row as DocumentDto).id, (row as DocumentDto).pivot?.id], {
+      relativeTo: route,
+    });
+  },
+  'edit',
+  {
+    tooltip: 'Editar documento',
+    color: 'primary',
+    isVisible: (row) => row && row.id > 0,
+  },
+);
+
+const goToDeleteDocumentLinkPhase = new ViewActions<DocumentDto>(
+  async ({ row, injector }) => {
+    const viewContextService = injector.get(ViewContextService);
+    const deleteService = injector.get(DocumentLinkService);
+    //@ts-ignore
+    deleteService.delete((row as DocumentDto).pivot?.id).subscribe({
+      next: async () => {
+        await MessageHelper.successMessage(
+          'Éxito',
+          `${(row as DocumentDto).name} ha sido eliminado`
+        );
+        viewContextService.reloadView();
+      },
+    });
+  },
+  'delete',
+  {
+    isVisible: (row) => !!row,
+    messageBeforeAction: `¿Deseas eliminar este Expediente digital?`,
+  }
+);
+
+@viewActions({
+  classProvider: DocumentLinkPhaseService,
+  actions: [
+    newDocumet,
+    goToEditDocumentLinkPhase,
+    goToDeleteDocumentLinkPhase,
+    goToViewDocument,
+  ],
+})
+export class DocumentLinkPhaseView extends DocumentLinkView {
 }

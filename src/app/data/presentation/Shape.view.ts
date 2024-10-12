@@ -1,8 +1,9 @@
-import { MessageHelper, ViewActions, viewCrud, viewLabel } from 'o2c_core';
+import { MessageHelper, viewActions, ViewActions, viewCrud, viewLabel } from 'o2c_core';
 import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
-import { ShapeService } from '../services/shape.service';
+import { ShapePhaseService, ShapeService } from '../services/shape.service';
 import { ShapeDto } from '../dto/Shape.dto';
 import Swal from 'sweetalert2';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const generetePdf = new ViewActions<ShapeDto>(
   async ({ row, injector }) => {
@@ -70,7 +71,7 @@ export class ShapeView {
   // @viewLabel('notary')
   notary: string;
 
-  @viewLabel('Escritura')
+  @viewLabel('Instrumento')
   scriptures: string;
 
   @viewLabel('Cuenta Predial')
@@ -85,13 +86,13 @@ export class ShapeView {
   // @viewLabel('inscription')
   inscription: string;
 
-  @viewLabel('Fojas')
+  // @viewLabel('Fojas')
   sheets: string;
 
-  @viewLabel('Tomo')
+  // @viewLabel('Tomo')
   took: string;
 
-  @viewLabel('Libro')
+  // @viewLabel('Libro')
   book: string;
 
   @viewLabel('Monto de operación')
@@ -147,4 +148,47 @@ export class ShapeView {
     this.template_shape_id = template_shape_id;
     this.procedure_id = procedure_id;
   }
+}
+
+const newShapePhase = new ViewActions<ShapeDto>(
+  async ({ row, injector }) => {
+    let procedure_id = localStorage.getItem('phase_procedure_id');
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['./shapes', procedure_id, 'new'], {
+      relativeTo: route,
+    });
+  },
+  'add',
+  {
+    tooltip: 'Agregar forma',
+    color: 'primary',
+    isVisible: (row: ShapeDto) => true,
+  },
+);
+
+
+const editShapePhase = new ViewActions<ShapeDto>(
+  async ({ row, injector }) => {
+    let procedure_id = localStorage.getItem('phase_procedure_id');
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['./shapes', procedure_id, (row as ShapeDto).id], {
+      relativeTo: route,
+    });
+  },
+  'edit',
+  {
+    tooltip: 'Editar forma',
+    color: 'primary',
+    isVisible: (row: ShapeDto) => row && row.id > 0,
+  },
+);
+
+@viewActions({
+  classProvider: ShapePhaseService,
+  actions: [newShapePhase, editShapePhase, generetePdf ],
+})
+export class ShapePhaseView extends ShapeView {
+
 }

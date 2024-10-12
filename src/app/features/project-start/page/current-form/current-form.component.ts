@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { MessageHelper } from 'o2c_core';
+import { LoaderService, MessageHelper } from 'o2c_core';
 import { map, Observable, startWith, Subject, switchMap, tap } from 'rxjs';
 import { SharedDataService } from 'src/app/data/services/shared-data.service';
 import { MyProjectsService } from '../../../../data/services';
@@ -59,6 +59,7 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
     private myProjectService: MyProjectsService,
     private synchronizer: SharedDataService,
     private _socket: ProjectActionEventService,
+    private loader: LoaderService,
   ) {
 
     const { id, idProcess } = this.route.snapshot.params;
@@ -194,6 +195,7 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
 
   @messageDecision('Enviar formulario', '¿Estas seguro?')
   saveForm() {
+    
     console.log(
       ' currente form --> this.formControl',
       this.form_predefined_render?.value,
@@ -207,7 +209,6 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
       if (this.form_predefined_render?.invalid) complete = false;
       values = this.form_predefined_render?.value;
 
-      values = this.form_predefined_render?.value;
     } else {
       values = this.formControl.value;
       if (values) {

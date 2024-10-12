@@ -21,7 +21,7 @@ export class DocumentLinkService extends CrudService<
     return this.contextService.injector$.pipe(
       map((injector) => injector.get(ActivatedRoute)),
       map((route: ActivatedRoute) => ({
-        client_id: route.snapshot.parent?.params.id ?? 0,
+        client_id: route.snapshot.params.idIncoming ? route.snapshot.params.idIncoming : route.snapshot.parent?.params.id ?? 0,
         view: route.snapshot.data.view,
       })),
       map(
@@ -65,13 +65,13 @@ export class DocumentLinkService extends CrudService<
   providedIn: 'root',
 })
 export class DocumentApedixService extends CrudService<
-DocumentDto,
-Pagination<DocumentDto>
+  DocumentDto,
+  Pagination<DocumentDto>
 > {
 
   constructor(private contextService: ViewContextService) {
     super('');
-  }  
+  }
   override fetchAll(): Observable<Pagination<DocumentDto>> {
     return this.contextService.injector$.pipe(
       map((injector) => injector.get(ActivatedRoute)),
@@ -79,10 +79,57 @@ Pagination<DocumentDto>
       map(
         (procedureid) =>
           new HttpParams({
-            fromObject: { procedure_id: `${procedureid}`},
+            fromObject: { procedure_id: `${procedureid}` },
           }),
       ),
       switchMap((p) => this._http.get<Pagination<DocumentDto>>(`${environment.base_url}/documentLink/filter/getAppendix`, { params: p })),
     );
+  }
+}
+
+
+@Injectable({
+  providedIn: 'root',
+})
+export class DocumentLinkPhaseService extends CrudService<
+  DocumentDto,
+  Pagination<DocumentDto>
+> {
+  constructor(private contextService: ViewContextService) {
+    super('documentLink');
+  }
+
+  fetchAll(): Observable<Pagination<DocumentDto>> {
+    return this.contextService.injector$.pipe(
+      map(() => {
+        const client_id = localStorage.getItem('phase_procedure_id') ?? 0;
+        return new HttpParams({
+          fromObject: { client_id: `${client_id}`, view: `procedures` },
+        });
+      }),
+      switchMap((p) => super.fetchAll(p)),
+    );
+  }
+
+  save(t: any, params?: HttpParams): Observable<any> {
+    return this._http.post<any>(this._base, t, { params });
+  }
+
+  delete(id: number): Observable<any> {
+    return this.contextService.injector$.pipe(
+      map(() => {
+        const client_id = localStorage.getItem('phase_procedure_id') ?? 0;
+        return new HttpParams({
+          fromObject: { client_id: `${client_id}`, view: `procedures` },
+        });
+      }
+      ),
+      // @ts-ignore
+      switchMap((p) => super.delete(id, p)),
+    );
+  }
+
+  updateAlternative(params: any): Observable<any> {
+    return this._http.post<any>(`${this._base}/updateAlternative`, params);
   }
 }

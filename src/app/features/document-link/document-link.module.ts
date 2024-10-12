@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { DocumentLinkRoutingModule } from './document-link-routing.module';
 import { DocumentLinkListComponent } from './page/document-link-list/document-link-list.component';
-import { DocumentLinkFormComponent } from './page/document-link-form/document-link-form.component';
+import { DocumentLinkFormComponent, DocumentLinkPhaseFormComponent } from './page/document-link-form/document-link-form.component';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
@@ -18,6 +18,7 @@ import { DocumentViewPdfComponent } from './page/document-view-pdf/document-view
     DocumentLinkListComponent,
     DocumentLinkFormComponent,
     DocumentViewPdfComponent,
+    DocumentLinkPhaseFormComponent,
   ],
   imports: [
     CommonModule,

@@ -7,7 +7,8 @@ import { CurrentFormComponent } from './page/current-form/current-form.component
 import { GeneratorFormModule } from '../../shared/components/generator-form/generator-form.module';
 import { ResumeProcessComponent } from './page/resume-process/resume-process.component';
 import { NgxGraphModule } from '@swimlane/ngx-graph';
-import { ViewsModule, FormComponent, FormsModule } from 'o2c_core';
+import { FormComponent, FormsModule } from 'o2c_core';
+import { DynamicDirective } from 'src/app/core/directives/Dynamic.directive';
 
 @NgModule({
   declarations: [
@@ -20,9 +21,9 @@ import { ViewsModule, FormComponent, FormsModule } from 'o2c_core';
     ProjectStartRoutingModule,
     GeneratorFormModule,
     NgxGraphModule,
-    ViewsModule,
     FormComponent,
     FormsModule,
+    DynamicDirective,
   ],
 })
 export class ProjectStartModule {}

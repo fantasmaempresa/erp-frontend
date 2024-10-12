@@ -41,3 +41,36 @@ export class RegistrationProcedureDataService extends CrudService<
     return this._http.post<any>(`${this._base}/updateAlternative/${id}`, t, { params });
   }
 }
+
+
+@Injectable({
+  providedIn: 'root'
+})
+export class RegistrationProcedureDataPhaseService extends CrudService<
+  RegistrationProcedureDataDto,
+  Pagination<RegistrationProcedureDataDto>
+> {
+  constructor(private contextService: ViewContextService) {
+    super('registrationProcedureData');
+  }
+
+  fetchAll(): Observable<Pagination<RegistrationProcedureDataDto>> {
+
+    return this.contextService.injector$.pipe(
+      map(() =>
+          new HttpParams({
+            fromObject: { procedure_id: localStorage.getItem('phase_procedure_id') ?? 0 }
+          })
+      ),
+      switchMap((p) => super.fetchAll(p))
+    );
+  }
+
+  save(t: any, params?: HttpParams): Observable<any> {
+    return this._http.post<any>(this._base, t, { params });
+  }
+
+  updateAlternative(id: number, t: any, params?: HttpParams): Observable<any> {
+    return this._http.post<any>(`${this._base}/updateAlternative/${id}`, t, { params });
+  }
+}

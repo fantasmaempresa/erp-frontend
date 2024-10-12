@@ -45,6 +45,7 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
       this.executeCommands(commands);
     });
 
+
   }
   ngOnDestroy(): void { }
 
@@ -62,20 +63,28 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
       this.form.patchValue(value);
       this.form.reset();
     }
-    if ( typeof value.format != 'undefined' )
+    if (typeof value.format != 'undefined')
       this.patchValues = value;
   }
 
   onSubmit(args?: any, callback?: Function): void {
-    // console.log("Se envia información a servidor desde fase predefinida");
-    // this.dispacher.executePhase(args.project_id, args.process_id, { data: this.form.value, namePhase: 'start', nameProcess: 'DomainTransfer' })
-    //   .subscribe({
-    //     next: async (value) => {
-    //       console.log("Petición realizada --> ", value, typeof callback);
-    //       if(typeof callback === 'function')
-    //         callback(JSON.stringify(value));
-    //     }
-    //   });
+    this.dispacher.saveFormat(args.project_id, args.process_id,
+      { 
+        data: { content: this.transformData([this.form.controls.format.value]) }, 
+        namePhase: this.namePhase, 
+        nameProcess: this.nameProcess, 
+      }).subscribe({
+        next: (value:any) => {
+          if (typeof callback == 'function') {
+            callback(JSON.stringify({report: value.id}));
+          }
+        },
+        error: (error) => {
+          MessageHelper.errorMessage('No se puede almacenar la información por el momento, consulte a su administrador');
+        }
+      });
+
+
   }
 
   executeCommands(commands: { command: string; args?: any; callback?: Function; }) {
@@ -83,7 +92,7 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
       case 'loadStructureFormat':
         this.loadStructureFormat(commands.args);
         break;
-      case 'netx':
+      case 'next':
         this.next(commands.args, commands.callback);
         break;
       case 'prev':
@@ -137,12 +146,12 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
           setTimeout(() => {
             if (this.patchValues) {
               this.form.patchValue(this.patchValues);
-  
+
             } else {
               this.form.patchValue({ format: patch });
             }
           }, 200);
-          
+
           this.loadStructure = true;
           this.loaderService.hideLoader();
         },
@@ -166,7 +175,7 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
     this.dispacher.generateFormat({
       namePhase: this.generateFormat,
       nameProcess: this.nameProcess,
-      data: { content: this.transformData([this.form.controls.format.value])},
+      data: { content: this.transformData([this.form.controls.format.value]) },
     }).subscribe({
       next: async (response: any) => {
         const blob = new Blob([response.body], {

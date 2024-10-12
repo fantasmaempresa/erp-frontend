@@ -17,8 +17,8 @@ import { DialogPreviewPdfComponent } from 'src/app/shared/components/dialog-prev
 import { DocumentDto, UserDto } from '../dto';
 import { PlaceDto } from '../dto/Place.dto';
 import { RegistrationProcedureDataDto } from '../dto/RegistrationProcedureData.dto';
-import { RegistrationProcedureDataService } from '../services/registration-procedure-data.service';
-import { da } from 'date-fns/locale';
+import { RegistrationProcedureDataPhaseService, RegistrationProcedureDataService } from '../services/registration-procedure-data.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 const goToViewDocument = new ViewActions<RegistrationProcedureDataDto>(
   async ({ row, injector }) => {
@@ -261,3 +261,51 @@ export class RegistrationProcedureDataView {
     this.data = data;
   }
 }
+
+const goToNew = new ViewActions<RegistrationProcedureDataDto>(
+  async ({ row, injector }) => {
+    let procedure_id = localStorage.getItem('phase_procedure_id');
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['./registrationData', procedure_id, 'new'], {
+      relativeTo: route,
+    });
+  },
+  'add',
+  {
+    tooltip: 'Agregar gestión',
+    color: 'primary',
+    isVisible: (row: RegistrationProcedureDataDto) => true,
+  },
+);
+
+const goToEdit = new ViewActions<RegistrationProcedureDataDto>(
+  async ({ row, injector }) => {
+    let procedure_id = localStorage.getItem('phase_procedure_id');
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['./registrationData', procedure_id, (row as RegistrationProcedureDataDto).id], {
+      relativeTo: route,
+    });
+  },
+  'edit',
+  {
+    tooltip: 'Editar dato de registro',
+    color: 'primary',
+    isVisible: (row: RegistrationProcedureDataDto) => row && row.id > 0,
+  },
+);
+
+@viewDialog('Información del los datos de registro')
+@viewActions({
+  classProvider: RegistrationProcedureDataPhaseService,
+  // registerName: 'Información de registro',
+  actions: [
+    goToNew,
+    goToEdit,
+    goToDelete,
+    goToViewDocument,
+  ],
+  // route: DEFAULT_ROUTE_CONFIGURATION,
+})
+export class RegistrationProcedureDataPhaseView extends RegistrationProcedureDataView {}

@@ -30,3 +30,30 @@ export class ProcessingIncomeService extends CrudService<
      ); 
    }
 }
+
+
+@Injectable({
+  providedIn: 'root',
+})
+export class ProcessingIncomePhaseService extends CrudService<
+  ProcessingIncomeDto,
+  Pagination<ProcessingIncomeDto>
+> {
+  constructor(private contextService: ViewContextService) {
+    super('processingIncome');
+  }
+
+  fetchAll(params?: HttpParams | undefined): Observable<Pagination<ProcessingIncomeDto>> {
+    return this.contextService.injector$.pipe(
+       map(() =>{
+          const procedure_id = localStorage.getItem('phase_procedure_id') ?? 0;
+          return new HttpParams({
+            fromObject: { procedure_id: `${procedure_id}`},
+          });
+        }
+       ),
+       switchMap((p) => super.fetchAll(p)),
+     ); 
+   }
+}
+

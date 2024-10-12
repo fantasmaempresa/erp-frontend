@@ -56,10 +56,10 @@ export class FolioFormComponent {
   saveErrors: boolean = false;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private _folioService: FolioService,
-    private loaderService: LoaderService,
+    public router: Router,
+    public route: ActivatedRoute,
+    public _folioService: FolioService,
+    public loaderService: LoaderService,
   ) {
     this.form = new UntypedFormGroup({
       name: new UntypedFormControl(null, [Validators.required]),
@@ -72,11 +72,21 @@ export class FolioFormComponent {
     const currentRoute = this.route.snapshot.routeConfig?.path;
     const idError = this.route.snapshot.params.idError;
 
+    let id = NaN;
+
+    const data = this.route.snapshot.routeConfig?.data;
+    if (typeof data?.view != 'undefined' && data?.view == 'phase') {
+      console.log('Estoy en una fase');
+      // id = Number(this.route.snapshot.params.idFolio);
+    } else {
+      id = Number(this.route.snapshot.params.id);
+    }
+
+
     if (typeof currentRoute === 'undefined') {
       this.isDialog = true;
     }
 
-    const id = Number(this.route.snapshot.params.id);
     if (!isNaN(id)) {
       this.isEdit = true;
       _folioService.fetch(id).subscribe({
