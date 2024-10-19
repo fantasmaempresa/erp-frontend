@@ -25,6 +25,7 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
   previewBuilderForm = true;
   patchValues: any = null;
   loadStructure: boolean = false;
+  synchronizer$: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,14 +41,17 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
   ngOnInit(): void {
     this.synchronizer.updateLastForm(this.form);
 
-    this.synchronizer.executionCommand$.subscribe((commands) => {
+    if (this.synchronizer$) this.synchronizer$.unsubscribe();
+    this.synchronizer$ = this.synchronizer.executionCommand$.subscribe((commands) => {
       console.log('this.synchronizer.executionCommand$ ---> ', commands);
       this.executeCommands(commands);
     });
 
 
   }
-  ngOnDestroy(): void { }
+  ngOnDestroy(): void {
+    if (this.synchronizer$) this.synchronizer$.unsubscribe();
+  }
 
   next(args?: { process_id: number; project_id: number; data: any; }, callback?: Function) {
     console.log('Ejecuto comando ... next');
@@ -69,14 +73,14 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
 
   onSubmit(args?: any, callback?: Function): void {
     this.dispacher.saveFormat(args.project_id, args.process_id,
-      { 
-        data: { content: this.transformData([this.form.controls.format.value]) }, 
-        namePhase: this.namePhase, 
-        nameProcess: this.nameProcess, 
+      {
+        data: { content: this.transformData([this.form.controls.format.value]) },
+        namePhase: this.namePhase,
+        nameProcess: this.nameProcess,
       }).subscribe({
-        next: (value:any) => {
+        next: (value: any) => {
           if (typeof callback == 'function') {
-            callback(JSON.stringify({report: value.id}));
+            callback(JSON.stringify({ report: value.id }));
           }
         },
         error: (error) => {
@@ -107,7 +111,6 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
   }
 
   loadStructureFormat(args: any) {
-    console.log("se pide la estructura del formato --> ", args);
     if (args.format[0].namePhase == '' ||
       args.format[0].nameProcess == '' ||
       args.format[0].generateFormat == '')
@@ -116,56 +119,61 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
     this.generateFormat = args.format[0].generateFormat ?? '';
     this.namePhase = args.format[0].namePhase ?? '';
     this.nameProcess = args.format[0].nameProcess ?? ''
-    this.loaderService.showFullScreenLoader();
-    this.dispacher.getStructureFormat(
-      args.project_id,
-      args.process_id,
-      {
-        namePhase: this.namePhase,
-        nameProcess: this.nameProcess,
-        data: { test: 'test' }
-      })
-      .subscribe({
-        next: (value: any) => {
-          this.editorArray = value.content.map((item: any) => {
-            return {
-              name: item.name,
-              controlName: item.name,
-            };
-          });
 
-          this.title = value.title;
-          this.categories = value.data;
+    if (!this.loadStructure) {
+      this.loadStructure = true;
+      console.log("se pide la estructura del formato --> ", args);
+      this.loaderService.showFullScreenLoader();
+      this.dispacher.getStructureFormat(
+        args.project_id,
+        args.process_id,
+        {
+          namePhase: this.namePhase,
+          nameProcess: this.nameProcess,
+          data: { test: 'test' }
+        })
+        .subscribe({
+          next: (value: any) => {
+            this.editorArray = value.content.map((item: any) => {
+              return {
+                name: item.name,
+                controlName: item.name,
+              };
+            });
 
-          let patch = value.content.reduce((acc: any, item: any) => {
-            //  @ts-ignore
-            acc[item.name] = item.text;
-            return acc;
-          }, {});
+            this.title = value.title;
+            this.categories = value.data;
 
-          setTimeout(() => {
-            if (this.patchValues) {
-              this.form.patchValue(this.patchValues);
+            let patch = value.content.reduce((acc: any, item: any) => {
+              //  @ts-ignore
+              acc[item.name] = item.text;
+              return acc;
+            }, {});
 
-            } else {
-              this.form.patchValue({ format: patch });
-            }
-          }, 200);
+            setTimeout(() => {
+              if (this.patchValues) {
+                this.form.patchValue(this.patchValues);
 
-          this.loadStructure = true;
-          this.loaderService.hideLoader();
-        },
-        error: (error: any) => {
-          this.loaderService.hideLoader();
-          MessageHelper.errorMessage('No se puede generar la estructura en este momento');
-        },
-      });
+              } else {
+                this.form.patchValue({ format: patch });
+              }
+            }, 200);
+
+            this.loaderService.hideLoader();
+          },
+          error: (error: any) => {
+            this.loaderService.hideLoader();
+            MessageHelper.errorMessage('No se puede generar la estructura en este momento');
+            this.loadStructure = false;
+
+          },
+        });
+    }
+
   }
 
   submit() {
-
     this.form.value;
-
   }
 
   generateReport() {

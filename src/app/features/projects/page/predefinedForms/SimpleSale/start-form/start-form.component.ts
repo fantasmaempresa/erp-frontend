@@ -55,6 +55,8 @@ export class StartFormComponent
 
   formId = '';
 
+  synchronizer$: any;
+
   addItems = [
     {
       component: ClientFormComponent,
@@ -102,8 +104,10 @@ export class StartFormComponent
       value_operation: new UntypedFormControl('', []),
       operations: new UntypedFormControl('', []),
       appraisal: new UntypedFormControl('', []),
+      date_appraisal: new UntypedFormControl('', []),
       place_id: new UntypedFormControl('', [Validators.required]),
       grantors: new UntypedFormControl('', [Validators.required]),
+      observation: new UntypedFormControl('', []),
     });
 
     const data = this.route.snapshot.routeConfig?.data;
@@ -123,13 +127,15 @@ export class StartFormComponent
 
     this.synchronizer.updateLastForm(this.form);
 
-    this.synchronizer.executionCommand$.subscribe((commands) => {
+    if (this.synchronizer$) this.synchronizer$.unsubscribe();
+
+    this.synchronizer$ = this.synchronizer.executionCommand$.subscribe((commands) => {
       console.log('this.synchronizer.executionCommand$ ---> ', commands);
-      this.executeCommands(commands);  
+      this.executeCommands(commands);
     });
   }
 
-  executeCommands (commands: { command: string; args?: any; callback?: Function; }) {
+  executeCommands(commands: { command: string; args?: any; callback?: Function; }) {
     console.log('command entry -->: ', commands);
     switch (commands.command) {
       case 'saveForm':
@@ -163,7 +169,7 @@ export class StartFormComponent
       .subscribe({
         next: async (value) => {
           console.log("Petición realizada --> ", value, typeof callback);
-          if(typeof callback === 'function')
+          if (typeof callback === 'function')
             callback(JSON.stringify(value));
         }
       });
@@ -189,7 +195,9 @@ export class StartFormComponent
     });
   }
 
-  ngOnDestroy(): void { }
+  ngOnDestroy(): void {
+    if (this.synchronizer$) this.synchronizer$.unsubscribe();
+  }
 
   writeValue(value: any) {
     this.form.patchValue(value);

@@ -26,6 +26,7 @@ export class GenerateShapeInPhaseComponent implements PredefinedFormLifeCycle, O
   namePhase: string = 'generateShape';
   projectId: number = 0;
   processId: number = 0;
+  synchronizer$: any;
 
   constructor(
     public route: ActivatedRoute,
@@ -54,8 +55,9 @@ export class GenerateShapeInPhaseComponent implements PredefinedFormLifeCycle, O
       this.loader.showFullScreenLoader();
       // this.synchronizer.updateLastForm(this.shapeForm);
 
+      if (this.synchronizer$) this.synchronizer$.unsubscribe();
 
-      this.synchronizer.executionCommand$.subscribe((commands) => {
+      this.synchronizer$ = this.synchronizer.executionCommand$.subscribe((commands) => {
         console.log('this.synchronizer.executionCommand$ ---> ', commands);
         this.executeCommands(commands);
       });
@@ -90,6 +92,7 @@ export class GenerateShapeInPhaseComponent implements PredefinedFormLifeCycle, O
   }
 
   ngOnDestroy(): void {
+    if (this.synchronizer$) this.synchronizer$.unsubscribe();
   }
   next(args?: { process_id: number; project_id: number; data: any; }, callback?: Function) {
     if (typeof callback == 'function') callback('shape phase complete');

@@ -1,48 +1,71 @@
-<app-preview-form-builder
-  [formControl]="formControl"
-  [formFields]="form$ | async"
-></app-preview-form-builder>
+<mat-card>
+  <mat-toolbar class="actions-view">
+    <button (click)="back()" aria-label="Regresar" mat-icon-button>
+      <mat-icon>arrow_back</mat-icon>
+    </button>
 
-<div class="container-buttons">
-  <button
-    *ngIf="controls.prev && viewAction"
-    (click)="prevPhase()"
-    color="primary"
-    mat-stroked-button
-  >
-    Formulario Anterior
-  </button>
-  <button
-    *ngIf="controls.supervision && viewAction"
-    (click)="supervise()"
-    color="primary"
-    mat-flat-button
-  >
-    Supervisar
-  </button>
-  <button
-    *ngIf="!controls.supervision && viewAction && controls.saveData"
-    (click)="saveForm()"
-    color="primary"
-    mat-flat-button
-  >
-    Enviar información
-  </button>
-  <button
-    *ngIf="controls.next && viewAction"
-    (click)="nextPhase()"
-    color="primary"
-    mat-stroked-button
-  >
-    Formulario Siguiente
-  </button>
+    <button (click)="addCommentToProcedure()" aria-label="Agregar comentario" mat-icon-button [disabled]="disableComments">
+      <mat-icon>chat</mat-icon>
+    </button>
+  </mat-toolbar>
+  <app-preview-form-builder
+    [formControl]="formControl"
+    [formFields]="form$ | async"
+  ></app-preview-form-builder>
 
-  <button
-    *ngIf="controls.completeProcess && viewAction"
-    (click)="completeProcess()"
-    color="primary"
-    mat-stroked-button
-  >
-    Completar Proceso
-  </button>
-</div>
+  <div class="container-buttons">
+    <button
+      *ngIf="controls.prev"
+      (click)="prevPhase()"
+      color="primary"
+      mat-stroked-button
+    >
+      Regresar a la etapa anterior
+    </button>
+
+    <button
+      *ngIf="controls.supervision"
+      (click)="supervise()"
+      color="primary"
+      mat-flat-button
+    >
+      Aprobar información
+    </button>
+
+    <button
+      *ngIf="controls.saveData"
+      (click)="saveForm(false)"
+      color="primary"
+      mat-flat-button
+    >
+      guardar información
+    </button>
+
+    <button
+      *ngIf="controls.correction"
+      (click)="saveForm(true)"
+      color="primary"
+      mat-flat-button
+    >
+      Corregir información
+    </button>
+
+    <button
+      *ngIf="controls.next"
+      (click)="nextPhase()"
+      color="primary"
+      mat-stroked-button
+    >
+      Pasar a la siguiete etapa
+    </button>
+
+    <button
+      *ngIf="controls.completeProcess"
+      (click)="completeProcess()"
+      color="primary"
+      mat-stroked-button
+    >
+      Dar por terminado
+    </button>
+  </div>
+</mat-card>

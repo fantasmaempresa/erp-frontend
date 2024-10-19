@@ -36,8 +36,9 @@ export class ProcedureCommentFormComponent implements OnDestroy {
       ]),
       procedure_id: new UntypedFormControl(null, Validators.required),
     });
-
-    const id = Number(this.route.snapshot.params.id);
+    
+    let id = this.route.snapshot.params.procedure_id ?? this.route.snapshot.params.id ?? 0;
+    
     if (!isNaN(id)) {
       this.form.get('procedure_id')?.setValue(id);
     }

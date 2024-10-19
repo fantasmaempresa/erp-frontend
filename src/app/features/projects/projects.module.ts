@@ -9,7 +9,6 @@ import { CoreModule, ViewsModule, FormComponent, FormsModule, HostDirective } fr
 import { StartFormComponent } from './page/predefinedForms/SimpleSale/start-form/start-form.component';
 import { TextEditorWithCategoryAutocompleteComponent } from "../../shared/components/text-editor-with-category-autocomplete/text-editor-with-category-autocomplete.component";
 import { BuildPredefinedFormatComponent } from './page/predefinedForms/SimpleSale/first-prevent-notice/build-predefined-format.component';
-import { LoadFilesToProcedureComponent } from './page/predefinedForms/SimpleSale/load-files-to-procedure/load-files-to-procedure.component';
 import { GenerateShapeInPhaseComponent } from './page/predefinedForms/SimpleSale/generate-shape-in-phase/generate-shape-in-phase.component';
 import { NgxEditorModule } from 'ngx-editor';
 import { AssignFolioInPhaseComponent } from './page/predefinedForms/SimpleSale/assign-folio-in-phase/assign-folio-in-phase.component';
@@ -18,7 +17,17 @@ import { RegistrationDataInPhaseComponent } from './page/predefinedForms/SimpleS
 import { ProcessingIncomeInPhaseComponent } from './page/predefinedForms/SimpleSale/processing-income-in-phase/processing-income-in-phase.component';
 
 @NgModule({
-  declarations: [ProjectFormComponent, BuildProjectComponent, StartFormComponent, BuildPredefinedFormatComponent, LoadFilesToProcedureComponent, GenerateShapeInPhaseComponent, AssignFolioInPhaseComponent, GenerateExpedientInPhaseComponent, RegistrationDataInPhaseComponent, ProcessingIncomeInPhaseComponent],
+  declarations: [
+    ProjectFormComponent, 
+    BuildProjectComponent, 
+    StartFormComponent, 
+    BuildPredefinedFormatComponent, 
+    GenerateShapeInPhaseComponent, 
+    AssignFolioInPhaseComponent, 
+    GenerateExpedientInPhaseComponent, 
+    RegistrationDataInPhaseComponent, 
+    ProcessingIncomeInPhaseComponent
+  ],
   imports: [
     CommonModule,
     ProjectsRoutingModule,

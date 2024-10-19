@@ -19,7 +19,7 @@ export class ProcedureCommentService extends CrudService<
   fetchAll(params?: HttpParams | undefined): Observable<Pagination<ProcedureCommentDto>> {
    return this.contextService.injector$.pipe(
       map((injector) => injector.get(ActivatedRoute)),
-      map((route: ActivatedRoute) => route.snapshot.parent?.params.id ?? 0),
+      map((route: ActivatedRoute) => route.snapshot.parent?.params.procedure_id ?? route.snapshot.parent?.params.id ?? 0),
       map(
         (procedureId) =>
           new HttpParams({

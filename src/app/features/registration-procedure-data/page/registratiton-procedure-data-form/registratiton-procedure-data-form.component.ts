@@ -50,9 +50,9 @@ export class RegistratitonProcedureDataFormComponent implements OnDestroy {
   placeProvider = PlaceView;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private _registrationService: RegistrationProcedureDataService,
+    public router: Router,
+    public route: ActivatedRoute,
+    public _registrationService: RegistrationProcedureDataService,
   ) {
     this.form = new UntypedFormGroup({
       date: new UntypedFormControl(null, [Validators.required]),
@@ -72,8 +72,16 @@ export class RegistratitonProcedureDataFormComponent implements OnDestroy {
       register: new UntypedFormControl(null, [Validators.required]),
     });
 
-    const id = Number(this.route.snapshot.params.id);
+    let id = NaN;
     const idRegistration = Number(this.route.snapshot.params.idRegistration);
+
+    const data = this.route.snapshot.routeConfig?.data;
+    if (typeof data?.view != 'undefined' && data?.view == 'phase') {
+      console.log('Estoy en una fase');
+      id = Number(this.route.snapshot.params.procedure_id);
+    }else {
+      id = Number(this.route.snapshot.params.id); 
+    }
 
     if (!isNaN(id)) {
       this.form.get('procedure_id')?.setValue(id);
@@ -103,11 +111,11 @@ export class RegistratitonProcedureDataFormComponent implements OnDestroy {
   onSubmit() {
     this.form.controls.register.setValue(this.formComponent.formBuilderComponent.form.value.data);
     if (this.form.invalid) {
-      console.log('Alguno de los formularios no es valido', this.form.valid);
+      // console.log('Alguno de los formularios no es valido', this.form.valid, this.form);
       return;
     }
 
-    console.log('this.formComponent.formBuilderComponent.form.value.data',this.formComponent.formBuilderComponent.form.value.data);
+    // console.log('this.formComponent.formBuilderComponent.form.value.data',this.formComponent.formBuilderComponent.form.value.data);
     const formData = new FormData();
     const formattedDate = new Date(this.form.value.date).toISOString();
     formData.append('file', this.form.value.file);
@@ -178,5 +186,32 @@ export class RegistratitonProcedureDataFormComponent implements OnDestroy {
         }
       },
     });
+  }
+}
+
+@AutoUnsubscribe()
+@Component({
+  selector: 'app-registratiton-procedure-data-phase-form',
+  templateUrl: './registratiton-procedure-data-form.component.html',
+  styleUrls: ['./registratiton-procedure-data-form.component.scss'],
+  providers: [
+    {
+      provide: FORM_CLAZZ,
+      useValue: RegisterDataTable,
+    },
+  ],
+})
+export class RegistratitonProcedureDataPhaseFormComponent extends RegistratitonProcedureDataFormComponent implements OnDestroy {
+ 
+  constructor(
+    public router: Router,
+    public route: ActivatedRoute,
+    public _registrationService: RegistrationProcedureDataService,
+  ) {
+    super(router, route, _registrationService);
+  }
+
+  async back() {
+    await this.router.navigate(['../../../'], { relativeTo: this.route });
   }
 }

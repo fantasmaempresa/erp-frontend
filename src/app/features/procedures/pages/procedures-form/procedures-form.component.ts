@@ -68,6 +68,7 @@ export class ProceduresFormComponent implements OnDestroy, OnInit {
     }),
     value_operation: new UntypedFormControl('', []),
     appraisal: new UntypedFormControl('', []),
+    date_appraisal: new UntypedFormControl('', []),
     date: new UntypedFormControl('', [Validators.required]),
     credit: new UntypedFormControl('', []),
     observation: new UntypedFormControl('', []),

@@ -23,7 +23,36 @@
         />
         <mat-error appErrorMessage></mat-error>
       </mat-form-field>
-      
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de avaluo</mat-label>
+        <input
+          (focus)="dateForm.open()"
+          [matDatepicker]="dateForm"
+          class="clickable"
+          formControlName="date_appraisal"
+          matInput
+        />
+        <mat-datepicker-toggle
+          [for]="dateForm"
+          matSuffix
+        ></mat-datepicker-toggle>
+        <mat-datepicker #dateForm></mat-datepicker>
+      </mat-form-field>
+
+
+      <mat-form-field appearance="outline">
+        <mat-label>Valor de avaluo</mat-label>
+        <input formControlName="appraisal" matInput type="number" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Valor de operación</mat-label>
+        <input formControlName="value_operation" matInput type="number" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
       <div class="row">
         <div class="col-9">
           <mat-form-field appearance="outline" class="w-100">
@@ -52,18 +81,6 @@
           </button>
         </div>
       </div>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Valor de operación</mat-label>
-        <input formControlName="value_operation" matInput type="number" />
-        <mat-error appErrorMessage></mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Valor de avaluo</mat-label>
-        <input formControlName="appraisal" matInput type="number" />
-        <mat-error appErrorMessage></mat-error>
-      </mat-form-field>
 
       <div class="row">
         <div class="col-9"></div>
@@ -95,6 +112,12 @@
           <o2c-form></o2c-form>
         </div>
       </div>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Observaciones</mat-label>
+        <textarea formControlName="observation" matInput> </textarea>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
       <button *ngIf="!previewBuilderForm" color="primary" mat-flat-button>Guardar</button>
     </div>
   </form>

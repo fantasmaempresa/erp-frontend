@@ -17,6 +17,8 @@ import { FolioFormComponent } from 'src/app/features/folio/pages/folio-form/foli
 export class AssignFolioInPhaseComponent extends FolioFormComponent implements PredefinedFormLifeCycle, OnInit, OnDestroy {
   nameProcess: string = 'DomainTransfer';
   namePhase: string = 'generateFolio';
+  synchronizer$: any;
+
 
   constructor(
     public router: Router,
@@ -28,14 +30,11 @@ export class AssignFolioInPhaseComponent extends FolioFormComponent implements P
   ) {
     super(router, route, _folioService, loaderService);
   }
-
-
-
   //Controles
   next(args?: { process_id: number; project_id: number; data: any; }, callback?: Function) {
     console.log('Ejecuto comando ... next');
     this.submit(args, callback);
-   }
+  }
   prev(args?: { process_id: number; project_id: number; data: any; }, callback?: Function) { };
 
   writeValue(value: any) { };
@@ -57,13 +56,14 @@ export class AssignFolioInPhaseComponent extends FolioFormComponent implements P
       default:
         console.log('Comando no reconocido');
     }
-   };
+  };
   ngOnInit(): void {
-     this.synchronizer.updateLastForm(this.form);
+    this.synchronizer.updateLastForm(this.form);
+    if (this.synchronizer$) this.synchronizer$.unsubscribe();
 
-    this.synchronizer.executionCommand$.subscribe((commands) => {
+    this.synchronizer$ = this.synchronizer.executionCommand$.subscribe((commands) => {
       console.log('this.synchronizer.executionCommand$ ---> ', commands);
-      this.executeCommands(commands);  
+      this.executeCommands(commands);
     });
   }
 
@@ -83,7 +83,7 @@ export class AssignFolioInPhaseComponent extends FolioFormComponent implements P
     if (this.form.invalid) return;
 
     this.dispacher.executePhase(
-      args.project_id, 
+      args.project_id,
       args.process_id,
       {
         namePhase: this.namePhase,
@@ -97,8 +97,8 @@ export class AssignFolioInPhaseComponent extends FolioFormComponent implements P
           '¡Éxito!',
           `El libro ha sido ${message} correctamente.`,
         );
-        
-        if(typeof callback === 'function')  callback(JSON.stringify({id: value.id ?? 0}));
+
+        if (typeof callback === 'function') callback(JSON.stringify({ id: value.id ?? 0 }));
       },
       error: async (error) => {
         console.log(error);
@@ -128,10 +128,11 @@ export class AssignFolioInPhaseComponent extends FolioFormComponent implements P
           );
         }
       },
-    });   
+    });
   }
   ngOnDestroy(): void {
-    
+    if (this.synchronizer$) this.synchronizer$.unsubscribe();
+
   }
 
 }

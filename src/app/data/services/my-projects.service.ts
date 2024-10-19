@@ -125,7 +125,7 @@ export class MyProjectsService {
   }) {
     return this.http.post(
       `${this._base}/action/saveForm/project/${projectId}/process/${processId}`,
-      { form },
+       form ,
     );
   }
 

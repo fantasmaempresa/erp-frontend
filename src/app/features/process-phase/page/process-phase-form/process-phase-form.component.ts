@@ -142,6 +142,8 @@ export class ProcessPhaseFormComponent implements OnDestroy {
   }
 
   async onSubmit() {
+
+    console.log('this.form.value', this.form.value);
     this.form.markAllAsTouched();
     if (this.form.invalid) {
       await MessageHelper.infoMessage('Revisa los campos que te faltan');

@@ -107,7 +107,7 @@ export class ProcessingIncomeView {
 }
 
 
-const newProcessingIncomePhase = new ViewActions<ProcessingIncomeDto>(
+const newProcessingIncomePhase =  new ViewActions<ProcessingIncomeDto>(
   async ({ row, injector }) => {
     let procedure_id = localStorage.getItem('phase_procedure_id');
     const router = injector.get(Router);

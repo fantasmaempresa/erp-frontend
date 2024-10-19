@@ -7,7 +7,7 @@ import { ResumeProcessComponent } from './page/resume-process/resume-process.com
 import { ShapePhaseFormComponent } from '../shape/page/shape-form/shape-form.component';
 import { DocumentLinkPhaseFormComponent } from '../document-link/page/document-link-form/document-link-form.component';
 import { ProcessingIncomePhaseFormComponent } from '../processing-income/page/processing-income-form/processing-income-form.component';
-import { RegistratitonProcedureDataFormComponent } from '../registration-procedure-data/page/registratiton-procedure-data-form/registratiton-procedure-data-form.component';
+import { RegistratitonProcedureDataFormComponent, RegistratitonProcedureDataPhaseFormComponent } from '../registration-procedure-data/page/registratiton-procedure-data-form/registratiton-procedure-data-form.component';
 
 const routes: Routes = [
   {
@@ -71,7 +71,7 @@ const routes: Routes = [
           import('../processing-income-comment/processing-income-comment.module').then(
             (m) => m.ProcessingIncomeCommentModule,
           ),
-        data: { breadcrumb: 'Documentos', view: 'procedures' },
+        data: { breadcrumb: 'Proyecto en curso', view: 'procedures' },
       },
       {
         path: ':id/process/:idProcess/:idIncoming/documentsLink',
@@ -79,21 +79,33 @@ const routes: Routes = [
           import('../document-link/document-link.module').then(
             (m) => m.DocumentLinkModule,
           ),
-        data: { breadcrumb: 'Documentos', view: 'incomming' },
+        data: { breadcrumb: 'Proyecto en curso', view: 'incomming' },
       },
 
       //********************************************* */
       //Rutas para manipular Registration Data
       {
-        path: 'id/process/:idProcess/registrationData/:procedure_id/new',
-        component: RegistratitonProcedureDataFormComponent,
-        data: { breadcrumb: 'Agregar Registro' },
+        path: ':id/process/:idProcess/registrationData/:procedure_id/new',
+        component: RegistratitonProcedureDataPhaseFormComponent,
+        data: { breadcrumb: 'Agregar Registro', view: 'phase' },
       },
       {
-        path: 'id/process/:idProcess/registrationData/:procedure_id/:idRegistration',
-        component: RegistratitonProcedureDataFormComponent,
-        data: { breadcrumb: 'Editar Registro' },
+        path: ':id/process/:idProcess/registrationData/:procedure_id/:idRegistration',
+        component: RegistratitonProcedureDataPhaseFormComponent,
+        data: { breadcrumb: 'Editar Registro', view: 'phase' },
       },
+      //********************************************* */
+      //********************************************* */
+      //Rutas para manipular ProcedureComments
+      {
+        path: ':id/process/:idProcess/:procedure_id/Pcomments',
+        loadChildren: () =>
+          import('../procedure-comment/procedure-comment.module').then(
+            (m) => m.ProcedureCommentModule,
+          ),
+        data: { breadcrumb: 'Proyecto en curso', view: 'phase' },
+      },
+
       //********************************************* */
       {
         path: ':id/process/:idProcess/resume',

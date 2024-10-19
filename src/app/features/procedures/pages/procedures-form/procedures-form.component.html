@@ -58,6 +58,22 @@
       </mat-form-field>
 
       <mat-form-field appearance="outline">
+        <mat-label>Fecha de avaluo</mat-label>
+        <input
+          (focus)="dateForm.open()"
+          [matDatepicker]="dateForm"
+          class="clickable"
+          formControlName="date_appraisal"
+          matInput
+        />
+        <mat-datepicker-toggle
+          [for]="dateForm"
+          matSuffix
+        ></mat-datepicker-toggle>
+        <mat-datepicker #dateForm></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
         <mat-label>Valor de avaluo</mat-label>
         <input formControlName="appraisal" matInput type="text" />
         <mat-error appErrorMessage></mat-error>

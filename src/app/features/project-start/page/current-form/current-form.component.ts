@@ -8,7 +8,8 @@ import { SharedDataService } from 'src/app/data/services/shared-data.service';
 import { MyProjectsService } from '../../../../data/services';
 import { messageDecision } from '../../../../shared/helpers/message-wrapper';
 import { ProjectActionEventService } from 'src/app/data/services/project-action-event.service';
-import { CommandProjectDto } from 'src/app/data/dto';
+import { CommandProjectDto, ProcedureDto } from 'src/app/data/dto';
+import { callback } from 'chart.js/dist/helpers/helpers.core';
 
 @AutoUnsubscribe()
 @Component({
@@ -24,6 +25,8 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
 
   processId!: number;
 
+  procedure_id!: number;
+
   form$!: Observable<any>;
 
   formControl = new UntypedFormControl();
@@ -33,6 +36,8 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
   PREDEFINED_FORM = 2;
   CUSTOM_FORM = 1;
 
+  disableComments: boolean = true;
+
   form_predefined_render: UntypedFormGroup | null = null;
 
   controls: {
@@ -41,17 +46,20 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
     supervision: boolean;
     saveData: boolean;
     completeProcess: boolean;
+    correction: boolean;
   } = {
       next: false,
       prev: false,
       supervision: false,
       saveData: false,
       completeProcess: false,
+      correction: false,
     };
 
   viewAction = true;
 
   synchronizer$: any;
+  socket$: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -60,13 +68,15 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
     private synchronizer: SharedDataService,
     private _socket: ProjectActionEventService,
     private loader: LoaderService,
+
   ) {
 
     const { id, idProcess } = this.route.snapshot.params;
     this.projectId = Number(id);
     this.processId = Number(idProcess);
 
-    this._socket.action$.subscribe((action: CommandProjectDto) => {
+    if (this.socket$) this.socket$.unsubscribe();
+    this.socket$ = this._socket.action$.subscribe((action: CommandProjectDto) => {
       console.log('action ---> ', action);
       if (action.action.command == 'reload_current_form' &&
         action.process_id == this.processId &&
@@ -78,7 +88,7 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
         action.project_id == this.projectId
       ) {
         if (action.action.action == 'finishProject') {
-          this.router.navigate(['../']);
+          this.router.navigate(['../../../']);
         }
       }
     },
@@ -93,7 +103,8 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
         this.myProjectService
           .getCurrentForm(this.projectId, this.processId)
           .pipe(
-            tap(({ controls, type_form, values_form, form }: any) => {
+            tap(({ controls, type_form, values_form, form, procedure }: any) => {
+              this.enableComments(procedure);
               this.controls = controls;
               this.type_form = type_form;
               if (this.synchronizer$) this.synchronizer$.unsubscribe();
@@ -107,7 +118,7 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
                       command: 'patchForm',
                     });
 
-                    let useformat = form.withFormat ? form.formats : []; 
+                    let useformat = form.withFormat ? form.formats : [];
 
                     setTimeout(() => {
                       this.synchronizer.executionCommand({
@@ -193,68 +204,65 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  @messageDecision('Enviar formulario', '¿Estas seguro?')
-  saveForm() {
-    
-    console.log(
-      ' currente form --> this.formControl',
-      this.form_predefined_render?.value,
-    );
-    // return;
-    let complete = true;
-    let values = null;
+  saveForm(correction: boolean) {
 
-    if (this.type_form == this.PREDEFINED_FORM) {
-      this.synchronizer.executionCommand({ command: 'saveForm' });
-      if (this.form_predefined_render?.invalid) complete = false;
-      values = this.form_predefined_render?.value;
+    let callback = () => {
+      let complete = true;
+      let values = null;
 
-    } else {
-      values = this.formControl.value;
-      if (values) {
-        for (let value in values) {
-          console.log('---> value', values[value]);
-          if (values[value]) {
-            continue;
-          } else {
-            MessageHelper.errorMessage('faltan datos del formulario');
-            complete = false;
-            break;
-          }
-        }
+      if (this.type_form == this.PREDEFINED_FORM) {
+        this.synchronizer.executionCommand({ command: 'saveForm' });
+        if (this.form_predefined_render?.invalid) complete = false;
+        values = this.form_predefined_render?.value;
+
       } else {
-        MessageHelper.errorMessage('faltan datos del formulario');
+        values = this.formControl.value;
+        if (values) {
+          for (let value in values) {
+            console.log('---> value', values[value]);
+            if (values[value]) {
+              continue;
+            } else {
+              MessageHelper.errorMessage('faltan datos del formulario');
+              complete = false;
+              break;
+            }
+          }
+        } else {
+          MessageHelper.errorMessage('faltan datos del formulario');
+        }
+      }
+
+      if (complete) {
+        MessageHelper.showLoading();
+        console.info('correction : correction --> ', { correction: correction });
+        this.myProjectService
+          .saveForm({
+            projectId: this.projectId,
+            processId: this.processId,
+            form: {
+              correction: correction,
+              form : {...values},
+            },
+          })
+          .subscribe({
+            next: async (value) => {
+              await MessageHelper.successMessage('Éxito', `${value}`);
+              this.ngOnInit();
+            },
+            error: async (value) => {
+              console.log(value.error);
+              await MessageHelper.errorMessage(value.error.error);
+            },
+          });
       }
     }
 
-    if (complete) {
-      MessageHelper.showLoading();
-      console.log('save format ----> ', {
-        projectId: this.projectId,
-        processId: this.processId,
-        form: {
-          ...values,
-        },
-      });
-      this.myProjectService
-        .saveForm({
-          projectId: this.projectId,
-          processId: this.processId,
-          form: {
-            ...values,
-          },
-        })
-        .subscribe({
-          next: async (value) => {
-            await MessageHelper.successMessage('Éxito', `${value}`);
-            this.ngOnInit();
-          },
-          error: async (value) => {
-            console.log(value.error);
-            await MessageHelper.errorMessage(value.error.error);
-          },
-        });
-    }
+    MessageHelper.decisionMessage(
+      'Enviar formulario',
+      '¿Estas seguro?',
+      callback,
+    );
   }
 
   @messageDecision('¿La información es correcta?', '¿Estas seguro?')
@@ -298,8 +306,26 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void { 
-    this.refresh.unsubscribe();
+  async back() {
+    await this.router.navigate(['../../../'], { relativeTo: this.route });
   }
 
+  ngOnDestroy(): void {
+    this.refresh.unsubscribe();
+    this.socket$.unsubscribe();
+    this.synchronizer$.unsubscribe();
+  }
+
+  addCommentToProcedure() {
+    this.router.navigate([this.procedure_id, 'Pcomments'],
+      { relativeTo: this.route }
+    );
+  }
+
+  enableComments(procedure: ProcedureDto | null): void {
+    if (procedure) {
+      this.disableComments = false;
+      this.procedure_id = procedure.id;
+    }
+  }
 }

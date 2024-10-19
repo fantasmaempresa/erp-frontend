@@ -212,14 +212,6 @@ export class RegistrationProcedureDataView {
         html += `<hr><br>`;
     }
     return html;
-    
-        
-        
-        
-        
-        
-        
-        
   })
   data: [];
 
@@ -267,13 +259,14 @@ const goToNew = new ViewActions<RegistrationProcedureDataDto>(
     let procedure_id = localStorage.getItem('phase_procedure_id');
     const router = injector.get(Router);
     const route = injector.get(ActivatedRoute);
+    console.log('navegando a registrationData');
     await router.navigate(['./registrationData', procedure_id, 'new'], {
       relativeTo: route,
     });
   },
   'add',
   {
-    tooltip: 'Agregar gestión',
+    tooltip: 'Agregar dato de registro',
     color: 'primary',
     isVisible: (row: RegistrationProcedureDataDto) => true,
   },
@@ -290,7 +283,7 @@ const goToEdit = new ViewActions<RegistrationProcedureDataDto>(
   },
   'edit',
   {
-    tooltip: 'Editar dato de registro',
+    tooltip: 'Editar datos de registro',
     color: 'primary',
     isVisible: (row: RegistrationProcedureDataDto) => row && row.id > 0,
   },

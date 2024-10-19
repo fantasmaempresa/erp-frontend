@@ -45,6 +45,7 @@ export class DocumentLinkFormComponent implements OnDestroy {
 
     if (typeof data?.view != 'undefined' && data?.view == 'phase') {
       id = Number(this.route.snapshot.params.procedure_id);
+      this.view = 'procedures';
     } else if(typeof this.route.snapshot.params.idIncoming != 'undefined') {
       id = Number(this.route.snapshot.params.idIncoming);
       this.view = 'incomming';
