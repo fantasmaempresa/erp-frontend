@@ -41,4 +41,18 @@ export class InventoryService extends CrudService<
     );
   }
 
+  purchase(data: {article_id: number, warehouse_id: number, amount: number}) {
+    return this._http.post(
+      `${environment.base_url}/inventory/action/purchase`,
+      data,
+    );
+  }
+
+  sale(data: {article_id: number, warehouse_id: number, amount: number}) {
+    return this._http.post(
+      `${environment.base_url}/inventory/action/sale`,
+      data,
+    );
+  }
+
 }

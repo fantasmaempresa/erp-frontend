@@ -4,7 +4,7 @@ import { DEFAULT_ROUTE_CONFIGURATION } from "src/app/core/constants/routes.const
 import { WarehouseDto } from "../dto/Warehouse.dto";
 import { ActivatedRoute, Router } from "@angular/router";
 
-const goToAddArticleToInventory = new ViewActions<WarehouseDto>(
+const goToInitialInventory = new ViewActions<WarehouseDto>(
     async ({ row, injector }) => {
         const router = injector.get(Router);
         const route = injector.get(ActivatedRoute);
@@ -55,7 +55,7 @@ const goToStock = new ViewActions<WarehouseDto>(
     registerName: 'Almacén',
     route: DEFAULT_ROUTE_CONFIGURATION,
     actions: [
-        goToAddArticleToInventory,
+        goToInitialInventory,
         goToStock,
     ],
 })

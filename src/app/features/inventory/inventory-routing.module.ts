@@ -29,6 +29,16 @@ const routes: Routes = [
         component: InventoryFormComponent,
         data: { breadcrumb: 'Editar Inventtario'},
       },
+      {
+        path: 'purchase/:article_id',
+        component: InventoryFormComponent,
+        data: { breadcrumb: 'Comprar Artículo'},
+      },
+      {
+        path: 'sale/:article_id',
+        component: InventoryFormComponent,
+        data: { breadcrumb: 'Vender Artículo'},
+      },
     ],
   }
 ];
