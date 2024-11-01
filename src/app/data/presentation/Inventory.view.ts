@@ -1,9 +1,10 @@
-import { ViewActions, viewCrud, viewLabel, viewMapTo } from "o2c_core";
+import { viewActions, ViewActions, viewCrud, viewLabel, viewMapTo } from "o2c_core";
 import { InventoryService } from "../services/inventory.service";
 import { DEFAULT_ROUTE_CONFIGURATION } from "src/app/core/constants/routes.constants";
 import { ArticleDto } from "../dto/Article.dto";
 import { InventoryDto } from "../dto/Inventory.dto";
 import { ActivatedRoute, Router } from "@angular/router";
+import { Injector } from "@angular/core";
 
 const goToPurchase = new ViewActions<InventoryDto>(
     async ({ row, injector}) => {
@@ -49,6 +50,28 @@ const goToSale = new ViewActions<InventoryDto>(
     },
 );
 
+const goToTransfer = new ViewActions<InventoryDto>(
+    async ({ row, injector}) => {
+        const router = injector.get(Router);
+        const route = injector.get(ActivatedRoute);
+        await router.navigate(
+            [
+                '../',
+                'transfer',
+                (row as InventoryDto).article_id,
+            ],{
+                relativeTo: route,
+            }
+        );
+    },
+    'move_up',
+    {
+        tooltip: 'Transferir Artículo',
+        isVisible: (row) => row.id !== null,
+        color: 'accent',
+    },
+);
+
 @viewCrud({
     classProvider: InventoryService,
     registerName: 'Inventario',
@@ -56,6 +79,7 @@ const goToSale = new ViewActions<InventoryDto>(
     actions: [
         goToPurchase,
         goToSale,
+        goToTransfer,
     ]
 })
 export class InventoryView {

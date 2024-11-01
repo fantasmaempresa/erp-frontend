@@ -55,4 +55,11 @@ export class InventoryService extends CrudService<
     );
   }
 
+  warehouseTransfer(data: {article_id: number, warehouse_id: number, amount: number, destination_warhouse_id: number}) {
+    return this._http.post(
+      `${environment.base_url}/inventory/action/warehouseTransfer`,
+      data,
+    );
+  }
+
 }

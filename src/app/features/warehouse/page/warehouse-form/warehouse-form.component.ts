@@ -23,7 +23,7 @@ export class WarehouseFormComponent implements OnDestroy{
       Validators.required,
       Validators.maxLength(50),
     ]),
-    adress: new UntypedFormControl('',[
+    address: new UntypedFormControl('',[
       Validators.required,
       Validators.maxLength(100),
     ]),

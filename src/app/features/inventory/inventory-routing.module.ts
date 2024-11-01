@@ -39,6 +39,11 @@ const routes: Routes = [
         component: InventoryFormComponent,
         data: { breadcrumb: 'Vender Artículo'},
       },
+      {
+        path: 'transfer/:article_id',
+        component: InventoryFormComponent,
+        data: { breadcrumb: 'Transferir Artículo'},
+      },
     ],
   }
 ];
