@@ -1,7 +1,7 @@
 import { viewCrud, viewLabel, viewMapTo } from 'o2c_core';
 import { ProjectService } from '../services';
 import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
-import { StaffDto } from '../dto';
+import { ClientDto, ProcedureDto, ProjectQuoteDto, StaffDto } from '../dto';
 
 @viewCrud({
   classProvider: ProjectService,
@@ -9,35 +9,43 @@ import { StaffDto } from '../dto';
   registerName: 'Project',
 })
 export class ProjectView {
-  @viewLabel('Nombre')
+  // @viewLabel('Nombre')
   name: string;
 
-  @viewLabel('Descripción')
+  // @viewLabel('Descripción')
   description: string;
 
-  @viewLabel('Fecha')
-  estimate_end_date: Date;
-
-  quotes: string;
 
   @viewLabel('Responsable')
   @viewMapTo((staff: any) => `${staff.name} ${staff.last_name} ${staff.mother_last_name}`)
   staff: StaffDto;
 
-  // @viewLabel('status')
-  
+  @viewLabel('Expediente')
+  @viewMapTo((procedure: any) => procedure ? `${procedure.name}` : 'Sin expediente asignado')
+  procedure: ProcedureDto;
+
+  @viewLabel('Cliente')
+  @viewMapTo((client: any) => `${client.name} ${client.last_name} ${client.mother_last_name}`)
+  client: ClientDto;
+
+  @viewLabel('Cotización')
+  @viewMapTo((projectQuote: any) => `${projectQuote.name}`)
+  project_quote: ProjectQuoteDto;
+
   constructor(
     name: string,
     description: string,
-    estimate_end_date: Date,
-    quotes: string,
+    procedure: ProcedureDto,
     staff: StaffDto,
+    client: ClientDto,
+    project_quote: ProjectQuoteDto
   ) {
     this.name = name;
     this.description = description;
-    this.estimate_end_date = estimate_end_date;
-    this.quotes = quotes;
+    this.procedure = procedure;
     this.staff = staff;
+    this.client = client;
+    this.project_quote = project_quote;
   }
 
   static mapToProcessOnChange(config: any[]) {
@@ -74,7 +82,7 @@ export class ProjectView {
         return {
           supervisor_reference: supervisor
             .filter(({ user }: { user: boolean }) => user)
-            .map(({ id }: { id: number }) =>{
+            .map(({ id }: { id: number }) => {
               console.log('supervisorUsers -->', supervisorUsers);
               return supervisorUsers.find((element: any) => element.id === id);
             }

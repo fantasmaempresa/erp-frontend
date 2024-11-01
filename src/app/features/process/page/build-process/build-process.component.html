@@ -53,9 +53,8 @@
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Roles Supervisores</mat-label>
               <input
-                [providers]="rolesProvider"
-                [service]="rolesService"
-                app-bind-multi-popup
+                [viewClassBuilder]="rolesProvider"
+                o2cMultiPopup
                 formControlName="roles_supervision"
                 matInput
                 title="Roles Supervisores"
@@ -66,9 +65,8 @@
             <mat-form-field appearance="outline" class="w-100">
               <mat-label>Equipo de Trabajo</mat-label>
               <input
-                [providers]="rolesProvider"
-                [service]="rolesService"
-                app-bind-multi-popup
+                [viewClassBuilder]="rolesProvider"
+                o2cMultiPopup
                 formControlName="roles_team"
                 matInput
                 title="Equipo de Trabajo"

@@ -27,6 +27,11 @@ export class ProjectFormComponent {
 
   staffProvider = StaffView;
 
+  process = [
+    { value: 1, label: 'Escritura Pública' },
+    { value: 2, label: 'Acta Notarial' },
+  ]
+
 
   projectQuoteProvider = ProjectQuoteView;
   constructor(
@@ -35,12 +40,13 @@ export class ProjectFormComponent {
     private projectService: ProjectServiceOld,
   ) {
     this.form = new UntypedFormGroup({
-      name: new UntypedFormControl(null, Validators.required),
+      name: new UntypedFormControl(null, []),
       description: new UntypedFormControl(null, Validators.maxLength(400)),
       client_id: new UntypedFormControl(null, Validators.required),
       staff_id: new UntypedFormControl(null, Validators.required),
       project_quote_id: new UntypedFormControl(null, []),
       config: new UntypedFormControl(null, Validators.required),
+      type_project: new UntypedFormControl(null, Validators.required),
     });
 
     const id = Number(this.route.snapshot.params.id);
@@ -88,9 +94,8 @@ export class ProjectFormComponent {
     const request$ = this.edit
       ? this.projectService.update(this.form.value)
       : this.projectService.save(this.form.value);
-    const message = `El proyecto se ha ${
-      this.edit ? 'actualizado' : 'creado'
-    } correctamente`;
+    const message = `El proyecto se ha ${this.edit ? 'actualizado' : 'creado'
+      } correctamente`;
     MessageHelper.showLoading('Enviando al Servidor...');
     request$.subscribe({
       next: async () => {

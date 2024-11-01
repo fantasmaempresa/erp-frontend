@@ -1,4 +1,32 @@
+<div class="alert" *ngIf="showNotification">
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+  {{ textNotification }}
+</div>
 <mat-card>
+  <mat-toolbar class="actions-view">
+    <button (click)="openDialogLastedRelatedReports()"  matTooltip="Cambiar de formato" mat-icon-button>
+      <mat-icon>preview</mat-icon>
+    </button>
+
+    <button (click)="openDialogLastedRelatedReports(true)" matTooltip="Seleccionar trabajo previo" mat-icon-button>
+      <mat-icon>check_box</mat-icon>
+    </button>
+
+    <button (click)="reloadStructureFormat()"  matTooltip="Restablecer valores de formato" mat-icon-button>
+      <mat-icon>refresh</mat-icon>
+    </button>
+
+    <button (click)="onSubmit()"  matTooltip="Guardar" mat-icon-button>
+      <mat-icon>save</mat-icon>
+    </button>
+
+
+    <button (click)="generateReport()"  matTooltip="Descargar Formato" mat-icon-button>
+      <mat-icon>download</mat-icon>
+    </button>
+
+  </mat-toolbar>
+
   <form (ngSubmit)="onSubmit()" [formGroup]="form">
     <div class="row justify-content-center">
       <div class="col-6 d-flex flex-column mt-4 mb-4">
@@ -16,10 +44,4 @@
       </button>
     </div>
   </form>
-
-  <div class="row justify-content-center">
-    <div class="col-6 d-flex flex-column mt-4 mb-4">
-      <button color="primary" mat-flat-button (click)="generateReport()">Generar {{ title }}</button>
-    </div>
-  </div>
 </mat-card>

@@ -13,11 +13,6 @@ import {
   takeUntil
 } from "rxjs";
 import { ProcessView, ProjectView } from "../../../../data/presentation";
-import {
-  ProcessPhaseServiceOld,
-  ProcessServiceOld,
-  RoleServiceOld
-} from "../../../../data/services";
 
 @Component({
   selector: "app-build-project",
@@ -45,9 +40,6 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
   private destroy$ = new Subject<boolean>();
 
   constructor(
-    private processPhaseService: ProcessPhaseServiceOld,
-    private processService: ProcessServiceOld,
-    private roleService: RoleServiceOld,
     private popupService: PopupService
   ) {
     this.involvedFormArray.valueChanges
@@ -88,7 +80,6 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
     console.log("process -->", phase[0]);
     return phase[0];
   };
-  // this.processPhaseService.fetch(process.phase.id).pipe(shareReplay());
 
   nameMapFn = (value: any) => {
     console.log('value?.name --> ', value);
@@ -153,28 +144,12 @@ export class BuildProjectComponent implements ControlValueAccessor, OnDestroy {
     this.onTouch = fn;
   }
 
-  // configProcess: {
-  //   process: { id: number };
-  //   phases: { phase: { id: number }; involved: any }[];
-  // }[],
   async writeValue(configProcess: any) {
     if (configProcess) {
       this.processes = configProcess[1];
       this.users_data = configProcess[0];
       this.roles = configProcess[3];
       this.buildInvolvedFormArray(configProcess[1]);
-
-      // const processPhase = await Promise.all(
-      //   this.processes.map(async ({ config }: any) =>
-      //     Promise.all(
-      //       config.order_phases.map(async (phase: any) => ({
-      //         supervisor: this.userGroup(phase.involved.supervisor),
-      //         work_group: this.userGroup(phase.involved.work_group)
-      //       }))
-      //     )
-      //   )
-      // );
-
       const processPhase = [];
 
       for (const { config } of this.processes) {

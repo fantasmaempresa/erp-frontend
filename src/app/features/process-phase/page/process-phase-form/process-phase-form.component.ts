@@ -150,10 +150,13 @@ export class ProcessPhaseFormComponent implements OnDestroy {
       this.setStep(0);
       return;
     }
+
+    let values = this.form.value;
+    if (values.form.withFormat) { delete values.form.formats; }
     const message = this.edit ? 'actualizada' : 'guardada';
     const request$ = this.edit
-      ? this.processPhaseService.update(this.form.value)
-      : this.processPhaseService.save(this.form.value);
+      ? this.processPhaseService.update(values)
+      : this.processPhaseService.save(values);
     request$.subscribe({
       next: async () => {
         await MessageHelper.successMessage(

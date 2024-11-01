@@ -9,9 +9,17 @@
         <mat-icon>close</mat-icon>
       </button>
     </div>
-    <ng-container *ngFor="let info of displayedInfo">
-      <span class="card-view__field">{{ info.label }}</span>
-      <span class="card-view__value">{{ project[info.key] }}</span>
+    <ng-container> 
+      <span class="card-view__field">Expediente</span>
+      <span class="card-view__value">{{project.procedure?.name}} </span>
+    </ng-container>
+    <ng-container> 
+      <span class="card-view__field">Cliente</span>
+      <span class="card-view__value">{{project.client?.name}} {{project.client?.last_name}} {{project.client?.mother_last_name}}</span>
+    </ng-container>
+    <ng-container>
+      <span class="card-view__field">Responsable</span>
+      <span class="card-view__value">{{project.staff.name}} {{project.staff.last_name}} {{project.staff.mother_last_name}}</span>
     </ng-container>
 
     <span class="card-view__field">Procesos</span>

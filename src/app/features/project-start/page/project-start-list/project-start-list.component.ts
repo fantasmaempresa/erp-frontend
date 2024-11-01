@@ -20,24 +20,6 @@ export class ProjectStartListComponent implements OnInit, OnDestroy {
 
   isAdmin: boolean = false;
 
-  displayedInfo: { key: keyof MyProjectDto; label: string }[] = [
-    {
-      label: 'Nombre',
-      key: 'name',
-    },
-    {
-      label: 'Descripción',
-      key: 'description',
-    },
-    {
-      label: 'Folio',
-      key: 'folio',
-    },
-    {
-      label: 'Fecha Estimada',
-      key: 'estimate_end_date',
-    },
-  ];
 
   constructor(
     private route: ActivatedRoute,

@@ -1,24 +1,9 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   Component,
   forwardRef,
-  Injector,
-  OnDestroy,
-  StaticProvider,
+  OnDestroy
 } from '@angular/core';
-import {
-  CLAZZ,
-  LOAD_ACTION,
-  LOAD_NEXT_ACTION,
-  SELECTOR,
-} from '../../../../shared/components/dynamic-views/dynamic-views.module';
-import { PopupMultiSelectorComponent } from '../../../../shared/components/dynamic-views/popup-multi-selector/popup-multi-selector.component';
-import { ProcessPhaseDto } from '../../../../data/dto';
-import {
-  loadNextPageOfProcessPhase,
-  loadProcessPhase,
-  selectProcessPhase,
-} from '../../../../state/process-phase';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import {
   ControlValueAccessor,
   NG_VALUE_ACCESSOR,
@@ -27,22 +12,17 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { debounceTime, Subject, take, takeUntil } from 'rxjs';
-import {
-  ProcessPhaseServiceOld,
-  RoleServiceOld,
-} from '../../../../data/services';
-import {
-  loadNextPageOfRoles,
-  loadRoles,
-  selectRoles,
-} from '../../../../state/role';
+import { PopupService } from 'o2c_core';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { ProcessPhaseDto } from '../../../../data/dto';
 import {
   ProcessPhaseView,
   ProcessView,
   RoleView,
 } from '../../../../data/presentation';
-import { MatDialog } from '@angular/material/dialog';
+import {
+  RoleServiceOld
+} from '../../../../data/services';
 
 @Component({
   selector: 'app-build-process',
@@ -65,19 +45,13 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
     order_phases: this.orderFormArray,
   });
 
-  rolesProvider: StaticProvider[] = [
-    { provide: SELECTOR, useValue: selectRoles },
-    { provide: CLAZZ, useValue: RoleView },
-    { provide: LOAD_ACTION, useValue: loadRoles() },
-    { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfRoles },
-  ];
+  rolesProvider = RoleView;
 
   private onDestroy$ = new Subject<number>();
 
   constructor(
-    private dialog: MatDialog,
-    private processPhaseService: ProcessPhaseServiceOld,
     public rolesService: RoleServiceOld,
+    public popupService: PopupService,
   ) {
     this.form.valueChanges
       .pipe(debounceTime(100), takeUntil(this.onDestroy$))
@@ -95,32 +69,15 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
   };
 
   openDialog() {
-    const inj = Injector.create({
-      providers: [
-        { provide: CLAZZ, useValue: ProcessPhaseView },
-        { provide: LOAD_ACTION, useValue: loadProcessPhase() },
-        { provide: LOAD_NEXT_ACTION, useValue: loadNextPageOfProcessPhase },
-        { provide: SELECTOR, useValue: selectProcessPhase },
-      ],
-    });
 
-    const dialogRef = this.dialog.open(PopupMultiSelectorComponent, {
-      data: {
-        title: 'Fases de Proceso',
-        property: 'name',
-        inj,
-      },
+    this.popupService
+    .openTablePopup({ viewClass: ProcessPhaseView, title: "Selecciona una fase", options: { isMulti: true }})
+    .subscribe((processPhases: any[]) => {
+      if (processPhases) {
+        this.processPhases = processPhases;
+        this.buildOrderFormArray();
+      }
     });
-
-    dialogRef
-      .afterClosed()
-      .pipe(take(1))
-      .subscribe((processPhases: any[]) => {
-        if (processPhases) {
-          this.processPhases = processPhases;
-          this.buildOrderFormArray();
-        }
-      });
   }
 
   drop(event: CdkDragDrop<any, any>) {
@@ -148,19 +105,7 @@ export class BuildProcessComponent implements ControlValueAccessor, OnDestroy {
   writeValue(obj: any): void {
     if (obj) {
       console.log('obj -----> ', obj);
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      const { order_phases, phases_process } =
-        ProcessView.mapConfigOnWrite(obj);
-      // const arrayRequest$ = phases_process.map(({ id }) =>
-      //   this.processPhaseService.fetch(id),
-      // );
-      // forkJoin(arrayRequest$).subscribe((phasesProcess: ProcessPhaseDto[]) => {
-      //   this.processPhases = phasesProcess;
-      //   this.buildOrderFormArray();
-      //   this.orderFormArray.patchValue(order_phases);
-      //   console.log('order_phases -->', phasesProcess);
-      // });
-
+      const { order_phases, phases_process } = ProcessView.mapConfigOnWrite(obj);
       this.processPhases = obj.phases;
       this.buildOrderFormArray();
       this.orderFormArray.patchValue(order_phases);

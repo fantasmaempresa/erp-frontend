@@ -4,12 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { LoaderService, MessageHelper } from 'o2c_core';
 import { map, Observable, startWith, Subject, switchMap, tap } from 'rxjs';
+import { CommandProjectDto, ProcedureDto } from 'src/app/data/dto';
+import { ProjectActionEventService } from 'src/app/data/services/project-action-event.service';
 import { SharedDataService } from 'src/app/data/services/shared-data.service';
 import { MyProjectsService } from '../../../../data/services';
 import { messageDecision } from '../../../../shared/helpers/message-wrapper';
-import { ProjectActionEventService } from 'src/app/data/services/project-action-event.service';
-import { CommandProjectDto, ProcedureDto } from 'src/app/data/dto';
-import { callback } from 'chart.js/dist/helpers/helpers.core';
 
 @AutoUnsubscribe()
 @Component({
@@ -67,8 +66,6 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
     private myProjectService: MyProjectsService,
     private synchronizer: SharedDataService,
     private _socket: ProjectActionEventService,
-    private loader: LoaderService,
-
   ) {
 
     const { id, idProcess } = this.route.snapshot.params;
@@ -88,8 +85,17 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
         action.project_id == this.projectId
       ) {
         if (action.action.action == 'finishProject') {
-          this.router.navigate(['../../../']);
+          this.router.navigate(['/app/project-start/list']);
         }
+      }
+
+      if (action.action.command == 'send_internal_notification' &&
+        action.process_id == this.processId &&
+        action.project_id == this.projectId) {
+        this.synchronizer.executionCommand({
+          args: action.data,
+          command: 'show_notification',
+        });
       }
     },
     );
@@ -242,7 +248,7 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
             processId: this.processId,
             form: {
               correction: correction,
-              form : {...values},
+              form: { ...values },
             },
           })
           .subscribe({
@@ -311,9 +317,10 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.refresh.unsubscribe();
-    this.socket$.unsubscribe();
-    this.synchronizer$.unsubscribe();
+    if(this.refresh) this.refresh.unsubscribe();
+    if(this.socket$) this.socket$.unsubscribe();
+    if(this.synchronizer$) this.synchronizer$.unsubscribe();
+    
   }
 
   addCommentToProcedure() {

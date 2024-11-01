@@ -52,12 +52,13 @@ export abstract class DynamicViewComponent<T extends EntityDto> {
         useValue: inj.get(CLAZZ),
       },
     ]);
-
     this.loadNextPageAction = inj.get(LOAD_NEXT_ACTION);
     const actionKey = inj.get(ACTION_KEY, null);
     this.selector = inj.get(SELECTOR);
     this.loadAction = inj.get(LOAD_ACTION);
     const class2View = injector.get(Class2ViewBuilderService);
+    console.log('class2View ---> ', class2View);
+
     this.labels = class2View.getLabels();
     this.displayedColumns = class2View.getAttrs();
     this.mapToFields = class2View.getMapsFunctions();

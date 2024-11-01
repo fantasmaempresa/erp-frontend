@@ -47,18 +47,25 @@ export class PredefinedFormsProjectsService {
       withFormat: true,
       formats: [
         {
-          title: 'Datos para generar primer aviso preventivo',
+          title: 'Datos para primer aviso preventivo',
           name: 'Primer aviso preventivo',
           nameProcess: 'DomainTransfer',
           namePhase: 'generateFirstPreventiveNotice',
           generateFormat: 'getFormatFirstPreventiveNotice',
         },
         {
-          title: 'Generar proyecto de escrituración',
-          name: 'Proyecto de escrituración',
+          title: 'Datos para segundo aviso preventivo',
+          name: 'Segundo aviso preventivo',
           nameProcess: 'DomainTransfer',
-          namePhase: 'getFormatBuySell',
-          generateFormat: 'generateBuySell',
+          namePhase: 'generateSecondPreventiveNotice',
+          generateFormat: 'getFormatSecondPreventiveNotice',
+        },
+        {
+          title: 'Escritura',
+          name: 'Proyecto para escrituras',
+          nameProcess: 'DomainTransfer',
+          namePhase: 'generateBuySell',
+          generateFormat: 'getFormatBuySell',
         }
       ]
     },

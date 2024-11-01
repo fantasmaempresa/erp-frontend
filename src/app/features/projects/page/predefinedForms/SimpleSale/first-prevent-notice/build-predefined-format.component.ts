@@ -1,10 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, UntypedFormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { LoaderService, MessageHelper } from 'o2c_core';
+import { LoaderService, MessageHelper, PopupService } from 'o2c_core';
+import { concatMap, Observable } from 'rxjs';
 import { PredefinedFormLifeCycle } from 'src/app/core/interfaces/PredefinedFormLifeCycle';
+import { ReportConfigurationDto } from 'src/app/data/dto/ReportConfiguration.dto';
+import { ReportConfigurationView } from 'src/app/data/presentation/ReportConfiguration.view';
 import { ExcecutePhasePredefinedService } from 'src/app/data/services/excecute-phase-predefined.service';
+import { ReportConfigurationService } from 'src/app/data/services/report-configuration.service';
 import { SharedDataService } from 'src/app/data/services/shared-data.service';
 import { CategoryOptions, EditorOptions } from 'src/app/shared/components/text-editor-with-category-autocomplete/text-editor-with-category-autocomplete.component';
 
@@ -17,6 +20,8 @@ import { CategoryOptions, EditorOptions } from 'src/app/shared/components/text-e
 export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, PredefinedFormLifeCycle {
   nameProcess: string = '';
   namePhase: string = '';
+  project_id: number = 0;
+  process_id: number = 0;
   generateFormat: string = '';
   categories: CategoryOptions[] = [];
   editorArray: EditorOptions[] = [];
@@ -26,13 +31,21 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
   patchValues: any = null;
   loadStructure: boolean = false;
   synchronizer$: any;
+  lastReport: ReportConfigurationDto | null = null;
+  updateReport: ReportConfigurationDto | null = null;
+  showNotification: boolean = false;
+  textNotification: string = '';
+  $notification: Observable<any> | null = null;
+  $popUp: Observable<any> | null = null;
 
   constructor(
-    private route: ActivatedRoute,
     private synchronizer: SharedDataService,
     private dispacher: ExcecutePhasePredefinedService,
     private loaderService: LoaderService,
+    public popupService: PopupService,
+    public reportConfigurationService: ReportConfigurationService,
   ) {
+
     this.form = new UntypedFormGroup({
       format: new FormControl('', []),
     });
@@ -40,14 +53,11 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
 
   ngOnInit(): void {
     this.synchronizer.updateLastForm(this.form);
-
     if (this.synchronizer$) this.synchronizer$.unsubscribe();
     this.synchronizer$ = this.synchronizer.executionCommand$.subscribe((commands) => {
       console.log('this.synchronizer.executionCommand$ ---> ', commands);
       this.executeCommands(commands);
     });
-
-
   }
   ngOnDestroy(): void {
     if (this.synchronizer$) this.synchronizer$.unsubscribe();
@@ -58,8 +68,12 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
     this.onSubmit(args, callback);
   }
 
-  prev(args?: { process_id: number; project_id: number; data: any; }, callback?: Function) {
-
+  prev(
+    args?: {
+      process_id: number;
+      project_id: number;
+      data: any;
+    }, callback?: Function) {
   }
 
   writeValue(value: any) {
@@ -71,24 +85,63 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
       this.patchValues = value;
   }
 
-  onSubmit(args?: any, callback?: Function): void {
-    this.dispacher.saveFormat(args.project_id, args.process_id,
-      {
-        data: { content: this.transformData([this.form.controls.format.value]) },
-        namePhase: this.namePhase,
-        nameProcess: this.nameProcess,
-      }).subscribe({
-        next: (value: any) => {
-          if (typeof callback == 'function') {
-            callback(JSON.stringify({ report: value.id }));
+  onSubmit(args?: any, callback?: Function, decisionMessage: boolean = true): void {
+
+    if (!this.loadStructure) {
+      MessageHelper.errorMessage('Primero tiene que cargarse el reporte');
+      return;
+    }
+
+    let data: any = this.updateReport ?
+      { content: this.transformData([this.form.controls.format.value]), reportConfiguration_id: this.updateReport.id } :
+      { content: this.transformData([this.form.controls.format.value]) };
+
+    data = this.lastReport ? { ...data, lasted_related_report_id: this.lastReport.id } : data;
+
+
+    let submit = () => {
+      this.dispacher.saveFormat(this.project_id, this.process_id,
+        {
+          data: data,
+          namePhase: this.namePhase,
+          nameProcess: this.nameProcess,
+        }).pipe(
+          concatMap((value: any) => {
+            this.updateReport = value;
+            return this.dispacher.issueEvent(
+              this.project_id,
+              this.process_id,
+              {
+                nameProcess: this.nameProcess,
+                namePhase: this.namePhase,
+                data: { message: 'Se hizo un cambio a un formato creado es esta actividad' }
+              })
+          })
+        )
+        .subscribe({
+          next: (value: any) => {
+            if (typeof callback == 'function') {
+              callback(JSON.stringify({ report: value.id }));
+            } else {
+              MessageHelper.successMessage('Reporte guardado', 'El reporte se guardo correctamente');
+            }
+          },
+          error: (error) => {
+            MessageHelper.errorMessage('No se puede almacenar la información por el momento, consulte a su administrador');
           }
-        },
-        error: (error) => {
-          MessageHelper.errorMessage('No se puede almacenar la información por el momento, consulte a su administrador');
-        }
-      });
+        });
+    };
 
-
+    if (decisionMessage) {
+      MessageHelper.decisionMessage(
+        'Guardar Reporte',
+        '¿Desea guardar el reporte?',
+        submit
+      );
+    }else {
+      submit;
+    }
+    
   }
 
   executeCommands(commands: { command: string; args?: any; callback?: Function; }) {
@@ -105,35 +158,67 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
       case 'patchForm':
         this.writeValue(commands.args);
         break;
+      case 'show_notification':
+        this.notification(commands.args);
+        break;
       default:
         console.log('Comando no reconocido');
     }
   }
 
-  loadStructureFormat(args: any) {
-    if (args.format[0].namePhase == '' ||
-      args.format[0].nameProcess == '' ||
-      args.format[0].generateFormat == '')
-      return;
+  reloadStructureFormat() {
+    this.updateReport = null;
+    this.lastReport = null;
+    this.loadStructure = false;
+    this.form.get('form')?.reset();
+    this.editorArray = [];
+    this.categories = [];
+    this.loadStructureFormat([], true);
+  }
+  loadStructureFormat(args?: any, reload = false) {
 
-    this.generateFormat = args.format[0].generateFormat ?? '';
-    this.namePhase = args.format[0].namePhase ?? '';
-    this.nameProcess = args.format[0].nameProcess ?? ''
+    if (this.generateFormat == '' && this.namePhase == '' && this.nameProcess == '') {
+      if (args.format.namePhase == '' ||
+        args.format.nameProcess == '' ||
+        args.format.generateFormat == '')
+        return;
+      else {
+        this.generateFormat = args.format.generateFormat ?? '';
+        this.namePhase = args.format.namePhase ?? '';
+        this.nameProcess = args.format.nameProcess ?? ''
+        this.project_id = args.project_id;
+        this.process_id = args.process_id;
+      }
+    }
 
-    if (!this.loadStructure) {
+    let data: any = this.lastReport ? { lasted_related_report_id: this.lastReport.id, reload: reload } : { reload: reload }
+    data = this.updateReport ? { ...data, last_report_id: this.updateReport.id } : data;
+    if (!this.loadStructure || reload) {
       this.loadStructure = true;
       console.log("se pide la estructura del formato --> ", args);
-      this.loaderService.showFullScreenLoader();
+      MessageHelper.showLoading();
       this.dispacher.getStructureFormat(
-        args.project_id,
-        args.process_id,
+        this.project_id,
+        this.process_id,
         {
           namePhase: this.namePhase,
           nameProcess: this.nameProcess,
-          data: { test: 'test' }
+          data: data
         })
         .subscribe({
           next: (value: any) => {
+
+            this.lastReport = typeof value.lasted_related_report_id != 'undefined' ? value.lasted_related_report_id : null;
+            this.updateReport = typeof value.id_report != 'undefined' ? {
+              id: value.id_report,
+              name: '',
+              name_phase: this.namePhase,
+              name_process: this.nameProcess,
+              process_id: this.process_id,
+              project_id: this.project_id,
+              data: {}
+            } : null;
+
             this.editorArray = value.content.map((item: any) => {
               return {
                 name: item.name,
@@ -157,29 +242,37 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
               } else {
                 this.form.patchValue({ format: patch });
               }
-            }, 200);
+            }, 400);
 
-            this.loaderService.hideLoader();
+            MessageHelper.hide();
+
           },
-          error: (error: any) => {
-            this.loaderService.hideLoader();
-            MessageHelper.errorMessage('No se puede generar la estructura en este momento');
-            this.loadStructure = false;
+          error: async (error: any) => {
 
+            console.log('error.code --> ', error);
+            if (error.error.code == 422) {
+              MessageHelper.infoMessage('Tienes que seleccionar un formato previo de referencia');
+            } else {
+              MessageHelper.errorMessage('No se puede generar la estructura en este momento');
+            }
+            this.loadStructure = false;
           },
         });
     }
 
   }
 
-  submit() {
-    this.form.value;
-  }
-
   generateReport() {
+
+    if (!this.loadStructure) {
+      MessageHelper.errorMessage('Primero tiene que cargarse el reporte');
+      return;
+    }
+
     console.log('generating report');
     if (this.namePhase == '' && this.nameProcess == '') return;
     this.loaderService.showFullScreenLoader();
+    console.log('generating report', this.form.controls.format.value);
     this.dispacher.generateFormat({
       namePhase: this.generateFormat,
       nameProcess: this.nameProcess,
@@ -217,5 +310,82 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
       }));
       return resultado.concat(nuevosElementos);
     }, []);
+  }
+
+  openDialogLastedRelatedReports(related: boolean = false) {
+
+    if (!this.loadStructure && !related) {
+      MessageHelper.errorMessage('Primero tiene que cargarse el reporte');
+      return;
+    }
+
+    let uri = related ? 'getLastedRelatedReports' : 'getLastedReports';
+
+
+    this.reportConfigurationService.setData(
+      this.project_id,
+      this.process_id,
+      { namePhase: this.namePhase, nameProcess: this.nameProcess, uri: uri }
+    );
+
+    this.popupService
+      .openTablePopup({ viewClass: ReportConfigurationView, title: "Selecciona un reporte", options: { isMulti: false } })
+      .subscribe((report: ReportConfigurationDto) => {
+        if (report) {
+
+          if (related) {
+            this.lastReport = report;
+            this.loadStructureFormat([], true);
+
+          } else {
+            this.updateReport = report;
+            // this.loadStructureFormat([], true);
+            console.log('report   ----> ', report);
+            if (report.data.content) {
+              this.form.get('form')?.reset();
+              this.editorArray = [];
+              this.editorArray = report.data.content.map((item: any) => {
+                return {
+                  name: item.name,
+                  controlName: item.name,
+                };
+              });
+
+              let patch = report.data.content.reduce((acc: any, item: any) => {
+                //  @ts-ignore
+                acc[item.name] = item.text;
+                return acc;
+              }, {});
+
+              setTimeout(() => {
+                this.form.patchValue({ format: patch });
+              }, 200);
+
+              if (report.data.lasted_related_report_id) {
+                this.lastReport = {
+                  name: '',
+                  id: report.data.lasted_related_report_id,
+                  data: {},
+                  name_process: this.nameProcess,
+                  name_phase: this.namePhase,
+                  project_id: this.project_id,
+                  process_id: this.process_id,
+                };
+              }
+            }
+          }
+        }
+      });
+  }
+  notification(data: { namePhase: string, nameProcess: string, message: string }) {
+    console.log("entrada de notiticación ---> ", data, this.nameProcess, this.namePhase);
+    if (data.namePhase == this.namePhase && data.nameProcess == this.nameProcess) {
+      this.textNotification = data.message;
+      this.showNotification = true;
+
+      setTimeout(() => {
+        this.showNotification = false;
+      }, 40000);
+    }
   }
 }

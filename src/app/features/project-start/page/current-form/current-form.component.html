@@ -1,14 +1,14 @@
 <mat-card>
   <mat-toolbar class="actions-view">
-    <button (click)="back()" aria-label="Regresar" mat-icon-button>
+    <button (click)="back()" matTooltip="Regresar" mat-icon-button>
       <mat-icon>arrow_back</mat-icon>
     </button>
 
-    <button (click)="addCommentToProcedure()" aria-label="Agregar comentario" mat-icon-button [disabled]="disableComments">
+    <button (click)="addCommentToProcedure()" matTooltip="Agregar comentario" mat-icon-button [disabled]="disableComments">
       <mat-icon>chat</mat-icon>
     </button>
   </mat-toolbar>
-  <app-preview-form-builder
+  <app-preview-form-builder class="mt-3"
     [formControl]="formControl"
     [formFields]="form$ | async"
   ></app-preview-form-builder>

@@ -1,4 +1,8 @@
 import { EntityDto } from 'o2c_core';
+import { ProcedureDto } from './Procedure.dto';
+import { StaffDto } from './Staff.dto';
+import { ClientDto } from './Client.dto';
+import { ProjectQuoteDto } from './ProjectQuote.dto';
 
 export interface ProcessDto extends EntityDto {
   description: string;
