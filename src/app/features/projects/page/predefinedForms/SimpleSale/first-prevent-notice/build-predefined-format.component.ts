@@ -65,7 +65,7 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
 
   next(args?: { process_id: number; project_id: number; data: any; }, callback?: Function) {
     console.log('Ejecuto comando ... next');
-    this.onSubmit(args, callback);
+    this.onSubmit(args, callback, false);
   }
 
   prev(
@@ -119,9 +119,9 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
           })
         )
         .subscribe({
-          next: (value: any) => {
+          next: () => {
             if (typeof callback == 'function') {
-              callback(JSON.stringify({ report: value.id }));
+              callback(JSON.stringify({ report: this.updateReport?.id }));
             } else {
               MessageHelper.successMessage('Reporte guardado', 'El reporte se guardo correctamente');
             }
@@ -138,10 +138,10 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
         '¿Desea guardar el reporte?',
         submit
       );
-    }else {
-      submit;
+    } else {
+      submit();
     }
-    
+
   }
 
   executeCommands(commands: { command: string; args?: any; callback?: Function; }) {
@@ -175,7 +175,7 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
     this.categories = [];
     this.loadStructureFormat([], true);
   }
-  loadStructureFormat(args?: any, reload = false) {
+  loadStructureFormat(args?: any, reload = false, sync = false) {
 
     if (this.generateFormat == '' && this.namePhase == '' && this.nameProcess == '') {
       if (args.format.namePhase == '' ||
@@ -193,9 +193,8 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
 
     let data: any = this.lastReport ? { lasted_related_report_id: this.lastReport.id, reload: reload } : { reload: reload }
     data = this.updateReport ? { ...data, last_report_id: this.updateReport.id } : data;
-    if (!this.loadStructure || reload) {
+    if (!this.loadStructure || reload || sync) {
       this.loadStructure = true;
-      console.log("se pide la estructura del formato --> ", args);
       MessageHelper.showLoading();
       this.dispacher.getStructureFormat(
         this.project_id,
@@ -208,7 +207,9 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
         .subscribe({
           next: (value: any) => {
 
-            this.lastReport = typeof value.lasted_related_report_id != 'undefined' ? value.lasted_related_report_id : null;
+            this.lastReport = typeof value.lasted_related_report_id != 'undefined'
+              ? value.lasted_related_report_id
+              : this.lastReport;
             this.updateReport = typeof value.id_report != 'undefined' ? {
               id: value.id_report,
               name: '',
@@ -217,7 +218,7 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
               process_id: this.process_id,
               project_id: this.project_id,
               data: {}
-            } : null;
+            } : this.updateReport;
 
             this.editorArray = value.content.map((item: any) => {
               return {
@@ -258,6 +259,8 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
             this.loadStructure = false;
           },
         });
+    } else {
+      console.log("No se puede cargar la estructura en este momento");
     }
 
   }
@@ -332,7 +335,6 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
       .openTablePopup({ viewClass: ReportConfigurationView, title: "Selecciona un reporte", options: { isMulti: false } })
       .subscribe((report: ReportConfigurationDto) => {
         if (report) {
-
           if (related) {
             this.lastReport = report;
             this.loadStructureFormat([], true);

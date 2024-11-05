@@ -12,8 +12,12 @@
       <mat-icon>check_box</mat-icon>
     </button>
 
-    <button (click)="reloadStructureFormat()"  matTooltip="Restablecer valores de formato" mat-icon-button>
-      <mat-icon>refresh</mat-icon>
+    <button (click)="reloadStructureFormat()"  matTooltip="Crear nuevo reporte" mat-icon-button>
+      <mat-icon>post_add</mat-icon>
+    </button>
+
+    <button (click)="loadStructureFormat({}, false, true)"  matTooltip="Actualizar cambios" mat-icon-button>
+      <mat-icon>sync</mat-icon>
     </button>
 
     <button (click)="onSubmit()"  matTooltip="Guardar" mat-icon-button>

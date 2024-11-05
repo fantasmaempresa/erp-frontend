@@ -1,7 +1,7 @@
 import { Component, ComponentRef, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { BasicViewComponent, HostDirective, LoaderService, MessageHelper, VIEW_CLAZZ, ViewActionsBuilder } from 'o2c_core';
+import { BasicViewComponent, HostDirective, LoaderService, MessageHelper, VIEW_CLAZZ, ViewActionsBuilder, ViewContextService } from 'o2c_core';
 import { PredefinedFormLifeCycle } from 'src/app/core/interfaces/PredefinedFormLifeCycle';
 import { DocumentDto } from 'src/app/data/dto';
 import { DocumentLinkPhaseView } from 'src/app/data/presentation/DocumentLink.view';
@@ -102,7 +102,10 @@ export class GenerateExpedientInPhaseComponent implements PredefinedFormLifeCycl
   prev(args?: { process_id: number; project_id: number; data: any; }, callback?: Function) { }
 
   writeValue(value: any) {
-    // this.shapeForm.patchValue(value.args);
+    if(this.componentRef.injector){
+      const viewContextService = this.componentRef.injector.get(ViewContextService);
+      viewContextService.reloadView();
+    }
   }
   executeCommands(commands: { command: string; args?: any; callback?: Function; }) {
     console.log('Ejecuto comando...', commands);
