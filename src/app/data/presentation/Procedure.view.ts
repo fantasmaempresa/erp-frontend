@@ -346,13 +346,13 @@ export class ProcedureView {
           '<span style="padding: 1rem; background: #0f7d0d; color: #eee ; border-radius: 10px; font-size: 1rem;">Aceptado</span>';
         break;
     }
-
+    
     return html;
   })
   status: number;
 
   @viewLabel('Volumen')
-  @viewMapTo((folio: any) => folio.book.name)
+  @viewMapTo((folio: any) => folio.book.name )
   folio: FolioDto;
 
   @viewLabel('Instrumento')

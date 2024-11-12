@@ -128,10 +128,10 @@ export class VulnerableOperationsFormComponent implements OnDestroy {
   form: UntypedFormGroup;
 
   constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private _procedureService: ProcedureService,
-    private _vulnerableOperationsService: VulnerableOperationService,
+    public router: Router,
+    public route: ActivatedRoute,
+    public _procedureService: ProcedureService,
+    public _vulnerableOperationsService: VulnerableOperationService,
   ) {
     this.form = new UntypedFormGroup({
       type_category: new UntypedFormControl(null, [Validators.required]),
@@ -157,7 +157,15 @@ export class VulnerableOperationsFormComponent implements OnDestroy {
       });
     });
 
-    const id = Number(this.route.snapshot.params.id);
+    let id = NaN;
+
+    const data = this.route.snapshot.routeConfig?.data;
+    if (typeof data?.view != 'undefined' && data?.view == 'phase') {
+      console.log('Estoy en una fase');
+      id = NaN;
+    } else {
+      id = Number(this.route.snapshot.params.id);
+    } 
     if (!isNaN(id)) {
       this.isEdit = true;
       this._vulnerableOperationsService.fetch(id).subscribe({

@@ -131,7 +131,8 @@ export class StartFormComponent
 
     this.synchronizer$ = this.synchronizer.executionCommand$.subscribe((commands) => {
       console.log('this.synchronizer.executionCommand$ ---> ', commands);
-      this.executeCommands(commands);
+      if(commands)
+        this.executeCommands(commands);
     });
   }
 

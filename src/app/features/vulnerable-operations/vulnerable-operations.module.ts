@@ -17,4 +17,4 @@ import { ViewsModule, FormsModule, FormComponent } from 'o2c_core';
     FormComponent,
   ],
 })
-export class VulnerableOperationsModule {}
+export class VulnerableOperationsModule { }

@@ -8,6 +8,7 @@ import { ShapePhaseFormComponent } from '../shape/page/shape-form/shape-form.com
 import { DocumentLinkPhaseFormComponent } from '../document-link/page/document-link-form/document-link-form.component';
 import { ProcessingIncomePhaseFormComponent } from '../processing-income/page/processing-income-form/processing-income-form.component';
 import { RegistratitonProcedureDataFormComponent, RegistratitonProcedureDataPhaseFormComponent } from '../registration-procedure-data/page/registratiton-procedure-data-form/registratiton-procedure-data-form.component';
+import { GenerateVulnerableOperationInPhaseComponent } from '../projects/page/predefinedForms/SimpleSale/generate-vulnerable-operation-in-phase/generate-vulnerable-operation-in-phase.component';
 
 const routes: Routes = [
   {
@@ -114,7 +115,7 @@ const routes: Routes = [
       },
       {
         path: 'editor/test',
-        component: BuildPredefinedFormatComponent,
+        component: GenerateVulnerableOperationInPhaseComponent,
         data: { breadcrumb: 'Prueba de editor' },
       },
     ],

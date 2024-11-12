@@ -93,18 +93,13 @@
               </mat-select>
               <mat-error appErrorMessage></mat-error>
             </mat-form-field>
-            
+
             <mat-form-field appearance="outline">
               <mat-label>Tipo de operación</mat-label>
-              <mat-select
-                formControlName="type_vulnerable_operation"
-              >
+              <mat-select formControlName="type_vulnerable_operation">
                 <mat-option>-- None --</mat-option>
                 <mat-option
-                  *ngFor="
-                    let operation of useDataOperation;
-                    index as i
-                  "
+                  *ngFor="let operation of useDataOperation; index as i"
                   [value]="operation.value"
                 >
                   {{ operation.label }}
@@ -118,7 +113,7 @@
                 [viewClassBuilder]="inversionUnitViewProvider"
                 title="Selecciona una UMA si es necesaria para esta operación vulnerable"
                 o2cSinglePopup
-                formControlName="inversion_unit_id" 
+                formControlName="inversion_unit_id"
                 matInput
                 type="text"
               />
@@ -175,7 +170,9 @@
 
         <mat-action-row>
           <button (click)="goToPrev()" color="warn" mat-button>Atras</button>
-          <button (click)="goToNext()" color="primary" mat-button>Siguiente</button>
+          <button (click)="goToNext()" color="primary" mat-button>
+            Siguiente
+          </button>
         </mat-action-row>
       </mat-expansion-panel>
 
@@ -198,7 +195,7 @@
 
         <mat-action-row>
           <button (click)="goToPrev()" color="warn" mat-button>Atras</button>
-          <button (click)="onSubmit(true)" color="primary" mat-button>Guardar</button>
+            <!-- <button (click)="onSubmit(true)" color="primary" mat-button>Guardar</button>  -->
         </mat-action-row>
       </mat-expansion-panel>
     </mat-accordion>

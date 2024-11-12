@@ -1,35 +1,45 @@
 <mat-card>
   <mat-toolbar>
-<!--    <div>-->
-<!--      <button (click)="back()" aria-label="Regresar" mat-icon-button>-->
-<!--        <mat-icon>arrow_back</mat-icon>-->
-<!--      </button>-->
-<!--    </div>-->
+    <div>
+      <button (click)="back()" aria-label="Regresar" mat-icon-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
   </mat-toolbar>
-
-  <ngx-graph
-    class="chart-container"
-    [view]="[1000, 500]"
-    [showMiniMap]="true"
-    [links]="edges"
-    [nodes]="nodes"
-    xmlns:svg="http://www.w3.org/1999/XSL/Transform"
-  >
-    <ng-template #nodeTemplate let-node>
-      <svg:g (click)="click(node)" class="node">
-        <svg:rect
-          [attr.width]="node.dimension.width * 2"
-          [attr.height]="node.dimension.height * 1.5"
-          [attr.fill]="node.data.color"
-        />
-        <svg:text
-          alignment-baseline="central"
-          [attr.x]="20"
-          [attr.y]="node.dimension.height / 2"
-        >
-          {{ node.label }}
-        </svg:text>
-      </svg:g>
-    </ng-template>
-  </ngx-graph>
+  <div class="row justify-content-center">
+    <div class="col-10 d-flex flex-column">
+      <ngx-graph
+        class="chart-container"
+        [view]="[1200, 150]"
+        [showMiniMap]="false"
+        [links]="edges"
+        [nodes]="nodes"
+        [curve]="curve"
+      >
+        <ng-template #nodeTemplate let-node>
+          <svg:g (click)="click(node)" class="node">
+            <svg:rect
+              [attr.width]="node.dimension.width * 2"
+              [attr.height]="node.dimension.height * 1.5"
+              [attr.fill]="node.data.color"
+            />
+            <svg:text
+              alignment-baseline="central"
+              [attr.x]="12"
+              [attr.y]="node.dimension.height / 2"
+            >
+              {{ node.label }}
+            </svg:text>
+          </svg:g>
+        </ng-template>
+      </ngx-graph>
+    </div>
+    <div class="col-10 d-flex flex-column">
+      <app-preview-form-builder
+        class="mt-3"
+        [formControl]="formControl"
+        [formFields]="form"
+      ></app-preview-form-builder>
+    </div>
+  </div>
 </mat-card>

@@ -1,7 +1,6 @@
 import { FormGroup } from "@angular/forms";
 
 export interface PredefinedFormLifeCycle {
-
     nameProcess: string;
     namePhase: string;
     next: (args?: { process_id: number; project_id: number; data: any }, callback?: Function) => void;

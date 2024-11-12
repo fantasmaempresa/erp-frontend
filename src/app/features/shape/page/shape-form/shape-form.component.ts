@@ -35,34 +35,20 @@ export class ShapeFormComponent implements OnInit, OnDestroy {
   formIdbuilder = 'shapeBuilderForm';
   // @ts-ignore
   editor: Editor;
-
   // @ts-ignore
   editorDescription: Editor;
-
   placeholderDescription: string = 'Descripción';
-
   html = '';
-
   step = 0;
-
   builderFormStructure: any;
-
   grantorProvider = GrantorView;
-
   builderForm: any;
-
   fields: any[] = [];
-
   send: boolean = false;
-
   isEdit: boolean = false;
-
   templateShapes!: TemplateShapeDto[];
-
   procedureProvider = ProcedureView;
-
   operationProvider = OperationView;
-
   shapeForm = new UntypedFormGroup({
     folio: new UntypedFormControl('', [
       Validators.required,

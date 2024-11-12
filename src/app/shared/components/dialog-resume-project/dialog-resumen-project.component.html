@@ -1,160 +1,22 @@
-<h2 mat-dialog-title>Detalle de fase</h2>
+<h2 mat-dialog-title>Participantes</h2>
 <div mat-dialog-content>
   <div class="mt-3 row">
-    <div class="col-6">
-      <form
-        *ngIf="$any(formFields)?.length > 0"
-        [formGroup]="form"
-        class="form-preview"
-      >
-        <ng-container *ngFor="let formField of formFields; index as i">
-          <ng-container *ngIf="form.get(formField.key)">
-            <ng-container [ngSwitch]="formField.controlType">
-              <mat-form-field
-                *ngSwitchCase="'textbox'"
-                appearance="outline"
-                class="w-100"
-              >
-                <mat-label>{{ formField.label }}</mat-label>
-                <input
-                  [formControlName]="formField.key"
-                  [id]="formField.key"
-                  [type]="formField.type"
-                  [value]="formField.value"
-                  autocomplete="off"
-                  matInput
-                />
-              </mat-form-field>
-
-              <mat-form-field
-                *ngSwitchCase="'number'"
-                appearance="outline"
-                class="w-100"
-              >
-                <mat-label>{{ formField.label }}</mat-label>
-                <input
-                  [formControlName]="formField.key"
-                  [id]="formField.key"
-                  [type]="'number'"
-                  [value]="formField.value"
-                  autocomplete="off"
-                  matInput
-                />
-              </mat-form-field>
-
-              <mat-form-field
-                *ngSwitchCase="'dropdown'"
-                appearance="outline"
-                class="w-100"
-              >
-                <mat-label>{{ formField.label }}</mat-label>
-                <mat-select [formControlName]="formField.key">
-                  <mat-option>Ninguna</mat-option>
-                  <mat-option
-                    *ngFor="let option of formField.options; index as i"
-                    [value]="option.value"
-                    >{{ option.value }}</mat-option
-                  >
-                </mat-select>
-              </mat-form-field>
-
-              <mat-checkbox
-                *ngSwitchCase="'checkbox'"
-                [formControlName]="formField.key"
-                [value]="formField.value"
-                class="checkbox-input"
-                color="primary"
-                >{{ formField.label }}</mat-checkbox
-              >
-
-              <div *ngSwitchCase="'radio'" class="radio-group">
-                <label class="radio-group__label">{{ formField.label }}</label>
-                <mat-radio-group
-                  [formControlName]="formField.key"
-                  aria-label="Select an option"
-                  class="radio-group__container"
-                >
-                  <mat-radio-button
-                    *ngFor="let option of formField.options"
-                    [value]="option.value"
-                    class="radio-group__option"
-                    color="primary"
-                  >
-                    {{ option.key }}
-                  </mat-radio-button>
-                </mat-radio-group>
-              </div>
-
-              <mat-form-field
-                *ngSwitchCase="'textarea'"
-                appearance="outline"
-                class="w-100"
-              >
-                <mat-label>{{ formField.label }}</mat-label>
-                <textarea
-                  [formControlName]="formField.key"
-                  [value]="formField.value"
-                  matInput
-                ></textarea>
-              </mat-form-field>
-
-              <mat-form-field
-                *ngSwitchCase="'date'"
-                appearance="outline"
-                class="w-100"
-              >
-                <mat-label>{{ formField.label }}</mat-label>
-                <input
-                  (focus)="dateForm.open()"
-                  [formControlName]="formField.key"
-                  [matDatepicker]="dateForm"
-                  [value]="formField.value"
-                  class="clickable"
-                  matInput
-                />
-                <mat-datepicker-toggle
-                  [for]="dateForm"
-                  matSuffix
-                ></mat-datepicker-toggle>
-                <mat-datepicker #dateForm></mat-datepicker>
-              </mat-form-field>
-
-              <ng-container *ngSwitchCase="'image'">
-                <!--          {{ formField | json }}-->
-                <app-input-image [label]="formField.label"></app-input-image>
-              </ng-container>
-
-              <ng-container *ngSwitchCase="'file'">
-                <app-input-file [label]="formField.label"></app-input-file>
-              </ng-container>
-
-              <ng-container *ngSwitchCase="'coordinate'">
-                <app-input-coordinate
-                  [label]="formField.label"
-                ></app-input-coordinate>
-              </ng-container>
-            </ng-container>
-          </ng-container>
-        </ng-container>
-      </form>
-    </div>
-    <div class="col-1"></div>
-    <div class="col-5">
+    <div class="col-12">
       <h3>Supervisado por:</h3>
       <ul
         class="list-group mt-2"
         *ngFor="let supervisor of this.data.rules.supervisor"
       >
         <li class="list-group-item">
-          Usuario: {{ supervisor.supervision.user.email }}
+          Usuario: {{ supervisor?.supervision?.user?.email }}
         </li>
         <li class="list-group-item">
           Rol:
-          {{ supervisor.supervision.user.role.name }}
+          {{ supervisor?.supervision?.user?.role?.name }}
         </li>
         <li class="list-group-item">
           Hora de supervisión:
-          {{ supervisor.supervision.datetime }}
+          {{ supervisor?.supervision?.datetime }}
         </li>
       </ul>
 
@@ -166,15 +28,15 @@
       >
         <li class="list-group-item">
           Usuario:
-          {{ supervisor.supervision.user.email }}
+          {{ supervisor?.supervision?.user?.email }}
         </li>
         <li class="list-group-item">
           Rol:
-          {{ supervisor.supervision.user.role.name }}
+          {{ supervisor?.supervision?.user?.role?.name }}
         </li>
         <li class="list-group-item">
           Hora de supervisión:
-          {{ supervisor.supervision.datetime }}
+          {{ supervisor?.supervision?.datetime }}
         </li>
       </ul>
     </div>

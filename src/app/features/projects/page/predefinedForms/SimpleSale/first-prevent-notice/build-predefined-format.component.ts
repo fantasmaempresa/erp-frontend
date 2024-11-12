@@ -37,6 +37,14 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
   textNotification: string = '';
   $notification: Observable<any> | null = null;
   $popUp: Observable<any> | null = null;
+  controls = {
+    preview: true,
+    check_box: true,
+    post_add: true,
+    sync: true,
+    save: true,
+    download: true,
+  };
 
   constructor(
     private synchronizer: SharedDataService,
@@ -161,9 +169,16 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
       case 'show_notification':
         this.notification(commands.args);
         break;
+      case 'set_controls':
+        this.set_controls(commands.args);
+        break;
       default:
         console.log('Comando no reconocido');
     }
+  }
+
+  set_controls(controls: any) {
+    this.controls = controls;
   }
 
   reloadStructureFormat() {
@@ -332,7 +347,7 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
     );
 
     this.popupService
-      .openTablePopup({ viewClass: ReportConfigurationView, title: "Selecciona un reporte", options: { isMulti: false } })
+      .openTablePopup({ viewClass: ReportConfigurationView, title: "Selecciona un reporte", options: { isMulti: false, } })
       .subscribe((report: ReportConfigurationDto) => {
         if (report) {
           if (related) {

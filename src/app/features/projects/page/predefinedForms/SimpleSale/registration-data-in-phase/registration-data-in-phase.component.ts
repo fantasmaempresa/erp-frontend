@@ -1,6 +1,7 @@
 import { Component, ComponentRef, Injector, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 import { BasicViewComponent, HostDirective, LoaderService, MessageHelper, VIEW_CLAZZ, ViewActionsBuilder, ViewContextService } from 'o2c_core';
 import { PredefinedFormLifeCycle } from 'src/app/core/interfaces/PredefinedFormLifeCycle';
 import { RegistrationProcedureDataDto } from 'src/app/data/dto/RegistrationProcedureData.dto';
@@ -8,6 +9,7 @@ import { RegistrationProcedureDataPhaseView } from 'src/app/data/presentation/Re
 import { ExcecutePhasePredefinedService } from 'src/app/data/services/excecute-phase-predefined.service';
 import { SharedDataService } from 'src/app/data/services/shared-data.service';
 
+@AutoUnsubscribe()
 @Component({
   selector: 'app-registration-data-in-phase',
   templateUrl: './registration-data-in-phase.component.html',
@@ -53,8 +55,6 @@ export class RegistrationDataInPhaseComponent implements PredefinedFormLifeCycle
     } else {
 
       this.loader.showFullScreenLoader();
-      // this.synchronizer.updateLastForm(this.shapeForm);
-
       if (this.synchronizer$) this.synchronizer$.unsubscribe();
 
       this.synchronizer$ = this.synchronizer.executionCommand$.subscribe((commands) => {
@@ -120,9 +120,6 @@ export class RegistrationDataInPhaseComponent implements PredefinedFormLifeCycle
       default:
         console.log('Comando no encontrado', commands);
     }
-  }
-
-  saveForm() {
   }
 
   private getLocalInjector() {

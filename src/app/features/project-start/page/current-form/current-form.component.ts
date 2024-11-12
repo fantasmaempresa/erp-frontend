@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
-import { LoaderService, MessageHelper } from 'o2c_core';
+import { MessageHelper } from 'o2c_core';
 import { map, Observable, startWith, Subject, switchMap, tap } from 'rxjs';
 import { CommandProjectDto, ProcedureDto } from 'src/app/data/dto';
 import { ProjectActionEventService } from 'src/app/data/services/project-action-event.service';
@@ -291,25 +291,45 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
       });
   }
 
-  @messageDecision('¿La información es correcta?', '¿Estas seguro?')
+  @messageDecision('¿Desea terminar el proceso?', '¿Estas seguro?')
   completeProcess() {
-    MessageHelper.showLoading();
-    this.myProjectService
-      .completeProcessProject({
-        projectId: this.projectId,
-        processId: this.processId,
-      })
-      .subscribe({
-        next: async (value) => {
-          await MessageHelper.successMessage('Éxito', `${value}`);
-          await this.router.navigate([`../`], {
-            relativeTo: this.route,
+    let callback = () => {
+      this.myProjectService
+        .completeProcessProject({
+          projectId: this.projectId,
+          processId: this.processId,
+        })
+        .subscribe({
+          next: async (value: any) => {
+            await MessageHelper.successMessage('Éxito', `${value.message}`);
+            await this.router.navigate(['./../../../'], {
+              relativeTo: this.route,
+            });
+          },
+          error: async (value) => {
+            await MessageHelper.errorMessage(value.error.error);
+          },
+        });
+    };
+
+    if (this.type_form == this.PREDEFINED_FORM) {
+      MessageHelper.decisionMessage(
+        '¿Guardar progreso?',
+        '¿Desea guardar la información de esta actividad?',
+        () => {
+          this.synchronizer.executionCommand({
+            command: 'next',
+            args: {
+              project_id: this.projectId,
+              process_id: this.processId,
+            },
+            callback: callback,
           });
-        },
-        error: async (value) => {
-          await MessageHelper.errorMessage(value.error.error);
-        },
-      });
+        }
+      );
+    } else {
+      callback();
+    }
   }
 
   async back() {
@@ -317,10 +337,10 @@ export class CurrentFormComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if(this.refresh) this.refresh.unsubscribe();
-    if(this.socket$) this.socket$.unsubscribe();
-    if(this.synchronizer$) this.synchronizer$.unsubscribe();
-    
+    if (this.refresh) this.refresh.unsubscribe();
+    if (this.socket$) this.socket$.unsubscribe();
+    if (this.synchronizer$) this.synchronizer$.unsubscribe();
+
   }
 
   addCommentToProcedure() {

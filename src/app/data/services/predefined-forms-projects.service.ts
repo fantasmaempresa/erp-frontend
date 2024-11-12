@@ -3,6 +3,7 @@ import { AssignFolioInPhaseComponent } from 'src/app/features/projects/page/pred
 import { BuildPredefinedFormatComponent } from 'src/app/features/projects/page/predefinedForms/SimpleSale/first-prevent-notice/build-predefined-format.component';
 import { GenerateExpedientInPhaseComponent } from 'src/app/features/projects/page/predefinedForms/SimpleSale/generate-expedient-in-phase/generate-expedient-in-phase.component';
 import { GenerateShapeInPhaseComponent } from 'src/app/features/projects/page/predefinedForms/SimpleSale/generate-shape-in-phase/generate-shape-in-phase.component';
+import { GenerateVulnerableOperationInPhaseComponent } from 'src/app/features/projects/page/predefinedForms/SimpleSale/generate-vulnerable-operation-in-phase/generate-vulnerable-operation-in-phase.component';
 import { ProcessingIncomeInPhaseComponent } from 'src/app/features/projects/page/predefinedForms/SimpleSale/processing-income-in-phase/processing-income-in-phase.component';
 import { RegistrationDataInPhaseComponent } from 'src/app/features/projects/page/predefinedForms/SimpleSale/registration-data-in-phase/registration-data-in-phase.component';
 import { StartFormComponent } from 'src/app/features/projects/page/predefinedForms/SimpleSale/start-form/start-form.component';
@@ -99,6 +100,12 @@ export class PredefinedFormsProjectsService {
       value: 7,
       withFormat: false,
     },
+    {
+      title: 'Operación Vulnerable',
+      name: 'Fase para agregar datos de operación vulnerable',
+      value: 8,
+      withFormat: false,
+    },
   ];
 
   definitionPredefinedForms: DefinitionPredefinedForms[] = [
@@ -130,6 +137,10 @@ export class PredefinedFormsProjectsService {
     {
       value: 7,
       component: RegistrationDataInPhaseComponent
+    },
+    {
+      value: 8,
+      component: GenerateVulnerableOperationInPhaseComponent
     },
   ];
 

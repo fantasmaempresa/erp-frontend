@@ -15,6 +15,7 @@ import { AssignFolioInPhaseComponent } from './page/predefinedForms/SimpleSale/a
 import { GenerateExpedientInPhaseComponent } from './page/predefinedForms/SimpleSale/generate-expedient-in-phase/generate-expedient-in-phase.component';
 import { RegistrationDataInPhaseComponent } from './page/predefinedForms/SimpleSale/registration-data-in-phase/registration-data-in-phase.component';
 import { ProcessingIncomeInPhaseComponent } from './page/predefinedForms/SimpleSale/processing-income-in-phase/processing-income-in-phase.component';
+import { GenerateVulnerableOperationInPhaseComponent } from './page/predefinedForms/SimpleSale/generate-vulnerable-operation-in-phase/generate-vulnerable-operation-in-phase.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { ProcessingIncomeInPhaseComponent } from './page/predefinedForms/SimpleS
     AssignFolioInPhaseComponent, 
     GenerateExpedientInPhaseComponent, 
     RegistrationDataInPhaseComponent, 
-    ProcessingIncomeInPhaseComponent
+    ProcessingIncomeInPhaseComponent, GenerateVulnerableOperationInPhaseComponent
   ],
   imports: [
     CommonModule,
