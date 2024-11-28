@@ -119,9 +119,10 @@ export class StartFormComponent
   }
 
   ngOnInit(): void {
-    this.procedureService.recommendationExpedient().subscribe({
+    this.procedureService.recommendationExpedient().pipe(debounceTime(100)).subscribe({
       next: (data: any) => {
-        this.form.get('name')?.setValue(data.name);
+        if(this.form.get('name')?.value == '')
+          this.form.get('name')?.setValue(data.name);
       },
     });
 

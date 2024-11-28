@@ -62,6 +62,20 @@ export class PredefinedFormsProjectsService {
           generateFormat: 'getFormatSecondPreventiveNotice',
         },
         {
+          title: 'Aviso aclaratorio',
+          name: 'Aviso aclaratorio',
+          nameProcess: 'FormatsProcess',
+          namePhase: 'generateClarificationNotice',
+          generateFormat: 'getFormatClarificationNotice',
+        },
+        {
+          title: 'Cancelación de primer aviso prevento',
+          name: 'Cancelación de primer aviso prevento',
+          nameProcess: 'FormatsProcess',
+          namePhase: 'generateCancellationFirstPreventNotice',
+          generateFormat: 'getFormatCancellationFirstPreventNotice',
+        },
+        {
           title: 'Escritura',
           name: 'Proyecto para escrituras',
           nameProcess: 'DomainTransfer',

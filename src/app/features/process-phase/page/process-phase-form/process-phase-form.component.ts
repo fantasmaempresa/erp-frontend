@@ -1,19 +1,19 @@
 import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import {
-  ProcessPhaseServiceOld,
-  RoleServiceOld,
-} from '../../../../data/services';
 import {
   UntypedFormControl,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { debounceTime, map, Observable, pluck, startWith } from 'rxjs';
-import { RoleDto } from '../../../../data/dto';
-import { MessageHelper } from 'o2c_core';
-import { ItemPredefinedForm, PredefinedFormsProjectsService } from 'src/app/data/services/predefined-forms-projects.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
+import { MessageHelper } from 'o2c_core';
+import { map, Observable, pluck, startWith } from 'rxjs';
+import { ItemPredefinedForm, PredefinedFormsProjectsService } from 'src/app/data/services/predefined-forms-projects.service';
+import { RoleDto } from '../../../../data/dto';
+import {
+  ProcessPhaseServiceOld,
+  RoleServiceOld,
+} from '../../../../data/services';
 
 @AutoUnsubscribe()
 @Component({
@@ -87,9 +87,9 @@ export class ProcessPhaseFormComponent implements OnDestroy {
             this.withFormat = false;
             this.form.controls.withFormat.setValue([]);
           }
-          let arrayReturn = { ...array };
-          delete arrayReturn.formats;
-          return arrayReturn;
+          // let arrayReturn = { ...array };
+          // delete arrayReturn.formats;
+          return array;
         }
       }),
     );
@@ -152,8 +152,10 @@ export class ProcessPhaseFormComponent implements OnDestroy {
     }
 
     let values = this.form.value;
-    if (values.form.withFormat) { delete values.form.formats; }
+    console.log("this.form.value --> ", this.form.value, this.formats, this.menuForms.getMenuPredefinedForms());
+    // if (values.form.withFormat) { delete values.form.formats; }
     const message = this.edit ? 'actualizada' : 'guardada';
+    
     const request$ = this.edit
       ? this.processPhaseService.update(values)
       : this.processPhaseService.save(values);

@@ -130,9 +130,22 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
           next: () => {
             if (typeof callback == 'function') {
               callback(JSON.stringify({ report: this.updateReport?.id }));
+              this.generateFormat = '';
+              this.namePhase = '';
+              this.nameProcess = '';
+              this.project_id = 0;
+              this.process_id = 0;
+              this.categories = [];
+              this.editorArray = [];
+              this.title = 'Build Predefined Format';
+              this.loadStructure = false;
+              this.updateReport = null;
+              this.lastReport = null;
+
             } else {
               MessageHelper.successMessage('Reporte guardado', 'El reporte se guardo correctamente');
             }
+
           },
           error: (error) => {
             MessageHelper.errorMessage('No se puede almacenar la información por el momento, consulte a su administrador');
@@ -252,12 +265,7 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
             }, {});
 
             setTimeout(() => {
-              if (this.patchValues) {
-                this.form.patchValue(this.patchValues);
-
-              } else {
-                this.form.patchValue({ format: patch });
-              }
+              this.form.patchValue({ format: patch });
             }, 400);
 
             MessageHelper.hide();
@@ -303,7 +311,7 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
         // @ts-ignore
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = this.title + '.rft';
+        link.download = this.title + '.docx';
         // link.download = ;
         link.click();
         URL.revokeObjectURL(link.href);
@@ -356,7 +364,6 @@ export class BuildPredefinedFormatComponent implements OnInit, OnDestroy, Predef
 
           } else {
             this.updateReport = report;
-            // this.loadStructureFormat([], true);
             console.log('report   ----> ', report);
             if (report.data.content) {
               this.form.get('form')?.reset();
