@@ -4,7 +4,7 @@ import { Channel } from 'laravel-echo/dist/channel';
 import { environment } from '../../../environments/environment';
 
 export abstract class LaravelWebSocket {
-  protected echo!: Echo;
+  protected echo!: any;
 
   protected channel!: Channel;
 
@@ -18,12 +18,7 @@ export abstract class LaravelWebSocket {
       forceTLS: false,
       wsHost: environment.socket_url,
       wsPort: environment.socket_port,
-      // wssPort: environment.socket_port,
-      // authEndpoint: 'broadcasting/auth',
     });
-
-    // ws://localhost:6003/app/1234567?protocol=7&client=js&version=4.3.1&flash=false
-
   }
 
   subscribeToChannel(channel: string, event: string) {
