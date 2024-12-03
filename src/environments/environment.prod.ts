@@ -8,4 +8,5 @@ export const environment = {
   mix_pusher_app_cluster: 'mt1',
   socket_url: 'back.notaria4puebla.com.mx',
   socket_port: 6003,
+  forceTLS: true,
 };

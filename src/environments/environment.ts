@@ -12,6 +12,7 @@ export const environment = {
   mix_pusher_app_cluster: 'mt1',
   socket_url: 'localhost',
   socket_port: 6003,
+  forceTLS: false,
 };
 /*
  * For easier debugging in development mode, you can import the following file

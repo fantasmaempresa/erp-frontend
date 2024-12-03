@@ -15,7 +15,7 @@ export abstract class LaravelWebSocket {
       broadcaster: 'pusher',
       key: environment.mix_pusher_app_key,
       cluster: environment.mix_pusher_app_cluster,
-      forceTLS: true,
+      forceTLS: environment.forceTLS,
       wsHost: environment.socket_url,
       wsPort: environment.socket_port,
       wssPort: environment.socket_port,
