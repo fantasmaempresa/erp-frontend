@@ -6,6 +6,6 @@ export const environment = {
   grant_type: 'password',
   mix_pusher_app_key: '1234567',
   mix_pusher_app_cluster: 'mt1',
-  socket_url: 'notaria4puebla.com.mx',
+  socket_url: 'back.notaria4puebla.com.mx',
   socket_port: 6003,
 };
