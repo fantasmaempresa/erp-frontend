@@ -22,7 +22,6 @@ export class NotificationAreaComponent {
 
   constructor(private store: Store) {
     this.notifications$ = this.store.select(selectIncomingNotifications);
-    // this.notifications$.subscribe(notifications => console.log('notifications --> ', notifications));
   }
 
   checkIsClose(notification: NotificationPopUpDto) {

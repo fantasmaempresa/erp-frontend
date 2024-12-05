@@ -24,6 +24,7 @@ export class NotificationComponent {
   constructor(private store: Store) {
     this.notifications$ = this.store.select(selectLastNotification);
     this.numberNotification$ = this.store.select(selectNumberOfNotifications);
+    
     this.store.dispatch(loadNotifications());
   }
 

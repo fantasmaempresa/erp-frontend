@@ -35,13 +35,12 @@ const NotificationReducer = createReducer(
   on(
     NotificationActions.incomingNotification,
     (state: NotificationState, { notifications }) => {
-      console.log('notificationsnotifications -->', notifications);
       return {
         ...state,
         incomingNotifications: notifications.map((notification) => {
           return {
             ...notification,
-            isClose: false,
+            notification: { ...notification.notification, isClose: false }
           };
         }),
       };
@@ -50,31 +49,35 @@ const NotificationReducer = createReducer(
   on(
     NotificationActions.addIncomingNotification,
     (state: NotificationState, { notifications }): NotificationState => {
-      // console.log(notifications);
+      // console.log('NotificationActions.addIncomingNotification -->', notifications);
+      let pushNotifications = notifications.map((notification) => notification.notification);
+
       return {
         ...state,
         // @ts-ignore
         notifications: {
           ...state.notifications,
+          // @ts-ignore
           data: [
-            ...notifications,
+            ...pushNotifications,
             ...(state && state.notifications ? state.notifications.data : []),
           ],
         },
-      };
+      };;
     },
   ),
   on(
     NotificationActions.closeIncomingNotification,
     (state: NotificationState, { id }) => {
+      // console.log('NotificationActions.closeIncomingNotification --> ', state);
       return {
         ...state,
         incomingNotifications: state.incomingNotifications.map((notification) =>
           notification.notification.id === id
             ? {
-                ...notification,
-                isClose: true,
-              }
+              ...notification,
+              notification: { ...notification.notification, isClose: true }
+            }
             : notification,
         ),
       };
@@ -83,6 +86,7 @@ const NotificationReducer = createReducer(
   on(
     NotificationActions.deleteIncomingNotification,
     (state: NotificationState, { id }) => {
+      console.log('NotificationActions.deleteIncomingNotification --> ', state);
       return {
         ...state,
         incomingNotifications: state.incomingNotifications.filter(

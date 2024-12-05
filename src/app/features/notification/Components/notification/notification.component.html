@@ -20,7 +20,7 @@
           *ngFor="let notification of notifications$ | async"
           [class.notifications__item--unread]="!notification.check"
           class="notifications__item"
-        >
+        > 
           <span class="notifications__item-title">{{
             notification.notification.title
           }}</span>
