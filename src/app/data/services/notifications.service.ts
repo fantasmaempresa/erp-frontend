@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CrudService } from '../../core/classes/Crud/CrudService';
 import { NotificationDto, NotificationResponseDto } from '../dto';
+import { CrudService as CrudServiceO2c, Pagination, ViewContextService } from 'o2c_core';
+
 
 @Injectable({
   providedIn: 'root',
@@ -26,5 +28,17 @@ export class NotificationsService extends CrudService<NotificationResponseDto> {
 
   readAllNotifications(notifications: NotificationDto[]): Observable<any> {
     return this.http.put(`${this._base}/0`, { notifications: notifications });
+  }
+}
+
+@Injectable({
+  providedIn: 'root',
+})
+export class NotificationsServiceV extends CrudServiceO2c<
+  NotificationDto,
+  Pagination<NotificationDto>
+> {
+  constructor() {
+    super('notifications');
   }
 }

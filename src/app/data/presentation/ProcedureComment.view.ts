@@ -2,6 +2,7 @@ import { viewCrud, viewLabel, viewMapTo } from 'o2c_core';
 import { ProcedureCommentService } from '../services/procedure-comment.service';
 import { DEFAULT_ROUTE_CONFIGURATION } from '../../core/constants/routes.constants';
 import { UserDto } from '../dto';
+import { DatePipe } from '@angular/common';
 
 @viewCrud({
   classProvider: ProcedureCommentService,
@@ -15,6 +16,13 @@ export class ProcedureCommentView {
   @viewLabel('User')
   @viewMapTo((value: any) => value?.name)
   user: UserDto;
+
+  @viewLabel('Fecha')
+  @viewMapTo((value: any) => {
+    const datePipe = new DatePipe('en-MX');
+    return datePipe.transform(value, 'dd-MM-yyyy HH:mm:ss');
+  })
+  created_at?: Date;
 
   constructor(comment: string, user: UserDto) {
     this.comment = comment;

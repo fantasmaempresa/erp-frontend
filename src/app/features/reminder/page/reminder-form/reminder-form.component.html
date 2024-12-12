@@ -1,0 +1,96 @@
+<mat-card>
+  <mat-toolbar *ngIf="!isDialog">
+    <div>
+      <button (click)="back()" aria-label="Regresar" mat-icon-button>
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+  <form
+    (ngSubmit)="onSubmit()"
+    [formGroup]="form"
+    class="row justify-content-center"
+  >
+    <div class="col-6 d-flex flex-column">
+      <mat-form-field appearance="outline">
+        <mat-label>Tipo de recordatorio</mat-label>
+        <mat-select formControlName="type">
+          <mat-option>-- None --</mat-option>
+          <mat-option *ngFor="let type of types" [value]="type.value">{{
+            type.label
+          }}</mat-option>
+        </mat-select>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Titulo</mat-label>
+        <input formControlName="name" matInput type="text" />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Mensaje</mat-label>
+        <textarea formControlName="message" matInput></textarea>
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de expiración </mat-label>
+        <input
+          (focus)="dateForm1.open()"
+          [matDatepicker]="dateForm1"
+          class="clickable"
+          formControlName="expiration_date"
+          matInput
+        />
+        <mat-datepicker-toggle
+          [for]="dateForm1"
+          matSuffix
+        ></mat-datepicker-toggle>
+        <mat-datepicker #dateForm1></mat-datepicker>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf="processingIncomeProviderView">
+        <mat-label>Seleccione un ingreso</mat-label>
+        <input
+          [viewClassBuilder]="processingIncomeProvider"
+          title="Selecciona un ingreso"
+          o2cSinglePopup
+          formControlName="processing_income_id"
+          matInput
+          type="text"
+        />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" *ngIf="procedureProviderView">
+        <mat-label>Seleccione un expediente</mat-label>
+        <input
+          [viewClassBuilder]="procedureProvider"
+          title="Seleccione un expediente"
+          o2cSinglePopup
+          formControlName="procedure_id"
+          matInput
+          type="text"
+        />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" formGroupName="config">
+        <mat-label>Seleccione un Usuario a recordar</mat-label>
+        <input
+          [viewClassBuilder]="userProvider"
+          title="Seleccione un Usuario"
+          o2cSinglePopup
+          formControlName="user_id"
+          matInput
+          type="text"
+        />
+        <mat-error appErrorMessage></mat-error>
+      </mat-form-field>
+
+      <button color="primary" mat-flat-button>Guardar</button>
+    </div>
+  </form>
+</mat-card>

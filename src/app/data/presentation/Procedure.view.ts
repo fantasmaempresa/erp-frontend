@@ -139,6 +139,23 @@ const goToDocumentsLink = new ViewActions<ProcedureDto>(
   },
 );
 
+
+const goToReminds = new ViewActions<ProcedureDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['../', (row as ProcedureDto).id, 'reminders'], {
+      relativeTo: route,
+    });
+  },
+  'alarm',
+  {
+    tooltip: 'Recordatorios de ingresos',
+    color: 'accent',
+    isVisible: (row) => row && row.id > 0,
+  },
+);
+
 const goToShapesLink = new ViewActions<ProcedureDto>(
   async ({ row, injector }) => {
     const router = injector.get(Router);
@@ -322,6 +339,7 @@ export class AdvanceFilterProcedure {
     goToComments,
     goToProcessingIncome,
     goToRegistrationData,
+    goToReminds
   ],
   route: DEFAULT_ROUTE_CONFIGURATION,
 })

@@ -369,6 +369,22 @@ const routes: Routes = [
         data: { breadcrumb: 'Reportes' },
       },
       {
+        path: 'notifications',
+        loadChildren: () =>
+          import(
+            './features/notification/notification.module'
+          ).then((m) => m.NotificationModule),
+        data: { breadcrumb: 'Historial de notificaciones' },
+      },
+      {
+        path: 'reminders',
+        loadChildren: () =>
+          import(
+            './features/reminder/reminder.module'
+          ).then((m) => m.ReminderModule),
+        data: { breadcrumb: 'Historial de recordatorios' },
+      },
+      {
         path: '**',
         redirectTo: '404',
         pathMatch: 'full',
@@ -391,4 +407,4 @@ const settings: ExtraOptions = {
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

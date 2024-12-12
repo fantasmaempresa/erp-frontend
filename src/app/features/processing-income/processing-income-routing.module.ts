@@ -50,6 +50,14 @@ const routes: Routes = [
           ),
         data: { breadcrumb: 'Documentos', view: 'procedures' },
       },
+      {
+        path: ':idProcessingIncome/reminders',
+        loadChildren: () =>
+          import('../reminder/reminder.module').then(
+            (m) => m.ReminderModule,
+          ),
+        data: { breadcrumb: 'Recordatorios', view: 'incomming' },
+      },
     ],
   },
 ];

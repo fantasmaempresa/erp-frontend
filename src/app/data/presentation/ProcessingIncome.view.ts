@@ -6,6 +6,7 @@ import { PlaceDto } from '../dto/Place.dto';
 import { ProcessingIncomePhaseService, ProcessingIncomeService } from '../services/processing-income.service';
 import { ProcessingIncomeDto } from '../dto/ProcessingIncome.dto';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DatePipe } from '@angular/common';
 
 const goToDocumentsLink = new ViewActions<ProcessingIncomeDto>(
   async ({ row, injector }) => {
@@ -39,10 +40,26 @@ const goToComments = new ViewActions<ProcessingIncomeDto>(
   },
 );
 
+const goToReminds = new ViewActions<ProcessingIncomeDto>(
+  async ({ row, injector }) => {
+    const router = injector.get(Router);
+    const route = injector.get(ActivatedRoute);
+    await router.navigate(['../', (row as ProcessingIncomeDto).id, 'reminders'], {
+      relativeTo: route,
+    });
+  },
+  'alarm',
+  {
+    tooltip: 'Recordatorios de ingresos',
+    color: 'accent',
+    isVisible: (row) => row && row.id > 0,
+  },
+);
+
 @viewCrud({
   classProvider: ProcessingIncomeService,
   registerName: 'Información de registro',
-  actions: [goToDocumentsLink, goToComments],
+  actions: [goToDocumentsLink, goToComments, goToReminds],
   route: DEFAULT_ROUTE_CONFIGURATION,
 })
 export class ProcessingIncomeView {
@@ -73,6 +90,13 @@ export class ProcessingIncomeView {
   procedure?: ProcedureDto;
   documents?: DocumentDto[];
 
+  @viewLabel('Fecha')
+  @viewMapTo((value: any) => {
+    const datePipe = new DatePipe('en-MX');
+    return datePipe.transform(value, 'dd-MM-yyyy HH:mm:ss');
+  })
+  created_at?: Date;
+
   constructor(
     name: string,
     date_income: string,
@@ -88,6 +112,7 @@ export class ProcessingIncomeView {
     operation?: OperationsDto,
     procedure?: ProcedureDto,
     documents?: DocumentDto[],
+    created_at?: Date,
   ) {
     this.name = name;
     this.date_income = date_income;
@@ -103,6 +128,7 @@ export class ProcessingIncomeView {
     this.operation = operation;
     this.procedure = procedure;
     this.documents = documents;
+    this.created_at = created_at;
   }
 }
 
