@@ -21,10 +21,6 @@ import { WarehouseView } from 'src/app/data/presentation/Warehouse.view';
 })
 export class InventoryFormComponent implements OnDestroy{
   inventoryForm = new UntypedFormGroup({
-    id: new UntypedFormControl('',[
-      Validators.required,
-      Validators.maxLength(20),
-    ]),
     article_id: new UntypedFormControl('',[
       Validators.required,
       Validators.maxLength(20),
@@ -43,7 +39,6 @@ export class InventoryFormComponent implements OnDestroy{
 
   isDialog: boolean = false;
 
-  warehouseProvider = WarehouseView;
   articleProvider = ArticleView;
 
   constructor(
@@ -62,10 +57,15 @@ export class InventoryFormComponent implements OnDestroy{
       inventoryService.fetch(id).subscribe({
         next: (inventory) => {
           this.inventoryForm.addControl('id', new UntypedFormControl(''));
-          this.inventoryForm.patchValue(inventory);
         }
       });
     }
+
+    const idWarehouse = Number(this.route.snapshot.params.id);
+    if (!isNaN(idWarehouse)) {
+      this.inventoryForm.get('warehouse_id')?.setValue(idWarehouse);
+    }
+
   }
 
   ngOnDestroy(): void {
@@ -75,23 +75,17 @@ export class InventoryFormComponent implements OnDestroy{
     if (this.isDialog) {
       return;
     } else {
-      await this.router.navigate(['../'], {relativeTo: this.route});
+      await this.router.navigate(['../../'], {relativeTo: this.route});
     }
   }
 
   onSubmit() {
-    let request$:  Observable<InventoryDto>;
-    if (!this.isEdit) {
-      request$ = this.inventoryService.save(this.inventoryForm.value);
-    } else {
-      request$ = this.inventoryService.update(this.inventoryForm.value);
-    }
-    request$.subscribe({
+    if (this.inventoryForm.invalid) return;
+    this.inventoryService.initialInventory(this.inventoryForm.value).subscribe({
       next: async () => {
-        const message  = this.isEdit ? 'actualizado' : 'registrado';
         await MessageHelper.successMessage(
           '¡Éxito!',
-          `El Inventario ha sido ${message} correctamente`,
+          `El Inventario ha sido actualizado correctamente`,
         );
         await this.backToListInventory();
       },

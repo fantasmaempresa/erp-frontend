@@ -19,10 +19,6 @@ import { AutoUnsubscribe } from 'ngx-auto-unsubscribe';
 })
 export class LineFormComponent implements OnDestroy{
   lineForm = new UntypedFormGroup({
-    id: new UntypedFormControl('',[
-      Validators.required,
-      Validators.maxLength(20),
-    ]),
     line: new UntypedFormControl('',[
       Validators.required,
       Validators.maxLength(50),

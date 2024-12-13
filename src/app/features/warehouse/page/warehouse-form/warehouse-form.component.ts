@@ -19,15 +19,11 @@ import { WarehouseDto } from 'src/app/data/dto/Warehouse.dto';
 })
 export class WarehouseFormComponent implements OnDestroy{
   warehouseForm = new UntypedFormGroup({
-    id: new UntypedFormControl('',[
-      Validators.required,
-      Validators.maxLength(20),
-    ]),
     name: new UntypedFormControl('',[
       Validators.required,
       Validators.maxLength(50),
     ]),
-    address: new UntypedFormControl('',[
+    adress: new UntypedFormControl('',[
       Validators.required,
       Validators.maxLength(100),
     ]),

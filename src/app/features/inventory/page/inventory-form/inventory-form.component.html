@@ -14,12 +14,7 @@
     >
         <div class="col-6 d-flex flex-column">
             <mat-form-field appearance="outline">
-                <mat-label>ID</mat-label>
-                <input formControlName="id" matInput type="number" />
-                <mat-error appErrorMessage></mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-                <mat-label>ID de Artículo</mat-label>
+                <mat-label>Id de Artículo</mat-label>
                 <input
                     [viewClassBuilder]="articleProvider"
                     title="Selecciona un Artículo"
@@ -34,19 +29,19 @@
             <mat-form-field appearance="outline">
                 <mat-label>ID de Almacén</mat-label>
                 <input
-                    [viewClassBuilder]="warehouseProvider"
-                    title="Selecciona un Almacén"
-                    o2cSinglePopup
                     formControlName="warehouse_id"
                     matInput
-                    type="text"
+                    type="number"
+                    readonly
                 />
-                <mat-icon matSuffix>search</mat-icon>
                 <mat-error appErrorMessage></mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>Cantidad</mat-label>
-                <input formControlName="amount" matInput type="number" />
+                <input formControlName="amount"
+                    matInput
+                    type="number"
+                />
                 <mat-error appErrorMessage></mat-error>
             </mat-form-field>
 

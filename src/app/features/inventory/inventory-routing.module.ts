@@ -25,7 +25,7 @@ const routes: Routes = [
         data: { breadcrumb: 'Agregar Inventario'},
       },
       {
-        path: 'id',
+        path: ':id',
         component: InventoryFormComponent,
         data: { breadcrumb: 'Editar Inventtario'},
       },

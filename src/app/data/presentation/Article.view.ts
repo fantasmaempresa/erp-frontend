@@ -1,7 +1,6 @@
 import { ViewsModule, viewCrud, viewLabel, viewMapTo } from "o2c_core";
 import { ArticleService } from "../services/article.service";
 import { DEFAULT_ROUTE_CONFIGURATION } from "src/app/core/constants/routes.constants";
-import { LineDto } from "../dto/Line.dto";
 
 @viewCrud({
     classProvider: ArticleService,
@@ -9,10 +8,15 @@ import { LineDto } from "../dto/Line.dto";
     route: DEFAULT_ROUTE_CONFIGURATION,
 })
 export class ArticleView {
-    @viewLabel('Identificador')
-    id : number;
+    @viewMapTo((value: any) => {
+        const billable = {
+            0: 'No',
+            1: 'Si',
+        };
+        return billable[value as keyof typeof billable];
+    }) 
     @viewLabel('Facturable')
-    billable : string;
+    billable : number;
     @viewLabel('Código de Barras')
     bar_code : string;
     @viewLabel('Descripción')
@@ -22,16 +26,29 @@ export class ArticleView {
     @viewLabel('Imagen')
     image : string;
     @viewLabel('Id de Linea')
-    @viewMapTo((value:any) => value?.name)
-    line_id : LineDto;
+    line_id : number;
     @viewLabel('Costo de la Compra')
     purchase_cost : number;
     @viewLabel('Costo de Venta')
     sale_cost : number;
+    @viewMapTo((value: any) => {
+        const type = {
+            1: 'Activo',
+            2: 'Consumible',
+        };
+        return type[value as keyof typeof type];
+    })
     @viewLabel('Tipo')
-    type : string;
+    type : number;
     @viewLabel('Marca')
     brand : string;
+    @viewMapTo((value: any) => {
+        const storable = {
+            0: 'No',
+            1: 'Si',
+        };
+        return storable[value as keyof typeof storable];
+    })
     @viewLabel('Almacenable')
     storable : string;
     @viewLabel('Unidad de Medida de Compra')
@@ -40,22 +57,20 @@ export class ArticleView {
     sale_measure_unit : string;
 
     constructor(
-        id: number,
-        billable : string,
+        billable : number,
         bar_code : string,
         description : string,
         name : string,
         image : string,
-        line_id : LineDto,
+        line_id : number,
         purchase_cost : number,
         sale_cost : number,
-        type : string,
+        type : number,
         brand : string,
         storable : string,
         purchase_measure_unit : string,
         sale_measure_unit : string,
     ){
-        this.id = id;
         this.billable = billable;
         this.bar_code = bar_code;
         this.description = description;
