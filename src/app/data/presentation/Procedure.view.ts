@@ -477,7 +477,7 @@ export class ProcedureView {
   @viewMapTo((user: any) => user.email)
   user: UserDto;
 
-  @dialogLabel('Resonsable')
+  @dialogLabel('Responsable')
   @viewMapTo(
     (staff: any) =>
       staff.name + ' ' + staff.last_name + ' ' + staff.mother_last_name,

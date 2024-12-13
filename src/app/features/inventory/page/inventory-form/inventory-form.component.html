@@ -18,22 +18,43 @@
                 <input
                     [viewClassBuilder]="articleProvider"
                     title="Selecciona un Artículo"
+                    *ngIf="isInitialInventory; else noPopUpArticle"
                     o2cSinglePopup
                     formControlName="article_id"
                     matInput
                     type="text"
                 />
+                <ng-template #noPopUpArticle>
+                    <input 
+                        formControlName="article_id"
+                        matInput
+                        type="text"
+                        readonly
+                    />
+                </ng-template>
                 <mat-icon matSuffix>search</mat-icon>
                 <mat-error appErrorMessage></mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
                 <mat-label>ID de Almacén</mat-label>
                 <input
+                    [viewClassBuilder]="warehouseProvider"
+                    title="Selecciona un Almacén"
+                    *ngIf="!isInitialInventory && !isSale && !isPurchase; else noPopUp"
+                    o2cSinglePopup
                     formControlName="warehouse_id"
                     matInput
-                    type="number"
-                    readonly
+                    type="text"
                 />
+                <ng-template #noPopUp>
+                    <input 
+                        formControlName="warehouse_id"
+                        matInput
+                        type="text"
+                        readonly
+                    />
+                </ng-template>
+                <mat-icon matSuffix>search</mat-icon>
                 <mat-error appErrorMessage></mat-error>
             </mat-form-field>
             <mat-form-field appearance="outline">
