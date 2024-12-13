@@ -13,7 +13,7 @@ export class ProcedureCommentView {
   @viewLabel('Comentario')
   comment: string;
 
-  @viewLabel('User')
+  @viewLabel('Usuario que creó el comentario')
   @viewMapTo((value: any) => value?.name)
   user: UserDto;
 
@@ -24,8 +24,9 @@ export class ProcedureCommentView {
   })
   created_at?: Date;
 
-  constructor(comment: string, user: UserDto) {
+  constructor(comment: string, user: UserDto, created_at: Date) {
     this.comment = comment;
     this.user = user;
+    this.created_at = created_at;
   }
 }

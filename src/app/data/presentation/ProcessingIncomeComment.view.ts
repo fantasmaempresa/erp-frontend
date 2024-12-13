@@ -24,7 +24,7 @@ export class ProcessingIncomeCommentView {
   })
   created_at?: Date;
 
-  constructor(comment: string, user: UserDto, created_at?: Date) {
+  constructor(comment: string, user: UserDto, created_at: Date) {
     this.comment = comment;
     this.user = user;
     this.user = user;

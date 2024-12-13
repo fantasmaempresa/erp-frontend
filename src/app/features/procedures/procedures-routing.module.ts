@@ -35,7 +35,7 @@ const routes: Routes = [
           import('../procedure-comment/procedure-comment.module').then(
             (m) => m.ProcedureCommentModule,
           ),
-        data: { breadcrumb: 'Documentos', view: 'procedures' },
+        data: { breadcrumb: 'Comentarios', view: 'procedures' },
       },
       {
         path: ':id/documentsLink',

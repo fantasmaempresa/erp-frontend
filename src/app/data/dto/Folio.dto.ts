@@ -19,4 +19,6 @@ export interface FolioDto extends EntityDto {
     comment: string;
     user_id: number;
   }];
+  integrate_appendix: number;
+  config?: [];
 }

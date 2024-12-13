@@ -221,7 +221,7 @@ export class StakeAssignGrantor {
       viewClass: StakeView,
       options: {
         isMulti: false,
-        valueAttribute: ((value: any) => {console.log('function class --> value ', value); return value;})
+        valueAttribute: ((value: any) => { console.log('function class --> value ', value); return value; })
       },
     },
   })
@@ -232,7 +232,7 @@ export class StakeAssignGrantor {
   stake__name: string;
 
   constructor(
-    grantor: GrantorDto, 
+    grantor: GrantorDto,
     stake: StakeDto,
     grantor__name: string,
     stake__name: string
@@ -363,14 +363,18 @@ export class ProcedureView {
         html =
           '<span style="padding: 1rem; background: #0f7d0d; color: #eee ; border-radius: 10px; font-size: 1rem;">Aceptado</span>';
         break;
+      case 4:
+        html =
+          '<span style="padding: 1rem; background: #dfc356; color: #eee ; border-radius: 10px; font-size: 1rem;">Terminado</span>';
+        break;
     }
-    
+
     return html;
   })
   status: number;
 
   @viewLabel('Volumen')
-  @viewMapTo((folio: any) => folio.book.name )
+  @viewMapTo((folio: any) => folio.book.name)
   folio: FolioDto;
 
   @viewLabel('Instrumento')

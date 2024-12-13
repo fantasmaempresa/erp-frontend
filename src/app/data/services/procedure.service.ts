@@ -40,7 +40,8 @@ export class ProcedureService extends CrudService<
               folio_max: procedure.folio?.folio_max || 0,
               book_id: procedure.folio?.book_id || 0,
               user_id: procedure.folio?.user_id || 0,
-              book: procedure.folio?.book || book
+              book: procedure.folio?.book || book,
+              integrate_appendix: procedure.folio?.integrate_appendix || 0,
             };
 
           return ({

@@ -92,6 +92,11 @@ export class FolioService extends CrudService<FolioDto, Pagination<FolioDto>> {
       },
     );
   }
+
+  checkApendix(id: number)
+  {
+    return this._http.get(`${environment.base_url}/folio/checkApendix/${id}`);
+  }
 }
 
 @Injectable({
