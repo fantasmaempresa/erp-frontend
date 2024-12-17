@@ -98,7 +98,6 @@ export class DynamicFormComponent
         this.formGroup.disable();
       }
       this.cd.detectChanges();
-      // this.formGroupChanges.emit(this.formGroup);
     }
 
     if (onlyRead) {

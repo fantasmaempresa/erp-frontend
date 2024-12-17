@@ -23,12 +23,3 @@ export const initialState: DynamicFormState =
     isEditable: false,
     status: 'NEW',
   });
-
-// export const dynamicFormInitialState: DynamicFormState = {
-//   id: 0,
-//   name: '',
-//   formFields: [],
-//   errorMessage: '',
-//   isEditable: true,
-//   status: 'NEW',
-// };

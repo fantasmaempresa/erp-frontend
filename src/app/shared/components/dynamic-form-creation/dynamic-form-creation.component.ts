@@ -1,3 +1,4 @@
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, Input, OnInit } from '@angular/core';
 import {
   FormGroupDirective,
@@ -6,7 +7,17 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { Update } from '@ngrx/entity';
 import { Store } from '@ngrx/store';
+import { MessageHelper } from 'o2c_core';
+import { map, Observable, of, switchMap } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
+import { Formfield, QuoteTemplate } from '../../../data/dto';
+import { FormStructure } from '../../../data/models/FormStructure.model';
+import {
+  FormStructureService
+} from '../../../data/services';
 import {
   clearError,
   emptyForm,
@@ -19,19 +30,7 @@ import {
   setField,
   updateField,
 } from '../../../state/dynamic-form';
-import { Formfield, QuoteTemplate } from '../../../data/dto';
-import { map, Observable, of, switchMap } from 'rxjs';
-import { MessageHelper } from 'o2c_core';
-import {
-  FormStructureService,
-  QuoteTemplateService,
-} from '../../../data/services';
-import { Update } from '@ngrx/entity';
-import { FormStructure } from '../../../data/models/FormStructure.model';
 import { OnSaveDialogComponent } from './on-save-dialog/on-save-dialog.component';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { v4 as uuidv4 } from 'uuid';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-dynamic-form-creation',
@@ -104,7 +103,6 @@ export class DynamicFormCreationComponent implements OnInit {
 
   constructor(
     private store: Store,
-    private templateQuotesService: QuoteTemplateService,
     private formStructureService: FormStructureService,
     public dialog: MatDialog,
   ) {
@@ -253,7 +251,7 @@ export class DynamicFormCreationComponent implements OnInit {
     this.store.dispatch(clearError());
     if (this.isEdit) {
       const updatedField: Update<Formfield<any>> = {
-        id: options.id,
+        id: this.form.value.key,
         changes: { ...options },
       };
       this.store.dispatch(updateField({ form: updatedField }));
@@ -264,9 +262,6 @@ export class DynamicFormCreationComponent implements OnInit {
     }
     ngForm.form.markAsPristine();
     ngForm.resetForm();
-    // this.createForm();
-    // this.form.markAsPristine();
-    // this.form.markAsUntouched();
     this.isEdit = false;
   }
 

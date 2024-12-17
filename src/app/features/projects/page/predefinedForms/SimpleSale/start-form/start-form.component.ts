@@ -14,7 +14,7 @@ import { FORM_CLAZZ, FormComponent } from 'o2c_core';
 import { debounceTime, map, Observable } from 'rxjs';
 import { PredefinedFormLifeCycle } from 'src/app/core/interfaces/PredefinedFormLifeCycle';
 import { GrantorView } from 'src/app/data/presentation/Grantor.view';
-import { OperationView } from 'src/app/data/presentation/Operation.view';
+import { OperationProjectView } from 'src/app/data/presentation/Operation.view';
 import { PlaceView } from 'src/app/data/presentation/Place.view';
 import { StakeAssignGrantorTable } from 'src/app/data/presentation/Procedure.view';
 import { StakeView } from 'src/app/data/presentation/Stake.view';
@@ -45,7 +45,7 @@ export class StartFormComponent
   nameProcess = 'DomainTransfer';
   namePhase = 'start';
 
-  operationProvider = OperationView;
+  operationProvider = OperationProjectView;
   grantorProvider = GrantorView;
   stakeProvider = StakeView;
   placeProvider = PlaceView;

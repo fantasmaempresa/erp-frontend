@@ -1,20 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
+import { MessageHelper } from 'o2c_core';
+import { catchError, lastValueFrom, take, throwError } from 'rxjs';
+import Swal from 'sweetalert2';
+import { Formfield, QuoteTemplate } from '../../../../data/dto';
+import {
+  QuoteTemplateService
+} from '../../../../data/services';
 import {
   emptyForm,
   selectDynamicForm,
   selectDynamicFormEssentialData,
 } from '../../../../state/dynamic-form';
-import { catchError, lastValueFrom, take, throwError } from 'rxjs';
-import { MessageHelper } from 'o2c_core';
-import Swal from 'sweetalert2';
-import {
-  FormStructureService,
-  QuoteTemplateService,
-} from '../../../../data/services';
-import { Formfield, QuoteTemplate } from '../../../../data/dto';
 
 @Component({
   selector: 'app-template-page',
@@ -49,7 +48,6 @@ export class TemplatePageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private store: Store,
     private templateQuotesService: QuoteTemplateService,
-    private formStructureService: FormStructureService,
   ) {
     if (this.route.snapshot.queryParams.id) {
       this.isEdit = true;
