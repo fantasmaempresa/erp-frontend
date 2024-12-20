@@ -1,64 +1,45 @@
 <form [formGroup]="formGroup" class="row justify-content-center">
   <div class="col-6 d-flex flex-column pe-0">
-    <!--      <mat-form-field appearance="outline">-->
-    <!--        <mat-label>Estado de la cotización</mat-label>-->
-    <!--        <mat-select formControlName="status_quote_id">-->
-    <!--          <mat-option *ngFor="let quoteStatus of quoteStatuses$ | async" [value]="quoteStatus.id">{{-->
-    <!--            quoteStatus.name-->
-    <!--          }}</mat-option>-->
-    <!--        </mat-select>-->
-    <!--      </mat-form-field>-->
 
-    <div class="d-flex flex-row">
-      <div class="col-11">
-        <mat-form-field appearance="outline" class="w-100">
-          <mat-label>Cliente</mat-label>
-          <input
-            [matAutocomplete]="auto"
-            formControlName="client"
-            matInput
-            type="text"
-          />
-          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-          </mat-autocomplete>
-        </mat-form-field>
-      </div>
-      <div class="col-1">
-        <button
-          (click)="openDialog()"
-          aria-label="Buscar cliente"
-          class="align-self-center search-button"
-          mat-icon-button
-          type="button"
-        >
-          <mat-icon>search</mat-icon>
-        </button>
-      </div>
-    </div>
-
-    <mat-form-field appearance="outline">
-      <mat-label>A quien va dirigido</mat-label>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Operación</mat-label>
       <input
-        autocomplete="off"
-        formControlName="addressee"
+        [viewClassBuilder]="operationProvider"
+        title="Selecciona las operaciones"
+        o2cMultiPopup
+        formControlName="operations"
         matInput
         type="text"
       />
       <mat-error appErrorMessage></mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Descripción</mat-label>
-      <textarea formControlName="description" matInput> </textarea>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Cliente</mat-label>
+      <input
+        [viewClassBuilder]="clientProvider"
+        title="Selecciona un cliente"
+        o2cSinglePopup
+        formControlName="client_id"
+        matInput
+        type="text"
+      />
       <mat-error appErrorMessage></mat-error>
     </mat-form-field>
 
-    <!--    <mat-form-field appearance="outline">-->
-    <!--      <mat-label>Fecha de expiración</mat-label>-->
-    <!--      <input matInput [matDatepicker]="dp_end" formControlName="date_end" />-->
-    <!--      <mat-datepicker-toggle matSuffix [for]="dp_end"></mat-datepicker-toggle>-->
-    <!--      <mat-datepicker #dp_end disabled="false"></mat-datepicker>-->
-    <!--      <mat-error *ngIf="formErrors.date_end">{{ formErrors.date_end }}</mat-error>-->
-    <!--    </mat-form-field>-->
+    <div class="NgxEditor__Wrapper mb-5">
+      <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
+      <ngx-editor
+        [editor]="editorDescription"
+        formControlName="description"
+        [placeholder]="placeholderDescription"
+      ></ngx-editor>
+    </div>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Notas</mat-label>
+      <textarea formControlName="observation" matInput> </textarea>
+      <mat-error appErrorMessage></mat-error>
+    </mat-form-field>
   </div>
 </form>

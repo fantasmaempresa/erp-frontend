@@ -81,16 +81,29 @@
     </td>
   </ng-container>
 
-  <!-- Name Column -->
   <ng-container matColumnDef="name">
     <th *matHeaderCellDef mat-header-cell>Nombre</th>
     <td *matCellDef="let element" mat-cell>{{ element.name }}</td>
   </ng-container>
 
-  <!-- Description Column -->
-  <ng-container matColumnDef="description">
-    <th *matHeaderCellDef mat-header-cell>Descripción</th>
-    <td *matCellDef="let element" mat-cell>{{ element.description }}</td>
+  <ng-container matColumnDef="addressee">
+    <th *matHeaderCellDef mat-header-cell>A quien va dirigido</th>
+    <td *matCellDef="let element" mat-cell>{{ element.addressee }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="user">
+    <th *matHeaderCellDef mat-header-cell>Usuario</th>
+    <td *matCellDef="let element" mat-cell>{{ element.user.email }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="operations">
+    <th *matHeaderCellDef mat-header-cell>Operaciones</th>
+    <td *matCellDef="let element" mat-cell>{{ element.operations | operationNames}}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="status_quote">
+    <th *matHeaderCellDef mat-header-cell>Status</th>
+    <td *matCellDef="let element" mat-cell>{{ element.status_quote.name }}</td>
   </ng-container>
 
   <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>

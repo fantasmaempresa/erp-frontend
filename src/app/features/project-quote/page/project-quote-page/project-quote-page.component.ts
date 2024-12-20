@@ -226,9 +226,9 @@ export class ProjectQuotePageComponent
       .subscribe((form) => {
         const quote = {
           ...this.headerForm.getFormGroup().getRawValue(),
-          client_id: this.headerForm.getFormGroup().getRawValue().client
-            ? this.headerForm.getFormGroup().getRawValue().client.id
-            : null,
+          // client_id: this.headerForm.getFormGroup().getRawValue().client
+          //   ? this.headerForm.getFormGroup().getRawValue().client.id
+          //   : null,
           template_quote_id: this.templateControl.value.id,
           quote: {
             form: {

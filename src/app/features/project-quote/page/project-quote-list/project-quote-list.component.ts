@@ -3,6 +3,8 @@ import {
   Component,
   OnDestroy,
   OnInit,
+  Pipe,
+  PipeTransform,
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -26,6 +28,15 @@ import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import Swal from "sweetalert2";
 
+@Pipe({
+  name: 'operationNames'
+})
+export class OperationNamesPipe implements PipeTransform {
+  transform(operations: { [key: string]: { name: string } }): string {
+    return Object.values(operations).map(operation => operation.name).join(', ');
+  }
+}
+
 @Component({
   selector: 'app-project-quote-list',
   templateUrl: './project-quote-list.component.html',
@@ -44,7 +55,7 @@ export class ProjectQuoteListComponent
 
   @ViewChild(MatPaginator, { static: false }) paginator!: MatPaginator;
 
-  displayedColumns: string[] = ['select', 'name', 'description'];
+  displayedColumns: string[] = ['select', 'name', 'addressee', 'user', 'operations', 'status_quote'];
 
   selection = new SelectionModel<ProjectQuoteDto>(false, []);
 
@@ -202,7 +213,6 @@ export class ProjectQuoteListComponent
 
   openPreviewDialog(row: ProjectQuoteDto) {
     this.isSingleClick = false;
-    console.log(row);
     const dialogRef = this.dialog.open(ProjectQuotePreviewComponent, {
       panelClass: 'my-dialog',
       width: '100vw',

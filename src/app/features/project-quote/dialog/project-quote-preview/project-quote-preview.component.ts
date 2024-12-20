@@ -21,6 +21,7 @@ import {
   QuoteTemplate,
 } from '../../../../data/dto';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Editor } from 'ngx-editor';
 
 @Component({
   selector: 'app-project-quote-preview',
@@ -28,6 +29,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./project-quote-preview.component.scss'],
 })
 export class ProjectQuotePreviewComponent implements OnInit {
+  editor: Editor;
+  editorDescription: Editor;
+
   @ViewChild(DynamicFormComponent) formFill!: DynamicFormComponent;
 
   HEADER_STEP = 0;
@@ -55,6 +59,8 @@ export class ProjectQuotePreviewComponent implements OnInit {
     status_quote_id: new UntypedFormControl(null),
     client: new UntypedFormControl({ value: null, disabled: true }),
     client_id: new UntypedFormControl({ value: null, disabled: true }),
+    operations: new UntypedFormControl({ value: null, disabled: false }),
+    observation: new UntypedFormControl('', []),
   });
 
   quoteForm = new UntypedFormGroup({
@@ -78,8 +84,10 @@ export class ProjectQuotePreviewComponent implements OnInit {
       projectQuote: ProjectQuoteDto;
     },
   ) {
-    console.log(data);
-    this.quoteStatuses$ = quoteStatusService.fetchAll().pipe(
+
+    this.editor = new Editor();
+    this.editorDescription = new Editor();
+    this.quoteStatuses$ = this.quoteStatusService.fetchAll().pipe(
       map((quoteStatus) => {
         return quoteStatus.data;
       }),
